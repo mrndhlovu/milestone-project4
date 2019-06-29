@@ -1,4 +1,19 @@
 {
+    "format": {
+        "jsbeautify": {
+            "@formatOnSave": true,
+            "@indent_inner_html": true,
+            "@jslinthappy": true,
+            "@keeparrayindentation": true
+        }
+    },
+    "instance": {
+        "@automaticShutdown": "240"
+    },
+    "javascript": {
+        "@formatOnSave": true,
+        "@use_jsbeautify": true
+    },
     "language": {
         "tern_defs": {
             "json()": {
@@ -10,9 +25,19 @@
                 },
                 "jQuery": {
                     "enabled": true
+                },
+                "jasmine": {
+                    "enabled": true
+                },
+                "redux": {
+                    "enabled": true
                 }
             }
         }
+    },
+    "python": {
+        "@formatOnSave": true,
+        "@version": "python3"
     },
     "run": {
         "configs": {
