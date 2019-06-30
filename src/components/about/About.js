@@ -1,16 +1,16 @@
 import React from 'react';
 
 
-const About = () => {
+class About extends React.Component {
 
-
-    return (
-        <div>
-            Home page
+    render() {
+        return (
+            <div>
+            About page
         </div>
-    )
+        )
 
-
+    }
 }
 
 

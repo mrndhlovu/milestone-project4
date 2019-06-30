@@ -1,6 +1,6 @@
 'use es6'
 
-import React, { Component } from 'react';
+import React from 'react';
 
 
 import Navbar from 'react-bootstrap/Navbar'
@@ -8,16 +8,10 @@ import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
 
-class Header extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {}
+const Header = () => {
 
-    }
-
-    render() {
-        return (
-            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+  return (
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
               <Navbar.Brand href="#home">UnicornAttractor</Navbar.Brand>
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
@@ -40,8 +34,8 @@ class Header extends Component {
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
-        )
-    }
+  )
+
 
 
 }

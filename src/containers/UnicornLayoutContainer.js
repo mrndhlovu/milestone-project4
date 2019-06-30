@@ -2,20 +2,18 @@
 
 import React from 'react';
 
-import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col'
+import Col from 'react-bootstrap/Col';
 
-import Header from '../components/home/Header'
-
+import Header from '../components/home/Header';
 import JumbotronHeader from '../components/home/JumbotronHeader'
 
 
 const UnicornLayoutContainer = props => {
     return (
-        <Container>
+        <React.Fragment>
              <Header/>
-               <JumbotronHeader/>
+             <JumbotronHeader/>
              
              { /* Stack the columns on mobile by making one full-width and the other half-width */ }
               <Row>
@@ -23,7 +21,7 @@ const UnicornLayoutContainer = props => {
                     { props.children }
                 </Col>
               </Row>
-        </Container>
+        </React.Fragment>
     )
 
 }

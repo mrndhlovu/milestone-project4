@@ -1,21 +1,21 @@
 'use es6'
 
 import React from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
 
 
-const StyledJumbotronHeader = styled(Jumbotron)
+const StyledJumbotron = styled(Jumbotron)
 `
-height: 60vh;
-
+    height: 60vh;
 `;
 
-const JumbotronHeader = props => {
+const JumbotronHeader = () => {
     return (
-        <StyledJumbotronHeader>
+
+        <StyledJumbotron>
   <h1>UnicornAttractor!</h1>
   <p>
     This is a simple hero unit, a simple jumbotron - style component
@@ -25,7 +25,8 @@ const JumbotronHeader = props => {
   <p>
     <Button variant="outline-primary">Learn more</Button>
   </p>
-</StyledJumbotronHeader>
+</StyledJumbotron>
+
     )
 
 }
