@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://4c702cfc445c4123a8424397483b0bc2.vfs.cloud9.us-east-1.amazonaws.com/']
 
 
 # Application definition
