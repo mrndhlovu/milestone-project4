@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import UnicornLayout from './containers/UnicornLayout'
 
-function App() {
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        
-       
-      </header>
-    </div>
+    <UnicornLayout>
+       Content
+    </UnicornLayout>
   );
 }
 
