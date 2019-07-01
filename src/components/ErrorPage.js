@@ -6,7 +6,7 @@ const ErrorPage = () => {
 
     return (
         <div>
-            Home page
+            Error page
         </div>
     )
 
