@@ -18,7 +18,7 @@ export const receivedTicketsList = response => {
   };
 };
 
-export function fetchError(error) {
+export function errorAlert(error) {
   return {
     type: ERROR_ALERT,
     payload: error
@@ -33,7 +33,7 @@ export function fetchTickets() {
         dispatch(receivedTicketsList(response.data));
       },
       error => {
-        dispatch(fetchError(error));
+        dispatch(errorAlert(error));
       }
     );
   };
