@@ -1,14 +1,45 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 
+import LoginModal from "../auth/LoginModal";
+import SignupModal from "../auth/SignupModal";
+
 export class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showLoginModal: false,
+      showSignupModal: false
+    };
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleSignupClick = this.handleSignupClick.bind(this);
+  }
+
+  handleLoginClick() {
+    this.setState({
+      showLoginModal: !this.props.showLoginModal
+    });
+  }
+
+  handleSignupClick() {
+    this.setState({
+      showSignupModal: !this.props.showSignupModal
+    });
+  }
+
   render() {
+    if (this.state.showLoginModal) {
+      return <LoginModal />;
+    }
+    if (this.state.showSignupModal) {
+      return <SignupModal />;
+    }
     return (
-      <div>
+      <Fragment>
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
           <Navbar.Brand>
             <Link to="/"> Unicorn Attractor</Link>
@@ -18,7 +49,6 @@ export class Header extends Component {
             <Nav className="mr-auto">
               <Nav.Link href="#features">Features</Nav.Link>
               <Nav.Link>
-                {" "}
                 <Link to="/tickets"> Tickets</Link>
               </Nav.Link>
               <Nav.Link href="#pricing">Pricing</Nav.Link>
@@ -37,16 +67,12 @@ export class Header extends Component {
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link>
-                <Link to="/login"> Login</Link>
-              </Nav.Link>
-              <Nav.Link eventKey={2} href="#memes">
-                <Link to="/signup"> Sign up</Link>
-              </Nav.Link>
+              <Nav.Link onClick={this.handleLoginClick}>Login</Nav.Link>
+              <Nav.Link onClick={this.handleSignupClick}>Sign up</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-      </div>
+      </Fragment>
     );
   }
 }

@@ -1,7 +1,7 @@
 "use es6";
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { fetchTickets } from "../actions/index";
+import { fetchTickets } from "../../actions/index";
 
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
