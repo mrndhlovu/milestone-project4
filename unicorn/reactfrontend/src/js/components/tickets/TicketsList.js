@@ -24,6 +24,7 @@ export class TicketsList extends Component {
 
   renderTicketsList() {
     const { tickets } = this.props;
+    console.log("Tickets: ", tickets);
     return tickets.map(ticket => {
       const { title, ticket_id, description } = ticket;
       return (

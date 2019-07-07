@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const requestTicketsList = () => {
-  return axios.get("/api/tickets/");
+  return axios.get("/tickets");
 };
 
 export const requestAuthorisation = (username, password) => {
