@@ -7,7 +7,7 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Card";
 
-export class Tickets extends Component {
+export class TicketsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,4 +62,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { fetchTickets }
-)(Tickets);
+)(TicketsList);

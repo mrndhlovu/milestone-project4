@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Route } from "react-router-dom";
-import Tickets from "./js/components/tickets/Tickets";
+import Tickets from "./js/components/tickets/TicketsList";
 import Signup from "./js/components/auth/SignupModal";
 import Home from "./js/components/home/Home";
 
