@@ -95,9 +95,9 @@ WSGI_APPLICATION = 'unicorn.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'oiserfuc',
-        'USER': 'oiserfuc',
-        'PASSWORD': 'W_5oRyVi-Ed7JZwyih1aOFEecv56kQpW',
+        'NAME': 'mbscvjjb',
+        'USER': 'mbscvjjb',
+        'PASSWORD': 'd4UbKsjKdOXHoDZ2lzIHPaKnvhJIYJYv',
         'HOST': 'manny.db.elephantsql.com',
         'PORT': '5432'
     }
