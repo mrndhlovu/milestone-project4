@@ -45,7 +45,6 @@ export class TicketsList extends Component {
     return (
       <Fragment>
         <Accordion defaultActiveKey={this.state.toggleCollapsed}>
-          <h1>Tickets List</h1>
           {this.renderTicketsList()}
         </Accordion>
       </Fragment>
