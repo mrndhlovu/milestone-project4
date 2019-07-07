@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -9,11 +10,17 @@ export class Header extends Component {
     return (
       <div>
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Brand href="#home">Unicorn</Navbar.Brand>
+          <Navbar.Brand>
+            <Link to="/"> Unicorn Attractor</Link>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link href="#features">Features</Nav.Link>
+              <Nav.Link>
+                {" "}
+                <Link to="/tickets"> Tickets</Link>
+              </Nav.Link>
               <Nav.Link href="#pricing">Pricing</Nav.Link>
               <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -30,9 +37,11 @@ export class Header extends Component {
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="#deets">Login </Nav.Link>
+              <Nav.Link>
+                <Link to="/login"> Login</Link>
+              </Nav.Link>
               <Nav.Link eventKey={2} href="#memes">
-                Sign up
+                <Link to="/signup"> Sign up</Link>
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

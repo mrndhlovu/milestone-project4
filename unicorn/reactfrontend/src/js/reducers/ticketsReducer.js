@@ -10,7 +10,7 @@ const initialState = {
   ticketsList: [],
   requestSuccess: false,
   hasError: false,
-  isLoading: true
+  isLoading: false
 };
 
 const fetchingData = (state, action) => {

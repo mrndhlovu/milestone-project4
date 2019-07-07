@@ -4,7 +4,7 @@ import {
   USER_AUTH_SUCCESS,
   USER_AUTH_LOGGEDOUT
 } from "../actions/ActionTypes";
-import { checkObjectUpdate } from "../utility/checkObjectUpdate";
+import { checkObjectUpdate } from "../utils/checkObjectUpdate";
 
 const initialState = {
   sessionToken: null,

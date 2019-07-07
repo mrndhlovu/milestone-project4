@@ -5,7 +5,7 @@ export const requestTicketsList = () => {
 };
 
 export const requestAuthorisation = (username, password) => {
-  return axios.post("/auth/login/"), { username: username, password: password };
+  return axios.post("/auth/login/"), { username, password };
 };
 
 export const requestSignup = (username, password) => {
