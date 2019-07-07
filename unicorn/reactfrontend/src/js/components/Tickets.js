@@ -20,11 +20,6 @@ export class Tickets extends Component {
 
   componentDidMount() {
     this.props.fetchTickets();
-    // if (this.props.tickets.requestSuccess === true) {
-    //   this.setState({
-    //     ticketList: this.props.tickets
-    //   });
-    // }
   }
 
   renderTicketsList() {

@@ -7,24 +7,20 @@ import { BrowserRouter } from "react-router-dom";
 import store from "./store";
 import BaseRouter from "./Routes";
 
-import Container from "react-bootstrap/Container";
-
-import Header from "./js/components/navigation/Header";
 import AppContainer from "./js/containers/AppContainer";
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <Fragment>
         <Provider store={store}>
           <BrowserRouter>
             <AppContainer>
-              <Header />
               <BaseRouter />
             </AppContainer>
           </BrowserRouter>
         </Provider>
-      </div>
+      </Fragment>
     );
   }
 }

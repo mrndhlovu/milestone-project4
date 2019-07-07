@@ -8,6 +8,7 @@ export class AppContainer extends Component {
   render() {
     return (
       <Fragment>
+        <Header />
         <Container>{this.props.children}</Container>
       </Fragment>
     );
