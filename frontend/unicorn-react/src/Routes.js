@@ -1,8 +1,10 @@
 import React, { Fragment } from "react";
 import { Route } from "react-router-dom";
-import Tickets from "./js/components/tickets/TicketsList";
-import Signup from "./js/components/auth/SignupModal";
-import Home from "./js/components/home/Home";
+import Tickets from "./components/tickets/TicketsList";
+import Signup from "./components/userAuth/Signup";
+import Login from "./components/userAuth/Login";
+
+import Home from "./components/Home";
 
 const BaseRouter = () => {
   return (
@@ -10,8 +12,8 @@ const BaseRouter = () => {
       <Route exact path="/" component={Home} />
       <Route path="/signup" component={Signup} />
       <Route path="/tickets" component={Tickets} />
-      {/* <Route path="/features" component={Features} />
-      <Route path="/pricing" component={Pricing} /> */}
+      <Route path="/login" component={Login} />
+      {/* <Route path="/pricing" component={Pricing} /> */}
     </Fragment>
   );
 };
