@@ -40,16 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'tickets',
-    'rest_framework',
-    # 'rest_framework.authtoken',
-    # 'rest_auth',
-    # 'rest_auth.registration',
 
-    # 'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'corsheaders'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'corsheaders'
 
 ]
 
