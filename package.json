@@ -9,7 +9,7 @@
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "redux": "^4.0.1",
+    "redux": "^4.0.3",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.87.3"
@@ -38,7 +38,6 @@
   },
   "engines": {
     "node": "12.3.1",
-    "npm": "6.10.0",
-    "yarn": "1.13.0"
+    "npm": "6.10.0"
   }
 }
