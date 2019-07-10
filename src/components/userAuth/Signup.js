@@ -13,7 +13,7 @@ import {
 const Signup = () => (
   <Grid textAlign="center" style={{ height: "50vh" }} verticalAlign="middle">
     <Grid.Column style={{ maxWidth: 450 }}>
-      <Header as="h2" color="black" textAlign="center">
+      <Header as="h2" color="teal" textAlign="center">
         <Image src="/logo.png" />
         Create an account
       </Header>
