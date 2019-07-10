@@ -8,7 +8,7 @@ import NavFooter from "../components/navigation/NavFooter";
 
 import { Container, Segment } from "semantic-ui-react";
 
-import { startAuth, checkSessionTime } from "../actions/index";
+import { authState } from "../actions/index";
 
 const StyledContainer = styled(Container)`
   height: 100vh;
@@ -46,7 +46,6 @@ class AppContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("app state ", state);
   return {
     sessionToken: state.auth.sessionToken
   };
@@ -54,7 +53,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    authenticate: () => checkSessionTime()
+    authenticate: () => dispatch(authState())
   };
 };
 export default connect(

@@ -95,6 +95,25 @@ export function startAuth() {
   };
 }
 
+export function authState() {
+  return dispatch => {
+    const sessionToken = localStorage.getItem("sessionToken");
+    if (sessionToken == null) {
+      dispatch(authLogout());
+    } else {
+      const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
+      if (sessionLife <= new Date()) {
+        dispatch();
+      } else {
+        dispatch(authSuccess(sessionToken));
+        const sessionLifeSpan =
+          (sessionLife.getTime() - new Date.getTime()) / 1000;
+        dispatch(checkSessionTime(sessionLifeSpan));
+      }
+    }
+  };
+}
+
 // create session
 export function creatSession(sessionToken, sessionLife) {
   localStorage.setItem("sessionToken", sessionToken);
