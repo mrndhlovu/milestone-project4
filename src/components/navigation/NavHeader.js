@@ -15,7 +15,7 @@ export class NavHeader extends Component {
       <Fragment>
         <SyledMenu fixed="top" inverted>
           <Container>
-            <Menu.Item>
+            <Menu.Item as="h2">
               <Image
                 size="mini"
                 src="/logo.png"
@@ -49,7 +49,7 @@ export class NavHeader extends Component {
               </Dropdown.Menu>
             </Dropdown>
 
-            <Menu.Item>
+            <Menu.Item position="right">
               <Link to="/login">Login</Link>
             </Menu.Item>
             <Menu.Item>
