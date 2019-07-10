@@ -5,15 +5,49 @@ import styled from "styled-components";
 
 import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
 
-const SyledMenu = styled(Menu)`
+import {} from "../../actions/../actions/index";
+
+const SytledMenu = styled(Menu)`
   height: 5rem;
 `;
 
 export class NavHeader extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showLogin: true,
+      showSignUp: true,
+      showLogout: true
+    };
+    console.log("Props: ", props);
+
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  checkSessionToken() {
+    const { sessionToken } = this.props;
+    if (sessionToken === null) {
+      return (
+        <Fragment>
+          <Menu.Item position="right">
+            <Link to="/login">Login</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to="/signup">Signup</Link>
+          </Menu.Item>
+        </Fragment>
+      );
+    } else {
+      return <Menu.Item onClick={this.props.handleLogout}>Logout</Menu.Item>;
+    }
+  }
+
+  handleLogout() {}
+
   render() {
     return (
       <Fragment>
-        <SyledMenu fixed="top" inverted>
+        <SytledMenu fixed="top" inverted>
           <Container>
             <Menu.Item as="h2">
               <Image
@@ -48,18 +82,9 @@ export class NavHeader extends Component {
                 <Dropdown.Item>List Item</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-
-            <Menu.Item position="right">
-              <Link to="/login">Login</Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link to="/">Logout</Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link to="/signup">Signup</Link>
-            </Menu.Item>
+            {this.checkSessionToken()}
           </Container>
-        </SyledMenu>
+        </SytledMenu>
       </Fragment>
     );
   }

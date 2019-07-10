@@ -5,18 +5,26 @@ export const requestTicketsList = () => {
 };
 
 export const requestAuthorisation = (username, password) => {
-  return axios.post("/auth/login/"), { username, password };
+  return (
+    axios.post("http://127.0.0.1:8000/rest-auth/login/"), { username, password }
+  );
 };
 
-export const requestSignup = (username, password) => {
+export const requestSignup = (
+  email,
+  username,
+  password,
+  password1,
+  password2
+) => {
   return (
-    axios.post("/auth/login/"),
+    axios.post("/auth/signup/"),
     {
-      username,
-      password,
-      email,
-      password1,
-      password2
+      email: email,
+      username: username,
+      password: password,
+      password1: password1,
+      password2: password2
     }
   );
 };
