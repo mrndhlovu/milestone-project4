@@ -23,15 +23,16 @@ export class NavHeader extends Component {
       showLogout: true
     };
 
-    this.handleLogout = this.handleLogout.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
 
-  handleLogout() {
+  handleLogoutClick() {
+    console.log("logout");
     this.props.logOut();
-    this.props.history("/");
+    this.props.history.push("/");
   }
 
-  checkSessionToken() {
+  renderAuthNavLinks() {
     const { sessionToken } = this.props;
     if (sessionToken === null) {
       return (
@@ -46,11 +47,11 @@ export class NavHeader extends Component {
       );
     } else {
       return (
-        <Menu.Item position="right">
-          <SytledButton color="teal" onClick={this.props.handleLogout}>
-            Logout
-          </SytledButton>
-        </Menu.Item>
+        <Fragment>
+          <Menu.Item position="right" onClick={this.handleLogoutClickClick}>
+            <Link to="/">Logout</Link>
+          </Menu.Item>
+        </Fragment>
       );
     }
   }
@@ -93,7 +94,7 @@ export class NavHeader extends Component {
                 <Dropdown.Item>List Item</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            {this.checkSessionToken()}
+            {this.renderAuthNavLinks()}
           </Container>
         </SytledMenu>
       </Fragment>
@@ -101,7 +102,15 @@ export class NavHeader extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  console.log("state from nav: ", state);
+
+  return {
+    auth: state
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   { logOut }
 )(NavHeader);

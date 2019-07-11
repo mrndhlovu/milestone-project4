@@ -13,7 +13,12 @@ export async function requestAuthorisation(username, password) {
 }
 
 export async function requestSignup(inputs) {
+  const { username, email, password1, password2 } = inputs;
+  // return console.log("Inputs: ", inputs);
   return axios.post("http://127.0.0.1:8000/rest-auth/registration/", {
-    data: inputs
+    username: username,
+    email: email,
+    password1: password1,
+    password2: password2
   });
 }

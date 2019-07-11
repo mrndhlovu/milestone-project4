@@ -18,7 +18,6 @@ class AppContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    console.log("app props ", props);
   }
   componentDidMount() {
     this.props.authenticate();

@@ -23,8 +23,6 @@ class Signup extends Component {
         username: "",
         password1: "",
         password2: "",
-        firstname: "",
-        lastname: "",
         email: ""
       }
     };
@@ -47,6 +45,7 @@ class Signup extends Component {
     event.preventDefault();
     const { inputs } = this.state;
     this.props.signup(inputs);
+    this.props.history.push("/");
   }
 
   render() {
@@ -63,20 +62,6 @@ class Signup extends Component {
           </Header>
           <Form size="large">
             <Segment stacked>
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="First Name"
-                onChange={event => this.handleInputChange("firstname", event)}
-              />
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="Last Name"
-                onChange={event => this.handleInputChange("lastname", event)}
-              />
               <Form.Input
                 fluid
                 icon="user"

@@ -91,7 +91,7 @@ export const checkSession = () => {
 export function startAuth() {
   return dispatch => {
     dispatch(authStart());
-    // dispatch(checkSession());
+    dispatch(checkSession());
   };
 }
 
@@ -109,21 +109,20 @@ export function authState() {
         const timeNow = new Date();
         const sessionLifeSpan =
           (sessionLife.getTime() - new Date(timeNow).getTime()) / 1000;
-        // dispatch(checkSessionTime(sessionLifeSpan));
+        dispatch(checkSessionTime(sessionLifeSpan));
       }
     }
   };
 }
 
 // create session
-export function creatSession(sessionToken, sessionLife) {
+export const creatSession = (sessionToken, sessionLife) => {
   localStorage.setItem("sessionToken", sessionToken);
   localStorage.setItem("sessionLife", sessionLife);
   return dispatch => {
-    dispatch(authSuccess(sessionToken));
     dispatch(checkSessionTime(3600));
   };
-}
+};
 
 export const login = (username, password) => {
   return dispatch => {
@@ -133,6 +132,7 @@ export const login = (username, password) => {
         console.log("Promise returned; ", response);
         const sessionToken = response.data.key;
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
+        dispatch(authSuccess(sessionToken));
         dispatch(creatSession(sessionToken, sessionLife));
       },
       error => {
@@ -141,20 +141,6 @@ export const login = (username, password) => {
     );
   };
 };
-
-// export const linkTaskToGroup = (groupId, body) => {
-//   return dispatch => {
-//     dispatch(requestUpdate());
-//     requestGroupTaskLink(groupId, body).then(
-//       response => {
-//         dispatch(receiveLinkGroupTask(response));
-//       },
-//       error => {
-//         dispatch(fetchError(error));
-//       }
-//     );
-//   };
-// };
 
 export const logOut = () => {
   localStorage.removeItem("sessionToken");
@@ -165,15 +151,11 @@ export const logOut = () => {
 };
 
 export function checkSessionTime(sessionLife) {
-  return (
-    dispatch => {
-      setTimeout(() => {
-        dispatch(logOut());
-      });
-      dispatch(authLogout());
-    },
-    sessionLife * 1000
-  );
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(logOut());
+    }, sessionLife * 1000);
+  };
 }
 
 export function signup(inputs) {
@@ -182,9 +164,9 @@ export function signup(inputs) {
     requestSignup(inputs).then(
       response => {
         console.log(response);
-        // const sessionToken = response.data.key;
-        // const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
-        // creatSession(sessionToken, sessionLife);
+        const sessionToken = response.data.key;
+        const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
+        creatSession(sessionToken, sessionLife);
       },
       error => {
         dispatch(authFail(error));

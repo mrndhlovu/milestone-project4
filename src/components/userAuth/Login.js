@@ -27,6 +27,7 @@ class Login extends Component {
     this.handleLoginClick = this.handleLoginClick.bind(this);
   }
 
+  // collect form inputs
   handleInputChange(fieldName, event) {
     this.setState({
       buttonDisabled: false,
@@ -37,10 +38,12 @@ class Login extends Component {
     });
   }
 
+  // request a login, and redirect to home page
   handleLoginClick(event) {
     event.preventDefault();
     const { username, password } = this.state.inputs;
     this.props.login(username, password);
+    this.props.history.push("/");
   }
 
   componentDidMount() {}
@@ -97,7 +100,7 @@ class Login extends Component {
 
 const mapStateToProps = state => {
   return {
-    isLoading: state
+    auth: state.auth
   };
 };
 
