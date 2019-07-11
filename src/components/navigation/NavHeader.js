@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 import styled from "styled-components";
 
-import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
+import { Container, Dropdown, Image, Menu, Button } from "semantic-ui-react";
 
-import {} from "../../actions/../actions/index";
+import { logOut } from "../../actions/index";
 
 const SytledMenu = styled(Menu)`
   height: 5rem;
 `;
+
+const SytledButton = styled(Button)``;
 
 export class NavHeader extends Component {
   constructor(props) {
@@ -19,9 +22,13 @@ export class NavHeader extends Component {
       showSignUp: true,
       showLogout: true
     };
-    console.log("Props: ", props);
 
     this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    this.props.logOut();
+    this.props.history("/");
   }
 
   checkSessionToken() {
@@ -38,11 +45,15 @@ export class NavHeader extends Component {
         </Fragment>
       );
     } else {
-      return <Menu.Item onClick={this.props.handleLogout}>Logout</Menu.Item>;
+      return (
+        <Menu.Item position="right">
+          <SytledButton color="teal" onClick={this.props.handleLogout}>
+            Logout
+          </SytledButton>
+        </Menu.Item>
+      );
     }
   }
-
-  handleLogout() {}
 
   render() {
     return (
@@ -55,7 +66,7 @@ export class NavHeader extends Component {
                 src="/logo.png"
                 style={{ marginRight: "1.5em" }}
               />
-              <Link to="/">Unicorn</Link>
+              <Link to="/">UnicornAttractor</Link>
             </Menu.Item>
             <Menu.Item>
               <Link to="/">Home</Link>
@@ -90,4 +101,7 @@ export class NavHeader extends Component {
   }
 }
 
-export default NavHeader;
+export default connect(
+  null,
+  { logOut }
+)(NavHeader);

@@ -4,27 +4,16 @@ export const requestTicketsList = () => {
   return axios.get("/tickets");
 };
 
-export const requestAuthorisation = (username, password) => {
-  return (
-    axios.post("http://127.0.0.1:8000/rest-auth/login/"), { username, password }
-  );
-};
+export async function requestAuthorisation(username, password) {
+  console.log("send request", username, password);
+  return axios.post("http://127.0.0.1:8000/rest-auth/login/", {
+    username: username,
+    password: password
+  });
+}
 
-export const requestSignup = (
-  email,
-  username,
-  password,
-  password1,
-  password2
-) => {
-  return (
-    axios.post("/auth/signup/"),
-    {
-      email: email,
-      username: username,
-      password: password,
-      password1: password1,
-      password2: password2
-    }
-  );
-};
+export async function requestSignup(inputs) {
+  return axios.post("http://127.0.0.1:8000/rest-auth/registration/", {
+    data: inputs
+  });
+}
