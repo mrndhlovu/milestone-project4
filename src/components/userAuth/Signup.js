@@ -45,6 +45,7 @@ class Signup extends Component {
     event.preventDefault();
     const { inputs } = this.state;
     this.props.signup(inputs);
+
     this.props.history.push("/");
   }
 
@@ -66,7 +67,9 @@ class Signup extends Component {
                 fluid
                 icon="user"
                 iconPosition="left"
+                autoComplete="username"
                 placeholder="Username"
+                required
                 onChange={event => this.handleInputChange("username", event)}
               />
               <Form.Input
@@ -74,6 +77,7 @@ class Signup extends Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="E-mail address"
+                required
                 onChange={event => this.handleInputChange("email", event)}
               />
               <Form.Input
@@ -82,6 +86,8 @@ class Signup extends Component {
                 iconPosition="left"
                 placeholder="Password"
                 type="password1"
+                autoComplete="new-password"
+                required
                 onChange={event => this.handleInputChange("password1", event)}
               />
               <Form.Input
@@ -89,7 +95,9 @@ class Signup extends Component {
                 icon="lock"
                 iconPosition="left"
                 placeholder="Confirm password"
+                autoComplete="new-password"
                 type="password2"
+                required
                 onChange={event => this.handleInputChange("password2", event)}
               />
 

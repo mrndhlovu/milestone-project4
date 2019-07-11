@@ -1,61 +1,24 @@
+import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
 
-import styled from "styled-components";
+import MobileViewContainer from "./MobileViewContainer";
+import DesktopViewContainer from "./DesktopViewContainer";
 
-import NavHeader from "../components/navigation/NavHeader";
-import NavFooter from "../components/navigation/NavFooter";
-
-import { Container, Segment } from "semantic-ui-react";
-
-import { authState } from "../actions/index";
-
-const StyledContainer = styled(Container)`
-  height: 100vh;
-`;
+const ResponsiveContainer = ({ children }) => (
+  <div>
+    <DesktopViewContainer children={children}>{children}</DesktopViewContainer>
+    <MobileViewContainer children={children}>{children}</MobileViewContainer>
+  </div>
+);
 
 class AppContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  componentDidMount() {
-    this.props.authenticate();
-  }
-
   render() {
-    return (
-      <Fragment>
-        <StyledContainer text style={{ marginTop: "7em" }}>
-          <NavHeader sessionToken={this.props.sessionToken} />
-          {this.props.children}
-        </StyledContainer>
-        <Segment
-          inverted
-          vertical
-          style={{ margin: "5em 0em 0em", padding: "5em 0em" }}
-        >
-          <Container textAlign="center">
-            <NavFooter />
-          </Container>
-        </Segment>
-      </Fragment>
-    );
+    return <ResponsiveContainer>{this.props.children}</ResponsiveContainer>;
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    sessionToken: state.auth.sessionToken
-  };
+ResponsiveContainer.propTypes = {
+  children: PropTypes.node
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    authenticate: () => dispatch(authState())
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppContainer);
+export default AppContainer;

@@ -67,6 +67,7 @@ class Login extends Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="Username"
+                autoComplete="username"
                 onChange={event => this.handleInputChange("username", event)}
               />
               <Form.Input
@@ -74,6 +75,7 @@ class Login extends Component {
                 icon="lock"
                 iconPosition="left"
                 placeholder="Password"
+                autoComplete="new-password"
                 type="password"
                 onChange={event => this.handleInputChange("password", event)}
               />
