@@ -144,6 +144,7 @@ class SignupModal extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log("State on sigup modal: ", state);
   return {
     auth: state
   };

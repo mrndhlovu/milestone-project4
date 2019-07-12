@@ -67,11 +67,17 @@ class DesktopViewContainer extends Component {
             >
               <Container>
                 <Menu.Item as="a" active>
-                  Home
+                  <Link to="/"> Home</Link>
                 </Menu.Item>
-                <Menu.Item as="a">Features</Menu.Item>
-                <Menu.Item as="a">Pricing</Menu.Item>
-                <Menu.Item as="a">Tickets</Menu.Item>
+                <Menu.Item as="a">
+                  <Link to="/features"> Features</Link>
+                </Menu.Item>
+                <Menu.Item as="a">
+                  <Link to="/pricing"> Pricing</Link>
+                </Menu.Item>
+                <Menu.Item as="a">
+                  <Link to="/tickets"> Tickets</Link>
+                </Menu.Item>
                 <Menu.Item position="right">
                   <Button inverted={!fixed} onClick={this.handleLoginClick}>
                     Log in
