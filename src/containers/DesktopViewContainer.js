@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 
 import {
   Button,
@@ -66,16 +66,16 @@ class DesktopViewContainer extends Component {
               size="large"
             >
               <Container>
-                <Menu.Item as="a" active>
+                <Menu.Item active>
                   <Link to="/"> Home</Link>
                 </Menu.Item>
-                <Menu.Item as="a">
+                <Menu.Item>
                   <Link to="/features"> Features</Link>
                 </Menu.Item>
-                <Menu.Item as="a">
+                <Menu.Item>
                   <Link to="/pricing"> Pricing</Link>
                 </Menu.Item>
-                <Menu.Item as="a">
+                <Menu.Item>
                   <Link to="/tickets"> Tickets</Link>
                 </Menu.Item>
                 <Menu.Item position="right">
@@ -91,6 +91,14 @@ class DesktopViewContainer extends Component {
                   >
                     Sign Up
                   </Button>
+                  <Button
+                    inverted={!fixed}
+                    primary={fixed}
+                    style={{ marginLeft: "0.5em" }}
+                    onClick={this.handleLogoutClick}
+                  >
+                    Log out
+                  </Button>
                 </Menu.Item>
               </Container>
             </Menu>
@@ -104,8 +112,14 @@ class DesktopViewContainer extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    auth: state
+  };
+};
+
 DesktopViewContainer.propTypes = {
   children: PropTypes.node
 };
 
-export default withRouter(DesktopViewContainer);
+export default connect(mapStateToProps)(withRouter(DesktopViewContainer));

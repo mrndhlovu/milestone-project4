@@ -12,7 +12,7 @@ const BaseRouter = () => {
     <Fragment>
       <Route exact path="/" component={Home} />
       <Route path="/tickets" component={TicketsList} />
-      <Route path="/ticket:id" component={TicketDetail} />
+      <Route path="/ticket/:id" component={TicketDetail} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/features" component={Features} />
     </Fragment>

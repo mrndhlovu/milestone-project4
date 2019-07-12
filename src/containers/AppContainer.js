@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+
 import styled from "styled-components";
 
 import MobileViewContainer from "./MobileViewContainer";
@@ -23,9 +25,14 @@ class AppContainer extends Component {
     return <ResponsiveContainer>{this.props.children}</ResponsiveContainer>;
   }
 }
+const mapStateToProps = state => {
+  console.log("State in app", state);
+
+  return { auth: state };
+};
 
 ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-export default AppContainer;
+export default connect(mapStateToProps)(AppContainer);
