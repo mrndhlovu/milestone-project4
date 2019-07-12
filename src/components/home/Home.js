@@ -11,9 +11,9 @@ import {
   Segment
 } from "semantic-ui-react";
 
-import NavFooter from "./navigation/NavFooter";
+import NavFooter from "../navigation/NavFooter";
 
-import { logOut } from "../actions/index";
+import { logOut } from "../../actions/index";
 
 export class Home extends Component {
   constructor(props) {

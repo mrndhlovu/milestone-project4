@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Route } from "react-router-dom";
 
 import Features from "./components/Features";
-import Home from "./components/Home";
+import Home from "./components/home/Home";
 import Pricing from "./components/Pricing";
 import TicketsList from "./components/tickets/TicketsList";
 import TicketDetail from "./components/tickets/TicketDetail";

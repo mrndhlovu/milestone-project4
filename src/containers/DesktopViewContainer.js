@@ -12,7 +12,7 @@ import {
   Visibility
 } from "semantic-ui-react";
 
-import HomepageHeading from "../components/HomepageHeading";
+import HomepageHeading from "../components/home/HomepageHeading";
 import LoginModal from "../components/userAuth/LoginModal";
 import SignupModal from "../components/userAuth/SignupModal";
 
