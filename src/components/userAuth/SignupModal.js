@@ -53,84 +53,80 @@ class SignupModal extends Component {
   render() {
     return (
       <div>
-        <Modal.Header>Select a Photo</Modal.Header>
-        <Modal.Content image>
-          <Image wrapped size="medium" src="/images/avatar/large/rachel.png" />
-          <Modal.Description>
-            <Header>Default Profile Image</Header>
-            <Grid
-              textAlign="center"
-              style={{ height: "50vh" }}
-              verticalAlign="middle"
-            >
-              <Grid.Column style={{ maxWidth: 450 }}>
-                <Header as="h2" color="teal" textAlign="center">
-                  <Image src="/logo.png" />
-                  Create an account
-                </Header>
-                <Form size="large">
-                  <Segment stacked>
-                    <Form.Input
-                      fluid
-                      icon="user"
-                      iconPosition="left"
-                      autoComplete="username"
-                      placeholder="Username"
-                      required
-                      onChange={event =>
-                        this.handleInputChange("username", event)
-                      }
-                    />
-                    <Form.Input
-                      fluid
-                      icon="user"
-                      iconPosition="left"
-                      placeholder="E-mail address"
-                      required
-                      onChange={event => this.handleInputChange("email", event)}
-                    />
-                    <Form.Input
-                      fluid
-                      icon="lock"
-                      iconPosition="left"
-                      placeholder="Password"
-                      type="password1"
-                      autoComplete="new-password"
-                      required
-                      onChange={event =>
-                        this.handleInputChange("password1", event)
-                      }
-                    />
-                    <Form.Input
-                      fluid
-                      icon="lock"
-                      iconPosition="left"
-                      placeholder="Confirm password"
-                      autoComplete="new-password"
-                      type="password2"
-                      required
-                      onChange={event =>
-                        this.handleInputChange("password2", event)
-                      }
-                    />
+        <Modal open="true" show="blurring" closeIcon onClose={this.closeModal}>
+          <Modal.Content image>
+            <Modal.Description>
+              <Header as="h2" color="teal" textAlign="center">
+                Create an account
+              </Header>
+              <Grid textAlign="center" verticalAlign="middle">
+                <Grid.Column style={{ maxWidth: 450 }}>
+                  <Form size="large">
+                    <Segment stacked>
+                      <Form.Input
+                        fluid
+                        icon="user"
+                        iconPosition="left"
+                        autoComplete="username"
+                        placeholder="Username"
+                        required
+                        onChange={event =>
+                          this.handleInputChange("username", event)
+                        }
+                      />
+                      <Form.Input
+                        fluid
+                        icon="user"
+                        iconPosition="left"
+                        placeholder="E-mail address"
+                        required
+                        onChange={event =>
+                          this.handleInputChange("email", event)
+                        }
+                      />
+                      <Form.Input
+                        fluid
+                        icon="lock"
+                        iconPosition="left"
+                        placeholder="Password"
+                        type="password1"
+                        autoComplete="new-password"
+                        required
+                        onChange={event =>
+                          this.handleInputChange("password1", event)
+                        }
+                      />
+                      <Form.Input
+                        fluid
+                        icon="lock"
+                        iconPosition="left"
+                        placeholder="Confirm password"
+                        autoComplete="new-password"
+                        type="password2"
+                        required
+                        onChange={event =>
+                          this.handleInputChange("password2", event)
+                        }
+                      />
 
-                    <Button
-                      color="teal"
-                      fluid
-                      size="large"
-                      onClick={this.handleSignupClick}
-                    >
-                      Signup
-                    </Button>
-                  </Segment>
-                </Form>
-                <Message>
-                  Already have an account? <Link to="/login">Login</Link>
-                </Message>
-              </Grid.Column>
-            </Grid>
-          </Modal.Description>
-        </Modal.Content>
+                      <Button
+                        color="teal"
+                        fluid
+                        size="large"
+                        onClick={this.handleSignupClick}
+                      >
+                        Signup
+                      </Button>
+                    </Segment>
+                  </Form>
+                  <Message>
+                    Already have an account? <Link to="/login">Login</Link>
+                  </Message>
+                </Grid.Column>
+              </Grid>
+            </Modal.Description>
+          </Modal.Content>
+        </Modal>
       </div>
     );
   }

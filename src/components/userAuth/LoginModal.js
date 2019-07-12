@@ -38,10 +38,6 @@ class LoginModal extends Component {
     });
   }
 
-  closeModal() {
-    this.setState({ open: "false" });
-  }
-
   // request a login, and redirect to home page
   handleLoginClick(event) {
     event.preventDefault();
@@ -55,15 +51,15 @@ class LoginModal extends Component {
   render() {
     return (
       <div>
-        <Modal open="true" show="blurring" closeIcon onClose={this.closeModal}>
+        <Modal open="true" show="blurring" closeIcon>
           <Modal.Content>
+            <Header as="h2" color="teal" textAlign="center">
+              Log-in to your account
+            </Header>
             <Modal.Description>
               <Fragment>
                 <Grid textAlign="center" verticalAlign="middle">
                   <Grid.Column style={{ maxWidth: 450 }}>
-                    <Header as="h2" color="teal" textAlign="center">
-                      Log-in to your account
-                    </Header>
                     <Form size="large">
                       <Segment stacked>
                         <Form.Input
