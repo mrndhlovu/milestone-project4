@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 
 import {
   Button,
@@ -13,6 +13,8 @@ import {
 } from "semantic-ui-react";
 
 import HomepageHeading from "../components/HomepageHeading";
+import LoginModal from "../components/userAuth/LoginModal";
+import SignupModal from "../components/userAuth/SignupModal";
 
 const getWidth = () => {
   const isSSR = typeof window === "undefined";
@@ -21,14 +23,27 @@ const getWidth = () => {
 };
 
 class DesktopViewContainer extends Component {
-  state = {};
+  state = {
+    showLoginModal: false,
+    showSignupModal: false
+  };
   hideFixedMenu = () => this.setState({ fixed: false });
   showFixedMenu = () => this.setState({ fixed: true });
+  handleSignupClick = () => this.setState({ showSignupModal: true });
+  handleLoginClick = () => this.setState({ showLoginModal: true });
 
   render() {
     const { children } = this.props;
-    console.log("Children: ", children);
+
     const { fixed } = this.state;
+
+    const { showLoginModal, showSignupModal } = this.state;
+    if (showLoginModal) {
+      return <LoginModal />;
+    }
+    if (showSignupModal) {
+      return <SignupModal />;
+    }
 
     return (
       <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -58,19 +73,18 @@ class DesktopViewContainer extends Component {
                 <Menu.Item as="a">Pricing</Menu.Item>
                 <Menu.Item as="a">Tickets</Menu.Item>
                 <Menu.Item position="right">
-                  <Link to="/login">
-                    <Button inverted={!fixed}>Log in</Button>
-                  </Link>
+                  <Button inverted={!fixed} onClick={this.handleLoginClick}>
+                    Log in
+                  </Button>
 
-                  <Link to="/signup">
-                    <Button
-                      inverted={!fixed}
-                      primary={fixed}
-                      style={{ marginLeft: "0.5em" }}
-                    >
-                      Sign Up
-                    </Button>
-                  </Link>
+                  <Button
+                    inverted={!fixed}
+                    primary={fixed}
+                    style={{ marginLeft: "0.5em" }}
+                    onClick={this.handleSignupClick}
+                  >
+                    Sign Up
+                  </Button>
                 </Menu.Item>
               </Container>
             </Menu>

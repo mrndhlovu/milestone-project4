@@ -1,9 +1,16 @@
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
+
 import { Button, Container, Header, Icon } from "semantic-ui-react";
 
+const StyledContainer = styled(Container)`
+  height: 10vh !important;
+  margin-bottom: 2rem !important;
+`;
+
 const HomepageHeading = ({ mobile }) => (
-  <Container text>
+  <StyledContainer>
     <Header
       as="h1"
       content="Unicorn Attractor"
@@ -29,7 +36,7 @@ const HomepageHeading = ({ mobile }) => (
       Get Started
       <Icon name="right arrow" />
     </Button>
-  </Container>
+  </StyledContainer>
 );
 
 HomepageHeading.propTypes = {

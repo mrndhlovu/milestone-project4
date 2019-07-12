@@ -19,9 +19,7 @@ const getWidth = () => {
 };
 
 class MobileViewContainer extends Component {
-  state = {
-    sidebarOpened: true
-  };
+  state = {};
 
   handleSidebarHide = () => this.setState({ sidebarOpened: false });
   handleToggle = () => this.setState({ sidebarOpened: true });
