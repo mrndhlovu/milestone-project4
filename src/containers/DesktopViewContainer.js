@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 // import { connect } from "react-redux";
 
 import {
@@ -102,4 +102,4 @@ DesktopViewContainer.propTypes = {
   children: PropTypes.node
 };
 
-export default DesktopViewContainer;
+export default withRouter(DesktopViewContainer);

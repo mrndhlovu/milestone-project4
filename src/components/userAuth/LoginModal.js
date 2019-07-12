@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { login } from "../../actions/index";
@@ -19,12 +19,14 @@ class LoginModal extends Component {
     super(props);
     this.state = {
       buttonDisabled: true,
+      showModal: true,
       inputs: {
         username: "",
         password: ""
       }
     };
     this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   // collect form inputs
@@ -43,17 +45,27 @@ class LoginModal extends Component {
     event.preventDefault();
     const { username, password } = this.state.inputs;
     this.props.login(username, password);
-    this.props.history.push("/");
+    this.closeModal();
+  }
+
+  closeModal() {
+    window.location.reload();
   }
 
   componentDidMount() {}
 
   render() {
+    const { showModal } = this.state;
     return (
       <div>
-        <Modal open="true" show="blurring" closeIcon>
+        <Modal
+          open={showModal}
+          show="blurring"
+          closeIcon
+          onClose={this.closeModal}
+        >
           <Modal.Content>
-            <Header as="h2" color="teal" textAlign="center">
+            <Header as="h2" color="teal" textAlign="center" centered="false">
               Log-in to your account
             </Header>
             <Modal.Description>
@@ -118,4 +130,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { login }
-)(LoginModal);
+)(withRouter(LoginModal));

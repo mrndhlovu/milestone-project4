@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { signup } from "../../actions/index";
@@ -9,7 +9,6 @@ import {
   Form,
   Grid,
   Header,
-  Image,
   Message,
   Segment,
   Modal
@@ -20,6 +19,7 @@ class SignupModal extends Component {
     super(props);
     this.state = {
       buttonDisabled: true,
+      showModal: true,
       inputs: {
         username: "",
         password1: "",
@@ -30,6 +30,7 @@ class SignupModal extends Component {
 
     this.handleSignupClick = this.handleSignupClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   handleInputChange(fieldName, event) {
@@ -47,16 +48,26 @@ class SignupModal extends Component {
     const { inputs } = this.state;
     this.props.signup(inputs);
 
-    this.props.history.push("/");
+    this.closeModal();
+  }
+
+  closeModal() {
+    window.location.reload();
   }
 
   render() {
+    const { showModal } = this.state;
     return (
       <div>
-        <Modal open="true" show="blurring" closeIcon onClose={this.closeModal}>
+        <Modal
+          open={showModal}
+          show="blurring"
+          closeIcon
+          onClose={this.closeModal}
+        >
           <Modal.Content image>
             <Modal.Description>
-              <Header as="h2" color="teal" textAlign="center">
+              <Header as="h2" color="teal" textAlign="center" centered="false">
                 Create an account
               </Header>
               <Grid textAlign="center" verticalAlign="middle">
@@ -131,7 +142,13 @@ class SignupModal extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    auth: state
+  };
+};
 export default connect(
-  null,
+  mapStateToProps,
   { signup }
 )(SignupModal);

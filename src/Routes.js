@@ -10,9 +10,7 @@ const BaseRouter = () => {
   return (
     <Fragment>
       <Route exact path="/" component={Home} />
-
       <Route path="/tickets" component={Tickets} />
-
       {/* <Route path="/pricing" component={Pricing} /> */}
     </Fragment>
   );
