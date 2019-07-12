@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
 
 import styled from "styled-components";
 
@@ -21,18 +20,26 @@ const ResponsiveContainer = ({ children }) => (
 );
 
 class AppContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { token: "" };
+  }
+
+  // componentWillUpdate() {
+  //   const { sessionToken } = this.props;
+  //   if (sessionToken == false) {
+  //     this.setState({ token: sessionToken });
+  //     console.log("Token: ", sessionToken);
+  //   }
+  // }
+
   render() {
     return <ResponsiveContainer>{this.props.children}</ResponsiveContainer>;
   }
 }
-const mapStateToProps = state => {
-  console.log("State in app", state);
-
-  return { auth: state };
-};
 
 ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-export default connect(mapStateToProps)(AppContainer);
+export default AppContainer;
