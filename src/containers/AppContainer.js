@@ -1,36 +1,45 @@
+import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
 
 import styled from "styled-components";
 
-import NavHeader from "../components/navigation/NavHeader";
-import NavFooter from "../components/navigation/NavFooter";
+import MobileViewContainer from "./MobileViewContainer";
+import DesktopViewContainer from "./DesktopViewContainer";
 
-import { Container, Segment } from "semantic-ui-react";
-
-const StyledContainer = styled(Container)`
-  height: 100vh;
+const StyledDiv = styled.div`
+  margin-top: 2rem !important;
 `;
 
+const ResponsiveContainer = ({ children }) => (
+  <Fragment>
+    <DesktopViewContainer>
+      <StyledDiv>{children}</StyledDiv>
+    </DesktopViewContainer>
+    <MobileViewContainer>{children}</MobileViewContainer>
+  </Fragment>
+);
+
 class AppContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { token: "" };
+  }
+
+  // componentWillUpdate() {
+  //   const { sessionToken } = this.props;
+  //   if (sessionToken == false) {
+  //     this.setState({ token: sessionToken });
+  //     console.log("Token: ", sessionToken);
+  //   }
+  // }
+
   render() {
-    return (
-      <Fragment>
-        <StyledContainer text style={{ marginTop: "7em" }}>
-          <NavHeader />
-          {this.props.children}
-        </StyledContainer>
-        <Segment
-          inverted
-          vertical
-          style={{ margin: "5em 0em 0em", padding: "5em 0em" }}
-        >
-          <Container textAlign="center">
-            <NavFooter />
-          </Container>
-        </Segment>
-      </Fragment>
-    );
+    return <ResponsiveContainer>{this.props.children}</ResponsiveContainer>;
   }
 }
+
+ResponsiveContainer.propTypes = {
+  children: PropTypes.node
+};
 
 export default AppContainer;

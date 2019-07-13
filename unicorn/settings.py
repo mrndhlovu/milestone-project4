@@ -26,7 +26,8 @@ SECRET_KEY = 'bk+yqa3&x+-gje!(=zy8yoct)7bp-5q(pt6tui3+=am1!x0or&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'https://the-unicorn-attractor.herokuapp.com/']
+ALLOWED_HOSTS = [
+    '127.0.0.1', 'https://the-unicorn-attractor.herokuapp.com/']
 
 
 # Application definition
