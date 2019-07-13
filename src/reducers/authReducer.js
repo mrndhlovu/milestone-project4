@@ -36,7 +36,7 @@ const authSuccess = (state, action) => {
   return checkObjectUpdate(state, {
     hasError: null,
     isLoading: false,
-    sessionToken: action.sessionToken
+    sessionToken: action
   });
 };
 
@@ -49,7 +49,7 @@ export default function(state = initialState, action) {
     case USER_AUTH_START:
       return authStart(state, action);
     case USER_AUTH_SUCCESS:
-      return authSuccess(state, action);
+      return authSuccess(state, action.payload);
     default:
       return state;
   }

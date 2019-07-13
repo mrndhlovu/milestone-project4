@@ -8,7 +8,7 @@ import { checkObjectUpdate } from "../utils/checkObjectUpdate";
 
 const initialState = {
   ticketsList: [],
-  requestSuccess: false,
+  dataReceived: false,
   hasError: false,
   isLoading: false
 };
@@ -16,7 +16,7 @@ const initialState = {
 const fetchingData = (state, action) => {
   return checkObjectUpdate(state, {
     ticketsList: [],
-    requestSuccess: false,
+    dataReceived: false,
     hasError: false,
     isLoading: true
   });
@@ -25,16 +25,16 @@ const fetchingData = (state, action) => {
 const hasError = (state, action) => {
   return checkObjectUpdate(state, {
     ticketsList: [],
-    requestSuccess: false,
+    dataReceived: false,
     hasError: true,
     isLoading: false
   });
 };
 
-const requestSuccess = (state, action) => {
+const dataReceived = (state, action) => {
   return {
     ticketsList: action.payload,
-    requestSuccess: true,
+    dataReceived: true,
     hasError: false,
     isLoading: false
   };
@@ -47,7 +47,7 @@ export default function(state = initialState, action) {
     case ERROR_ALERT:
       return hasError(state, action);
     case RECEIVE_TICKETS_LIST:
-      return requestSuccess(state, action);
+      return dataReceived(state, action);
     default:
       return state;
   }
