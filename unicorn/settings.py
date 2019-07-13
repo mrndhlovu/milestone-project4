@@ -93,9 +93,9 @@ WSGI_APPLICATION = 'unicorn.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fmizkogv',
-        'USER': 'fmizkogv',
-        'PASSWORD': '5UjJh033GxlK1NSpSbjGK5AX9njNaxJM',
+        'NAME': 'jbbzmiuh',
+        'USER': 'jbbzmiuh',
+        'PASSWORD': '0S35GeWrdcuk_g-BkqVpkjmukYE5Y2UI',
         'HOST': 'manny.db.elephantsql.com',
         'PORT': '5432'
     }
@@ -145,11 +145,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static')
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.django.GzipmanifestStaticFilesStorage'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'build/static')
+# ]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_STORAGE = 'whitenoise.django.GzipmanifestStaticFilesStorage'
 
 
 REST_FRAMEWORK = {
@@ -166,4 +166,4 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = False
 
 
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
