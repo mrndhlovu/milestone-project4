@@ -11,8 +11,6 @@ import {
   Segment
 } from "semantic-ui-react";
 
-import NavFooter from "../navigation/NavFooter";
-
 import { logOut } from "../../actions/index";
 
 export class Home extends Component {
@@ -125,10 +123,6 @@ export class Home extends Component {
               I'm Still Quite Interested
             </Button>
           </Container>
-        </Segment>
-
-        <Segment inverted vertical style={{ padding: "5em 0em" }}>
-          <NavFooter />
         </Segment>
       </Fragment>
     );

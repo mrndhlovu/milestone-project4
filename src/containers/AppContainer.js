@@ -7,9 +7,16 @@ import styled from "styled-components";
 import MobileViewContainer from "./MobileViewContainer";
 import DesktopViewContainer from "./DesktopViewContainer";
 import { authState } from "../actions/index";
+import NavFooter from "../components/navigation/NavFooter";
+
+import { Segment, Container } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
   margin-top: 1rem !important;
+`;
+
+const StyledContainer = styled(Container)`
+  height: 60vh;
 `;
 
 const ResponsiveContainer = ({ children }) => (
@@ -32,7 +39,14 @@ class AppContainer extends Component {
   }
 
   render() {
-    return <ResponsiveContainer>{this.props.children}</ResponsiveContainer>;
+    return (
+      <ResponsiveContainer>
+        <StyledContainer>{this.props.children}</StyledContainer>
+        <Segment inverted vertical style={{ padding: "5em 0em" }}>
+          <NavFooter />
+        </Segment>
+      </ResponsiveContainer>
+    );
   }
 }
 
