@@ -28,7 +28,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'https://the-unicorn-attractor.herokuapp.com/', 'localhost', '127.0.0.1']
+    '127.0.0.1', 'https://the-unicorn-attractor.herokuapp.com/']
 
 
 # Application definition
@@ -97,8 +97,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ['DATABASE_NAME'],
         'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST': os.environ['DB_HOST'],
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'HOST': os.environ['DATABASE_HOST'],
         'PORT': '5432'
     }
 }
