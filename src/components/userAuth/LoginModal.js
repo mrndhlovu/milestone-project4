@@ -25,6 +25,7 @@ class LoginModal extends Component {
         password: ""
       }
     };
+
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
@@ -45,16 +46,24 @@ class LoginModal extends Component {
     event.preventDefault();
     const { username, password } = this.state.inputs;
     this.props.login(username, password);
-    this.closeModal();
   }
 
   closeModal() {
     window.location.reload();
   }
 
+  componentDidUpdate() {
+    console.log("state on login modal: ", this.props.auth);
+    const { sessionToken } = this.props.auth;
+    if (sessionToken) {
+      window.location.reload();
+    }
+  }
+
   componentDidMount() {}
 
   render() {
+    console.log("state on login modal: ", this.props.auth.sessionToken);
     const { showModal } = this.state;
     return (
       <div>
