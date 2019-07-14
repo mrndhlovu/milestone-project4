@@ -28,7 +28,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1', 'https://the-unicorn-attractor.herokuapp.com/']
+    'https://the-unicorn-attractor.herokuapp.com/', 'localhost', '127.0.0.1']
 
 
 # Application definition
