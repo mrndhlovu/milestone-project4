@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 
 import { Button, Container, Menu } from "semantic-ui-react";
 
-import { authState } from "../../actions/index";
 import LoginModal from "../userAuth/LoginModal";
 import SignupModal from "../userAuth/SignupModal";
+import { logOut } from "../../actions/index";
 
 export class DesktopNav extends Component {
   constructor(props) {
@@ -16,18 +16,31 @@ export class DesktopNav extends Component {
       showSignupModal: false,
       fixed: false
     };
-    console.log("D View Props", this.props);
 
     this.renderNavButtons = this.renderNavButtons.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.handleSignupClick = this.handleSignupClick.bind(this);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.showFixedMenu = this.showFixedMenu.bind(this);
+    this.hideFixedMenu = this.hideFixedMenu.bind(this);
   }
 
-  hideFixedMenu = () => this.setState({ fixed: false });
-  showFixedMenu = () => this.setState({ fixed: true });
-  handleSignupClick = () => this.setState({ showSignupModal: true });
-  handleLoginClick = () => this.setState({ showLoginModal: true });
+  hideFixedMenu() {
+    this.setState({ fixed: false });
+  }
+  showFixedMenu() {
+    this.setState({ fixed: true });
+  }
+  handleSignupClick() {
+    this.setState({ showSignupModal: true });
+  }
+  handleLoginClick() {
+    this.setState({ showLoginModal: true });
+  }
 
-  componentDidMount() {
-    this.props.authenticate();
+  handleLogoutClick() {
+    this.props.logOut();
+    window.location.reload();
   }
 
   renderNavButtons() {
@@ -107,13 +120,7 @@ const mapStateToProps = state => {
   return { userAuth: state.auth };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    authenticate: () => dispatch(authState())
-  };
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { logOut }
 )(withRouter(DesktopNav));

@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 
 import styled from "styled-components";
 
 import MobileViewContainer from "./MobileViewContainer";
 import DesktopViewContainer from "./DesktopViewContainer";
+import { authState } from "../actions/index";
 
 const StyledDiv = styled.div`
   margin-top: 2rem !important;
@@ -25,13 +27,9 @@ class AppContainer extends Component {
     this.state = { token: "" };
   }
 
-  // componentWillUpdate() {
-  //   const { sessionToken } = this.props;
-  //   if (sessionToken == false) {
-  //     this.setState({ token: sessionToken });
-  //     console.log("Token: ", sessionToken);
-  //   }
-  // }
+  componentDidMount() {
+    this.props.authenticate();
+  }
 
   render() {
     return <ResponsiveContainer>{this.props.children}</ResponsiveContainer>;
@@ -42,4 +40,19 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-export default AppContainer;
+const mapStateToProps = state => {
+  return {
+    userAuth: state.auth
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    authenticate: () => dispatch(authState())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppContainer);

@@ -47,12 +47,17 @@ class SignupModal extends Component {
     event.preventDefault();
     const { inputs } = this.state;
     this.props.signup(inputs);
-
-    this.closeModal();
   }
 
   closeModal() {
     window.location.reload();
+  }
+
+  componentWillUpdate() {
+    const { sessionToken } = this.props.authState;
+    if (sessionToken) {
+      window.location.reload();
+    }
   }
 
   render() {
@@ -146,7 +151,7 @@ class SignupModal extends Component {
 const mapStateToProps = state => {
   console.log("State on sigup modal: ", state);
   return {
-    auth: state
+    authState: state.auth
   };
 };
 export default connect(
