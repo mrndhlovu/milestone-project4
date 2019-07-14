@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const requestTicketsList = () => {
-  return axios.get("/tickets");
-};
+export async function requestTicketsList() {
+  return axios.get("http://127.0.0.1:8000/tickets/");
+}
 
 export async function requestAuthorisation(username, password) {
   console.log("send request", username, password);

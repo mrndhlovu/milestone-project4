@@ -6,6 +6,7 @@ import {
   USER_AUTH_LOGGEDOUT,
   USER_AUTH_START,
   USER_AUTH_SUCCESS
+  // CREATED_TICKET
 } from "./ActionTypes";
 
 import {
@@ -34,7 +35,7 @@ export function errorAlert(error) {
   };
 }
 
-export function fetchTickets() {
+export function fetchTicketsList() {
   return dispatch => {
     dispatch(fetchData());
     requestTicketsList().then(

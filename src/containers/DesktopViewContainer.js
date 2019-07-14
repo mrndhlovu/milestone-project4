@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import HomepageHeading from "../components/home/HomepageHeading";
 import DesktopNav from "../components/navigation/DesktopNav";
-import headerImage from "../images/headerImage.jpg";
+// import headerImage from "../images/headerImage.jpg";
 
 const getWidth = () => {
   const isSSR = typeof window === "undefined";
