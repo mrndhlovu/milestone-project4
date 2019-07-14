@@ -53,17 +53,13 @@ class LoginModal extends Component {
   }
 
   componentDidUpdate() {
-    console.log("state on login modal: ", this.props.auth);
     const { sessionToken } = this.props.auth;
     if (sessionToken) {
       window.location.reload();
     }
   }
 
-  componentDidMount() {}
-
   render() {
-    console.log("state on login modal: ", this.props.auth.sessionToken);
     const { showModal } = this.state;
     return (
       <div>
