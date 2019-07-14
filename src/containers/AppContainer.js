@@ -16,7 +16,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledContainer = styled(Container)`
-  height: 60vh;
+  height: 100vh;
 `;
 
 const ResponsiveContainer = ({ children }) => (
