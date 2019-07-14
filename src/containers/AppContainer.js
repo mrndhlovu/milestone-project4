@@ -9,7 +9,7 @@ import DesktopViewContainer from "./DesktopViewContainer";
 import { authState } from "../actions/index";
 
 const StyledDiv = styled.div`
-  margin-top: 2rem !important;
+  margin-top: 1rem !important;
 `;
 
 const ResponsiveContainer = ({ children }) => (

@@ -15,10 +15,11 @@ const getWidth = () => {
 };
 
 const StyledSegment = styled(Segment)`
-  background-image: url(${headerImage}) !important;
-  background-position: "center" !important;
+  ${"" /* background-image: url(${headerImage}) !important; */}
+  ${"" /* background-position: "center" !important;
   background-size: "contain" !important;
-  background-repeat: "no-repeat" !important;
+  width: windowWidth * 0.75; */}
+  padding-bottom: 5rem !important;
 `;
 
 class DesktopViewContainer extends Component {
