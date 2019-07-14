@@ -2,15 +2,24 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import { Responsive, Segment, Visibility } from "semantic-ui-react";
+import styled from "styled-components";
 
 import HomepageHeading from "../components/home/HomepageHeading";
 import DesktopNav from "../components/navigation/DesktopNav";
+import headerImage from "../images/headerImage.jpg";
 
 const getWidth = () => {
   const isSSR = typeof window === "undefined";
 
   return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
 };
+
+const StyledSegment = styled(Segment)`
+  background-image: url(${headerImage}) !important;
+  background-position: "center" !important;
+  background-size: "contain" !important;
+  background-repeat: "no-repeat" !important;
+`;
 
 class DesktopViewContainer extends Component {
   render() {
@@ -23,15 +32,10 @@ class DesktopViewContainer extends Component {
           onBottomPassed={this.showFixedMenu}
           onBottomPassedReverse={this.hideFixedMenu}
         >
-          <Segment
-            inverted
-            textAlign="center"
-            style={{ minHeight: 700, padding: "1em 0em" }}
-            vertical
-          >
+          <StyledSegment textAlign="center" inverted vertical>
             <DesktopNav />
             <HomepageHeading />
-          </Segment>
+          </StyledSegment>
         </Visibility>
 
         {children}

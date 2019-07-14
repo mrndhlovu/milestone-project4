@@ -1,19 +1,15 @@
 import PropTypes from "prop-types";
 import React from "react";
-import styled from "styled-components";
 
 import { Button, Container, Header, Icon } from "semantic-ui-react";
 
-const StyledContainer = styled(Container)`
-  height: 10vh !important;
-  margin-bottom: 2rem !important;
-`;
+const headerText = "Unicorn Attractor";
 
 const HomepageHeading = ({ mobile }) => (
-  <StyledContainer>
+  <Container>
     <Header
       as="h1"
-      content="Unicorn Attractor"
+      content={headerText}
       inverted
       style={{
         fontSize: mobile ? "2em" : "4em",
@@ -24,7 +20,7 @@ const HomepageHeading = ({ mobile }) => (
     />
     <Header
       as="h2"
-      content="Do whatever you want when you want to."
+      content="Will find a fix for that bug!"
       inverted
       style={{
         fontSize: mobile ? "1.5em" : "1.7em",
@@ -36,7 +32,7 @@ const HomepageHeading = ({ mobile }) => (
       Get Started
       <Icon name="right arrow" />
     </Button>
-  </StyledContainer>
+  </Container>
 );
 
 HomepageHeading.propTypes = {
