@@ -72,12 +72,8 @@ class MobileViewContainer extends Component {
     } else {
       return (
         <Fragment>
-          <Menu.Item inverted onClick={this.handleLoginClick}>
-            Log in
-          </Menu.Item>
-          <Menu.Item inverted onClick={this.handleSignupClick}>
-            Sign Up
-          </Menu.Item>
+          <Menu.Item onClick={this.handleLoginClick}>Log in</Menu.Item>
+          <Menu.Item onClick={this.handleSignupClick}>Sign Up</Menu.Item>
         </Fragment>
       );
     }
@@ -109,21 +105,39 @@ class MobileViewContainer extends Component {
           vertical
           visible={sidebarOpened}
         >
-          <Menu.Item>
-            <Link to="/" onClick={this.handleSidebarHide}>
+          <Fragment>
+            <Menu.Item
+              onClick={this.handleSidebarHide}
+              as={Link}
+              name="home"
+              to="/"
+            >
               Home
-            </Link>
+            </Menu.Item>
+          </Fragment>
+          <Menu.Item
+            onClick={this.handleSidebarHide}
+            as={Link}
+            name="features"
+            to="features"
+          >
+            Features
           </Menu.Item>
-          <Menu.Item as="a" onClick={this.handleSidebarHide}>
-            <Link to="/features"> Features</Link>
+          <Menu.Item
+            onClick={this.handleSidebarHide}
+            as={Link}
+            to="pricing"
+            name="pricing"
+          >
+            Pricing
           </Menu.Item>
-          <Menu.Item as="a">
-            <Link to="/pricing" onClick={this.handleSidebarHide}>
-              Pricing
-            </Link>
-          </Menu.Item>
-          <Menu.Item as="a" onClick={this.handleSidebarHide}>
-            <Link to="/tickets"> Tickets</Link>
+          <Menu.Item
+            onClick={this.handleSidebarHide}
+            as={Link}
+            to="tickets"
+            name="tickets"
+          >
+            Tickets
           </Menu.Item>
           {this.renderAuthButtons()}
         </Sidebar>
