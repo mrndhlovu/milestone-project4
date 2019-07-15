@@ -1,4 +1,4 @@
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -63,12 +63,7 @@ class MobileViewContainer extends Component {
     const { sessionToken } = this.props.userAuth;
 
     if (sessionToken) {
-      this.handleSidebarHide();
-      return (
-        <Menu.Item inverted onClick={this.handleLogoutClick}>
-          Log out
-        </Menu.Item>
-      );
+      return <Menu.Item onClick={this.handleLogoutClick}>Log out</Menu.Item>;
     } else {
       return (
         <Fragment>
@@ -168,13 +163,12 @@ class MobileViewContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("State : ", state);
   return { userAuth: state.auth };
 };
 
-// MobileViewContainer.propTypes = {
-//   children: PropTypes.node
-// };
+MobileViewContainer.propTypes = {
+  children: PropTypes.node
+};
 
 export default connect(
   mapStateToProps,
