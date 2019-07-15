@@ -29,15 +29,23 @@ class MobileViewContainer extends Component {
     super(props);
     this.state = {
       showLoginModal: false,
-      showSignupModal: false
+      showSignupModal: false,
+      sidebarOpened: false
     };
 
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
     this.handleSignupClick = this.handleSignupClick.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleSidebarHide = this.handleSidebarHide.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
   }
-  handleSidebarHide = () => this.setState({ sidebarOpened: false });
-  handleToggle = () => this.setState({ sidebarOpened: true });
+
+  handleSidebarHide() {
+    this.setState({ sidebarOpened: false });
+  }
+  handleToggle() {
+    this.setState({ sidebarOpened: true });
+  }
 
   handleSignupClick() {
     this.setState({ showSignupModal: true });
@@ -55,6 +63,7 @@ class MobileViewContainer extends Component {
     const { sessionToken } = this.props.userAuth;
 
     if (sessionToken) {
+      this.handleSidebarHide();
       return (
         <Menu.Item inverted onClick={this.handleLogoutClick}>
           Log out
@@ -101,15 +110,19 @@ class MobileViewContainer extends Component {
           visible={sidebarOpened}
         >
           <Menu.Item>
-            <Link to="/"> Home</Link>
+            <Link to="/" onClick={this.handleSidebarHide}>
+              Home
+            </Link>
           </Menu.Item>
-          <Menu.Item as="a">
+          <Menu.Item as="a" onClick={this.handleSidebarHide}>
             <Link to="/features"> Features</Link>
           </Menu.Item>
           <Menu.Item as="a">
-            <Link to="/pricing"> Pricing</Link>
+            <Link to="/pricing" onClick={this.handleSidebarHide}>
+              Pricing
+            </Link>
           </Menu.Item>
-          <Menu.Item as="a">
+          <Menu.Item as="a" onClick={this.handleSidebarHide}>
             <Link to="/tickets"> Tickets</Link>
           </Menu.Item>
           {this.renderAuthButtons()}
@@ -141,6 +154,7 @@ class MobileViewContainer extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log("State : ", state);
   return { userAuth: state.auth };
 };
 
