@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import { login } from "../../actions/index";
+import SignupModal from "./SignupModal";
 
 import {
   Button,
@@ -19,12 +20,14 @@ class LoginModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: true
+      showModal: true,
+      signupModal: false
     };
 
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.renderField = this.renderField.bind(this);
+    this.showSignupModal = this.showSignupModal.bind(this);
   }
 
   // request a login, and redirect to home page
@@ -61,6 +64,10 @@ class LoginModal extends Component {
     );
   }
 
+  showSignupModal() {
+    this.setState({ showModal: false, signupModal: true });
+  }
+
   componentDidUpdate() {
     const { sessionToken } = this.props.auth;
     if (sessionToken) {
@@ -69,8 +76,12 @@ class LoginModal extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
-    const { showModal, buttonDisabled } = this.state;
+    const { handleSubmit, showSignupModal } = this.props;
+    const { showModal, signupModal } = this.state;
+
+    if (signupModal) {
+      return <SignupModal />;
+    }
 
     return (
       <div>
@@ -112,7 +123,10 @@ class LoginModal extends Component {
                       </Segment>
                     </form>
                     <Message>
-                      New to us? <Link to="/signup">Sign Up</Link>
+                      New to us?{" "}
+                      <Button positive onClick={showSignupModal}>
+                        Sign Up
+                      </Button>
                     </Message>
                   </Grid.Column>
                 </Grid>
@@ -132,8 +146,6 @@ const mapStateToProps = state => {
 };
 
 function validate(values) {
-  // console.log("values input", values);
-
   const formErrors = {};
   if (!values.username) {
     formErrors.username = "Enter a username";
