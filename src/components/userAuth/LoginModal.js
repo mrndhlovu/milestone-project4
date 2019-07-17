@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { reduxForm, Field } from "redux-form";
 
 import { login } from "../../actions/index";
 
@@ -18,38 +19,46 @@ class LoginModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buttonDisabled: true,
-      showModal: true,
-      inputs: {
-        username: "",
-        password: ""
-      }
+      showModal: true
     };
 
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.closeModal = this.closeModal.bind(this);
-  }
-
-  // collect form inputs
-  handleInputChange(fieldName, event) {
-    this.setState({
-      buttonDisabled: false,
-      inputs: {
-        ...this.state.inputs,
-        [fieldName]: event.target.value
-      }
-    });
+    this.renderField = this.renderField.bind(this);
   }
 
   // request a login, and redirect to home page
-  handleLoginClick(event) {
-    event.preventDefault();
-    const { username, password } = this.state.inputs;
+  handleLoginClick(values) {
+    const { username, password } = values;
+    console.log("Values: ", values);
+
     this.props.login(username, password);
   }
 
   closeModal() {
     window.location.reload();
+  }
+
+  renderField(field) {
+    const {
+      meta: { touched, error }
+    } = field;
+
+    return (
+      <Fragment>
+        <Form.Input
+          color="red"
+          {...field.input}
+          fluid
+          icon={field.label === "Password" ? "lock" : "user"}
+          iconPosition="left"
+          placeholder={field.label}
+          autoComplete={field.name}
+          type={field.name}
+          error={touched ? error : null}
+        />
+      </Fragment>
+    );
   }
 
   componentDidUpdate() {
@@ -60,7 +69,9 @@ class LoginModal extends Component {
   }
 
   render() {
-    const { showModal } = this.state;
+    const { handleSubmit } = this.props;
+    const { showModal, buttonDisabled } = this.state;
+
     return (
       <div>
         <Modal
@@ -77,41 +88,29 @@ class LoginModal extends Component {
               <Fragment>
                 <Grid textAlign="center" verticalAlign="middle">
                   <Grid.Column style={{ maxWidth: 450 }}>
-                    <Form size="large">
+                    <form
+                      size="large"
+                      onSubmit={handleSubmit(this.handleLoginClick)}
+                    >
                       <Segment stacked>
-                        <Form.Input
-                          fluid
-                          icon="user"
-                          iconPosition="left"
-                          placeholder="Username"
-                          autoComplete="username"
-                          onChange={event =>
-                            this.handleInputChange("username", event)
-                          }
+                        <Field
+                          name="username"
+                          label="Username"
+                          component={this.renderField}
                         />
-                        <Form.Input
-                          fluid
-                          icon="lock"
-                          iconPosition="left"
-                          placeholder="Password"
-                          autoComplete="new-password"
-                          type="password"
-                          onChange={event =>
-                            this.handleInputChange("password", event)
-                          }
+                        <br />
+                        <Field
+                          name="password"
+                          label="Password"
+                          component={this.renderField}
                         />
+                        <br />
 
-                        <Button
-                          color="teal"
-                          fluid
-                          size="large"
-                          disabled={this.state.buttonDisabled}
-                          onClick={this.handleLoginClick}
-                        >
+                        <Button color="teal" fluid size="large" type="submit">
                           Login
                         </Button>
                       </Segment>
-                    </Form>
+                    </form>
                     <Message>
                       New to us? <Link to="/signup">Sign Up</Link>
                     </Message>
@@ -132,7 +131,23 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { login }
-)(withRouter(LoginModal));
+function validate(values) {
+  // console.log("values input", values);
+
+  const formErrors = {};
+  if (!values.username) {
+    formErrors.username = "Enter a username";
+  }
+  if (!values.password) {
+    formErrors.password = "Enter a password";
+  }
+
+  return formErrors;
+}
+
+export default reduxForm({ validate, form: "LoginForm" })(
+  connect(
+    mapStateToProps,
+    { login }
+  )(LoginModal)
+);
