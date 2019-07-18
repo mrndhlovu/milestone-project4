@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
+
 import { login } from "../../actions/index";
 import SignupModal from "./SignupModal";
 
@@ -54,7 +55,7 @@ class LoginModal extends Component {
           placeholder={field.label}
           autoComplete={field.name}
           type={field.name}
-          error={touched ? error : null}
+          error={touched && error ? error : null}
         />
       </Fragment>
     );
@@ -72,7 +73,7 @@ class LoginModal extends Component {
   }
 
   render() {
-    const { handleSubmit, showSignupModal } = this.props;
+    const { handleSubmit } = this.props;
     const { showModal, signupModal } = this.state;
 
     if (signupModal) {
@@ -95,7 +96,7 @@ class LoginModal extends Component {
               <Fragment>
                 <Grid textAlign="center" verticalAlign="middle">
                   <Grid.Column style={{ maxWidth: 450 }}>
-                    <form
+                    <Form
                       size="large"
                       onSubmit={handleSubmit(this.handleLoginClick)}
                     >
@@ -117,10 +118,10 @@ class LoginModal extends Component {
                           Login
                         </Button>
                       </Segment>
-                    </form>
+                    </Form>
                     <Message>
                       New to us?
-                      <Button positive onClick={showSignupModal}>
+                      <Button positive onClick={this.showSignupModal}>
                         Sign Up
                       </Button>
                     </Message>

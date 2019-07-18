@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import { signup } from "../../actions/index";
+import LoginModal from "./LoginModal";
 
 import {
   Button,
@@ -26,6 +26,7 @@ class SignupModal extends Component {
     this.handleSignupClick = this.handleSignupClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.showLoginModal = this.showLoginModal.bind(this);
   }
 
   handleInputChange(fieldName, event) {
@@ -38,6 +39,7 @@ class SignupModal extends Component {
     });
   }
   showLoginModal() {
+    console.log("Login modal");
     this.setState({ showModal: false, loginModal: true });
   }
 
@@ -54,8 +56,6 @@ class SignupModal extends Component {
     const {
       meta: { touched, error }
     } = field;
-
-    const className = `error ${touched && error}`;
 
     return (
       <Fragment>
@@ -86,10 +86,10 @@ class SignupModal extends Component {
   }
 
   render() {
-    const { handleSubmit, showLoginModal } = this.props;
+    const { handleSubmit } = this.props;
     const { showModal, loginModal } = this.state;
     if (loginModal) {
-      return <SignupModal />;
+      return <LoginModal />;
     }
 
     return (
@@ -142,9 +142,9 @@ class SignupModal extends Component {
                       </Button>
                     </Segment>
                   </Form>
-                  <Message>
+                  <Message attached="bottom">
                     Already have an account?
-                    <Button positive onClick={showLoginModal}>
+                    <Button positive onClick={this.showLoginModal}>
                       Login
                     </Button>
                   </Message>
