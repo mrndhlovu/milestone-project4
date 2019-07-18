@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-
 import { login } from "../../actions/index";
 import SignupModal from "./SignupModal";
 
@@ -33,8 +31,6 @@ class LoginModal extends Component {
   // request a login, and redirect to home page
   handleLoginClick(values) {
     const { username, password } = values;
-    console.log("Values: ", values);
-
     this.props.login(username, password);
   }
 
@@ -123,7 +119,7 @@ class LoginModal extends Component {
                       </Segment>
                     </form>
                     <Message>
-                      New to us?{" "}
+                      New to us?
                       <Button positive onClick={showSignupModal}>
                         Sign Up
                       </Button>

@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { reduxForm, Field } from "redux-form";
 
 import { signup } from "../../actions/index";
 
@@ -18,14 +19,8 @@ class SignupModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buttonDisabled: true,
       showModal: true,
-      inputs: {
-        username: "",
-        password1: "",
-        password2: "",
-        email: ""
-      }
+      loginModal: false
     };
 
     this.handleSignupClick = this.handleSignupClick.bind(this);
@@ -42,15 +37,45 @@ class SignupModal extends Component {
       }
     });
   }
+  showLoginModal() {
+    this.setState({ showModal: false, loginModal: true });
+  }
 
   handleSignupClick(event) {
-    event.preventDefault();
     const { inputs } = this.state;
     this.props.signup(inputs);
   }
 
   closeModal() {
     window.location.reload();
+  }
+
+  renderField(field) {
+    const {
+      meta: { touched, error }
+    } = field;
+
+    const className = `error ${touched && error}`;
+
+    return (
+      <Fragment>
+        <Form.Input
+          color="red"
+          {...field.input}
+          fluid
+          icon={
+            field.label === "Password" || field.label === "Confirm Password"
+              ? "lock"
+              : "user"
+          }
+          iconPosition="left"
+          placeholder={field.label}
+          autoComplete={field.name}
+          type={field.name}
+          error={touched && error ? error : null}
+        />
+      </Fragment>
+    );
   }
 
   componentWillUpdate() {
@@ -61,7 +86,12 @@ class SignupModal extends Component {
   }
 
   render() {
-    const { showModal } = this.state;
+    const { handleSubmit, showLoginModal } = this.props;
+    const { showModal, loginModal } = this.state;
+    if (loginModal) {
+      return <SignupModal />;
+    }
+
     return (
       <div>
         <Modal
@@ -77,66 +107,46 @@ class SignupModal extends Component {
               </Header>
               <Grid textAlign="center" verticalAlign="middle">
                 <Grid.Column style={{ maxWidth: 450 }}>
-                  <Form size="large">
+                  <Form
+                    size="large"
+                    onSubmit={handleSubmit(this.handleSignupClick)}
+                  >
                     <Segment stacked>
-                      <Form.Input
-                        fluid
-                        icon="user"
-                        iconPosition="left"
-                        autoComplete="username"
-                        placeholder="Username"
-                        required
-                        onChange={event =>
-                          this.handleInputChange("username", event)
-                        }
+                      <Field
+                        name="username"
+                        label="Username"
+                        component={this.renderField}
                       />
-                      <Form.Input
-                        fluid
-                        icon="user"
-                        iconPosition="left"
-                        placeholder="E-mail address"
-                        required
-                        onChange={event =>
-                          this.handleInputChange("email", event)
-                        }
+                      <br />
+                      <Field
+                        name="email"
+                        label="Email"
+                        component={this.renderField}
                       />
-                      <Form.Input
-                        fluid
-                        icon="lock"
-                        iconPosition="left"
-                        placeholder="Password"
-                        type="password1"
-                        autoComplete="new-password"
-                        required
-                        onChange={event =>
-                          this.handleInputChange("password1", event)
-                        }
+                      <br />
+                      <Field
+                        name="password1"
+                        label="Password"
+                        component={this.renderField}
                       />
-                      <Form.Input
-                        fluid
-                        icon="lock"
-                        iconPosition="left"
-                        placeholder="Confirm password"
-                        autoComplete="new-password"
-                        type="password2"
-                        required
-                        onChange={event =>
-                          this.handleInputChange("password2", event)
-                        }
+                      <br />
+                      <Field
+                        name="password2"
+                        label="Confirm Password"
+                        component={this.renderField}
                       />
+                      <br />
 
-                      <Button
-                        color="teal"
-                        fluid
-                        size="large"
-                        onClick={this.handleSignupClick}
-                      >
+                      <Button color="teal" fluid size="large" type="submit">
                         Signup
                       </Button>
                     </Segment>
                   </Form>
                   <Message>
-                    Already have an account? <Link to="/login">Login</Link>
+                    Already have an account?
+                    <Button positive onClick={showLoginModal}>
+                      Login
+                    </Button>
                   </Message>
                 </Grid.Column>
               </Grid>
@@ -154,7 +164,30 @@ const mapStateToProps = state => {
     authState: state.auth
   };
 };
-export default connect(
-  mapStateToProps,
-  { signup }
-)(SignupModal);
+
+function validate(values) {
+  const formErrors = {};
+  if (!values.username) {
+    formErrors.username = "Enter a username";
+  }
+  if (!values.password1) {
+    formErrors.password1 = "Enter a password";
+  }
+
+  if (!values.password2) {
+    formErrors.password2 = "Confirm your password";
+  }
+
+  if (!values.email) {
+    formErrors.email = "Enter a Email";
+  }
+
+  return formErrors;
+}
+
+export default reduxForm({ validate, form: "LoginForm" })(
+  connect(
+    mapStateToProps,
+    { signup }
+  )(SignupModal)
+);
