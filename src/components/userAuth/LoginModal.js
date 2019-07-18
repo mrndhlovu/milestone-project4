@@ -56,6 +56,7 @@ class LoginModal extends Component {
           autoComplete={field.name}
           type={field.name}
           error={touched && error ? error : null}
+          pointing="below"
         />
       </Fragment>
     );
@@ -113,13 +114,12 @@ class LoginModal extends Component {
                           component={this.renderField}
                         />
                         <br />
-
                         <Button color="teal" fluid size="large" type="submit">
                           Login
                         </Button>
                       </Segment>
                     </Form>
-                    <Message>
+                    <Message attached="bottom">
                       New to us?
                       <Button positive onClick={this.showSignupModal}>
                         Sign Up

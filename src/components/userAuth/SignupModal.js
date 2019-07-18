@@ -31,7 +31,7 @@ class SignupModal extends Component {
 
   handleInputChange(fieldName, event) {
     this.setState({
-      buttonDisabled: false,
+      buttonDisabled: true,
       inputs: {
         ...this.state.inputs,
         [fieldName]: event.target.value
@@ -87,7 +87,8 @@ class SignupModal extends Component {
 
   render() {
     const { handleSubmit } = this.props;
-    const { showModal, loginModal } = this.state;
+    const { showModal, loginModal, buttonDisabled } = this.state;
+
     if (loginModal) {
       return <LoginModal />;
     }
@@ -144,7 +145,11 @@ class SignupModal extends Component {
                   </Form>
                   <Message attached="bottom">
                     Already have an account?
-                    <Button positive onClick={this.showLoginModal}>
+                    <Button
+                      positive
+                      onClick={this.showLoginModal}
+                      disabled={buttonDisabled}
+                    >
                       Login
                     </Button>
                   </Message>
@@ -159,7 +164,6 @@ class SignupModal extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("State on sigup modal: ", state);
   return {
     authState: state.auth
   };

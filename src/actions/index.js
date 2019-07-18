@@ -5,14 +5,16 @@ import {
   USER_AUTH_FAIL,
   USER_AUTH_LOGGEDOUT,
   USER_AUTH_START,
-  USER_AUTH_SUCCESS
-  // CREATED_TICKET
+  USER_AUTH_SUCCESS,
+  CREATE_TICKET,
+  RECEIVE_TICKET
 } from "./ActionTypes";
 
 import {
   requestTicketsList,
   requestAuthorisation,
-  requestSignup
+  requestSignup,
+  requestCreateTicket
 } from "../apis/apiRequests";
 
 export function fetchData() {
@@ -171,6 +173,34 @@ export function signup(inputs) {
       },
       error => {
         dispatch(authFail(error));
+      }
+    );
+  };
+}
+
+export const creatingTicket = response => {
+  return {
+    type: CREATE_TICKET,
+    payload: response
+  };
+};
+
+export const receiveTicket = response => {
+  return {
+    type: RECEIVE_TICKET,
+    payload: response
+  };
+};
+
+export function createTicket(data) {
+  return dispatch => {
+    dispatch(creatingTicket());
+    requestCreateTicket(data).then(
+      response => {
+        dispatch(receiveTicket(response));
+      },
+      error => {
+        dispatch(errorAlert(error));
       }
     );
   };

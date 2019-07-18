@@ -22,3 +22,12 @@ export async function requestSignup(inputs) {
     password2: password2
   });
 }
+
+export async function requestCreateTicket(data) {
+  const { title, subject, description } = data;
+  return axios.post("http://127.0.0.1:8000/tickets/", {
+    title: title,
+    subject: subject,
+    description: description
+  });
+}
