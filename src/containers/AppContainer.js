@@ -11,14 +11,12 @@ import NavFooter from "../components/navigation/NavFooter";
 
 import { Segment, Container } from "semantic-ui-react";
 
-const StyledDiv = styled.div`
-  margin-top: 1rem !important;
-`;
+const StyledDiv = styled.div``;
 
 const StyledContainer = styled(Container)`
   min-height: 2rem;
   overflow: hidden;
-  padding-bottom: 3rem;
+  padding: 3rem 0 3rem 0;
 `;
 
 const ResponsiveContainer = ({ children }) => (
