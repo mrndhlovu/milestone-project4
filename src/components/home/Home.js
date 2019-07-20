@@ -12,6 +12,13 @@ import {
 } from "semantic-ui-react";
 
 import { logOut } from "../../actions/index";
+import styled from "styled-components";
+
+import HomepageHeading from "../home/HomepageHeading";
+
+const StyledSegment = styled(Segment)`
+  padding-bottom: 5rem !important;
+`;
 
 export class Home extends Component {
   constructor(props) {
@@ -25,6 +32,9 @@ export class Home extends Component {
   render() {
     return (
       <Fragment>
+        <StyledSegment textAlign="center" inverted vertical>
+          <HomepageHeading />
+        </StyledSegment>
         <Segment style={{ padding: "8em 0em" }} vertical>
           <Grid container stackable verticalAlign="middle">
             <Grid.Row>

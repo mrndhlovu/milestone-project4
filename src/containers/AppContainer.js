@@ -11,12 +11,11 @@ import NavFooter from "../components/navigation/NavFooter";
 
 import { Segment, Container } from "semantic-ui-react";
 
-const StyledDiv = styled.div``;
-
-const StyledContainer = styled(Container)`
-  min-height: 2rem;
+const StyledDiv = styled.div`
+  min-height: 50vh;
   overflow: hidden;
-  padding: 3rem 0 3rem 0;
+  padding-bottom: 2rem;
+  padding-top: 1.5rem;
 `;
 
 const ResponsiveContainer = ({ children }) => (
@@ -41,7 +40,7 @@ class AppContainer extends Component {
   render() {
     return (
       <ResponsiveContainer>
-        <StyledContainer>{this.props.children}</StyledContainer>
+        <StyledDiv>{this.props.children}</StyledDiv>
         <Segment inverted vertical style={{ padding: "5em 0em" }}>
           <NavFooter />
         </Segment>
