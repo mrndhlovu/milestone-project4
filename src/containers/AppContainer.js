@@ -16,7 +16,9 @@ const StyledDiv = styled.div`
 `;
 
 const StyledContainer = styled(Container)`
-  height: 100vh;
+  min-height: 2rem;
+  overflow: hidden;
+  padding-bottom: 3rem;
 `;
 
 const ResponsiveContainer = ({ children }) => (

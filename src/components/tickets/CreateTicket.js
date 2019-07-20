@@ -1,14 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
 
-import {
-  Button,
-  Form,
-  Icon,
-  Message,
-  Select,
-  TextArea
-} from "semantic-ui-react";
+import { Button, Form, Message, Select, TextArea } from "semantic-ui-react";
 
 const TICKET_PRORITY_LEVELS = [
   { key: "LOW", value: "lw", text: "LOW" },
