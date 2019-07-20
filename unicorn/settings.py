@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('DEGUB_VALUE') == 'True')
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'https://the-unicorn-attractor.herokuapp.com/']
 
