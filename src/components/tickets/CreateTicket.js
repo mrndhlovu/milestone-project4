@@ -7,7 +7,8 @@ import {
   Icon,
   Message,
   Container,
-  Select
+  Select,
+  TextArea
 } from "semantic-ui-react";
 
 const TICKET_PRORITY_LEVELS = [
@@ -30,10 +31,14 @@ export class CreateTicket extends Component {
           <Form.Input fluid label="Subject" placeholder="Subject" type="text" />
 
           <Form.Input label="Username" placeholder="Username" type="text" />
-          <Form.Input label="Description" type="Description" />
+          <Form.Field
+            control={TextArea}
+            label="Description"
+            placeholder="Describe your issue..."
+          />
           <Fragment>
             <Select
-              placeholder="Select your country"
+              placeholder="Ticket priority level"
               options={TICKET_PRORITY_LEVELS}
             />
           </Fragment>

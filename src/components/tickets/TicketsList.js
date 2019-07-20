@@ -9,10 +9,7 @@ import { fetchTicketsList } from "../../actions/index";
 export class TicketsList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tab1: true,
-      tab2: false
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -32,9 +29,9 @@ export class TicketsList extends Component {
           <Table.Cell>{status}</Table.Cell>
           <Table.Cell textAlign="center">{prority_level}</Table.Cell>
           <Table.Cell>
-            <Link to={`ticket/${id}`}>
-              <Button positive>Read More</Button>
-            </Link>
+            <Button as={Link} to={`ticket/${id}`} positive>
+              Read More
+            </Button>
           </Table.Cell>
         </Table.Row>
       );
@@ -64,7 +61,6 @@ export class TicketsList extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("Tickets state: ", state);
   return {
     ticketsList: state.tickets.ticketsList
   };

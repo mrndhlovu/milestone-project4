@@ -14,7 +14,7 @@ class App extends Component {
       <Fragment>
         <Provider store={store}>
           <BrowserRouter>
-            <AppContainer {...this.props}>
+            <AppContainer>
               <BaseRouter />
             </AppContainer>
           </BrowserRouter>
