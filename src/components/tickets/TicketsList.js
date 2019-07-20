@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { Container, Table, Button } from "semantic-ui-react";
+import { Container, Table, Button, Header } from "semantic-ui-react";
 
+import CreateTicket from "./CreateTicket";
 import { fetchTicketsList } from "../../actions/index";
 
 export class TicketsList extends Component {
@@ -39,8 +40,16 @@ export class TicketsList extends Component {
   }
 
   render() {
+    const { sessionToken } = this.props.authUser;
+
     return (
-      <Container text>
+      <Container>
+        <Header
+          as="h2"
+          content="Tickets"
+          subheader="View or create a ticket here"
+        />
+        {sessionToken ? <CreateTicket /> : null}
         <Table celled>
           <Table.Header>
             <Table.Row>
@@ -62,7 +71,8 @@ export class TicketsList extends Component {
 
 const mapStateToProps = state => {
   return {
-    ticketsList: state.tickets.ticketsList
+    ticketsList: state.tickets.ticketsList,
+    authUser: state.auth
   };
 };
 

@@ -6,7 +6,6 @@ import {
   Form,
   Icon,
   Message,
-  Container,
   Select,
   TextArea
 } from "semantic-ui-react";
@@ -20,7 +19,7 @@ const TICKET_PRORITY_LEVELS = [
 export class CreateTicket extends Component {
   render() {
     return (
-      <Container text>
+      <Fragment>
         <Message
           attached
           header="Create a Ticket"
@@ -36,24 +35,17 @@ export class CreateTicket extends Component {
             label="Description"
             placeholder="Describe your issue..."
           />
-          <Fragment>
-            <Select
-              placeholder="Ticket priority level"
-              options={TICKET_PRORITY_LEVELS}
-            />
-          </Fragment>
-          <br />
-          <Button color="blue">Submit</Button>
-        </Form>
-        <Message attached="bottom" warning>
-          <Icon name="help" />
-          See Tickets&nbsp;
-          <Button positive as={Link} to="/tickets">
-            List
+
+          <Select
+            placeholder="Ticket priority level"
+            options={TICKET_PRORITY_LEVELS}
+          />
+
+          <Button color="blue" floated="right">
+            Submit
           </Button>
-          &nbsp;instead.
-        </Message>
-      </Container>
+        </Form>
+      </Fragment>
     );
   }
 }

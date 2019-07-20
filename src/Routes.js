@@ -6,7 +6,6 @@ import Home from "./components/home/Home";
 import Pricing from "./components/Pricing";
 import TicketsList from "./components/tickets/TicketsList";
 import TicketDetail from "./components/tickets/TicketDetail";
-import CreateTicket from "./components/tickets/CreateTicket";
 
 const BaseRouter = () => {
   return (
@@ -16,7 +15,6 @@ const BaseRouter = () => {
       <Route path="/ticket/:id" component={TicketDetail} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/features" component={Features} />
-      <Route path="/create-ticket" component={CreateTicket} />
     </Fragment>
   );
 };
