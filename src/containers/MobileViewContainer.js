@@ -114,14 +114,14 @@ class MobileViewContainer extends Component {
             onClick={this.handleSidebarHide}
             as={Link}
             name="features"
-            to="features"
+            to="/features"
           >
             Features
           </Menu.Item>
           <Menu.Item
             onClick={this.handleSidebarHide}
             as={Link}
-            to="pricing"
+            to="/pricing"
             name="pricing"
           >
             Pricing
@@ -129,7 +129,7 @@ class MobileViewContainer extends Component {
           <Menu.Item
             onClick={this.handleSidebarHide}
             as={Link}
-            to="tickets"
+            to="/tickets"
             name="tickets"
           >
             Tickets

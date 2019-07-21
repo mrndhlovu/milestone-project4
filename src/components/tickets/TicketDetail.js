@@ -3,7 +3,14 @@ import { connect } from "react-redux";
 
 import { requestTicketsDetail } from "../../actions/index";
 
-import { Container, Header, Segment } from "semantic-ui-react";
+import {
+  Container,
+  Header,
+  Segment,
+  Dimmer,
+  Loader,
+  Image
+} from "semantic-ui-react";
 
 export class TicketDetail extends Component {
   constructor(props) {
@@ -16,8 +23,19 @@ export class TicketDetail extends Component {
   }
 
   render() {
-    const { title, created_at, description } = this.props.ticket;
-    return (
+    const {
+      dataReceived,
+      isLoading,
+      ticket: { title, created_at, description }
+    } = this.props.ticket;
+    return isLoading && !dataReceived ? (
+      <div>
+        <Dimmer active inverted>
+          <Loader size="mini">Loading</Loader>
+        </Dimmer>
+        <Image src="/images/wireframe/short-paragraph.png" />
+      </div>
+    ) : (
       <Container>
         <Header as="h2" content={title} subheader={created_at} />
         <Header as="h4" attached="top" block>
@@ -32,8 +50,9 @@ export class TicketDetail extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
-    ticket: state.ticketDetail.ticket,
+    ticket: state.ticketDetail,
     authUser: state.auth
   };
 };

@@ -2,7 +2,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { Container, Header, List, Segment } from "semantic-ui-react";
+import {
+  Container,
+  Header,
+  List,
+  Segment,
+  Dimmer,
+  Loader,
+  Image
+} from "semantic-ui-react";
 
 import CreateTicket from "./CreateTicket";
 import { fetchTicketsList } from "../../actions/index";
@@ -45,9 +53,17 @@ export class TicketsList extends Component {
   }
 
   render() {
+    const { isLoading, dataReceived } = this.props.isLoading;
     const { sessionToken } = this.props.authUser;
 
-    return (
+    return isLoading && !dataReceived ? (
+      <div>
+        <Dimmer active inverted>
+          <Loader size="mini">Loading</Loader>
+        </Dimmer>
+        <Image src="/images/wireframe/short-paragraph.png" />
+      </div>
+    ) : (
       <Container>
         <Header
           as="h2"
@@ -76,7 +92,8 @@ export class TicketsList extends Component {
 const mapStateToProps = state => {
   return {
     ticketsList: state.tickets.ticketsList,
-    authUser: state.auth
+    authUser: state.auth,
+    isLoading: state.tickets
   };
 };
 
