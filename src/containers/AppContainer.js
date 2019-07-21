@@ -9,7 +9,7 @@ import DesktopViewContainer from "./DesktopViewContainer";
 import { authState } from "../actions/index";
 import NavFooter from "../components/navigation/NavFooter";
 
-import { Segment, Container } from "semantic-ui-react";
+import { Segment } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
   min-height: 50vh;

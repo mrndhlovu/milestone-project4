@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { Container, Table, Button, Header } from "semantic-ui-react";
+import { Container, Header, List, Segment } from "semantic-ui-react";
 
 import CreateTicket from "./CreateTicket";
 import { fetchTicketsList } from "../../actions/index";
@@ -17,24 +17,29 @@ export class TicketsList extends Component {
     this.props.fetchTicketsList();
   }
 
-  renderTableRow() {
+  renderTicketsList() {
     const { ticketsList } = this.props;
 
     return ticketsList.map(ticket => {
-      const { prority_level, title, status, subject, description, id } = ticket;
+      const {
+        // prority_level,
+        title,
+        // status,
+        // subject,
+        // description,
+        id,
+        created_at
+      } = ticket;
       return (
-        <Table.Row disabled key={id}>
-          <Table.Cell>{title}</Table.Cell>
-          <Table.Cell>{subject}</Table.Cell>
-          <Table.Cell>{description}</Table.Cell>
-          <Table.Cell>{status}</Table.Cell>
-          <Table.Cell textAlign="center">{prority_level}</Table.Cell>
-          <Table.Cell>
-            <Button as={Link} to={`ticket/${id}`} positive>
-              Read More
-            </Button>
-          </Table.Cell>
-        </Table.Row>
+        <List.Item key={id}>
+          <List.Icon name="file" size="large" verticalAlign="middle" />
+          <List.Content>
+            <List.Header as={Link} to={`ticket/${id}`}>
+              {title}
+            </List.Header>
+            <List.Description as="a">{created_at}</List.Description>
+          </List.Content>
+        </List.Item>
       );
     });
   }
@@ -49,21 +54,20 @@ export class TicketsList extends Component {
           content="Tickets"
           subheader="View or create a ticket here"
         />
-        {sessionToken ? <CreateTicket /> : null}
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Subject</Table.HeaderCell>
-              <Table.HeaderCell>Description</Table.HeaderCell>
-              <Table.HeaderCell>Status</Table.HeaderCell>
-              <Table.HeaderCell>Priority Level</Table.HeaderCell>
-              <Table.HeaderCell />
-            </Table.Row>
-          </Table.Header>
+        {sessionToken ? (
+          <Header as="h4" attached="top" block>
+            <CreateTicket />
+          </Header>
+        ) : null}
 
-          <Table.Body>{this.renderTableRow()}</Table.Body>
-        </Table>
+        <Header as="h4" attached="top" block>
+          Tickets List
+        </Header>
+        <Segment attached>
+          <List divided relaxed>
+            {this.renderTicketsList()}
+          </List>
+        </Segment>
       </Container>
     );
   }
