@@ -50,7 +50,6 @@ export class TicketDetail extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     ticket: state.ticketDetail,
     authUser: state.auth
