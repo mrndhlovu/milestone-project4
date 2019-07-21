@@ -31,3 +31,7 @@ export async function requestCreateTicket(data) {
     description: description
   });
 }
+
+export async function fetchTicketDetail(id) {
+  return axios.get(`http://127.0.0.1:8000/tickets/${id}/`);
+}

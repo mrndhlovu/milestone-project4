@@ -7,14 +7,17 @@ import {
   USER_AUTH_START,
   USER_AUTH_SUCCESS,
   CREATE_TICKET,
-  RECEIVE_TICKET
+  RECEIVE_TICKET,
+  RECEIVE_TICKET_DETAIL,
+  FETCH_TICKET_DETAIL
 } from "./ActionTypes";
 
 import {
   requestTicketsList,
   requestAuthorisation,
   requestSignup,
-  requestCreateTicket
+  requestCreateTicket,
+  fetchTicketDetail
 } from "../apis/apiRequests";
 
 export function fetchData() {
@@ -198,6 +201,35 @@ export function createTicket(data) {
     requestCreateTicket(data).then(
       response => {
         dispatch(receiveTicket(response));
+      },
+      error => {
+        dispatch(errorAlert(error));
+      }
+    );
+  };
+}
+
+export const fetchTicket = response => {
+  return {
+    type: FETCH_TICKET_DETAIL,
+    payload: response
+  };
+};
+
+export const receiveTicketDetail = response => {
+  return {
+    type: RECEIVE_TICKET_DETAIL,
+    payload: response
+  };
+};
+
+export function requestTicketsDetail(id) {
+  return dispatch => {
+    dispatch(fetchTicket());
+    fetchTicketDetail(id).then(
+      response => {
+        console.log("Respones", response);
+        dispatch(receiveTicketDetail(response));
       },
       error => {
         dispatch(errorAlert(error));
