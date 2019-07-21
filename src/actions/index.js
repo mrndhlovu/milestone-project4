@@ -228,8 +228,7 @@ export function requestTicketsDetail(id) {
     dispatch(fetchTicket());
     fetchTicketDetail(id).then(
       response => {
-        console.log("Respones", response);
-        dispatch(receiveTicketDetail(response));
+        dispatch(receiveTicketDetail(response.data));
       },
       error => {
         dispatch(errorAlert(error));
