@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -14,11 +14,16 @@ import {
 
 import CreateTicket from "./CreateTicket";
 import { fetchTicketsList } from "../../actions/index";
+import HeadingImage from "../home/HeadingImage";
 
 export class TicketsList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      headerText: "Tickets",
+      headerButtonUrl: "/pricing",
+      headerButtonText: "Create a ticket"
+    };
   }
 
   componentDidMount() {
@@ -55,36 +60,42 @@ export class TicketsList extends Component {
   render() {
     const { isLoading, dataReceived } = this.props.isLoading;
     const { sessionToken } = this.props.authUser;
+    const { headerText, headerButtonUrl, headerButtonText } = this.state;
 
     return isLoading && !dataReceived ? (
-      <div>
+      <Fragment>
         <Dimmer active inverted>
           <Loader size="mini">Loading</Loader>
         </Dimmer>
         <Image src="/images/wireframe/short-paragraph.png" />
-      </div>
+      </Fragment>
     ) : (
-      <Container>
-        <Header
-          as="h2"
-          content="Tickets"
-          subheader="View or create a ticket here"
+      <Fragment>
+        <HeadingImage
+          data={{ headerText, headerButtonUrl, headerButtonText }}
         />
-        {sessionToken ? (
-          <Header as="h4" attached="top" block>
-            <CreateTicket />
-          </Header>
-        ) : null}
+        <Container>
+          <Header
+            as="h2"
+            content="Tickets"
+            subheader="View or create a ticket here"
+          />
+          {sessionToken ? (
+            <Header as="h4" attached="top" block>
+              <CreateTicket />
+            </Header>
+          ) : null}
 
-        <Header as="h4" attached="top" block>
-          Tickets List
-        </Header>
-        <Segment attached>
-          <List divided relaxed>
-            {this.renderTicketsList()}
-          </List>
-        </Segment>
-      </Container>
+          <Header as="h4" attached="top" block>
+            Tickets List
+          </Header>
+          <Segment attached>
+            <List divided relaxed>
+              {this.renderTicketsList()}
+            </List>
+          </Segment>
+        </Container>
+      </Fragment>
     );
   }
 }
