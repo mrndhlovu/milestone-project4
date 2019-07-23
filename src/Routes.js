@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Route } from "react-router-dom";
 
-import Features from "./components/Features";
+import Products from "./components/Products";
 import Home from "./components/home/Home";
 import Pricing from "./components/Pricing";
 import TicketsList from "./components/tickets/TicketsList";
@@ -14,7 +14,7 @@ const BaseRouter = () => {
       <Route path="/tickets" component={TicketsList} />
       <Route path="/ticket/:id" component={TicketDetail} />
       <Route path="/pricing" component={Pricing} />
-      <Route path="/products" component={Features} />
+      <Route path="/products" component={Products} />
     </Fragment>
   );
 };
