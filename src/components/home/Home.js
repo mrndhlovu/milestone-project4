@@ -14,7 +14,7 @@ import {
 import { logOut } from "../../actions/index";
 import styled from "styled-components";
 
-import HomepageHeading from "../home/HomepageHeading";
+import HeadingImage from "./HeadingImage";
 
 const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
@@ -23,6 +23,11 @@ const StyledSegment = styled(Segment)`
 export class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      headerText: "Unicorn Attractor",
+      headerButtonUrl: "",
+      headerButtonText: "Get Started"
+    };
     this.handlelogout = this.handlelogout.bind(this);
   }
 
@@ -30,10 +35,13 @@ export class Home extends Component {
     this.props.logOut();
   }
   render() {
+    const { headerText, headerButtonUrl, headerButtonText } = this.state;
     return (
       <Fragment>
         <StyledSegment textAlign="center" inverted vertical>
-          <HomepageHeading />
+          <HeadingImage
+            data={{ headerText, headerButtonUrl, headerButtonText }}
+          />
         </StyledSegment>
         <Segment style={{ padding: "8em 0em" }} vertical>
           <Grid container stackable verticalAlign="middle">

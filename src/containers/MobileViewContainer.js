@@ -16,7 +16,7 @@ import {
   Sidebar
 } from "semantic-ui-react";
 
-import HomepageHeading from "../components//home/HomepageHeading";
+import HomepageHeading from "../components/home/HeadingImage";
 
 const getWidth = () => {
   const isSSR = typeof window === "undefined";

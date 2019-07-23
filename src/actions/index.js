@@ -48,6 +48,7 @@ export function fetchTicketsList() {
         dispatch(receivedTicketsList(response.data));
       },
       error => {
+        console.log(error);
         dispatch(errorAlert(error));
       }
     );
@@ -203,6 +204,7 @@ export function createTicket(data) {
         dispatch(receiveTicket(response));
       },
       error => {
+        console.log(error);
         dispatch(errorAlert(error));
       }
     );
