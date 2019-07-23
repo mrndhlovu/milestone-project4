@@ -12,20 +12,15 @@ import {
 } from "semantic-ui-react";
 
 import { logOut } from "../../actions/index";
-import styled from "styled-components";
 
 import HeadingImage from "./HeadingImage";
-
-const StyledSegment = styled(Segment)`
-  padding-bottom: 5rem !important;
-`;
 
 export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       headerText: "Unicorn Attractor",
-      headerButtonUrl: "",
+      headerButtonUrl: "/pricing",
       headerButtonText: "Get Started"
     };
     this.handlelogout = this.handlelogout.bind(this);
@@ -38,11 +33,10 @@ export class Home extends Component {
     const { headerText, headerButtonUrl, headerButtonText } = this.state;
     return (
       <Fragment>
-        <StyledSegment textAlign="center" inverted vertical>
-          <HeadingImage
-            data={{ headerText, headerButtonUrl, headerButtonText }}
-          />
-        </StyledSegment>
+        <HeadingImage
+          data={{ headerText, headerButtonUrl, headerButtonText }}
+        />
+
         <Segment style={{ padding: "8em 0em" }} vertical>
           <Grid container stackable verticalAlign="middle">
             <Grid.Row>
