@@ -62,16 +62,14 @@ class MobileViewContainer extends Component {
   renderAuthButtons() {
     const { sessionToken } = this.props.userAuth;
 
-    if (sessionToken) {
-      return <Menu.Item onClick={this.handleLogoutClick}>Log out</Menu.Item>;
-    } else {
-      return (
-        <Fragment>
-          <Menu.Item onClick={this.handleLoginClick}>Log in</Menu.Item>
-          <Menu.Item onClick={this.handleSignupClick}>Sign Up</Menu.Item>
-        </Fragment>
-      );
-    }
+    return sessionToken ? (
+      <Menu.Item onClick={this.handleLogoutClick}>Log out</Menu.Item>
+    ) : (
+      <Fragment>
+        <Menu.Item onClick={this.handleLoginClick}>Log in</Menu.Item>
+        <Menu.Item onClick={this.handleSignupClick}>Sign Up</Menu.Item>
+      </Fragment>
+    );
   }
 
   render() {

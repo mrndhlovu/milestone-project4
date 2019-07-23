@@ -47,34 +47,30 @@ export class DesktopNav extends Component {
     const { sessionToken } = this.props.userAuth;
     const { fixed } = this.state;
 
-    if (sessionToken) {
-      return (
+    return sessionToken ? (
+      <Button
+        inverted={!fixed}
+        primary={fixed}
+        style={{ marginLeft: "0.5em" }}
+        onClick={this.handleLogoutClick}
+      >
+        Log out
+      </Button>
+    ) : (
+      <Fragment>
+        <Button inverted={!fixed} onClick={this.handleLoginClick}>
+          Log in
+        </Button>
         <Button
           inverted={!fixed}
           primary={fixed}
           style={{ marginLeft: "0.5em" }}
-          onClick={this.handleLogoutClick}
+          onClick={this.handleSignupClick}
         >
-          Log out
+          Sign Up
         </Button>
-      );
-    } else {
-      return (
-        <Fragment>
-          <Button inverted={!fixed} onClick={this.handleLoginClick}>
-            Log in
-          </Button>
-          <Button
-            inverted={!fixed}
-            primary={fixed}
-            style={{ marginLeft: "0.5em" }}
-            onClick={this.handleSignupClick}
-          >
-            Sign Up
-          </Button>
-        </Fragment>
-      );
-    }
+      </Fragment>
+    );
   }
 
   render() {
