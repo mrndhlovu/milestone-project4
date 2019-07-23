@@ -19,7 +19,7 @@ export class DesktopNav extends Component {
         features: false,
         tickets: false,
         pricing: false,
-        home: false
+        home: true
       }
     };
 
