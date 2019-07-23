@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { Button, Container, Menu } from "semantic-ui-react";
@@ -14,7 +14,14 @@ export class DesktopNav extends Component {
     this.state = {
       showLoginModal: false,
       showSignupModal: false,
-      fixed: false
+      fixed: false,
+      isActive: {
+        features: false,
+        tickets: false,
+        pricing: false,
+        home: false
+      },
+      menuItem: this.isActive
     };
 
     this.renderNavButtons = this.renderNavButtons.bind(this);
@@ -73,8 +80,20 @@ export class DesktopNav extends Component {
     );
   }
 
+  showActiveLink(name) {
+    const { isActive } = this.state;
+
+    Object.keys(isActive).map(item => {
+      return name === item
+        ? this.setState({
+            isActive: { ...isActive, [name]: true }
+          })
+        : this.setState({ isActive: { ...isActive, [item]: false } });
+    });
+  }
+
   render() {
-    const { showLoginModal, showSignupModal, fixed } = this.state;
+    const { showLoginModal, showSignupModal, fixed, isActive } = this.state;
 
     if (showLoginModal) {
       return <LoginModal />;
@@ -92,17 +111,37 @@ export class DesktopNav extends Component {
           size="large"
         >
           <Container>
-            <Menu.Item active>
-              <Link to="/"> Home</Link>
+            <Menu.Item
+              active={isActive.home === true ? true : false}
+              as={NavLink}
+              to=""
+              onClick={this.showActiveLink.bind(this, "home")}
+            >
+              Home
             </Menu.Item>
-            <Menu.Item>
-              <Link to="/features"> Features</Link>
+            <Menu.Item
+              active={isActive.features ? true : false}
+              to="/features"
+              as={NavLink}
+              onClick={this.showActiveLink.bind(this, "features")}
+            >
+              Features
             </Menu.Item>
-            <Menu.Item>
-              <Link to="/pricing"> Pricing</Link>
+            <Menu.Item
+              active={isActive.pricing ? true : false}
+              as={NavLink}
+              to="/pricing"
+              onClick={this.showActiveLink.bind(this, "pricing")}
+            >
+              Pricing
             </Menu.Item>
-            <Menu.Item>
-              <Link to="/tickets"> Tickets</Link>
+            <Menu.Item
+              active={isActive.tickets ? true : false}
+              as={NavLink}
+              to="/tickets"
+              onClick={this.showActiveLink.bind(this, "tickets")}
+            >
+              Tickets
             </Menu.Item>
             <Menu.Item position="right">{this.renderNavButtons()}</Menu.Item>
           </Container>
