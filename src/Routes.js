@@ -14,7 +14,7 @@ const BaseRouter = () => {
       <Route path="/tickets" component={TicketsList} />
       <Route path="/ticket/:id" component={TicketDetail} />
       <Route path="/pricing" component={Pricing} />
-      <Route path="/features" component={Features} />
+      <Route path="/products" component={Features} />
     </Fragment>
   );
 };

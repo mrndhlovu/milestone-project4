@@ -20,8 +20,7 @@ export class DesktopNav extends Component {
         tickets: false,
         pricing: false,
         home: false
-      },
-      menuItem: this.isActive
+      }
     };
 
     this.renderNavButtons = this.renderNavButtons.bind(this);
@@ -121,11 +120,11 @@ export class DesktopNav extends Component {
             </Menu.Item>
             <Menu.Item
               active={isActive.features ? true : false}
-              to="/features"
+              to="/products"
               as={NavLink}
-              onClick={this.showActiveLink.bind(this, "features")}
+              onClick={this.showActiveLink.bind(this, "products")}
             >
-              Features
+              Products
             </Menu.Item>
             <Menu.Item
               active={isActive.pricing ? true : false}
