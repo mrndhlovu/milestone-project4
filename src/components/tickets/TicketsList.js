@@ -74,7 +74,7 @@ export class TicketsList extends Component {
             </Feed.Event>
           </Feed>
 
-          <Label.Group color="orange" size="tiny">
+          <Label.Group color="teal" size="tiny">
             <Label as="a">JavaScript</Label>
             <Label as="a">Python</Label>
             <Label as="a">Django</Label>
