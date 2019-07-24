@@ -18,9 +18,8 @@ const TICKET_PRORITY_LEVELS = [
 export class CreateTicket extends Component {
   render() {
     return (
-      <Container>
+      <Container style={{ paddingTop: 20 }}>
         <Message
-          attached
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
         />
