@@ -24,11 +24,14 @@ export async function requestSignup(inputs) {
 }
 
 export async function requestCreateTicket(data) {
-  const { title, subject, description } = data;
+  const { title, subject, description, tags, priority_level, username } = data;
   return axios.post("http://127.0.0.1:8000/tickets/", {
     title: title,
     subject: subject,
-    description: description
+    description: description,
+    priority_level: priority_level,
+    tags: tags,
+    username: username
   });
 }
 

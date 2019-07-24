@@ -201,6 +201,7 @@ export function createTicket(data) {
     dispatch(creatingTicket());
     requestCreateTicket(data).then(
       response => {
+        console.log(response);
         dispatch(receiveTicket(response));
       },
       error => {
