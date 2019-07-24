@@ -15,7 +15,6 @@ import {
   Divider
 } from "semantic-ui-react";
 
-import CreateTicket from "./CreateTicket";
 import { fetchTicketsList } from "../../actions/index";
 import HeadingImage from "../home/HeadingImage";
 
@@ -37,15 +36,7 @@ export class TicketsList extends Component {
     const { ticketsList } = this.props;
 
     return ticketsList.map(ticket => {
-      const {
-        // prority_level,
-        title,
-        // status,
-        subject,
-        // description,
-        id,
-        created_at
-      } = ticket;
+      const { title, subject, id, created_at } = ticket;
 
       const date = new Date(created_at);
       const wholeDate =
@@ -92,7 +83,6 @@ export class TicketsList extends Component {
 
   render() {
     const { isLoading, dataReceived } = this.props.isLoading;
-    const { sessionToken } = this.props.authUser;
     const { headerText, headerButtonUrl, headerButtonText } = this.state;
 
     return isLoading && !dataReceived ? (
@@ -109,21 +99,11 @@ export class TicketsList extends Component {
         />
         <Container>
           <Header
-            as="h3"
             content="All Tickets"
             subheader="Currently there are - - tickets "
+            as="h4"
             style={{ paddingTop: 20 }}
           />
-          {sessionToken ? (
-            <Header as="h4" attached="top" block>
-              <CreateTicket />
-            </Header>
-          ) : null}
-
-          <Header as="h4" attached="top" block>
-            Tickets List
-          </Header>
-
           <Segment attached>
             <Container>
               <List divided relaxed>
@@ -140,7 +120,6 @@ export class TicketsList extends Component {
 const mapStateToProps = state => {
   return {
     ticketsList: state.tickets.ticketsList,
-    authUser: state.auth,
     isLoading: state.tickets
   };
 };
