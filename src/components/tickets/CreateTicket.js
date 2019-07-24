@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
-import { Button, Form, Message, Container } from "semantic-ui-react";
+import { Button, Form, Message, Container, Select } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/index";
 
@@ -16,14 +16,7 @@ export class CreateTicket extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputData: {
-        username: "",
-        tags: "",
-        title: "",
-        subject: "",
-        description: "",
-        priorty_level: ""
-      }
+      inputData: {}
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
   }
@@ -44,14 +37,12 @@ export class CreateTicket extends Component {
           error={touched && error ? error : null}
         />
       </Fragment>
-    ) : field.label === "Priority level" ? (
+    ) : field.label === "Priority" ? (
       <Fragment>
-        <Form.Select
+        <Select
           color="red"
-          {...field.input}
+          // {...field.input}
           placeholder={field.label}
-          autoComplete={field.name}
-          type={field.name}
           error={touched && error ? error : null}
           options={TICKET_PRORITY_LEVELS}
         />
@@ -71,16 +62,15 @@ export class CreateTicket extends Component {
     );
   }
 
-  handleSubmitClick(event) {
-    const { inputData } = this.state;
-
-    this.props.createTicket(inputData);
+  handleSubmitClick(values) {
+    console.log(values);
+    this.props.createTicket(values);
   }
 
   componentWillUpdate() {
     const { sessionToken } = this.props.authState;
     if (sessionToken) {
-      window.location.reload();
+      // window.location.reload();
     }
   }
 
@@ -109,7 +99,6 @@ export class CreateTicket extends Component {
             name="tags"
             label="Tags: e.g javascriprt, pyhton, django"
             component={this.renderField}
-            placeholder="e.g"
           />
 
           <Field
@@ -117,14 +106,15 @@ export class CreateTicket extends Component {
             label="Description"
             component={this.renderField}
           />
-
           <Field
-            name="priorty-level"
-            label="Priority level"
+            name="priority-level"
+            label="Priority"
             component={this.renderField}
           />
-
-          <Button color="blue">Submit</Button>
+          <br />
+          <div style={{ paddingTop: 10 }}>
+            <Button color="blue">Submit</Button>
+          </div>
         </Form>
       </Container>
     );
@@ -156,8 +146,8 @@ function validate(values) {
   if (!values.subject) {
     formErrors.subject = "Enter a subject";
   }
-  if (!values.subject) {
-    formErrors.subject = "Enter a subject";
+  if (!values.priority_level) {
+    formErrors.priority_level = "Enter a priotrity level";
   }
 
   return formErrors;
