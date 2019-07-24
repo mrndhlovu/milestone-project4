@@ -21,7 +21,7 @@ export class TicketsList extends Component {
     super(props);
     this.state = {
       headerText: "Tickets",
-      headerButtonUrl: "/pricing",
+      headerButtonUrl: "/create-ticket",
       headerButtonText: "Create a ticket"
     };
   }
