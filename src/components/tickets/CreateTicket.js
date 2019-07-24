@@ -10,12 +10,17 @@ import {
 } from "semantic-ui-react";
 
 const TICKET_PRORITY_LEVELS = [
-  { key: "LOW", value: "lw", text: "LOW" },
-  { key: "MEDIUM", value: "md", text: "MEDIUM" },
-  { key: "HIGH", value: "hg", text: "HIGH" }
+  { key: "LOW", value: "lw", text: "Low" },
+  { key: "MEDIUM", value: "md", text: "Medium" },
+  { key: "HIGH", value: "hg", text: "High" }
 ];
 
 export class CreateTicket extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
     return (
       <Container style={{ paddingTop: 20 }}>
@@ -28,6 +33,12 @@ export class CreateTicket extends Component {
           <Form.Input fluid label="Subject" placeholder="Subject" type="text" />
 
           <Form.Input label="Username" placeholder="Username" type="text" />
+          <Form.Input
+            label="Tags"
+            placeholder="e.g: javascript, python, css, flask"
+            type="text"
+          />
+
           <Form.Field
             control={TextArea}
             label="Description"
