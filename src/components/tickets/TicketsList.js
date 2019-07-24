@@ -2,8 +2,6 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import Moment from "moment";
-
 import {
   Container,
   Header,
@@ -13,7 +11,8 @@ import {
   Dimmer,
   Loader,
   Image,
-  Feed
+  Feed,
+  Divider
 } from "semantic-ui-react";
 
 import CreateTicket from "./CreateTicket";
@@ -61,28 +60,38 @@ export class TicketsList extends Component {
         ("0" + date.getMinutes()).slice(-2);
 
       return (
-        <Feed key={id}>
-          <Feed.Event>
-            <Feed.Label icon="file" />
-            <Feed.Content>
-              <List.Header as={Link} to={`ticket/${id}`}>
-                {title}
-              </List.Header>
-              <br />
-              <Feed.Date>{wholeDate}</Feed.Date>
-              <Feed.Summary>
-                <a href="/">Laura Faucet </a>
-                created a ticket
-              </Feed.Summary>
-              <Feed.Extra text>{subject}</Feed.Extra>
-            </Feed.Content>
-          </Feed.Event>
-          <Label.Group color="orange">
+        <Fragment key={id}>
+          <Feed>
+            <Feed.Event>
+              <Feed.Label icon="file" />
+              <Feed.Content>
+                <Header
+                  as={Link}
+                  to={`ticket/${id}`}
+                  size="medium"
+                  color="blue"
+                >
+                  {title}
+                </Header>
+                <br />
+                <Feed.Date>{wholeDate}</Feed.Date>
+                <Feed.Summary>
+                  <a href="/">Laura Faucet </a>
+                  created a ticket
+                </Feed.Summary>
+                <Feed.Extra text>{subject}</Feed.Extra>
+              </Feed.Content>
+            </Feed.Event>
+          </Feed>
+
+          <Label.Group color="orange" size="tiny">
             <Label as="a">JavaScript</Label>
             <Label as="a">Python</Label>
             <Label as="a">Django</Label>
           </Label.Group>
-        </Feed>
+
+          <Divider />
+        </Fragment>
       );
     });
   }
