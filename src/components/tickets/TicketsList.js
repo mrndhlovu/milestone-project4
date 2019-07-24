@@ -66,6 +66,11 @@ export class TicketsList extends Component {
                 </Feed.Summary>
                 <Feed.Extra text>{subject}</Feed.Extra>
               </Feed.Content>
+              <div floated="right">
+                <Label color="teal" as="a">
+                  Votes: 22
+                </Label>
+              </div>
             </Feed.Event>
           </Feed>
 
@@ -74,7 +79,6 @@ export class TicketsList extends Component {
             <Label as="a">Python</Label>
             <Label as="a">Django</Label>
           </Label.Group>
-
           <Divider />
         </Fragment>
       );

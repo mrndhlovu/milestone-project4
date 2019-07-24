@@ -1,6 +1,13 @@
 import React, { Component, Fragment } from "react";
 
-import { Button, Form, Message, Select, TextArea } from "semantic-ui-react";
+import {
+  Button,
+  Form,
+  Message,
+  Select,
+  TextArea,
+  Container
+} from "semantic-ui-react";
 
 const TICKET_PRORITY_LEVELS = [
   { key: "LOW", value: "lw", text: "LOW" },
@@ -11,7 +18,7 @@ const TICKET_PRORITY_LEVELS = [
 export class CreateTicket extends Component {
   render() {
     return (
-      <Fragment>
+      <Container>
         <Message
           attached
           header="Create a Ticket"
@@ -37,7 +44,7 @@ export class CreateTicket extends Component {
             Submit
           </Button>
         </Form>
-      </Fragment>
+      </Container>
     );
   }
 }
