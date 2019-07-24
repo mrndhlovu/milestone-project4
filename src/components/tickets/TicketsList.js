@@ -5,11 +5,13 @@ import { Link } from "react-router-dom";
 import {
   Container,
   Header,
+  Label,
   List,
   Segment,
   Dimmer,
   Loader,
-  Image
+  Image,
+  Feed
 } from "semantic-ui-react";
 
 import CreateTicket from "./CreateTicket";
@@ -38,21 +40,34 @@ export class TicketsList extends Component {
         // prority_level,
         title,
         // status,
-        // subject,
+        subject,
         // description,
         id,
         created_at
       } = ticket;
       return (
-        <List.Item key={id}>
-          <List.Icon name="file" size="large" verticalAlign="middle" />
-          <List.Content>
-            <List.Header as={Link} to={`ticket/${id}`}>
-              {title}
-            </List.Header>
-            <List.Description as="a">{created_at}</List.Description>
-          </List.Content>
-        </List.Item>
+        <Feed key={id}>
+          <Feed.Event>
+            <Feed.Label icon="file" />
+            <Feed.Content>
+              <List.Header as={Link} to={`ticket/${id}`}>
+                {title}
+              </List.Header>
+              <br />
+              <Feed.Date>{created_at}</Feed.Date>
+              <Feed.Summary>
+                <a href="/">Laura Faucet </a>
+                created a ticket
+              </Feed.Summary>
+              <Feed.Extra text>{subject}</Feed.Extra>
+            </Feed.Content>
+          </Feed.Event>
+          <Label.Group color="orange">
+            <Label as="a">JavaScript</Label>
+            <Label as="a">Python</Label>
+            <Label as="a">Django</Label>
+          </Label.Group>
+        </Feed>
       );
     });
   }
@@ -77,8 +92,8 @@ export class TicketsList extends Component {
         <Container>
           <Header
             as="h2"
-            content="Tickets"
-            subheader="View or create a ticket here"
+            content="All Tickets"
+            subheader="Currently there are - - tickets "
           />
           {sessionToken ? (
             <Header as="h4" attached="top" block>
@@ -89,10 +104,13 @@ export class TicketsList extends Component {
           <Header as="h4" attached="top" block>
             Tickets List
           </Header>
+
           <Segment attached>
-            <List divided relaxed>
-              {this.renderTicketsList()}
-            </List>
+            <Container>
+              <List divided relaxed>
+                {this.renderTicketsList()}
+              </List>
+            </Container>
           </Segment>
         </Container>
       </Fragment>
