@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
+import Moment from "moment";
+
 import {
   Container,
   Header,
@@ -45,6 +47,19 @@ export class TicketsList extends Component {
         id,
         created_at
       } = ticket;
+
+      const date = new Date(created_at);
+      const wholeDate =
+        date.getFullYear() +
+        "-" +
+        ("0" + (date.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + date.getDate()).slice(-2) +
+        " " +
+        ("0" + date.getHours()).slice(-2) +
+        ":" +
+        ("0" + date.getMinutes()).slice(-2);
+
       return (
         <Feed key={id}>
           <Feed.Event>
@@ -54,7 +69,7 @@ export class TicketsList extends Component {
                 {title}
               </List.Header>
               <br />
-              <Feed.Date>{created_at}</Feed.Date>
+              <Feed.Date>{wholeDate}</Feed.Date>
               <Feed.Summary>
                 <a href="/">Laura Faucet </a>
                 created a ticket
