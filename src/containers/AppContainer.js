@@ -12,7 +12,7 @@ import NavFooter from "../components/navigation/NavFooter";
 import { Segment } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
-  min-height: 70rem;
+  min-height: 60rem;
   overflow: hidden;
   padding-bottom: 2rem;
 `;

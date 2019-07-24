@@ -63,15 +63,9 @@ export class TicketsList extends Component {
         <Fragment key={id}>
           <Feed>
             <Feed.Event>
-              <Feed.Label icon="file" />
               <Feed.Content>
-                <Header
-                  as={Link}
-                  to={`ticket/${id}`}
-                  size="medium"
-                  color="blue"
-                >
-                  {title}
+                <Header as={Link} to={`ticket/${id}`} size="small" color="blue">
+                  {title.toUpperCase()}
                 </Header>
                 <br />
                 <Feed.Date>{wholeDate}</Feed.Date>
@@ -115,9 +109,10 @@ export class TicketsList extends Component {
         />
         <Container>
           <Header
-            as="h2"
+            as="h3"
             content="All Tickets"
             subheader="Currently there are - - tickets "
+            style={{ paddingTop: 20 }}
           />
           {sessionToken ? (
             <Header as="h4" attached="top" block>
