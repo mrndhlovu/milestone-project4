@@ -16,7 +16,14 @@ export class CreateTicket extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputData: {}
+      errors: {
+        title: "",
+        subject: "",
+        tags: "",
+        username: "",
+        other: "",
+        description: ""
+      }
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
   }
@@ -66,15 +73,58 @@ export class CreateTicket extends Component {
     this.props.createTicket(values);
   }
 
-  componentWillUpdate() {
-    const { sessionToken } = this.props.authState;
+  componentDidUpdate(prevProps) {
+    const {
+      errorAlert,
+      authState: { sessionToken }
+    } = this.props;
+    const { errors } = this.state;
+
+    if (errorAlert !== prevProps.errorAlert) {
+      if (errorAlert.alertMsg.subject) {
+        this.setState({
+          errors: { ...errors, subject: errorAlert.alertMsg.subject }
+        });
+      }
+      if (errorAlert.alertMsg.title) {
+        this.setState({
+          errors: { ...errors, title: errorAlert.alertMsg.title }
+        });
+      }
+      if (errorAlert.alertMsg.password2) {
+        this.setState({
+          errors: { ...errors, tags: errorAlert.alertMsg.tags }
+        });
+      }
+      if (errorAlert.alertMsg.username) {
+        this.setState({
+          errors: { ...errors, username: errorAlert.alertMsg.username }
+        });
+      }
+      if (errorAlert.alertMsg.description) {
+        this.setState({
+          errors: { ...errors, description: errorAlert.alertMsg.description }
+        });
+      }
+      if (errorAlert.alertMsg) {
+        this.setState({
+          errors: {
+            ...errors,
+            other: errorAlert.alertMsg
+          }
+        });
+      }
+    }
     if (sessionToken) {
-      // window.location.reload();
+      this.closeModal();
     }
   }
 
   render() {
     const { handleSubmit } = this.props;
+    const {
+      errors: { subject, title, description, tags, other, username }
+    } = this.state;
 
     return (
       <Container style={{ paddingTop: 20 }}>
@@ -82,6 +132,14 @@ export class CreateTicket extends Component {
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
         />
+        {subject || title || description || username || other || tags ? (
+          <Message
+            size="small"
+            error
+            header="Sign up error: "
+            list={[subject, title, description, tags, other, username]}
+          />
+        ) : null}
         <Form
           className="attached fluid segment"
           onSubmit={handleSubmit(this.handleSubmitClick)}
@@ -122,6 +180,7 @@ export class CreateTicket extends Component {
 
 const mapStateToProps = state => {
   return {
+    errorAlert: state.errorAlert,
     authState: state.auth
   };
 };
