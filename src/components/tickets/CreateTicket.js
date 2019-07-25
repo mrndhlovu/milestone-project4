@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
+import { withRouter } from "react-router-dom";
 
 import { Button, Form, Message, Container, Select } from "semantic-ui-react";
 
@@ -20,7 +21,6 @@ export class CreateTicket extends Component {
         title: "",
         subject: "",
         tags: "",
-        username: "",
         other: "",
         description: ""
       }
@@ -76,7 +76,8 @@ export class CreateTicket extends Component {
   componentDidUpdate(prevProps) {
     const {
       errorAlert,
-      authState: { sessionToken }
+      // authState: { sessionToken },
+      ticket: { dataReceived }
     } = this.props;
     const { errors } = this.state;
 
@@ -96,11 +97,7 @@ export class CreateTicket extends Component {
           errors: { ...errors, tags: errorAlert.alertMsg.tags }
         });
       }
-      if (errorAlert.alertMsg.username) {
-        this.setState({
-          errors: { ...errors, username: errorAlert.alertMsg.username }
-        });
-      }
+
       if (errorAlert.alertMsg.description) {
         this.setState({
           errors: { ...errors, description: errorAlert.alertMsg.description }
@@ -115,15 +112,16 @@ export class CreateTicket extends Component {
         });
       }
     }
-    if (sessionToken) {
-      this.closeModal();
+    if (dataReceived) {
+      const { id } = this.props.ticket.ticketsList.data;
+      this.props.history.push(`/ticket/${id}`);
     }
   }
 
   render() {
     const { handleSubmit } = this.props;
     const {
-      errors: { subject, title, description, tags, other, username }
+      errors: { subject, title, description, tags, other }
     } = this.state;
 
     return (
@@ -132,12 +130,12 @@ export class CreateTicket extends Component {
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
         />
-        {subject || title || description || username || other || tags ? (
+        {subject || title || description || other || tags ? (
           <Message
             size="small"
             error
             header="Sign up error: "
-            list={[subject, title, description, tags, other, username]}
+            list={[subject, title, description, tags, other]}
           />
         ) : null}
         <Form
@@ -147,11 +145,6 @@ export class CreateTicket extends Component {
           <Field name="title" label="Title" component={this.renderField} />
           <Field name="subject" label="Subject" component={this.renderField} />
 
-          <Field
-            name="username"
-            label="Username"
-            component={this.renderField}
-          />
           <Field
             name="tags"
             label="Tags: e.g javascriprt, pyhton, django"
@@ -181,7 +174,8 @@ export class CreateTicket extends Component {
 const mapStateToProps = state => {
   return {
     errorAlert: state.errorAlert,
-    authState: state.auth
+    authState: state.auth,
+    ticket: state.ticket
   };
 };
 
@@ -192,10 +186,6 @@ function validate(values) {
   }
   if (!values.title) {
     formErrors.title = "Enter a title";
-  }
-
-  if (!values.username) {
-    formErrors.username = "Enter a username";
   }
 
   if (!values.description) {
@@ -215,5 +205,5 @@ export default reduxForm({ validate, form: "CreateTicketForm" })(
   connect(
     mapStateToProps,
     { createTicket }
-  )(CreateTicket)
+  )(withRouter(CreateTicket))
 );
