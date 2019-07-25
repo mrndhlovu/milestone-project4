@@ -182,6 +182,7 @@ export function signup(inputs) {
         dispatch(creatSession(sessionToken, sessionLife));
       },
       error => {
+        console.log(error.response.data);
         const errors = {
           errorAlert: error.response.data,
           status: error.response.status

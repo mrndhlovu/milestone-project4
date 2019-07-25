@@ -21,7 +21,13 @@ class SignupModal extends Component {
     this.state = {
       showModal: true,
       loginModal: false,
-      errors: { email: "", password1: "", password2: "", username: "" }
+      errors: {
+        email: "",
+        password1: "",
+        password2: "",
+        username: "",
+        other: ""
+      }
     };
 
     this.handleSignupClick = this.handleSignupClick.bind(this);
@@ -80,6 +86,14 @@ class SignupModal extends Component {
           errors: { ...errors, username: errorAlert.alertMsg.username }
         });
       }
+      if (errorAlert.alertMsg.non_field_errors) {
+        this.setState({
+          errors: {
+            ...errors,
+            other: errorAlert.alertMsg.non_field_errors.join()
+          }
+        });
+      }
     }
     if (sessionToken) {
       this.closeModal();
@@ -116,7 +130,7 @@ class SignupModal extends Component {
     const { handleSubmit } = this.props;
     const { showModal, loginModal, buttonDisabled } = this.state;
     const {
-      errors: { email, password1, password2, username }
+      errors: { email, password1, password2, username, other }
     } = this.state;
 
     if (loginModal) {
@@ -136,13 +150,12 @@ class SignupModal extends Component {
               <Header as="h2" color="teal" textAlign="center" centered="false">
                 Create an account
               </Header>
-              {email || password1 || password2 || username ? (
+              {email || password1 || password2 || username || other ? (
                 <Message
                   size="small"
-                  key={1}
                   error
-                  header="Sign up error, please fix the following and submit again"
-                  list={[email, password1, password2, username]}
+                  header="Sign up error: "
+                  list={[email, password1, password2, username, other]}
                 />
               ) : null}
               <Grid textAlign="center" verticalAlign="middle">

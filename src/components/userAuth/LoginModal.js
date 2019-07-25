@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
+// import { Input } from "react-native-elements";
 
 import { login } from "../../actions/index";
 import SignupModal from "./SignupModal";
@@ -119,7 +120,7 @@ class LoginModal extends Component {
                   size="small"
                   key={1}
                   error
-                  header="Sign up error, please fix the following and submit again"
+                  header="Login error"
                   list={[signInError]}
                 />
               ) : null}
@@ -138,6 +139,7 @@ class LoginModal extends Component {
                         />
                         <br />
                         <Field
+                          secureTextEntry={true}
                           name="password"
                           label="Password"
                           component={this.renderField}
