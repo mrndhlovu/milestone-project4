@@ -8,10 +8,18 @@ export class Alerts extends Component {
     this.state = {};
   }
   componentDidUpdate(prevProps) {
-    const { errorAlert, alert } = this.props;
+    const { errorAlert, alert, messages } = this.props;
     if (errorAlert !== prevProps.errorAlert) {
       if (errorAlert.alertMsg.non_field_errors) {
         alert.error(`Error: ${errorAlert.alertMsg.non_field_errors.join()}`);
+      }
+      if (errorAlert.alertMsg) {
+        alert.error(`Error: ${errorAlert.alertMsg}`);
+      }
+    }
+    if (messages !== prevProps.messages) {
+      if (messages.messageCreated) {
+        alert.success(` ${messages.messageCreated.login}`);
       }
     }
   }
@@ -22,7 +30,8 @@ export class Alerts extends Component {
 
 const mapStateToProps = state => {
   return {
-    errorAlert: state.errorAlert
+    errorAlert: state.errorAlert,
+    messages: state.messages
   };
 };
 

@@ -63,7 +63,6 @@ export class CreateTicket extends Component {
   }
 
   handleSubmitClick(values) {
-    console.log(values);
     this.props.createTicket(values);
   }
 

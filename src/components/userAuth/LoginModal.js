@@ -68,9 +68,7 @@ class LoginModal extends Component {
 
   componentDidUpdate() {
     const { sessionToken } = this.props.auth;
-    if (sessionToken) {
-      window.location.reload();
-    }
+    return sessionToken ? window.location.reload() : null;
   }
 
   render() {

@@ -10,7 +10,6 @@ import { authState } from "../actions/index";
 import NavFooter from "../components/navigation/NavFooter";
 
 import { Segment } from "semantic-ui-react";
-import Alerts from "../utils/Alerts";
 
 const StyledDiv = styled.div`
   min-height: 60rem;
@@ -31,7 +30,6 @@ class AppContainer extends Component {
   constructor(props) {
     super(props);
     this.state = { token: "" };
-    console.log(props);
   }
 
   componentDidMount() {
@@ -41,8 +39,6 @@ class AppContainer extends Component {
   render() {
     return (
       <ResponsiveContainer>
-        {/* <Alerts /> */}
-
         <StyledDiv>{this.props.children}</StyledDiv>
         <Segment inverted vertical style={{ padding: "5em 0em" }}>
           <NavFooter />

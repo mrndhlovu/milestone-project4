@@ -10,7 +10,8 @@ import {
   RECEIVE_TICKET,
   RECEIVE_TICKET_DETAIL,
   FETCH_TICKET_DETAIL,
-  GET_ERRORS
+  GET_ERRORS,
+  CREATE_MESSAGE
 } from "./ActionTypes";
 
 import {
@@ -135,6 +136,7 @@ export const login = (username, password) => {
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
         dispatch(authSuccess(sessionToken));
         dispatch(creatSession(sessionToken, sessionLife));
+        dispatch(createMessage({ login: "You are logged in!" }));
       },
       error => {
         const errors = {
@@ -215,7 +217,7 @@ export function createTicket(data) {
       },
       error => {
         const errors = {
-          errorAlert: error.response.data,
+          errorAlert: error.response.data.detail,
           status: error.response.status
         };
         dispatch(errorsAlert(errors));
@@ -255,3 +257,10 @@ export function requestTicketsDetail(id) {
     );
   };
 }
+
+export const createMessage = message => {
+  return {
+    type: CREATE_MESSAGE,
+    payload: message
+  };
+};
