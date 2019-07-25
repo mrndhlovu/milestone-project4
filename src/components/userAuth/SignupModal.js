@@ -20,13 +20,15 @@ class SignupModal extends Component {
     super(props);
     this.state = {
       showModal: true,
-      loginModal: false
+      loginModal: false,
+      errors: { email: "", password1: "", password2: "", username: "" }
     };
 
     this.handleSignupClick = this.handleSignupClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.showLoginModal = this.showLoginModal.bind(this);
+    this.renderField = this.renderField.bind(this);
   }
 
   handleInputChange(fieldName, event) {
@@ -39,17 +41,49 @@ class SignupModal extends Component {
     });
   }
   showLoginModal() {
-    console.log("Login modal");
     this.setState({ showModal: false, loginModal: true });
   }
 
-  handleSignupClick(event) {
-    const { inputs } = this.state;
+  handleSignupClick(values) {
+    const { username, email, password1, password2 } = values;
+    const inputs = { username, email, password1, password2 };
     this.props.signup(inputs);
   }
 
   closeModal() {
     window.location.reload();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { errorAlert } = this.props;
+    const { errors } = this.state;
+    const { sessionToken } = this.props.authState;
+
+    if (errorAlert !== prevProps.errorAlert) {
+      if (errorAlert.alertMsg.email) {
+        this.setState({
+          errors: { ...errors, email: errorAlert.alertMsg.email }
+        });
+      }
+      if (errorAlert.alertMsg.password1) {
+        this.setState({
+          errors: { ...errors, password1: errorAlert.alertMsg.password1 }
+        });
+      }
+      if (errorAlert.alertMsg.password2) {
+        this.setState({
+          errors: { ...errors, password2: errorAlert.alertMsg.password2 }
+        });
+      }
+      if (errorAlert.alertMsg.username) {
+        this.setState({
+          errors: { ...errors, username: errorAlert.alertMsg.username }
+        });
+      }
+    }
+    if (sessionToken) {
+      this.closeModal();
+    }
   }
 
   renderField(field) {
@@ -72,22 +106,18 @@ class SignupModal extends Component {
           placeholder={field.label}
           autoComplete={field.name}
           type={field.name}
-          error={touched && error ? error : null}
+          error={error && touched ? error : null}
         />
       </Fragment>
     );
   }
 
-  componentWillUpdate() {
-    const { sessionToken } = this.props.authState;
-    if (sessionToken) {
-      window.location.reload();
-    }
-  }
-
   render() {
     const { handleSubmit } = this.props;
     const { showModal, loginModal, buttonDisabled } = this.state;
+    const {
+      errors: { email, password1, password2, username }
+    } = this.state;
 
     if (loginModal) {
       return <LoginModal />;
@@ -106,6 +136,15 @@ class SignupModal extends Component {
               <Header as="h2" color="teal" textAlign="center" centered="false">
                 Create an account
               </Header>
+              {email || password1 || password2 || username ? (
+                <Message
+                  size="small"
+                  key={1}
+                  error
+                  header="Sign up error, please fix the following and submit again"
+                  list={[email, password1, password2, username]}
+                />
+              ) : null}
               <Grid textAlign="center" verticalAlign="middle">
                 <Grid.Column style={{ maxWidth: 450 }}>
                   <Form
@@ -136,6 +175,7 @@ class SignupModal extends Component {
                         label="Confirm Password"
                         component={this.renderField}
                       />
+
                       <br />
 
                       <Button color="teal" fluid size="large" type="submit">
@@ -165,7 +205,8 @@ class SignupModal extends Component {
 
 const mapStateToProps = state => {
   return {
-    authState: state.auth
+    authState: state.auth,
+    errorAlert: state.errorAlert
   };
 };
 

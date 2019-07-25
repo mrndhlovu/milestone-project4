@@ -20,7 +20,8 @@ class LoginModal extends Component {
     super(props);
     this.state = {
       showModal: true,
-      signupModal: false
+      signupModal: false,
+      errors: { signInError: "" }
     };
 
     this.handleLoginClick = this.handleLoginClick.bind(this);
@@ -66,14 +67,35 @@ class LoginModal extends Component {
     this.setState({ showModal: false, signupModal: true });
   }
 
-  componentDidUpdate() {
-    const { sessionToken } = this.props.auth;
+  componentDidUpdate(prevProps) {
+    const {
+      auth: { sessionToken },
+      errorAlert
+    } = this.props;
+
+    const { errors } = this.state;
+
+    if (errorAlert !== prevProps.errorAlert) {
+      if (errorAlert.alertMsg.non_field_errors) {
+        this.setState({
+          errors: {
+            ...errors,
+            signInError: errorAlert.alertMsg.non_field_errors.join()
+          }
+        });
+      }
+    }
+
     return sessionToken ? window.location.reload() : null;
   }
 
   render() {
     const { handleSubmit } = this.props;
-    const { showModal, signupModal } = this.state;
+    const {
+      showModal,
+      signupModal,
+      errors: { signInError }
+    } = this.state;
 
     if (signupModal) {
       return <SignupModal />;
@@ -92,6 +114,15 @@ class LoginModal extends Component {
               Log-in to your account
             </Header>
             <Modal.Description>
+              {signInError ? (
+                <Message
+                  size="small"
+                  key={1}
+                  error
+                  header="Sign up error, please fix the following and submit again"
+                  list={[signInError]}
+                />
+              ) : null}
               <Fragment>
                 <Grid textAlign="center" verticalAlign="middle">
                   <Grid.Column style={{ maxWidth: 450 }}>
@@ -136,7 +167,8 @@ class LoginModal extends Component {
 
 const mapStateToProps = state => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    errorAlert: state.errorAlert
   };
 };
 

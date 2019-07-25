@@ -124,7 +124,7 @@ export const creatSession = (sessionToken, sessionLife) => {
   localStorage.setItem("sessionToken", sessionToken);
   localStorage.setItem("sessionLife", sessionLife);
   return dispatch => {
-    dispatch(checkSessionTime(3600));
+    dispatch(checkSessionTime(1800));
   };
 };
 
@@ -174,11 +174,12 @@ export function signup(inputs) {
     requestSignup(inputs).then(
       response => {
         const sessionToken = response.data.key;
-        const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
-        creatSession(sessionToken, sessionLife);
+        const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
         dispatch(
           createMessage({ message: "You have successfully signed up!" })
         );
+        dispatch(authSuccess(sessionToken));
+        dispatch(creatSession(sessionToken, sessionLife));
       },
       error => {
         const errors = {

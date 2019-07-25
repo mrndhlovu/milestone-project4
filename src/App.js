@@ -11,7 +11,7 @@ import AppContainer from "./containers/AppContainer";
 import Alerts from "./utils/Alerts";
 
 const alertOptions = {
-  timeout: 3000,
+  timeout: 6000,
   position: "top center"
 };
 

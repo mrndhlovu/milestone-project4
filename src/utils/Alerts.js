@@ -5,7 +5,10 @@ import { connect } from "react-redux";
 export class Alerts extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      successMessage: "",
+      errorMessage: ""
+    };
   }
   componentDidUpdate(prevProps) {
     const { errorAlert, alert, messages } = this.props;
@@ -13,8 +16,21 @@ export class Alerts extends Component {
       if (errorAlert.alertMsg.non_field_errors) {
         alert.error(`Error: ${errorAlert.alertMsg.non_field_errors.join()}`);
       }
-      if (errorAlert.alertMsg) {
-        alert.error(`Error: ${errorAlert.alertMsg}`);
+      // if (errorAlert.alertMsg) {
+      //   alert.error(`Error: ${errorAlert.alertMsg}`);
+      // }
+
+      if (errorAlert.alertMsg.email) {
+        alert.error(`Error: ${errorAlert.alertMsg.email}`);
+      }
+      if (errorAlert.alertMsg.password1) {
+        alert.error(`Error: ${errorAlert.alertMsg.password1}`);
+      }
+      if (errorAlert.alertMsg.password2) {
+        alert.error(`Error: ${errorAlert.alertMsg.password2}`);
+      }
+      if (errorAlert.alertMsg.username) {
+        alert.error(`Error: ${errorAlert.alertMsg.username}`);
       }
     }
     if (messages !== prevProps.messages) {
