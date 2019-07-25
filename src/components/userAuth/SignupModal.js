@@ -118,7 +118,7 @@ class SignupModal extends Component {
           }
           iconPosition="left"
           placeholder={field.label}
-          autoComplete={field.name}
+          autoComplete={field.password1 || field.password2 ? false : field.name}
           type={field.name}
           error={error && touched ? error : null}
         />

@@ -17,22 +17,9 @@ const getWidth = () => {
 class MobileViewContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      showLoginModal: false,
-      showSignupModal: false
-    };
   }
 
   render() {
-    const { showLoginModal, showSignupModal } = this.state;
-
-    if (showLoginModal) {
-      return <LoginModal />;
-    }
-    if (showSignupModal) {
-      return <SignupModal />;
-    }
-
     return (
       <Responsive
         as={Sidebar.Pushable}

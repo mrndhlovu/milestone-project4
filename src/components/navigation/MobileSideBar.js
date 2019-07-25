@@ -6,6 +6,9 @@ import { logOut } from "../../actions/index";
 
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
+import LoginModal from "../userAuth/LoginModal";
+import SignupModal from "../userAuth/SignupModal";
+
 export class MobileSideBar extends Component {
   constructor(props) {
     super(props);
@@ -56,8 +59,15 @@ export class MobileSideBar extends Component {
   }
 
   render() {
-    const { sidebarOpened } = this.state;
+    const { sidebarOpened, showLoginModal, showSignupModal } = this.state;
     const { children } = this.props;
+
+    if (showLoginModal) {
+      return <LoginModal />;
+    }
+    if (showSignupModal) {
+      return <SignupModal />;
+    }
 
     return (
       <div>
