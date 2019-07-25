@@ -1,7 +1,6 @@
 import {
   RECEIVE_TICKETS_LIST,
   FETCHING_DATA,
-  ERROR_ALERT,
   USER_AUTH_FAIL,
   USER_AUTH_LOGGEDOUT,
   USER_AUTH_START,
@@ -106,7 +105,7 @@ export function authState() {
     } else {
       const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
       if (sessionLife <= new Date()) {
-        dispatch();
+        dispatch(authLogout());
       } else {
         dispatch(authSuccess(sessionToken));
         const timeNow = new Date();
@@ -155,6 +154,7 @@ export const logOut = () => {
   localStorage.removeItem("sessionLife");
   return dispatch => {
     dispatch(authLogout());
+    dispatch(createMessage({ login: "You have successfully logged out!" }));
   };
 };
 
