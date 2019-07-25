@@ -19,7 +19,7 @@ export class Alerts extends Component {
     }
     if (messages !== prevProps.messages) {
       if (messages.messageCreated) {
-        alert.success(` ${messages.messageCreated.login}`);
+        alert.success(` ${messages.messageCreated.message}`);
       }
     }
   }

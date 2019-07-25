@@ -103,9 +103,11 @@ export function authState() {
     if (sessionToken == null) {
       dispatch(authLogout());
     } else {
-      const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
+      // session will last for 30mins if the app is not in use
+      const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
       if (sessionLife <= new Date()) {
         dispatch(authLogout());
+        dispatch(createMessage({ message: "Session expired, Login again!" }));
       } else {
         dispatch(authSuccess(sessionToken));
         const timeNow = new Date();
@@ -135,7 +137,7 @@ export const login = (username, password) => {
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
         dispatch(authSuccess(sessionToken));
         dispatch(creatSession(sessionToken, sessionLife));
-        dispatch(createMessage({ login: "You are logged in!" }));
+        dispatch(createMessage({ message: "You are logged in!" }));
       },
       error => {
         const errors = {
@@ -154,7 +156,7 @@ export const logOut = () => {
   localStorage.removeItem("sessionLife");
   return dispatch => {
     dispatch(authLogout());
-    dispatch(createMessage({ login: "You have successfully logged out!" }));
+    dispatch(createMessage({ message: "You have successfully logged out!" }));
   };
 };
 
@@ -174,6 +176,9 @@ export function signup(inputs) {
         const sessionToken = response.data.key;
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
         creatSession(sessionToken, sessionLife);
+        dispatch(
+          createMessage({ message: "You have successfully signed up!" })
+        );
       },
       error => {
         const errors = {
