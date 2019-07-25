@@ -9,7 +9,8 @@ import {
   CREATE_TICKET,
   RECEIVE_TICKET,
   RECEIVE_TICKET_DETAIL,
-  FETCH_TICKET_DETAIL
+  FETCH_TICKET_DETAIL,
+  GET_ERRORS
 } from "./ActionTypes";
 
 import {
@@ -33,13 +34,6 @@ export const receivedTicketsList = response => {
   };
 };
 
-export function errorAlert(error) {
-  return {
-    type: ERROR_ALERT,
-    payload: error
-  };
-}
-
 export function fetchTicketsList() {
   return dispatch => {
     dispatch(fetchData());
@@ -48,15 +42,16 @@ export function fetchTicketsList() {
         dispatch(receivedTicketsList(response.data));
       },
       error => {
-        console.log(error);
-        dispatch(errorAlert(error));
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
       }
     );
   };
 }
 export const authStart = () => {
-  console.log("will check if user have account");
-
   const sessionCheck = localStorage.getItem("sessionLife");
   if (sessionCheck) {
     return {
@@ -136,13 +131,17 @@ export const login = (username, password) => {
     dispatch(fetchData());
     requestAuthorisation(username, password).then(
       response => {
-        console.log("Promise returned; ", response);
         const sessionToken = response.data.key;
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
         dispatch(authSuccess(sessionToken));
         dispatch(creatSession(sessionToken, sessionLife));
       },
       error => {
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
         dispatch(authFail(error));
       }
     );
@@ -170,12 +169,16 @@ export function signup(inputs) {
     dispatch(fetchData());
     requestSignup(inputs).then(
       response => {
-        console.log(response);
         const sessionToken = response.data.key;
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
         creatSession(sessionToken, sessionLife);
       },
       error => {
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
         dispatch(authFail(error));
       }
     );
@@ -196,17 +199,26 @@ export const receiveTicket = response => {
   };
 };
 
+export const errorsAlert = errors => {
+  return {
+    type: GET_ERRORS,
+    payload: errors
+  };
+};
+
 export function createTicket(data) {
   return dispatch => {
     dispatch(creatingTicket());
     requestCreateTicket(data).then(
       response => {
-        console.log(response);
         dispatch(receiveTicket(response));
       },
       error => {
-        console.log(error);
-        dispatch(errorAlert(error));
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
       }
     );
   };
@@ -234,7 +246,11 @@ export function requestTicketsDetail(id) {
         dispatch(receiveTicketDetail(response.data));
       },
       error => {
-        dispatch(errorAlert(error));
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
       }
     );
   };
