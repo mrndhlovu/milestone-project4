@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 import { requestTicketsDetail } from "../../actions/index";
 
@@ -9,7 +10,10 @@ import {
   Segment,
   Dimmer,
   Loader,
-  Image
+  Image,
+  Divider,
+  Icon,
+  Button
 } from "semantic-ui-react";
 
 export class TicketDetail extends Component {
@@ -28,6 +32,19 @@ export class TicketDetail extends Component {
       isLoading,
       ticket: { title, created_at, description }
     } = this.props.ticket;
+
+    const date = new Date(created_at);
+    const wholeDate =
+      date.getFullYear() +
+      "-" +
+      ("0" + (date.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + date.getDate()).slice(-2) +
+      "  / " +
+      ("0" + date.getHours()).slice(-2) +
+      ":" +
+      ("0" + date.getMinutes()).slice(-2);
+
     return isLoading && !dataReceived ? (
       <div>
         <Dimmer active inverted>
@@ -36,8 +53,27 @@ export class TicketDetail extends Component {
         <Image src="/images/wireframe/short-paragraph.png" />
       </div>
     ) : (
-      <Container>
-        <Header as="h2" content={title} subheader={created_at} />
+      <Container style={{ paddingTop: 20 }}>
+        <div style={{ paddingTop: 10 }}>
+          <Button
+            color="blue"
+            size="tiny"
+            floated="right"
+            as={NavLink}
+            to="/create-ticket"
+          >
+            Create a ticket
+          </Button>
+        </div>
+        <Header
+          as="h3"
+          color="blue"
+          content={title}
+          subheader={`Ticket filed: ${wholeDate}`}
+        />
+
+        <Divider />
+
         <Header as="h4" attached="top" block>
           <Segment>
             <Header as="h2" content="Description" />
