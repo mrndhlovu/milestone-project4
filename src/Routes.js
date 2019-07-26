@@ -7,7 +7,7 @@ import Pricing from "./components/Pricing";
 import TicketsList from "./components/tickets/TicketsList";
 import TicketDetail from "./components/tickets/TicketDetail";
 import CreateTicket from "./components/tickets/CreateTicket";
-
+import AuthRouteCheck from "./utils/AuthRouteCheck";
 const BaseRouter = () => {
   return (
     <Fragment>
@@ -17,7 +17,7 @@ const BaseRouter = () => {
         <Route path="/ticket/:id" component={TicketDetail} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/products" component={Products} />
-        <Route path="/create-ticket" component={CreateTicket} />
+        <AuthRouteCheck path="/create-ticket" component={CreateTicket} />
       </Switch>
     </Fragment>
   );
