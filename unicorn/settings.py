@@ -40,18 +40,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'tickets',
     'accounts',
 
+
+    # 'rest_framework.authtoken',
+    # 'rest_auth',
+    # 'rest_auth.registration',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
     'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth',
-    'rest_auth.registration',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     'corsheaders',
     'knox'
 
