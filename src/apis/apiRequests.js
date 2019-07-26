@@ -1,26 +1,33 @@
 import axios from "axios";
 
+const params = {
+  headers: {
+    "Content-Type": "application/json"
+  }
+};
+
 export async function requestTicketsList() {
   return axios.get("http://127.0.0.1:8000/tickets/");
 }
 
-export async function requestAuthorisation(username, password) {
-  console.log("send request", username, password);
-  return axios.post("http://127.0.0.1:8000/rest-auth/login/", {
-    username: username,
-    password: password
-  });
+export async function requestLogin(username, password) {
+  const body = JSON.stringify({ username, password });
+  return axios.post(
+    "http://127.0.0.1:8000/accounts/api/auth/login",
+    body,
+    params
+  );
 }
 
 export async function requestSignup(inputs) {
-  const { username, email, password1, password2 } = inputs;
-  // return console.log("Inputs: ", inputs);
-  return axios.post("http://127.0.0.1:8000/rest-auth/registration/", {
-    username: username,
-    email: email,
-    password1: password1,
-    password2: password2
-  });
+  const { username, email, password } = inputs;
+  const body = JSON.stringify({ username, email, password });
+
+  return axios.post(
+    "http://127.0.0.1:8000/accounts/api/auth/register",
+    body,
+    params
+  );
 }
 
 export async function requestCreateTicket(data) {
