@@ -23,7 +23,7 @@ class SignupModal extends Component {
       loginModal: false,
       errors: {
         email: "",
-        password1: "",
+        password: "",
         password2: "",
         username: "",
         other: ""
@@ -51,8 +51,8 @@ class SignupModal extends Component {
   }
 
   handleSignupClick(values) {
-    const { username, email, password1, password2 } = values;
-    const inputs = { username, email, password1, password2 };
+    const { username, email, password, password2 } = values;
+    const inputs = { username, email, password, password2 };
     this.props.signup(inputs);
   }
 
@@ -71,9 +71,9 @@ class SignupModal extends Component {
           errors: { ...errors, email: errorAlert.alertMsg.email }
         });
       }
-      if (errorAlert.alertMsg.password1) {
+      if (errorAlert.alertMsg.password) {
         this.setState({
-          errors: { ...errors, password1: errorAlert.alertMsg.password1 }
+          errors: { ...errors, password: errorAlert.alertMsg.password }
         });
       }
       if (errorAlert.alertMsg.password2) {
@@ -118,7 +118,7 @@ class SignupModal extends Component {
           }
           iconPosition="left"
           placeholder={field.label}
-          autoComplete={field.password1 || field.password2 ? false : field.name}
+          autoComplete={field.password || field.password2 ? false : field.name}
           type={field.name}
           error={error && touched ? error : null}
         />
@@ -130,7 +130,7 @@ class SignupModal extends Component {
     const { handleSubmit } = this.props;
     const { showModal, loginModal, buttonDisabled } = this.state;
     const {
-      errors: { email, password1, password2, username, other }
+      errors: { email, password, password2, username, other }
     } = this.state;
 
     if (loginModal) {
@@ -150,12 +150,12 @@ class SignupModal extends Component {
               <Header as="h2" color="teal" textAlign="center" centered="false">
                 Create an account
               </Header>
-              {email || password1 || password2 || username || other ? (
+              {email || password || password2 || username || other ? (
                 <Message
                   size="small"
                   error
                   header="Sign up error: "
-                  list={[email, password1, password2, username, other]}
+                  list={[email, password, password2, username, other]}
                 />
               ) : null}
               <Grid textAlign="center" verticalAlign="middle">
@@ -178,7 +178,7 @@ class SignupModal extends Component {
                       />
                       <br />
                       <Field
-                        name="password1"
+                        name="password"
                         label="Password"
                         component={this.renderField}
                       />
@@ -228,8 +228,8 @@ function validate(values) {
   if (!values.username) {
     formErrors.username = "Enter a username";
   }
-  if (!values.password1) {
-    formErrors.password1 = "Enter a password";
+  if (!values.password) {
+    formErrors.password = "Enter a password";
   }
 
   if (!values.password2) {

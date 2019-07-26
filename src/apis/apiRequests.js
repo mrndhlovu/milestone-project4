@@ -20,8 +20,8 @@ export async function requestLogin(username, password) {
 }
 
 export async function requestSignup(inputs) {
-  const { username, email, password } = inputs;
-  const body = JSON.stringify({ username, email, password });
+  const { username, email, password, password2 } = inputs;
+  const body = JSON.stringify({ username, email, password, password2 });
 
   return axios.post(
     "http://127.0.0.1:8000/accounts/api/auth/register",
