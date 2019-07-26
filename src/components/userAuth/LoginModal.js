@@ -77,11 +77,11 @@ class LoginModal extends Component {
     const { errors } = this.state;
 
     if (errorAlert !== prevProps.errorAlert) {
-      if (errorAlert.alertMsg.non_field_errors) {
+      if (errorAlert.alertMsg.data) {
         this.setState({
           errors: {
             ...errors,
-            signInError: errorAlert.alertMsg.non_field_errors.join()
+            signInError: errorAlert.alertMsg.data.join()
           }
         });
       }

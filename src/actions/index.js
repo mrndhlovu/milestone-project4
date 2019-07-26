@@ -15,7 +15,7 @@ import {
 
 import {
   requestTicketsList,
-  requestAuthorisation,
+  requestLogin,
   requestSignup,
   requestCreateTicket,
   fetchTicketDetail
@@ -131,9 +131,9 @@ export const creatSession = (sessionToken, sessionLife) => {
 export const login = (username, password) => {
   return dispatch => {
     dispatch(fetchData());
-    requestAuthorisation(username, password).then(
+    requestLogin(username, password).then(
       response => {
-        const sessionToken = response.data.key;
+        const sessionToken = response.data.token;
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
         dispatch(authSuccess(sessionToken));
         dispatch(creatSession(sessionToken, sessionLife));
@@ -173,7 +173,7 @@ export function signup(inputs) {
     dispatch(fetchData());
     requestSignup(inputs).then(
       response => {
-        const sessionToken = response.data.key;
+        const sessionToken = response.data.token;
         const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
         dispatch(
           createMessage({ message: "You have successfully signed up!" })
