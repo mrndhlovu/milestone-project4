@@ -20,15 +20,11 @@ class App extends Component {
     return (
       <Fragment>
         <Provider store={store}>
-          <AlertProvider
-            styel={{ zIndex: 1 }}
-            template={AlertTemplate}
-            {...alertOptions}
-          >
+          <AlertProvider template={AlertTemplate} {...alertOptions}>
             <BrowserRouter>
               <AppContainer>
-                <BaseRouter />
                 <Alerts />
+                <BaseRouter />
               </AppContainer>
             </BrowserRouter>
           </AlertProvider>
