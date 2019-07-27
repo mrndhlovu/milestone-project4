@@ -224,6 +224,7 @@ const mapStateToProps = state => {
   };
 };
 
+// Handle redux form errors
 function validate(values) {
   const formErrors = {};
   if (!values.username) {
