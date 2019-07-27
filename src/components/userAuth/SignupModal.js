@@ -63,7 +63,6 @@ class SignupModal extends Component {
   componentDidUpdate(prevProps) {
     const { errorAlert } = this.props;
     const { errors } = this.state;
-    const { sessionToken } = this.props.authState;
 
     if (errorAlert !== prevProps.errorAlert) {
       if (errorAlert.alertMsg.email) {
@@ -94,9 +93,6 @@ class SignupModal extends Component {
           }
         });
       }
-    }
-    if (sessionToken) {
-      this.closeModal();
     }
   }
 

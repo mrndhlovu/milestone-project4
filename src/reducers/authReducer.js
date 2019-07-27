@@ -9,7 +9,8 @@ import { checkObjectUpdate } from "../utils/checkObjectUpdate";
 const initialState = {
   sessionToken: null,
   hasError: null,
-  isLoading: false
+  isLoading: false,
+  isAuthenticated: false
 };
 
 const authStart = (state, action) => {
@@ -21,14 +22,16 @@ const authStart = (state, action) => {
 
 const logOut = (state, action) => {
   return checkObjectUpdate(state, {
-    sessionToken: null
+    sessionToken: null,
+    isAuthenticated: false
   });
 };
 
 const authFail = (state, action) => {
   return checkObjectUpdate(state, {
     hasError: true,
-    isLoading: false
+    isAuthenticated: false,
+    sessionToken: null
   });
 };
 
@@ -36,7 +39,8 @@ const authSuccess = (state, action) => {
   return checkObjectUpdate(state, {
     hasError: null,
     isLoading: false,
-    sessionToken: action
+    sessionToken: action,
+    isAuthenticated: true
   });
 };
 

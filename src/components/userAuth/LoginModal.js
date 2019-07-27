@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-// import { Input } from "react-native-elements";
+import { withRouter } from "react-router-dom";
 
+import styled from "styled-components";
 import { login } from "../../actions/index";
 import SignupModal from "./SignupModal";
 
@@ -16,29 +17,44 @@ import {
   Modal
 } from "semantic-ui-react";
 
+const privateRoutes = ["/create-ticket", "/shopping-cart"];
+
+const StyledSpan = styled.span`
+  padding-right: 0.5rem;
+`;
+
 class LoginModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: true,
       signupModal: false,
-      errors: { signInError: "" }
+      errors: { signInError: "" },
+      isLoading: ""
     };
 
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.closeModal = this.closeModal.bind(this);
+
     this.renderField = this.renderField.bind(this);
     this.showSignupModal = this.showSignupModal.bind(this);
   }
 
   // request a login, and redirect to home page
   handleLoginClick(values) {
+    this.setState({ isLoading: true });
     const { username, password } = values;
     this.props.login(username, password);
   }
 
   closeModal() {
-    window.location.reload();
+    if (privateRoutes.includes(window.location.pathname)) {
+      this.props.history.push("/");
+    } else {
+      setTimeout(function() {
+        window.location.reload();
+      }, 2000);
+    }
   }
 
   renderField(field) {
@@ -70,29 +86,33 @@ class LoginModal extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      auth: { sessionToken },
-      errorAlert
+      errorAlert,
+      auth: { isAuthenticated }
     } = this.props;
 
     const { errors } = this.state;
 
     if (errorAlert !== prevProps.errorAlert) {
-      if (errorAlert.alertMsg.data) {
+      if (errorAlert.alertMsg.non_field_errors) {
         this.setState({
           errors: {
             ...errors,
-            signInError: errorAlert.alertMsg.data.join()
+            signInError: errorAlert.alertMsg.non_field_errors
           }
         });
       }
     }
-
-    return sessionToken ? window.location.reload() : null;
+    if (isAuthenticated) {
+      if (privateRoutes.includes(window.location.pathname)) {
+        this.props.history.push(`${this.props.match.url}`);
+      }
+    }
   }
 
   render() {
     const { handleSubmit } = this.props;
     const {
+      isLoading,
       showModal,
       signupModal,
       errors: { signInError }
@@ -145,14 +165,25 @@ class LoginModal extends Component {
                           component={this.renderField}
                         />
                         <br />
-                        <Button color="teal" fluid size="large" type="submit">
+                        <Button
+                          color="teal"
+                          fluid
+                          size="large"
+                          type="submit"
+                          onClick={this.closeModal}
+                          loading={isLoading ? true : false}
+                        >
                           Login
                         </Button>
                       </Segment>
                     </Form>
                     <Message attached="bottom">
-                      New to us?
-                      <Button positive onClick={this.showSignupModal}>
+                      <StyledSpan>New to us?</StyledSpan>
+                      <Button
+                        size="medium"
+                        positive
+                        onClick={this.showSignupModal}
+                      >
                         Sign Up
                       </Button>
                     </Message>
@@ -190,5 +221,5 @@ export default reduxForm({ validate, form: "LoginForm" })(
   connect(
     mapStateToProps,
     { login }
-  )(LoginModal)
+  )(withRouter(LoginModal))
 );

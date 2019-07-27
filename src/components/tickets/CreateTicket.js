@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
 
-import { Button, Form, Message, Container, Select } from "semantic-ui-react";
+import { Button, Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/index";
 
-const TICKET_PRORITY_LEVELS = [
-  { key: "LOW", value: "lw", text: "LOW" },
-  { key: "MEDIUM", value: "md", text: "MEDIUM" },
-  { key: "HIGH", value: "hg", text: "HIGH" }
-];
+// const TICKET_PRORITY_LEVELS = [
+//   { key: "LOW", value: "lw", text: "LOW" },
+//   { key: "MEDIUM", value: "md", text: "MEDIUM" },
+//   { key: "HIGH", value: "hg", text: "HIGH" }
+// ];
 
 export class CreateTicket extends Component {
   constructor(props) {

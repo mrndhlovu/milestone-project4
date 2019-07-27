@@ -10,21 +10,19 @@ const AuthRouteCheck = ({ component: Component, auth, ...rest }) => (
   <Route
     {...rest}
     render={props => {
-      const { isLoading, sessionToken } = auth;
-      if (isLoading) {
-        return (
-          <Fragment>
-            <Dimmer active inverted>
-              <Loader size="mini">Loading</Loader>
-            </Dimmer>
-            <Image src="/images/wireframe/short-paragraph.png" />
-          </Fragment>
-        );
-      } else if (sessionToken === null) {
-        return <LoginModal />;
-      } else {
-        return <Component {...props} />;
-      }
+      const { isLoading, isAuthenticated } = auth;
+      return !isAuthenticated ? (
+        <LoginModal />
+      ) : isLoading ? (
+        <Fragment>
+          <Dimmer active inverted>
+            <Loader size="mini">Loading</Loader>
+          </Dimmer>
+          <Image src="/images/wireframe/short-paragraph.png" />
+        </Fragment>
+      ) : (
+        <Component {...props} />
+      );
     }}
   />
 );
