@@ -32,13 +32,16 @@ export async function requestSignup(inputs) {
 
 export async function requestCreateTicket(data) {
   const { title, subject, description, tags, priority_level } = data;
-  return axios.post("http://127.0.0.1:8000/tickets/", {
-    title: title,
-    subject: subject,
-    description: description,
-    priority_level: priority_level,
-    tags: tags
+  const body = JSON.stringify({
+    title,
+    subject,
+    description,
+    tags,
+    priority_level
   });
+  console.log(body);
+
+  return axios.post("http://127.0.0.1:8000/tickets/", body, params);
 }
 
 export async function fetchTicketDetail(id) {
