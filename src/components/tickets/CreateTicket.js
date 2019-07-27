@@ -22,7 +22,8 @@ export class CreateTicket extends Component {
         subject: "",
         tags: "",
         other: "",
-        description: ""
+        description: "",
+        priority_level: ""
       }
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
@@ -42,16 +43,6 @@ export class CreateTicket extends Component {
           autoComplete={field.name}
           type={field.name}
           error={touched && error ? error : null}
-        />
-      </Fragment>
-    ) : field.label === "Priority" ? (
-      <Fragment>
-        <Select
-          color="red"
-          // {...field.input}
-          placeholder={field.label}
-          error={touched && error ? error : null}
-          options={TICKET_PRORITY_LEVELS}
         />
       </Fragment>
     ) : (
@@ -157,7 +148,7 @@ export class CreateTicket extends Component {
             component={this.renderField}
           />
           <Field
-            name="priority-level"
+            name="priority_level"
             label="Priority"
             component={this.renderField}
           />
