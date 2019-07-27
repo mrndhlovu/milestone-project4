@@ -1,4 +1,5 @@
 import axios from "axios";
+import { baseUrl } from "../utils/urls";
 
 const params = {
   headers: {
@@ -7,27 +8,19 @@ const params = {
 };
 
 export async function requestTicketsList() {
-  return axios.get("http://127.0.0.1:8000/tickets/");
+  return axios.get(`${baseUrl}/tickets/`);
 }
 
 export async function requestLogin(username, password) {
   const body = JSON.stringify({ username, password });
-  return axios.post(
-    "http://127.0.0.1:8000/accounts/api/auth/login",
-    body,
-    params
-  );
+  return axios.post(`${baseUrl}/accounts/api/auth/login`, body, params);
 }
 
 export async function requestSignup(inputs) {
   const { username, email, password, password2 } = inputs;
   const body = JSON.stringify({ username, email, password, password2 });
 
-  return axios.post(
-    "http://127.0.0.1:8000/accounts/api/auth/register",
-    body,
-    params
-  );
+  return axios.post(`${baseUrl}/accounts/api/auth/register`, body, params);
 }
 
 export async function requestCreateTicket(data) {
@@ -39,11 +32,10 @@ export async function requestCreateTicket(data) {
     tags,
     priority_level
   });
-  console.log(body);
 
-  return axios.post("http://127.0.0.1:8000/tickets/", body, params);
+  return axios.post(`${baseUrl}/tickets/`, body, params);
 }
 
 export async function fetchTicketDetail(id) {
-  return axios.get(`http://127.0.0.1:8000/tickets/${id}/`);
+  return axios.get(`${baseUrl}/tickets/${id}/`);
 }

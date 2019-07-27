@@ -47,5 +47,6 @@
   "engines": {
     "node": "12.3.1",
     "npm": "6.10.0"
-  }
+  },
+  "devDependencies": {}
 }
