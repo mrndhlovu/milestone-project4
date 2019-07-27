@@ -17,6 +17,7 @@ import {
   Modal
 } from "semantic-ui-react";
 
+// private routes which need require push('/') to avoid loading the modal reloading
 const privateRoutes = ["/create-ticket", "/shopping-cart"];
 
 const StyledSpan = styled.span`
@@ -35,7 +36,7 @@ class LoginModal extends Component {
 
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.closeModal = this.closeModal.bind(this);
-
+    this.cancelLogin = this.cancelLogin.bind(this);
     this.renderField = this.renderField.bind(this);
     this.showSignupModal = this.showSignupModal.bind(this);
   }
@@ -43,17 +44,20 @@ class LoginModal extends Component {
   // request a login, and redirect to home page
   handleLoginClick(values) {
     this.setState({ isLoading: true });
+
     const { username, password } = values;
     this.props.login(username, password);
   }
 
+  // cancel login
+  cancelLogin() {
+    window.location.reload();
+  }
+
+  // close modal
   closeModal() {
     if (privateRoutes.includes(window.location.pathname)) {
       this.props.history.push("/");
-    } else {
-      setTimeout(function() {
-        window.location.reload();
-      }, 2000);
     }
   }
 
@@ -63,6 +67,7 @@ class LoginModal extends Component {
     } = field;
 
     return (
+      // redux form handling inputs
       <Fragment>
         <Form.Input
           color="red"
@@ -81,9 +86,11 @@ class LoginModal extends Component {
   }
 
   showSignupModal() {
+    // Show or close modal
     this.setState({ showModal: false, signupModal: true });
   }
 
+  // wait for updates then render components accorhing to new state
   componentDidUpdate(prevProps) {
     const {
       errorAlert,
@@ -95,6 +102,7 @@ class LoginModal extends Component {
     if (errorAlert !== prevProps.errorAlert) {
       if (errorAlert.alertMsg.non_field_errors) {
         this.setState({
+          isLoading: false,
           errors: {
             ...errors,
             signInError: errorAlert.alertMsg.non_field_errors
@@ -103,8 +111,14 @@ class LoginModal extends Component {
       }
     }
     if (isAuthenticated) {
+      // refresh page and keep the use on the on the protected component
       if (privateRoutes.includes(window.location.pathname)) {
         this.props.history.push(`${this.props.match.url}`);
+      } else {
+        // Wait for server response then reload
+        setTimeout(function() {
+          window.location.reload();
+        }, 2000);
       }
     }
   }
@@ -118,12 +132,14 @@ class LoginModal extends Component {
       errors: { signInError }
     } = this.state;
 
+    // show signup modal on button when signup button is clicked
     if (signupModal) {
       return <SignupModal />;
     }
 
     return (
       <div>
+        {/* Render modal */}
         <Modal
           open={showModal}
           show="blurring"
@@ -185,6 +201,9 @@ class LoginModal extends Component {
                         onClick={this.showSignupModal}
                       >
                         Sign Up
+                      </Button>
+                      <Button negative onClick={this.cancelLogin}>
+                        Cancel
                       </Button>
                     </Message>
                   </Grid.Column>
