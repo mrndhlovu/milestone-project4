@@ -26,7 +26,8 @@ class SignupModal extends Component {
         password: "",
         password2: "",
         username: "",
-        other: ""
+        other: "",
+        isLoading: ""
       }
     };
 
@@ -51,6 +52,7 @@ class SignupModal extends Component {
   }
 
   handleSignupClick(values) {
+    this.setState({ isLoading: true });
     const { username, email, password, password2 } = values;
     const inputs = { username, email, password, password2 };
     this.props.signup(inputs);
@@ -61,7 +63,10 @@ class SignupModal extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { errorAlert } = this.props;
+    const {
+      errorAlert,
+      authState: { isAuthenticated }
+    } = this.props;
     const { errors } = this.state;
 
     if (errorAlert !== prevProps.errorAlert) {
@@ -94,6 +99,9 @@ class SignupModal extends Component {
         });
       }
     }
+    if (isAuthenticated) {
+      window.location.reload();
+    }
   }
 
   renderField(field) {
@@ -124,7 +132,7 @@ class SignupModal extends Component {
 
   render() {
     const { handleSubmit } = this.props;
-    const { showModal, loginModal, buttonDisabled } = this.state;
+    const { showModal, loginModal, buttonDisabled, isLoading } = this.state;
     const {
       errors: { email, password, password2, username, other }
     } = this.state;
@@ -187,7 +195,13 @@ class SignupModal extends Component {
 
                       <br />
 
-                      <Button color="teal" fluid size="large" type="submit">
+                      <Button
+                        color="teal"
+                        fluid
+                        size="large"
+                        type="submit"
+                        loading={isLoading ? true : false}
+                      >
                         Signup
                       </Button>
                     </Segment>
