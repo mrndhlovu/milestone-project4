@@ -112,8 +112,7 @@ WSGI_APPLICATION = 'unicorn.wsgi.application'
 #     }
 # }
 
-DATABASES = {'default': dj_database_url.parse(
-    "postgres://mcsrhbkkgjdehp:3fa5ffd93ead323ac2728aef9150122852efbe6101c4fb375615cab63da9d182@ec2-54-228-246-214.eu-west-1.compute.amazonaws.com:5432/d3tj952jvh0r34")}
+DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
 
 
 # Password validation
