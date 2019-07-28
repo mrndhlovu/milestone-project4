@@ -7,16 +7,18 @@ from django.contrib.auth import get_user_model
 
 
 class Ticket(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    title = models.CharField(max_length=120)
     subject = models.CharField(max_length=120)
     description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
     prority_level = models.CharField(max_length=10, default='Low')
-    is_active = models.BooleanField(default=True, blank=True)
-    title = models.CharField(max_length=120)
-    tags = models.CharField(max_length=50, blank=True)
+    in_progress = models.BooleanField(default=False)
+    slug = models.SlugField(blank=True)
+    created_by = models.ForeignKey(
+        get_user_model(), on_delete=models.DO_NOTHING, null=True, default=None)
 
-    author = models.ForeignKey(
-        get_user_model(), on_delete=models.DO_NOTHING, null=True,)
+    def __str__(self):
+        return self.title
 
-    # def __str__(self):
-    #     return self.title
+    def snippet(self):
+        return self.description[:40] + '...'

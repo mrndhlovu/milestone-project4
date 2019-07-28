@@ -11,16 +11,21 @@ export async function requestTicketsList() {
   return axios.get(`${baseUrl}/tickets/`);
 }
 
+export async function requestSignup(inputs) {
+  const { username, email, password, password2 } = inputs;
+  const body = JSON.stringify({ username, email, password, password2 });
+
+  return axios.post(`${baseUrl}/accounts/api/auth/signup`, body, params);
+}
+
 export async function requestLogin(username, password) {
   const body = JSON.stringify({ username, password });
   return axios.post(`${baseUrl}/accounts/api/auth/login`, body, params);
 }
 
-export async function requestSignup(inputs) {
-  const { username, email, password, password2 } = inputs;
-  const body = JSON.stringify({ username, email, password, password2 });
-
-  return axios.post(`${baseUrl}/accounts/api/auth/register`, body, params);
+export async function requestLogout(token) {
+  const body = JSON.stringify({ token });
+  return axios.post(`${baseUrl}/accounts/api/auth/logout`, body, params);
 }
 
 export async function requestCreateTicket(data) {
