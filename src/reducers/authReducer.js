@@ -2,7 +2,7 @@ import {
   USER_AUTH_FAIL,
   USER_AUTH_START,
   USER_AUTH_SUCCESS,
-  USER_AUTH_LOGGEDOUT
+  USER_AUTH_LOGOUT
 } from "../actions/ActionTypes";
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
 
@@ -48,7 +48,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case USER_AUTH_FAIL:
       return authFail(state, action);
-    case USER_AUTH_LOGGEDOUT:
+    case USER_AUTH_LOGOUT:
       return logOut(state, action);
     case USER_AUTH_START:
       return authStart(state, action);

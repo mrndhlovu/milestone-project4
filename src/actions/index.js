@@ -2,7 +2,7 @@ import {
   RECEIVE_TICKETS_LIST,
   FETCHING_DATA,
   USER_AUTH_FAIL,
-  USER_AUTH_LOGGEDOUT,
+  USER_AUTH_LOGOUT,
   USER_AUTH_START,
   USER_AUTH_SUCCESS,
   CREATE_TICKET,
@@ -80,7 +80,7 @@ export const authFail = error => {
 
 export const authLogout = () => {
   return {
-    type: USER_AUTH_LOGGEDOUT
+    type: USER_AUTH_LOGOUT
   };
 };
 

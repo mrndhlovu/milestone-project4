@@ -20,7 +20,7 @@ export class CreateTicket extends Component {
       errors: {
         title: "",
         subject: "",
-        tags: "",
+        slug: "",
         other: "",
         description: "",
         priority_level: ""
@@ -85,7 +85,7 @@ export class CreateTicket extends Component {
       }
       if (errorAlert.alertMsg.password2) {
         this.setState({
-          errors: { ...errors, tags: errorAlert.alertMsg.tags }
+          errors: { ...errors, slug: errorAlert.alertMsg.slug }
         });
       }
 
@@ -112,7 +112,7 @@ export class CreateTicket extends Component {
   render() {
     const { handleSubmit } = this.props;
     const {
-      errors: { subject, title, description, tags, other }
+      errors: { subject, title, description, slug, other }
     } = this.state;
 
     return (
@@ -121,12 +121,12 @@ export class CreateTicket extends Component {
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
         />
-        {subject || title || description || other || tags ? (
+        {subject || title || description || other || slug ? (
           <Message
             size="small"
             error
             header="Sign up error: "
-            list={[subject, title, description, tags, other]}
+            list={[subject, title, description, slug, other]}
           />
         ) : null}
         <Form
@@ -137,7 +137,7 @@ export class CreateTicket extends Component {
           <Field name="subject" label="Subject" component={this.renderField} />
 
           <Field
-            name="tags"
+            name="slug"
             label="Tags: e.g javascriprt, pyhton, django"
             component={this.renderField}
           />
@@ -172,8 +172,8 @@ const mapStateToProps = state => {
 
 function validate(values) {
   const formErrors = {};
-  if (!values.tags) {
-    formErrors.tags = "Enter a tags";
+  if (!values.slug) {
+    formErrors.slug = "Enter a slug";
   }
   if (!values.title) {
     formErrors.title = "Enter a title";
