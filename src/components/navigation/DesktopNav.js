@@ -1,12 +1,18 @@
 import React, { Component, Fragment } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
-import { Button, Container, Menu } from "semantic-ui-react";
+import { Button, Container, Menu, Icon } from "semantic-ui-react";
 
 import LoginModal from "../userAuth/LoginModal";
 import SignupModal from "../userAuth/SignupModal";
 import { logOut } from "../../actions/index";
+
+const StyledSpan = styled.span`
+  color: grey;
+  marging-left: 2rem;
+`;
 
 export class DesktopNav extends Component {
   constructor(props) {
@@ -29,6 +35,7 @@ export class DesktopNav extends Component {
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.showFixedMenu = this.showFixedMenu.bind(this);
     this.hideFixedMenu = this.hideFixedMenu.bind(this);
+    this.renderUserLabel = this.renderUserLabel.bind(this);
   }
 
   hideFixedMenu() {
@@ -76,6 +83,17 @@ export class DesktopNav extends Component {
         </Button>
       </Fragment>
     );
+  }
+
+  renderUserLabel() {
+    const { username } = this.props.user;
+
+    return username ? (
+      <StyledSpan>
+        <Icon name="user" />
+        {username}
+      </StyledSpan>
+    ) : null;
   }
 
   showActiveLink(name) {
@@ -141,7 +159,11 @@ export class DesktopNav extends Component {
             >
               Tickets
             </Menu.Item>
-            <Menu.Item position="right">{this.renderNavButtons()}</Menu.Item>
+
+            <Menu.Item position="right">
+              {this.renderUserLabel()}
+              {this.renderNavButtons()}
+            </Menu.Item>
           </Container>
         </Menu>
       </div>
@@ -150,7 +172,10 @@ export class DesktopNav extends Component {
 }
 
 const mapStateToProps = state => {
-  return { userAuth: state.auth };
+  return {
+    userAuth: state.auth,
+    user: state.user.user
+  };
 };
 
 export default connect(

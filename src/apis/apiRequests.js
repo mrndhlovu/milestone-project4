@@ -11,6 +11,13 @@ export async function requestTicketsList() {
   return axios.get(`${baseUrl}/tickets/`);
 }
 
+export async function requestUser() {
+  const sessionToken = localStorage.getItem("sessionToken");
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.get(`${baseUrl}/accounts/api/auth/user`, params);
+}
+
 export async function requestSignup(inputs) {
   const { username, email, password, password2 } = inputs;
   const body = JSON.stringify({ username, email, password, password2 });

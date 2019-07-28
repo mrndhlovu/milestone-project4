@@ -6,6 +6,7 @@ import createTicketReducer from "./createTicketReducer";
 import ticketDetaiReducer from "../reducers/ticketDetailReducer";
 import errorsReducer from "../reducers/errorsReducer";
 import messagesReducer from "../reducers/messagesReducer";
+import userReducer from "../reducers/userReducer";
 
 export default combineReducers({
   tickets: ticketsReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   ticket: createTicketReducer,
   ticketDetail: ticketDetaiReducer,
   errorAlert: errorsReducer,
-  messages: messagesReducer
+  messages: messagesReducer,
+  user: userReducer
 });

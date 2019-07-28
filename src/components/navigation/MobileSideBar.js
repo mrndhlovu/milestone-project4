@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
+import styled from "styled-components";
 import { connect } from "react-redux";
 
 import { logOut } from "../../actions/index";
@@ -8,6 +9,11 @@ import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
 import LoginModal from "../userAuth/LoginModal";
 import SignupModal from "../userAuth/SignupModal";
+
+const StyledSpan = styled.span`
+  margin: 13px 0 0 auto;
+  color: grey;
+`;
 
 export class MobileSideBar extends Component {
   constructor(props) {
@@ -22,6 +28,7 @@ export class MobileSideBar extends Component {
     this.handleSignupClick = this.handleSignupClick.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleSidebarHide = this.handleSidebarHide.bind(this);
+    this.renderUserLabel = this.renderUserLabel.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
   }
 
@@ -43,6 +50,17 @@ export class MobileSideBar extends Component {
   handleLogoutClick() {
     this.props.logOut(this.props.userAuth.sessionToken);
     window.location.reload();
+  }
+
+  renderUserLabel() {
+    const { username } = this.props.user;
+
+    return username ? (
+      <StyledSpan>
+        <Icon name="user" />
+        {username}
+      </StyledSpan>
+    ) : null;
   }
 
   renderAuthButtons() {
@@ -128,6 +146,7 @@ export class MobileSideBar extends Component {
                 <Menu.Item onClick={this.handleToggle}>
                   <Icon name="sidebar" />
                 </Menu.Item>
+                {this.renderUserLabel()}
                 <Menu.Item position="right">{this.renderNavButtons}</Menu.Item>
               </Menu>
             </Container>
@@ -141,7 +160,7 @@ export class MobileSideBar extends Component {
 }
 
 const mapStateToProps = state => {
-  return { userAuth: state.auth };
+  return { userAuth: state.auth, user: state.user.user };
 };
 
 export default connect(

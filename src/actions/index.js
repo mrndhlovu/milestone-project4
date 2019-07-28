@@ -10,7 +10,9 @@ import {
   RECEIVE_TICKET_DETAIL,
   FETCH_TICKET_DETAIL,
   GET_ERRORS,
-  CREATE_MESSAGE
+  CREATE_MESSAGE,
+  FETCHING_USER,
+  RECEIVED_USER
 } from "./ActionTypes";
 
 import {
@@ -19,7 +21,8 @@ import {
   requestSignup,
   requestCreateTicket,
   fetchTicketDetail,
-  requestLogout
+  requestLogout,
+  requestUser
 } from "../apis/apiRequests";
 
 export function fetchData() {
@@ -95,6 +98,7 @@ export function startAuth() {
   return dispatch => {
     dispatch(authStart());
     dispatch(checkSession());
+    dispatch(fetchUser());
   };
 }
 
@@ -110,6 +114,7 @@ export function authState() {
         dispatch(authLogout());
         dispatch(createMessage({ message: "Session expired, Login again!" }));
       } else {
+        dispatch(fetchUser());
         dispatch(authSuccess(sessionToken));
         const timeNow = new Date();
         const sessionLifeSpan =
@@ -152,6 +157,33 @@ export const login = (username, password) => {
   };
 };
 
+export const fetchingUser = () => {
+  return {
+    type: FETCHING_USER
+  };
+};
+
+export const receivedUser = user => {
+  return {
+    type: RECEIVED_USER,
+    payload: user
+  };
+};
+
+export const fetchUser = sessionToken => {
+  return dispatch => {
+    dispatch(fetchingUser());
+    requestUser(sessionToken).then(
+      response => {
+        dispatch(receivedUser(response.data));
+      },
+      error => {
+        dispatch(createMessage({ message: "Username not found" }));
+      }
+    );
+  };
+};
+
 export const logOut = sessionToken => {
   return dispatch => {
     dispatch(authLogout());
@@ -164,8 +196,7 @@ export const logOut = sessionToken => {
         );
       },
       error => {
-        console.log("Error logging out", error.response.data.detail);
-        dispatch(createMessage({ message: `${error.response.data.detail}` }));
+        dispatch(createMessage({ message: "Error Logging Out" }));
       }
     );
   };
