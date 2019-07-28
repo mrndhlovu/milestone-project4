@@ -21,7 +21,8 @@ export class Home extends Component {
     this.state = {
       headerText: "Unicorn Attractor",
       headerButtonUrl: "/pricing",
-      headerButtonText: "Get Started"
+      headerButtonText: "Get Started",
+      subHeading: "Head start on coding issues and save hours!"
     };
     this.handlelogout = this.handlelogout.bind(this);
   }
@@ -30,11 +31,16 @@ export class Home extends Component {
     this.props.logOut();
   }
   render() {
-    const { headerText, headerButtonUrl, headerButtonText } = this.state;
+    const {
+      headerText,
+      headerButtonUrl,
+      headerButtonText,
+      subHeading
+    } = this.state;
     return (
       <Fragment>
         <HeadingImage
-          data={{ headerText, headerButtonUrl, headerButtonText }}
+          data={{ headerText, headerButtonUrl, headerButtonText, subHeading }}
         />
 
         <Segment style={{ padding: "8em 0em" }} vertical>

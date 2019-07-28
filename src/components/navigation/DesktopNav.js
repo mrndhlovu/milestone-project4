@@ -10,8 +10,8 @@ import SignupModal from "../userAuth/SignupModal";
 import { logOut } from "../../actions/index";
 
 const StyledSpan = styled.span`
-  color: grey;
-  marging-left: 2rem;
+  color: green;
+  padding-right: 0.5rem;
 `;
 
 export class DesktopNav extends Component {
@@ -90,7 +90,7 @@ export class DesktopNav extends Component {
 
     return username ? (
       <StyledSpan>
-        <Icon name="user" />
+        <Icon name="user" size="small" />
         {username}
       </StyledSpan>
     ) : null;

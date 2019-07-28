@@ -24,7 +24,8 @@ export class TicketsList extends Component {
     this.state = {
       headerText: "Tickets",
       headerButtonUrl: "/create-ticket",
-      headerButtonText: "Create a ticket"
+      headerButtonText: "Create a ticket",
+      subHeading: "Head start on coding issues and save hours!"
     };
   }
 
@@ -36,7 +37,7 @@ export class TicketsList extends Component {
     const { ticketsList } = this.props;
 
     return ticketsList.map(ticket => {
-      const { title, subject, id, created_at } = ticket;
+      const { title, subject, id, created_at, slug, created_by } = ticket;
 
       const date = new Date(created_at);
       const wholeDate =
@@ -58,8 +59,10 @@ export class TicketsList extends Component {
                 <Header as={Link} to={`ticket/${id}`} size="small" color="blue">
                   {title.toUpperCase()}
                 </Header>
-                <br />
-                <Feed.Date>{wholeDate}</Feed.Date>
+                <span style={{ paddingTop: 5 }}>
+                  <Feed.Date>{wholeDate}</Feed.Date>
+                </span>
+
                 <Feed.Summary>
                   <a href="/">Laura Faucet </a>
                   created a ticket
@@ -75,9 +78,7 @@ export class TicketsList extends Component {
           </Feed>
 
           <Label.Group color="teal" size="tiny">
-            <Label as="a">JavaScript</Label>
-            <Label as="a">Python</Label>
-            <Label as="a">Django</Label>
+            <Label as="a">{slug}</Label>
           </Label.Group>
           <Divider />
         </Fragment>
@@ -87,7 +88,12 @@ export class TicketsList extends Component {
 
   render() {
     const { isLoading, dataReceived } = this.props.isLoading;
-    const { headerText, headerButtonUrl, headerButtonText } = this.state;
+    const {
+      headerText,
+      headerButtonUrl,
+      headerButtonText,
+      subHeading
+    } = this.state;
 
     return isLoading && !dataReceived ? (
       <Fragment>
@@ -99,7 +105,7 @@ export class TicketsList extends Component {
     ) : (
       <Fragment>
         <HeadingImage
-          data={{ headerText, headerButtonUrl, headerButtonText }}
+          data={{ headerText, headerButtonUrl, headerButtonText, subHeading }}
         />
         <Container>
           <Header
@@ -124,7 +130,8 @@ export class TicketsList extends Component {
 const mapStateToProps = state => {
   return {
     ticketsList: state.tickets.ticketsList,
-    isLoading: state.tickets
+    isLoading: state.tickets,
+    user: state.user.user
   };
 };
 

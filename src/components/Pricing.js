@@ -18,17 +18,23 @@ export class Pricing extends Component {
     super(props);
     this.state = {
       headerText: "Pricing",
-      headerButtonUrl: "/pricing",
-      headerButtonText: "Get Started"
+      headerButtonUrl: "/create-ticket",
+      headerButtonText: "File a ticket",
+      subHeading: "Problems are everywhere, solutions are here!"
     };
   }
   render() {
-    const { headerText, headerButtonUrl, headerButtonText } = this.state;
+    const {
+      headerText,
+      headerButtonUrl,
+      headerButtonText,
+      subHeading
+    } = this.state;
 
     return (
       <Fragment>
         <HeadingImage
-          data={{ headerText, headerButtonUrl, headerButtonText }}
+          data={{ headerText, headerButtonUrl, headerButtonText, subHeading }}
         />
 
         <Segment style={{ padding: "4em 0em" }}>
@@ -99,7 +105,7 @@ export class Pricing extends Component {
                   </div>
                   <Button
                     attached="bottom"
-                    content="Order now"
+                    content="Get Started Now"
                     onClick={this.handleClick}
                     onKeyPress={this.handleKeyPress}
                     color="purple"
@@ -142,7 +148,7 @@ export class Pricing extends Component {
                   </div>
                   <Button
                     attached="bottom"
-                    content="Order Now"
+                    content="Get Started Now"
                     onClick={this.handleClick}
                     onKeyPress={this.handleKeyPress}
                     color="orange"

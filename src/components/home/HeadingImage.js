@@ -19,7 +19,7 @@ class HomepageHeading extends Component {
   render() {
     const {
       mobile,
-      data: { headerText, headerButtonText, headerButtonUrl }
+      data: { headerText, headerButtonText, headerButtonUrl, subHeading }
     } = this.props;
 
     return (
@@ -38,7 +38,7 @@ class HomepageHeading extends Component {
           />
           <Header
             as="h2"
-            content="Problems are everywhere, solutions are here!"
+            content={subHeading}
             inverted
             style={{
               fontSize: mobile ? "1.5em" : "1.7em",

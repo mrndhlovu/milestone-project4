@@ -8,16 +8,22 @@ export class Features extends Component {
     this.state = {
       headerText: "Products",
       headerButtonUrl: "/pricing",
-      headerButtonText: "Get Started"
+      headerButtonText: "See what suite you",
+      subHeading: "How it will work for you?"
     };
   }
   render() {
-    const { headerText, headerButtonUrl, headerButtonText } = this.state;
+    const {
+      headerText,
+      headerButtonUrl,
+      headerButtonText,
+      subHeading
+    } = this.state;
 
     return (
       <Fragment>
         <HeadingImage
-          data={{ headerText, headerButtonUrl, headerButtonText }}
+          data={{ headerText, headerButtonUrl, headerButtonText, subHeading }}
         />
         Features
       </Fragment>
