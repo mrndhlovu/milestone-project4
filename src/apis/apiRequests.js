@@ -23,9 +23,9 @@ export async function requestLogin(username, password) {
   return axios.post(`${baseUrl}/accounts/api/auth/login`, body, params);
 }
 
-export async function requestLogout(token) {
-  const body = JSON.stringify({ token });
-  return axios.post(`${baseUrl}/accounts/api/auth/logout`, body, params);
+export async function requestLogout(sessionToken) {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+  return axios.post(`${baseUrl}/accounts/api/auth/logout`, null, params);
 }
 
 export async function requestCreateTicket(data) {

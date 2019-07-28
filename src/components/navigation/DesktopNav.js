@@ -45,8 +45,7 @@ export class DesktopNav extends Component {
   }
 
   handleLogoutClick() {
-    this.props.logOut();
-    // window.location.reload();
+    this.props.logOut(this.props.userAuth.sessionToken);
   }
 
   renderNavButtons() {

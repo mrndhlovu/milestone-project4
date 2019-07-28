@@ -18,7 +18,8 @@ import {
   requestLogin,
   requestSignup,
   requestCreateTicket,
-  fetchTicketDetail
+  fetchTicketDetail,
+  requestLogout
 } from "../apis/apiRequests";
 
 export function fetchData() {
@@ -151,21 +152,34 @@ export const login = (username, password) => {
   };
 };
 
-export const logOut = () => {
-  localStorage.removeItem("sessionToken");
-  localStorage.removeItem("sessionLife");
+export const logOut = sessionToken => {
   return dispatch => {
     dispatch(authLogout());
-    dispatch(createMessage({ message: "You have successfully logged out!" }));
+    requestLogout(sessionToken).then(
+      () => {
+        localStorage.removeItem("sessionToken");
+        localStorage.removeItem("sessionLife");
+        dispatch(
+          createMessage({ message: "You have successfully logged out!" })
+        );
+      },
+      error => {
+        console.log("Error logging out", error.response.data.detail);
+        dispatch(createMessage({ message: `${error.response.data.detail}` }));
+      }
+    );
   };
 };
 
 export function checkSessionTime(sessionLife) {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(logOut());
-    }, sessionLife * 1000);
-  };
+  return (
+    dispatch => {
+      setTimeout(() => {
+        dispatch(logOut());
+      }, sessionLife * 1000);
+    },
+    error => {}
+  );
 }
 
 export function signup(inputs) {
@@ -182,7 +196,6 @@ export function signup(inputs) {
         dispatch(creatSession(sessionToken, sessionLife));
       },
       error => {
-        console.log(error.response.data);
         const errors = {
           errorAlert: error.response.data,
           status: error.response.status
