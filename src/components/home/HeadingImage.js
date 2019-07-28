@@ -38,7 +38,7 @@ class HomepageHeading extends Component {
           />
           <Header
             as="h2"
-            content="Will find a fix for that bug!"
+            content="Problems are everywhere, solutions are here!"
             inverted
             style={{
               fontSize: mobile ? "1.5em" : "1.7em",
