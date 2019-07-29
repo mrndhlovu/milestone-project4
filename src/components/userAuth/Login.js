@@ -31,8 +31,6 @@ class LoginModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: true,
-      signupModal: false,
       errors: { signInError: "" },
       isLoading: ""
     };
@@ -99,11 +97,6 @@ class LoginModal extends Component {
       // refresh page and keep the use on the on the protected component
       if (privateRoutes.includes(window.location.pathname)) {
         this.props.history.push(`${this.props.match.url}`);
-      } else {
-        // Wait for server response then reload
-        setTimeout(function() {
-          window.location.reload();
-        }, 1000);
       }
     }
   }
@@ -119,6 +112,9 @@ class LoginModal extends Component {
     return (
       <Fragment>
         <StyleContainer>
+          <Header as="h3" color="teal" textAlign="center" centered="false">
+            Login
+          </Header>
           {signInError ? (
             <Message size="small" error header="Sign up error: " />
           ) : null}
@@ -154,7 +150,7 @@ class LoginModal extends Component {
               <Message>
                 <StyledSpan>Dont have an account?</StyledSpan>
                 <Button size="medium" positive onClick={this.showSignupModal}>
-                  Sign Up
+                  Sign up
                 </Button>
               </Message>
             </Grid.Column>

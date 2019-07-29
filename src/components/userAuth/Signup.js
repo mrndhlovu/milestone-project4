@@ -2,8 +2,9 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
+import styled from "styled-components";
+
 import { signup } from "../../actions/AuthActions";
-import LoginModal from "./Login";
 
 import {
   Button,
@@ -12,8 +13,16 @@ import {
   Header,
   Message,
   Segment,
-  Modal
+  Container
 } from "semantic-ui-react";
+
+const StyleContainer = styled(Container)`
+  padding: 10vh 0;
+`;
+
+const StyledSpan = styled.span`
+  padding-right: 0.5rem;
+`;
 
 class SignupModal extends Component {
   constructor(props) {
@@ -24,7 +33,6 @@ class SignupModal extends Component {
       errors: {
         email: "",
         password: "",
-        password2: "",
         username: "",
         other: "",
         isLoading: ""
@@ -32,34 +40,14 @@ class SignupModal extends Component {
     };
 
     this.handleSignupClick = this.handleSignupClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.showLoginModal = this.showLoginModal.bind(this);
     this.renderField = this.renderField.bind(this);
-  }
-
-  handleInputChange(fieldName, event) {
-    this.setState({
-      buttonDisabled: true,
-      inputs: {
-        ...this.state.inputs,
-        [fieldName]: event.target.value
-      }
-    });
-  }
-  showLoginModal() {
-    this.setState({ showModal: false, loginModal: true });
   }
 
   handleSignupClick(values) {
     this.setState({ isLoading: true });
-    const { username, email, password, password2 } = values;
-    const inputs = { username, email, password, password2 };
+    const { username, email, password } = values;
+    const inputs = { username, email, password };
     this.props.signup(inputs);
-  }
-
-  closeModal() {
-    window.location.reload();
   }
 
   componentDidUpdate(prevProps) {
@@ -80,11 +68,7 @@ class SignupModal extends Component {
           errors: { ...errors, password: errorAlert.alertMsg.password }
         });
       }
-      if (errorAlert.alertMsg.password2) {
-        this.setState({
-          errors: { ...errors, password2: errorAlert.alertMsg.password2 }
-        });
-      }
+
       if (errorAlert.alertMsg.username) {
         this.setState({
           errors: { ...errors, username: errorAlert.alertMsg.username }
@@ -115,11 +99,7 @@ class SignupModal extends Component {
           color="red"
           {...field.input}
           fluid
-          icon={
-            field.label === "Password" || field.label === "Confirm Password"
-              ? "lock"
-              : "user"
-          }
+          icon={field.label === "Password" ? "lock" : "user"}
           iconPosition="left"
           placeholder={field.label}
           autoComplete={field.password || field.password2 ? false : field.name}
@@ -132,96 +112,77 @@ class SignupModal extends Component {
 
   render() {
     const { handleSubmit } = this.props;
-    const { showModal, loginModal, buttonDisabled, isLoading } = this.state;
+    const { buttonDisabled, isLoading } = this.state;
     const {
-      errors: { email, password, password2, username, other }
+      errors: { email, password, username, other }
     } = this.state;
 
-    if (loginModal) {
-      return <LoginModal />;
-    }
-
     return (
-      <div>
-        <Modal
-          open={showModal}
-          show="blurring"
-          closeIcon
-          onClose={this.closeModal}
-        >
-          <Modal.Content image>
-            <Modal.Description>
-              <Header as="h2" color="teal" textAlign="center" centered="false">
-                Create an account
-              </Header>
-              {email || password || password2 || username || other ? (
-                <Message
-                  size="small"
-                  error
-                  header="Sign up error: "
-                  list={[email, password, password2, username, other]}
-                />
-              ) : null}
-              <Grid textAlign="center" verticalAlign="middle">
-                <Grid.Column style={{ maxWidth: 450 }}>
-                  <Form
+      <Fragment>
+        <StyleContainer>
+          <Header as="h3" color="teal" textAlign="center" centered="false">
+            Create an Unicorn account
+          </Header>
+          {email || password || username || other ? (
+            <Message
+              size="small"
+              error
+              header="Sign up error: "
+              list={[email, password, username, other]}
+            />
+          ) : null}
+          <Grid textAlign="center" verticalAlign="middle">
+            <Grid.Column style={{ maxWidth: 500 }}>
+              <Form
+                size="large"
+                onSubmit={handleSubmit(this.handleSignupClick)}
+              >
+                <Segment stacked>
+                  <Field
+                    name="username"
+                    label="Username"
+                    component={this.renderField}
+                  />
+                  <br />
+                  <Field
+                    name="email"
+                    label="Email"
+                    component={this.renderField}
+                  />
+                  <br />
+                  <Field
+                    name="password"
+                    label="Password"
+                    component={this.renderField}
+                  />
+
+                  <br />
+
+                  <Button
+                    color="teal"
+                    fluid
                     size="large"
-                    onSubmit={handleSubmit(this.handleSignupClick)}
+                    type="submit"
+                    loading={isLoading ? true : false}
                   >
-                    <Segment stacked>
-                      <Field
-                        name="username"
-                        label="Username"
-                        component={this.renderField}
-                      />
-                      <br />
-                      <Field
-                        name="email"
-                        label="Email"
-                        component={this.renderField}
-                      />
-                      <br />
-                      <Field
-                        name="password"
-                        label="Password"
-                        component={this.renderField}
-                      />
-                      <br />
-                      <Field
-                        name="password2"
-                        label="Confirm Password"
-                        component={this.renderField}
-                      />
-
-                      <br />
-
-                      <Button
-                        color="teal"
-                        fluid
-                        size="large"
-                        type="submit"
-                        loading={isLoading ? true : false}
-                      >
-                        Signup
-                      </Button>
-                    </Segment>
-                  </Form>
-                  <Message attached="bottom">
-                    Already have an account?
-                    <Button
-                      positive
-                      onClick={this.showLoginModal}
-                      disabled={buttonDisabled}
-                    >
-                      Login
-                    </Button>
-                  </Message>
-                </Grid.Column>
-              </Grid>
-            </Modal.Description>
-          </Modal.Content>
-        </Modal>
-      </div>
+                    Sign up
+                  </Button>
+                </Segment>
+              </Form>
+              <Message attached="bottom">
+                <StyledSpan>Already have an account?</StyledSpan>
+                <Button
+                  positive
+                  onClick={this.showLoginModal}
+                  disabled={buttonDisabled}
+                >
+                  Login
+                </Button>
+              </Message>
+            </Grid.Column>
+          </Grid>
+        </StyleContainer>
+      </Fragment>
     );
   }
 }
@@ -240,10 +201,6 @@ function validate(values) {
   }
   if (!values.password) {
     formErrors.password = "Enter a password";
-  }
-
-  if (!values.password2) {
-    formErrors.password2 = "Confirm your password";
   }
 
   if (!values.email) {
