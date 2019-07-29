@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 
-import LoginModal from "../components/userAuth/LoginModal";
+import LoginModal from "../components/userAuth/Login";
 
 import { Dimmer, Loader, Image } from "semantic-ui-react";
 

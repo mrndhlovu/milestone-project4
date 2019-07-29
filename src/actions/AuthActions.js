@@ -133,6 +133,8 @@ export const login = (username, password) => {
         dispatch(createMessage({ successMsg: "You are logged in!" }));
       },
       error => {
+        console.log(error.response);
+
         const errors = {
           errorAlert: error.response.data,
           status: error.response.status

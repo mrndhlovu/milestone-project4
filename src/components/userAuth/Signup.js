@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import { signup } from "../../actions/AuthActions";
-import LoginModal from "./LoginModal";
+import LoginModal from "./Login";
 
 import {
   Button,

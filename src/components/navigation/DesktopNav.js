@@ -5,8 +5,8 @@ import styled from "styled-components";
 
 import { Button, Container, Menu, Icon } from "semantic-ui-react";
 
-import LoginModal from "../userAuth/LoginModal";
-import SignupModal from "../userAuth/SignupModal";
+import LoginModal from "../userAuth/Login";
+import SignupModal from "../userAuth/Signup";
 import { logOut } from "../../actions/AuthActions";
 
 const StyledSpan = styled.span`
@@ -70,14 +70,15 @@ export class DesktopNav extends Component {
       </Button>
     ) : (
       <Fragment>
-        <Button inverted={!fixed} onClick={this.handleLoginClick}>
+        <Button inverted={!fixed} as={NavLink} to="/login">
           Log in
         </Button>
         <Button
           inverted={!fixed}
           primary={fixed}
           style={{ marginLeft: "0.5em" }}
-          onClick={this.handleSignupClick}
+          as={NavLink}
+          to="/signup"
         >
           Sign Up
         </Button>

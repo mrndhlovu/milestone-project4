@@ -7,8 +7,8 @@ import { logOut } from "../../actions/AuthActions";
 
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
-import LoginModal from "../userAuth/LoginModal";
-import SignupModal from "../userAuth/SignupModal";
+import LoginModal from "../userAuth/Login";
+import SignupModal from "../userAuth/Signup";
 
 const StyledSpan = styled.span`
   margin: 13px 0 0 auto;
