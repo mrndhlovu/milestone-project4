@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, NavLink } from "react-router-dom";
 import styled from "styled-components";
+
 import { connect } from "react-redux";
 
 import { logOut } from "../../actions/AuthActions";
 
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
-
-import LoginModal from "../userAuth/Login";
-import SignupModal from "../userAuth/Signup";
 
 const StyledSpan = styled.span`
   margin: 13px 0 0 auto;
@@ -25,8 +23,6 @@ export class MobileSideBar extends Component {
     };
 
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    this.handleSignupClick = this.handleSignupClick.bind(this);
-    this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleSidebarHide = this.handleSidebarHide.bind(this);
     this.renderUserLabel = this.renderUserLabel.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
@@ -38,13 +34,6 @@ export class MobileSideBar extends Component {
 
   handleToggle() {
     this.setState({ sidebarOpened: true });
-  }
-
-  handleSignupClick() {
-    this.setState({ showSignupModal: true });
-  }
-  handleLoginClick() {
-    this.setState({ showLoginModal: true });
   }
 
   handleLogoutClick() {
@@ -70,22 +59,19 @@ export class MobileSideBar extends Component {
       <Menu.Item onClick={this.handleLogoutClick}>Log out</Menu.Item>
     ) : (
       <Fragment>
-        <Menu.Item onClick={this.handleLoginClick}>Log in</Menu.Item>
-        <Menu.Item onClick={this.handleSignupClick}>Sign Up</Menu.Item>
+        <Menu.Item as={NavLink} to="/login">
+          Log in
+        </Menu.Item>
+        <Menu.Item as={NavLink} to="/signup">
+          Sign Up
+        </Menu.Item>
       </Fragment>
     );
   }
 
   render() {
-    const { sidebarOpened, showLoginModal, showSignupModal } = this.state;
+    const { sidebarOpened } = this.state;
     const { children } = this.props;
-
-    if (showLoginModal) {
-      return <LoginModal />;
-    }
-    if (showSignupModal) {
-      return <SignupModal />;
-    }
 
     return (
       <div>

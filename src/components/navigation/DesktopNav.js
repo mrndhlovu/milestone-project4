@@ -5,8 +5,6 @@ import styled from "styled-components";
 
 import { Button, Container, Menu, Icon } from "semantic-ui-react";
 
-import LoginModal from "../userAuth/Login";
-import SignupModal from "../userAuth/Signup";
 import { logOut } from "../../actions/AuthActions";
 
 const StyledSpan = styled.span`
@@ -18,8 +16,6 @@ export class DesktopNav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLoginModal: false,
-      showSignupModal: false,
       fixed: false,
       isActive: {
         features: false,
@@ -110,14 +106,8 @@ export class DesktopNav extends Component {
   }
 
   render() {
-    const { showLoginModal, showSignupModal, fixed, isActive } = this.state;
+    const { fixed, isActive } = this.state;
 
-    if (showLoginModal) {
-      return <LoginModal />;
-    }
-    if (showSignupModal) {
-      return <SignupModal />;
-    }
     return (
       <div>
         <Menu
