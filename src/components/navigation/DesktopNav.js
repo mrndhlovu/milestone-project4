@@ -52,7 +52,7 @@ export class DesktopNav extends Component {
   }
 
   handleLogoutClick() {
-    this.props.logOut(this.props.userAuth.sessionToken);
+    this.props.logOut();
   }
 
   renderNavButtons() {

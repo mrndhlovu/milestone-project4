@@ -17,8 +17,8 @@ import {
 import { fetchData, createMessage, errorsAlert } from "./index";
 
 function authStart() {
-  const sessionCheck = localStorage.getItem("sessionLife");
-  if (sessionCheck) {
+  const sessionLife = localStorage.getItem("sessionLife");
+  if (sessionLife) {
     return {
       type: USER_AUTH_START
     };
@@ -59,7 +59,7 @@ function checkSessionTime(sessionLife) {
     dispatch => {
       setTimeout(() => {
         dispatch(logOut());
-      }, sessionLife * 1000);
+      }, sessionLife);
     },
     error => {}
   );
@@ -78,6 +78,16 @@ function receivedUser(user) {
   };
 }
 
+// create session if auth response is successfull
+function createSession(sessionToken, sessionLife) {
+  localStorage.setItem("sessionToken", sessionToken);
+  localStorage.setItem("sessionLife", sessionLife);
+  return dispatch => {
+    dispatch(checkSessionTime(1800));
+  };
+}
+
+// Start user auth create a seesion and fetch user
 export const startAuth = () => {
   return dispatch => {
     dispatch(authStart());
@@ -86,35 +96,28 @@ export const startAuth = () => {
   };
 };
 
+// Check auth state, if there is no token, log user out else create a 30 min session
+// count down if auth state is not reset in 30min dispatch logout, if reset create a new 30min session
 export const authState = () => {
   return dispatch => {
     const sessionToken = localStorage.getItem("sessionToken");
-    if (sessionToken == null) {
-      dispatch(authLogout());
-    } else {
-      // session will last for 30mins if the app is not in use
-      const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
-      if (sessionLife <= new Date()) {
-        dispatch(authLogout());
-        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
-      } else {
-        dispatch(fetchUser());
-        dispatch(authSuccess(sessionToken));
-        const timeNow = new Date();
-        const sessionLifeSpan =
-          (sessionLife.getTime() - new Date(timeNow).getTime()) / 1000;
-        dispatch(checkSessionTime(sessionLifeSpan));
-      }
-    }
-  };
-};
+    const sessionSpan = localStorage.getItem("sessionLife");
 
-// create session
-export const createSession = (sessionToken, sessionLife) => {
-  localStorage.setItem("sessionToken", sessionToken);
-  localStorage.setItem("sessionLife", sessionLife);
-  return dispatch => {
-    dispatch(checkSessionTime(1800));
+    // session will last for 30mins if the app is not in use
+    const sessionLife = new Date(sessionSpan);
+
+    if (sessionLife <= new Date()) {
+      dispatch(authLogout());
+      dispatch(checkSessionTime(sessionLife));
+    } else {
+      dispatch(fetchUser());
+      dispatch(authSuccess(sessionToken));
+
+      const sessionLifeSpan =
+        (sessionLife.getTime() - new Date().getTime()) / 1000;
+
+      dispatch(checkSessionTime(sessionLifeSpan));
+    }
   };
 };
 
@@ -124,7 +127,7 @@ export const login = (username, password) => {
     requestLogin(username, password).then(
       response => {
         const sessionToken = response.data.token;
-        const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
+        const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
         dispatch(authSuccess(sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
         dispatch(createMessage({ successMsg: "You are logged in!" }));
@@ -141,38 +144,29 @@ export const login = (username, password) => {
   };
 };
 
-export const fetchUser = sessionToken => {
-  return dispatch => {
-    dispatch(fetchingUser());
-    requestUser(sessionToken).then(
-      response => {
-        dispatch(receivedUser(response.data));
-      },
-      error => {
-        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
+// Check if there a session token to use for logout, if there is proceed if logout is successful on the server the delete localstorage
+
+export const logOut = () => {
+  const token = localStorage.getItem("sessionToken");
+  return token
+    ? dispatch => {
+        dispatch(authLogout());
+        requestLogout(token).then(response => {
+          localStorage.removeItem("sessionToken");
+          localStorage.removeItem("sessionLife");
+          dispatch(
+            createMessage({
+              successMsg: "You have successfully logged out!"
+            })
+          );
+        });
       }
-    );
-  };
+    : dispatch => {
+        return null;
+      };
 };
 
-export const logOut = sessionToken => {
-  return dispatch => {
-    dispatch(authLogout());
-    requestLogout(sessionToken).then(
-      () => {
-        localStorage.removeItem("sessionToken");
-        localStorage.removeItem("sessionLife");
-        dispatch(
-          createMessage({ successMsg: "You have successfully logged out!" })
-        );
-      },
-      error => {
-        dispatch(createMessage({ errorMsg: "Error Logging Out" }));
-      }
-    );
-  };
-};
-
+// Request sign up, if response is successfull create a session
 export const signup = inputs => {
   return dispatch => {
     dispatch(fetchData());
@@ -193,6 +187,21 @@ export const signup = inputs => {
         };
         dispatch(errorsAlert(errors));
         dispatch(authFail(error));
+      }
+    );
+  };
+};
+
+//  Fetch logged in user details
+export const fetchUser = sessionToken => {
+  return dispatch => {
+    dispatch(fetchingUser());
+    requestUser(sessionToken).then(
+      response => {
+        dispatch(receivedUser(response.data));
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
       }
     );
   };

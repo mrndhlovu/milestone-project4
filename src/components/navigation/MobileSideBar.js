@@ -48,7 +48,7 @@ export class MobileSideBar extends Component {
   }
 
   handleLogoutClick() {
-    this.props.logOut(this.props.userAuth.sessionToken);
+    this.props.logOut();
     window.location.reload();
   }
 

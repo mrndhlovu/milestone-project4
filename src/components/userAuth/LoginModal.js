@@ -118,7 +118,7 @@ class LoginModal extends Component {
         // Wait for server response then reload
         setTimeout(function() {
           window.location.reload();
-        }, 2000);
+        }, 1000);
       }
     }
   }
