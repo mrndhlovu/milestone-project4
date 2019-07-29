@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import Products from "./components/Products";
+import Products from "./components/ecommerce/Products";
 import Home from "./components/home/Home";
-import Pricing from "./components/Pricing";
+import Pricing from "./components/ecommerce/Pricing";
 import TicketsList from "./components/tickets/TicketsList";
 import TicketDetail from "./components/tickets/TicketDetail";
 import CreateTicket from "./components/tickets/CreateTicket";

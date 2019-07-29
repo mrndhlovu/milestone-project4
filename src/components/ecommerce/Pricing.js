@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-import HeadingImage from "../components/home/HeadingImage";
+import HeadingImage from "../home/HeadingImage";
 
 import {
   Button,

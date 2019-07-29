@@ -37,7 +37,7 @@ export class TicketsList extends Component {
     const { ticketsList } = this.props;
 
     return ticketsList.map(ticket => {
-      const { title, subject, id, created_at, slug, created_by } = ticket;
+      const { title, subject, id, created_at, slug } = ticket;
 
       const date = new Date(created_at);
       const wholeDate =
