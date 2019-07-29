@@ -112,7 +112,7 @@ export function authState() {
       const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
       if (sessionLife <= new Date()) {
         dispatch(authLogout());
-        dispatch(createMessage({ message: "Session expired, Login again!" }));
+        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
       } else {
         dispatch(fetchUser());
         dispatch(authSuccess(sessionToken));
@@ -143,7 +143,7 @@ export const login = (username, password) => {
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
         dispatch(authSuccess(sessionToken));
         dispatch(creatSession(sessionToken, sessionLife));
-        dispatch(createMessage({ message: "You are logged in!" }));
+        dispatch(createMessage({ successMsg: "You are logged in!" }));
       },
       error => {
         const errors = {
@@ -178,7 +178,7 @@ export const fetchUser = sessionToken => {
         dispatch(receivedUser(response.data));
       },
       error => {
-        dispatch(createMessage({ message: "Username not found" }));
+        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
       }
     );
   };
@@ -192,11 +192,11 @@ export const logOut = sessionToken => {
         localStorage.removeItem("sessionToken");
         localStorage.removeItem("sessionLife");
         dispatch(
-          createMessage({ message: "You have successfully logged out!" })
+          createMessage({ successMsg: "You have successfully logged out!" })
         );
       },
       error => {
-        dispatch(createMessage({ message: "Error Logging Out" }));
+        dispatch(createMessage({ errorMsg: "Error Logging Out" }));
       }
     );
   };
@@ -221,7 +221,7 @@ export function signup(inputs) {
         const sessionToken = response.data.token;
         const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
         dispatch(
-          createMessage({ message: "You have successfully signed up!" })
+          createMessage({ successMsg: "You have successfully signed up!" })
         );
         dispatch(authSuccess(sessionToken));
         dispatch(creatSession(sessionToken, sessionLife));

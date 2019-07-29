@@ -5,10 +5,7 @@ import { connect } from "react-redux";
 export class Alerts extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      successMessage: "",
-      errorMessage: ""
-    };
+    this.state = {};
   }
   componentDidUpdate(prevProps) {
     const { errorAlert, alert, messages } = this.props;
@@ -34,9 +31,9 @@ export class Alerts extends Component {
       }
     }
     if (messages !== prevProps.messages) {
-      if (messages.messageCreated) {
-        alert.success(` ${messages.messageCreated.message}`);
-      }
+      messages.successMsg
+        ? alert.success(` ${messages.successMsg.successMsg}`)
+        : alert.error(` ${messages.errorMsg.errorMsg}`);
     }
   }
   render() {

@@ -3,13 +3,19 @@ import { CREATE_MESSAGE } from "../actions/ActionTypes";
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
 
 const initialState = {
-  messageCreated: ""
+  errorMsg: "",
+  successMsg: ""
 };
 
 const withMessage = (state, action) => {
-  return checkObjectUpdate(state, {
-    messageCreated: action.payload
-  });
+  const { successMsg } = action;
+  return successMsg
+    ? checkObjectUpdate(state, {
+        successMsg: action.payload
+      })
+    : checkObjectUpdate(state, {
+        errorMsg: action.payload
+      });
 };
 
 export default function(state = initialState, action) {
