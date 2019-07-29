@@ -7,7 +7,7 @@ import { Button, Container, Menu, Icon } from "semantic-ui-react";
 
 import LoginModal from "../userAuth/LoginModal";
 import SignupModal from "../userAuth/SignupModal";
-import { logOut } from "../../actions/index";
+import { logOut } from "../../actions/AuthActions";
 
 const StyledSpan = styled.span`
   color: green;

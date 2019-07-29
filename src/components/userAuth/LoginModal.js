@@ -4,7 +4,7 @@ import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
 
 import styled from "styled-components";
-import { login } from "../../actions/index";
+import { login } from "../../actions/AuthActions";
 import SignupModal from "./SignupModal";
 
 import {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-import { requestTicketsDetail } from "../../actions/index";
+import { requestTicketsDetail } from "../../actions/TicketActions";
 
 import {
   Container,

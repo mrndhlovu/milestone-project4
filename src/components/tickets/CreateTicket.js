@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 
 import { Button, Form, Message, Container } from "semantic-ui-react";
 
-import { createTicket } from "../../actions/index";
+import { createTicket } from "../../actions/TicketActions";
 
 // const TICKET_PRORITY_LEVELS = [
 //   { key: "LOW", value: "lw", text: "LOW" },

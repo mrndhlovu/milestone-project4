@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { logOut } from "../../actions/index";
+import { logOut } from "../../actions/AuthActions";
 
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 

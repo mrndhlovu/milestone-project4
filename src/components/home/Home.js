@@ -11,7 +11,7 @@ import {
   Segment
 } from "semantic-ui-react";
 
-import { logOut } from "../../actions/index";
+import { logOut } from "../../actions/AuthActions";
 
 import HeadingImage from "./HeadingImage";
 

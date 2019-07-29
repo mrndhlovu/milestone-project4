@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import MobileViewContainer from "./MobileViewContainer";
 import DesktopViewContainer from "./DesktopViewContainer";
-import { authState } from "../actions/index";
+import { authState } from "../actions/AuthActions";
 import NavFooter from "../components/navigation/NavFooter";
 
 import { Segment } from "semantic-ui-react";

@@ -15,7 +15,7 @@ import {
   Divider
 } from "semantic-ui-react";
 
-import { fetchTicketsList } from "../../actions/index";
+import { fetchTicketsList } from "../../actions/TicketActions";
 import HeadingImage from "../home/HeadingImage";
 
 export class TicketsList extends Component {

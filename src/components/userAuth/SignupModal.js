@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
-import { signup } from "../../actions/index";
+import { signup } from "../../actions/AuthActions";
 import LoginModal from "./LoginModal";
 
 import {
