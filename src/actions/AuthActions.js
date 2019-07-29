@@ -3,11 +3,8 @@ import {
   USER_AUTH_LOGOUT,
   USER_AUTH_START,
   USER_AUTH_SUCCESS,
-  GET_ERRORS,
-  CREATE_MESSAGE,
   FETCHING_USER,
-  RECEIVED_USER,
-  FETCHING_DATA
+  RECEIVED_USER
 } from "./ActionTypes";
 
 import {
@@ -17,13 +14,9 @@ import {
   requestUser
 } from "../apis/apiRequests";
 
-export function fetchData() {
-  return {
-    type: FETCHING_DATA
-  };
-}
+import { fetchData, createMessage, errorsAlert } from "./index";
 
-export const authStart = () => {
+function authStart() {
   const sessionCheck = localStorage.getItem("sessionLife");
   if (sessionCheck) {
     return {
@@ -34,47 +27,56 @@ export const authStart = () => {
       type: USER_AUTH_FAIL
     };
   }
-};
+}
 
-export const authSuccess = sessionToken => {
+function authSuccess(sessionToken) {
   return {
     type: USER_AUTH_SUCCESS,
     payload: sessionToken
   };
-};
-
-export const authFail = error => {
+}
+function authFail(error) {
   return {
     type: USER_AUTH_FAIL,
     error
   };
-};
+}
 
-export const authLogout = () => {
+function authLogout() {
   return {
     type: USER_AUTH_LOGOUT
   };
-};
+}
 
-export const checkSession = () => {
+function checkSession() {
   return {
     type: USER_AUTH_FAIL
   };
-};
+}
 
-export const errorsAlert = errors => {
-  return {
-    type: GET_ERRORS,
-    payload: errors
-  };
-};
+function checkSessionTime(sessionLife) {
+  return (
+    dispatch => {
+      setTimeout(() => {
+        dispatch(logOut());
+      }, sessionLife * 1000);
+    },
+    error => {}
+  );
+}
 
-export const createMessage = message => {
+function fetchingUser() {
   return {
-    type: CREATE_MESSAGE,
-    payload: message
+    type: FETCHING_USER
   };
-};
+}
+
+function receivedUser(user) {
+  return {
+    type: RECEIVED_USER,
+    payload: user
+  };
+}
 
 export const startAuth = () => {
   return dispatch => {
@@ -108,7 +110,7 @@ export const authState = () => {
 };
 
 // create session
-export const creatSession = (sessionToken, sessionLife) => {
+export const createSession = (sessionToken, sessionLife) => {
   localStorage.setItem("sessionToken", sessionToken);
   localStorage.setItem("sessionLife", sessionLife);
   return dispatch => {
@@ -124,7 +126,7 @@ export const login = (username, password) => {
         const sessionToken = response.data.token;
         const sessionLife = new Date(new Date().getTime() + 3600 * 1000);
         dispatch(authSuccess(sessionToken));
-        dispatch(creatSession(sessionToken, sessionLife));
+        dispatch(createSession(sessionToken, sessionLife));
         dispatch(createMessage({ successMsg: "You are logged in!" }));
       },
       error => {
@@ -136,19 +138,6 @@ export const login = (username, password) => {
         dispatch(authFail(error));
       }
     );
-  };
-};
-
-export const fetchingUser = () => {
-  return {
-    type: FETCHING_USER
-  };
-};
-
-export const receivedUser = user => {
-  return {
-    type: RECEIVED_USER,
-    payload: user
   };
 };
 
@@ -184,17 +173,6 @@ export const logOut = sessionToken => {
   };
 };
 
-export const checkSessionTime = sessionLife => {
-  return (
-    dispatch => {
-      setTimeout(() => {
-        dispatch(logOut());
-      }, sessionLife * 1000);
-    },
-    error => {}
-  );
-};
-
 export const signup = inputs => {
   return dispatch => {
     dispatch(fetchData());
@@ -206,7 +184,7 @@ export const signup = inputs => {
           createMessage({ successMsg: "You have successfully signed up!" })
         );
         dispatch(authSuccess(sessionToken));
-        dispatch(creatSession(sessionToken, sessionLife));
+        dispatch(createSession(sessionToken, sessionLife));
       },
       error => {
         const errors = {

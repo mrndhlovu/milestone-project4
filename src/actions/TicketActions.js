@@ -1,12 +1,9 @@
 import {
   RECEIVE_TICKETS_LIST,
-  FETCHING_DATA,
   CREATE_TICKET,
   RECEIVE_TICKET,
   RECEIVE_TICKET_DETAIL,
-  FETCH_TICKET_DETAIL,
-  GET_ERRORS,
-  CREATE_MESSAGE
+  FETCH_TICKET_DETAIL
 } from "./ActionTypes";
 
 import {
@@ -15,21 +12,45 @@ import {
   fetchTicketDetail
 } from "../apis/apiRequests";
 
-export function fetchData() {
-  return {
-    type: FETCHING_DATA
-  };
-}
+import { fetchData, errorsAlert } from "./index";
 
-export const receivedTicketsList = response => {
+function receivedTicketsList(response) {
   return {
     type: RECEIVE_TICKETS_LIST,
     payload: response
   };
-};
+}
+
+function fetchTicket(response) {
+  return {
+    type: FETCH_TICKET_DETAIL,
+    payload: response
+  };
+}
+
+function receiveTicketDetail(response) {
+  return {
+    type: RECEIVE_TICKET_DETAIL,
+    payload: response
+  };
+}
+
+function creatingTicket(response) {
+  return {
+    type: CREATE_TICKET,
+    payload: response
+  };
+}
+
+function receiveTicket(response) {
+  return {
+    type: RECEIVE_TICKET,
+    payload: response
+  };
+}
 
 // fetch tickets list
-export function fetchTicketsList() {
+export const fetchTicketsList = () => {
   return dispatch => {
     dispatch(fetchData());
     requestTicketsList().then(
@@ -45,30 +66,9 @@ export function fetchTicketsList() {
       }
     );
   };
-}
-
-export const creatingTicket = response => {
-  return {
-    type: CREATE_TICKET,
-    payload: response
-  };
 };
 
-export const receiveTicket = response => {
-  return {
-    type: RECEIVE_TICKET,
-    payload: response
-  };
-};
-
-export const errorsAlert = errors => {
-  return {
-    type: GET_ERRORS,
-    payload: errors
-  };
-};
-
-export function createTicket(data) {
+export const createTicket = data => {
   return dispatch => {
     dispatch(creatingTicket());
     requestCreateTicket(data).then(
@@ -84,23 +84,9 @@ export function createTicket(data) {
       }
     );
   };
-}
-
-export const fetchTicket = response => {
-  return {
-    type: FETCH_TICKET_DETAIL,
-    payload: response
-  };
 };
 
-export const receiveTicketDetail = response => {
-  return {
-    type: RECEIVE_TICKET_DETAIL,
-    payload: response
-  };
-};
-
-export function requestTicketsDetail(id) {
+export const requestTicketsDetail = id => {
   return dispatch => {
     dispatch(fetchTicket());
     fetchTicketDetail(id).then(
@@ -115,12 +101,5 @@ export function requestTicketsDetail(id) {
         dispatch(errorsAlert(errors));
       }
     );
-  };
-}
-
-export const createMessage = message => {
-  return {
-    type: CREATE_MESSAGE,
-    payload: message
   };
 };
