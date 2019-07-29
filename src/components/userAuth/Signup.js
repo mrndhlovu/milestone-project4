@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router";
 import { reduxForm, Field } from "redux-form";
 
 import styled from "styled-components";
@@ -111,11 +112,18 @@ class SignupModal extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const {
+      handleSubmit,
+      authState: { isAuthenticated }
+    } = this.props;
     const { buttonDisabled, isLoading } = this.state;
     const {
       errors: { email, password, username, other }
     } = this.state;
+
+    if (isAuthenticated) {
+      return <Redirect to="/" />;
+    }
 
     return (
       <Fragment>

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
+import { Redirect } from "react-router";
 
 import styled from "styled-components";
 import { login } from "../../actions/AuthActions";
@@ -37,8 +38,6 @@ class LoginModal extends Component {
 
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.renderField = this.renderField.bind(this);
-
-    console.log(props);
   }
 
   // request a login, and redirect to home page
@@ -102,12 +101,18 @@ class LoginModal extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const {
+      handleSubmit,
+      auth: { isAuthenticated }
+    } = this.props;
     const {
       isLoading,
-
       errors: { signInError }
     } = this.state;
+
+    if (isAuthenticated) {
+      return <Redirect to="/" />;
+    }
 
     return (
       <Fragment>
@@ -116,7 +121,12 @@ class LoginModal extends Component {
             Login
           </Header>
           {signInError ? (
-            <Message size="small" error header="Sign up error: " />
+            <Message
+              size="small"
+              error
+              header="Sign up error: "
+              list={[signInError]}
+            />
           ) : null}
           <Grid textAlign="center" verticalAlign="middle">
             <Grid.Column style={{ maxWidth: 500 }}>

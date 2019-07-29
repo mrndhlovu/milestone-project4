@@ -1,8 +1,6 @@
 import React, { Fragment } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-
-import LoginModal from "../components/userAuth/Login";
 
 import { Dimmer, Loader, Image } from "semantic-ui-react";
 
@@ -12,7 +10,7 @@ const AuthRouteCheck = ({ component: Component, auth, ...rest }) => (
     render={props => {
       const { isLoading, isAuthenticated } = auth;
       return !isAuthenticated ? (
-        <LoginModal />
+        <Redirect to="/login" />
       ) : isLoading ? (
         <Fragment>
           <Dimmer active inverted>
