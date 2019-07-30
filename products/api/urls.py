@@ -1,10 +1,7 @@
-from .api import ProductsAPI
-from knox import views as knox_views
-from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import ProductViewSet
 
+router = DefaultRouter()
+router.register(r'', ProductViewSet, base_name='products'),
 
-urlpatterns = [
-    path('api/auth', include('knox.urls')),
-    path('api/auth/products', ProductsAPI.as_view()),
-    path('api/auth/logout', knox_views.LogoutView.as_view(), name='knox_logout')
-]
+urlpatterns = router.urls
