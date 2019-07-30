@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
     'tickets',
     'accounts',
-    'ecommerce',
+    'products',
 
 
     # 'rest_framework.authtoken',
