@@ -13,5 +13,5 @@ class TicketViewSet(viewsets.ModelViewSet):
         instance = super().restore_object(attrs, instance)
 
         request = self.context.get('request', None)
-        setattr(instance, 'created_by', request.user)
+        setattr(instance, 'created_by', request.user.username)
         return instance
