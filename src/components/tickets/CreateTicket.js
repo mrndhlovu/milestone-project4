@@ -55,10 +55,6 @@ export class CreateTicket extends Component {
   }
 
   handleSubmitClick(values) {
-    const body = JSON.stringify({ values });
-    console.log(body);
-
-    this.setState({ isLoading: true });
     this.props.createTicket(values);
   }
 
@@ -152,11 +148,12 @@ export class CreateTicket extends Component {
           />
           <Field
             {...field}
-            name="prority"
+            name="prority_level"
             label="Priority"
             component="select"
             placeholder="Priority"
           >
+            <option value="">Select priority level</option>
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
@@ -197,7 +194,7 @@ function validate(values) {
   if (!values.subject) {
     formErrors.subject = "Enter a subject";
   }
-  if (!values.prority) {
+  if (!values.prority_level) {
     formErrors.priority = "Enter a priotrity level";
   }
 

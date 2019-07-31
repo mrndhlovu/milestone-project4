@@ -17,8 +17,8 @@ class Ticket(models.Model):
     title = models.CharField(max_length=120)
     subject = models.CharField(max_length=120)
     description = models.TextField()
-    prority = models.CharField(
-        max_length=6, choices=PRIORITY_LEVELS, )
+    prority_level = models.CharField(
+        max_length=6, choices=PRIORITY_LEVELS, default='low')
     in_progress = models.BooleanField(default=False)
     slug = models.SlugField(blank=True)
     owner = models.ForeignKey(
