@@ -57,29 +57,44 @@ class SignupModal extends Component {
       authState: { isAuthenticated }
     } = this.props;
     const { errors } = this.state;
+    console.log("Error alert: ", errorAlert);
 
     if (errorAlert !== prevProps.errorAlert) {
-      if (errorAlert.alertMsg.email) {
+      if (errorAlert.alertMsg.errorAlert.email) {
         this.setState({
-          errors: { ...errors, email: errorAlert.alertMsg.email }
+          isLoading: false,
+          errors: { ...errors, email: errorAlert.alertMsg.errorAlert.email }
         });
       }
-      if (errorAlert.alertMsg.password) {
+      if (errorAlert.alertMsg.errorAlertpassword) {
         this.setState({
-          errors: { ...errors, password: errorAlert.alertMsg.password }
+          isLoading: false,
+          errors: {
+            ...errors,
+            password: errorAlert.alertMsg.errorAlert.password
+          }
         });
       }
 
-      if (errorAlert.alertMsg.username) {
-        this.setState({
-          errors: { ...errors, username: errorAlert.alertMsg.username }
-        });
-      }
-      if (errorAlert.alertMsg.non_field_errors) {
+      // if (errorAlert.alertMsg.errorAlert.detail) {
+      //   alert.error(`Error: ${errorAlert.alertMsg.errorAlert.detail}`);
+      // }
+
+      if (errorAlert.alertMsg.errorAlert.username) {
         this.setState({
           errors: {
+            isLoading: false,
             ...errors,
-            other: errorAlert.alertMsg.non_field_errors.join()
+            username: errorAlert.alertMsg.errorAlert.username
+          }
+        });
+      }
+      if (errorAlert.alertMsg.errorAlert.non_field_errors) {
+        this.setState({
+          isLoading: false,
+          errors: {
+            ...errors,
+            other: errorAlert.alertMsg.errorAlert.non_field_errors.join()
           }
         });
       }
@@ -131,16 +146,17 @@ class SignupModal extends Component {
           <Header as="h3" color="teal" textAlign="center" centered="false">
             Create an Unicorn account
           </Header>
-          {email || password || username || other ? (
-            <Message
-              size="small"
-              error
-              header="Sign up error: "
-              list={[email, password, username, other]}
-            />
-          ) : null}
+
           <Grid textAlign="center" verticalAlign="middle">
             <Grid.Column style={{ maxWidth: 500 }}>
+              {email || password || username || other ? (
+                <Message
+                  size="small"
+                  error
+                  header="Sign up error: "
+                  content={email || password || username || other}
+                />
+              ) : null}
               <Form
                 size="large"
                 onSubmit={handleSubmit(this.handleSignupClick)}
