@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
 
-import { Button, Form, Message, Container, Dropdown } from "semantic-ui-react";
+import { Button, Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
 
@@ -17,7 +17,8 @@ export class CreateTicket extends Component {
         subject: "",
         slug: "",
         other: "",
-        description: ""
+        description: "",
+        owner: ""
       }
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
@@ -87,18 +88,28 @@ export class CreateTicket extends Component {
         });
       }
 
+      if (errorAlert.alertMsg.errorAlert.owner) {
+        this.setState({
+          isLoading: false,
+          errors: {
+            ...errors,
+            owner: errorAlert.alertMsg.errorAlert.owner.join()
+          }
+        });
+      }
+
       if (errorAlert.alertMsg.description) {
         this.setState({
           isLoading: false,
           errors: { ...errors, description: errorAlert.alertMsg.description }
         });
       }
-      if (errorAlert.alertMsg) {
+      if (errorAlert.alertMsg.errorAlert) {
         this.setState({
           isLoading: false,
           errors: {
             ...errors,
-            other: errorAlert.alertMsg
+            other: errorAlert.alertMsg.errorAlert
           }
         });
       }
@@ -112,7 +123,8 @@ export class CreateTicket extends Component {
   render() {
     const { handleSubmit, field } = this.props;
     const {
-      errors: { subject, title, description, slug, other },
+      errors: { subject, title, description, slug, other, owner },
+      errors,
       isLoading
     } = this.state;
 
@@ -122,12 +134,16 @@ export class CreateTicket extends Component {
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
         />
-        {subject || title || description || other || slug ? (
+        {subject || title || description || other || slug || owner ? (
           <Message
             size="small"
             error
-            header="Sign up error: "
-            content={subject || title || description || slug || other}
+            header="Error creating ticket: "
+            content={
+              subject || title || description || other || slug || owner
+                ? owner
+                : null
+            }
           />
         ) : null}
         <Form

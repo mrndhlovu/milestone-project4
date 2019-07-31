@@ -57,7 +57,6 @@ class SignupModal extends Component {
       authState: { isAuthenticated }
     } = this.props;
     const { errors } = this.state;
-    console.log("Error alert: ", errorAlert);
 
     if (errorAlert !== prevProps.errorAlert) {
       if (errorAlert.alertMsg.errorAlert.email) {
