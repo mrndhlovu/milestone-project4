@@ -9,7 +9,7 @@ const initialState = {
 
 const withErrorAlert = (state, action) => {
   return checkObjectUpdate(state, {
-    alertMsg: action.payload.errorAlert,
+    alertMsg: action.payload,
     status: action.payload.status
   });
 };

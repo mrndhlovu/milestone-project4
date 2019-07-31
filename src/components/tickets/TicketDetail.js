@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { requestTicketsDetail } from "../../actions/TicketActions";
 
@@ -63,7 +63,7 @@ export class TicketDetail extends Component {
             color="blue"
             size="tiny"
             floated="right"
-            as={NavLink}
+            as={Link}
             to="/create-ticket"
           >
             Create a ticket

@@ -9,13 +9,19 @@ export class Alerts extends Component {
   }
   componentDidUpdate(prevProps) {
     const { errorAlert, alert, messages } = this.props;
+
     if (errorAlert !== prevProps.errorAlert) {
-      if (errorAlert.alertMsg.non_field_errors) {
-        alert.error(`Error: ${errorAlert.alertMsg.non_field_errors.join()}`);
+      if (errorAlert.alertMsg.errorAlert.non_field_errors) {
+        alert.error(
+          `Error: ${errorAlert.alertMsg.errorAlert.non_field_errors.join()}`
+        );
       }
-      // if (errorAlert.alertMsg) {
-      //   alert.error(`Error: ${errorAlert.alertMsg}`);
-      // }
+      if (errorAlert.non_field_errors) {
+        alert.error(`Error: ${errorAlert.non_field_errors.join()}`);
+      }
+      if (errorAlert.alertMsg.errorAlert.detail) {
+        alert.error(`Error: ${errorAlert.alertMsg.errorAlert.detail}`);
+      }
 
       if (errorAlert.alertMsg.email) {
         alert.error(`Error: ${errorAlert.alertMsg.email}`);

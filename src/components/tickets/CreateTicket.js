@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
 
-import { Button, Form, Message, Container } from "semantic-ui-react";
+import { Button, Form, Message, Container, Select } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
 
-// const TICKET_PRORITY_LEVELS = [
-//   { key: "LOW", value: "lw", text: "LOW" },
-//   { key: "MEDIUM", value: "md", text: "MEDIUM" },
-//   { key: "HIGH", value: "hg", text: "HIGH" }
-// ];
+const TICKET_PRORITY_LEVELS = [
+  { value: "l", text: "Low" },
+  { value: "m", text: "Medium" },
+  { value: "h", text: "High" }
+];
 
 export class CreateTicket extends Component {
   constructor(props) {
@@ -27,6 +27,7 @@ export class CreateTicket extends Component {
       }
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   renderField(field) {
@@ -49,7 +50,7 @@ export class CreateTicket extends Component {
       <Fragment>
         <Form.Input
           color="red"
-          {...field.input}
+          {...field}
           icon="pencil alternate"
           placeholder={field.label}
           autoComplete={field.name}
@@ -63,6 +64,37 @@ export class CreateTicket extends Component {
   handleSubmitClick(values) {
     this.props.createTicket(values);
   }
+
+  onChange(event) {
+    console.log(event);
+
+    if (this.props.field.input.onChange && event != null) {
+      return this.props.field.input.onChange(event.value);
+    } else {
+      return this.props.field.input.onChange(null);
+    }
+  }
+
+  RenderSelectInput = field => {
+    const {
+      meta: { touched, error }
+    } = field;
+    console.log(field.input);
+    return (
+      <Fragment>
+        <Form.Input>
+          <Select
+            options={TICKET_PRORITY_LEVELS}
+            {...field.input}
+            placeholder={field.label}
+            value={TICKET_PRORITY_LEVELS.text}
+            onChange={value => field.input.onChange(value)}
+            error={touched && error ? error : null}
+          />
+        </Form.Input>
+      </Fragment>
+    );
+  };
 
   componentDidUpdate(prevProps) {
     const {
@@ -86,6 +118,11 @@ export class CreateTicket extends Component {
       if (errorAlert.alertMsg.password2) {
         this.setState({
           errors: { ...errors, slug: errorAlert.alertMsg.slug }
+        });
+      }
+      if (errorAlert.alertMsg.priority) {
+        this.setState({
+          errors: { ...errors, priority: errorAlert.alertMsg.priority }
         });
       }
 
@@ -150,7 +187,7 @@ export class CreateTicket extends Component {
           <Field
             name="priority_level"
             label="Priority"
-            component={this.renderField}
+            component={this.RenderSelectInput}
           />
           <br />
           <div style={{ paddingTop: 10 }}>
@@ -171,6 +208,7 @@ const mapStateToProps = state => {
 };
 
 function validate(values) {
+  console.log("Form values: ", values);
   const formErrors = {};
   if (!values.slug) {
     formErrors.slug = "Enter a slug";
@@ -185,8 +223,8 @@ function validate(values) {
   if (!values.subject) {
     formErrors.subject = "Enter a subject";
   }
-  if (!values.priority_level) {
-    formErrors.priority_level = "Enter a priotrity level";
+  if (!values.priority) {
+    formErrors.priority = "Enter a priotrity level";
   }
 
   return formErrors;

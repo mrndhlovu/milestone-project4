@@ -91,6 +91,15 @@ class LoginModal extends Component {
           }
         });
       }
+      if (errorAlert.alertMsg.errorAlert.non_field_errors) {
+        this.setState({
+          isLoading: false,
+          errors: {
+            ...errors,
+            signInError: errorAlert.alertMsg.errorAlert.non_field_errors
+          }
+        });
+      }
     }
     if (isAuthenticated) {
       // refresh page and keep the use on the on the protected component
@@ -120,16 +129,17 @@ class LoginModal extends Component {
           <Header as="h3" color="teal" textAlign="center" centered="false">
             Login
           </Header>
-          {signInError ? (
-            <Message
-              size="small"
-              error
-              header="Sign up error: "
-              list={[signInError]}
-            />
-          ) : null}
+
           <Grid textAlign="center" verticalAlign="middle">
             <Grid.Column style={{ maxWidth: 500 }}>
+              {signInError ? (
+                <Message
+                  size="small"
+                  error
+                  header="Sign up error: "
+                  content={signInError}
+                />
+              ) : null}
               <Form size="large" onSubmit={handleSubmit(this.handleLoginClick)}>
                 <Segment stacked>
                   <Field

@@ -11,8 +11,6 @@ export async function requestTicketsList() {
   return axios.get(`${baseUrl}/tickets/`);
 }
 
-console.log(requestProductsList());
-
 export async function requestProductsList() {
   return axios.get(`${baseUrl}/products/`);
 }

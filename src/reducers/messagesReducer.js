@@ -8,13 +8,14 @@ const initialState = {
 };
 
 const withMessage = (state, action) => {
-  const { successMsg } = action;
-  return successMsg
+  const { payload } = action;
+
+  return payload
     ? checkObjectUpdate(state, {
-        successMsg: action.payload
+        successMsg: payload
       })
     : checkObjectUpdate(state, {
-        errorMsg: action.payload
+        errorMsg: payload
       });
 };
 
