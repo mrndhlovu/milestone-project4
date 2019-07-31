@@ -77,7 +77,7 @@ export const createTicket = data => {
       },
       error => {
         const errors = {
-          errorAlert: error.response.data.detail,
+          errorAlert: error.response.data,
           status: error.response.status
         };
         dispatch(errorsAlert(errors));

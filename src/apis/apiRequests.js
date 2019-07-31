@@ -23,9 +23,7 @@ export async function requestUser() {
 }
 
 export async function requestSignup(inputs) {
-  const { username, email, password, password2 } = inputs;
-  const body = JSON.stringify({ username, email, password, password2 });
-
+  const body = JSON.stringify({ inputs });
   return axios.post(`${baseUrl}/accounts/api/auth/signup`, body, params);
 }
 
@@ -39,16 +37,7 @@ export async function requestLogout(sessionToken) {
   return axios.post(`${baseUrl}/accounts/api/auth/logout`, null, params);
 }
 
-export async function requestCreateTicket(data) {
-  const { title, subject, description, tags, priority_level } = data;
-  const body = JSON.stringify({
-    title,
-    subject,
-    description,
-    tags,
-    priority_level
-  });
-
+export async function requestCreateTicket(body) {
   return axios.post(`${baseUrl}/tickets/`, body, params);
 }
 

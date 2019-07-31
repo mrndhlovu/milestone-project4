@@ -7,12 +7,6 @@ import { Button, Form, Message, Container, Dropdown } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
 
-const TICKET_PRORITY_LEVELS = [
-  { value: "l", text: "Low" },
-  { value: "m", text: "Medium" },
-  { value: "h", text: "High" }
-];
-
 export class CreateTicket extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +21,6 @@ export class CreateTicket extends Component {
       }
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
-    this.onChange = this.onChange.bind(this);
   }
 
   renderField(field) {
@@ -62,40 +55,12 @@ export class CreateTicket extends Component {
   }
 
   handleSubmitClick(values) {
+    const body = JSON.stringify({ values });
+    console.log(body);
+
     this.setState({ isLoading: true });
     this.props.createTicket(values);
   }
-
-  onChange(event) {
-    console.log(event);
-
-    if (this.props.field.input.onChange && event != null) {
-      return this.props.field.input.onChange(event.value);
-    } else {
-      return this.props.field.input.onChange(null);
-    }
-  }
-
-  RenderSelectInput = field => {
-    const {
-      meta: { touched, error }
-    } = field;
-    console.log(field.input);
-    return (
-      <Fragment>
-        <Form.Input>
-          <Dropdown
-            placeholder={field.label}
-            fluid
-            search
-            selection
-            error={touched && error ? error : null}
-            options={TICKET_PRORITY_LEVELS}
-          />
-        </Form.Input>
-      </Fragment>
-    );
-  };
 
   componentDidUpdate(prevProps) {
     const {
@@ -104,6 +69,7 @@ export class CreateTicket extends Component {
       ticket: { dataReceived }
     } = this.props;
     const { errors } = this.state;
+    // console.log(errorAlert);
 
     if (errorAlert !== prevProps.errorAlert) {
       if (errorAlert.alertMsg.subject) {
@@ -148,7 +114,7 @@ export class CreateTicket extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, field } = this.props;
     const {
       errors: { subject, title, description, slug, other },
       isLoading
@@ -174,23 +140,27 @@ export class CreateTicket extends Component {
         >
           <Field name="title" label="Title" component={this.renderField} />
           <Field name="subject" label="Subject" component={this.renderField} />
-
           <Field
             name="slug"
-            label="Tags: e.g javascriprt, pyhton, django"
+            label="Slugs: e.g javascriprt, pyhton, django"
             component={this.renderField}
           />
-
           <Field
             name="description"
             label="Description"
             component={this.renderField}
           />
           <Field
-            name="priority_level"
+            {...field}
+            name="prority"
             label="Priority"
-            component={this.RenderSelectInput}
-          />
+            component="select"
+            placeholder="Priority"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </Field>
           <br />
           <div style={{ paddingTop: 10 }}>
             <Button color="blue" loading={isLoading}>
@@ -212,7 +182,7 @@ const mapStateToProps = state => {
 };
 
 function validate(values) {
-  console.log("Form values: ", values);
+  // console.log("Form values: ", values);
   const formErrors = {};
   if (!values.slug) {
     formErrors.slug = "Enter a slug";
@@ -227,7 +197,7 @@ function validate(values) {
   if (!values.subject) {
     formErrors.subject = "Enter a subject";
   }
-  if (!values.priority) {
+  if (!values.prority) {
     formErrors.priority = "Enter a priotrity level";
   }
 

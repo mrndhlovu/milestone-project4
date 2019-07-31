@@ -9,16 +9,16 @@ from accounts.models import UserProfile
 
 class Ticket(models.Model):
     PRIORITY_LEVELS = (
-        ('l', 'Low'),
-        ('m', 'Medium'),
-        ('h', 'High'),
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
     )
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     title = models.CharField(max_length=120)
     subject = models.CharField(max_length=120)
     description = models.TextField()
-    prority_level = models.CharField(
-        max_length=1, choices=PRIORITY_LEVELS, default='l')
+    prority = models.CharField(
+        max_length=6, choices=PRIORITY_LEVELS, )
     in_progress = models.BooleanField(default=False)
     slug = models.SlugField(blank=True)
     owner = models.ForeignKey(
