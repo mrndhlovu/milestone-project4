@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
 
-import { Button, Form, Message, Container, Select } from "semantic-ui-react";
+import { Button, Form, Message, Container, Dropdown } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
 
@@ -17,13 +17,13 @@ export class CreateTicket extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
       errors: {
         title: "",
         subject: "",
         slug: "",
         other: "",
-        description: "",
-        priority_level: ""
+        description: ""
       }
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
@@ -62,6 +62,7 @@ export class CreateTicket extends Component {
   }
 
   handleSubmitClick(values) {
+    this.setState({ isLoading: true });
     this.props.createTicket(values);
   }
 
@@ -83,13 +84,13 @@ export class CreateTicket extends Component {
     return (
       <Fragment>
         <Form.Input>
-          <Select
-            options={TICKET_PRORITY_LEVELS}
-            {...field.input}
+          <Dropdown
             placeholder={field.label}
-            value={TICKET_PRORITY_LEVELS.text}
-            onChange={value => field.input.onChange(value)}
+            fluid
+            search
+            selection
             error={touched && error ? error : null}
+            options={TICKET_PRORITY_LEVELS}
           />
         </Form.Input>
       </Fragment>
@@ -107,32 +108,32 @@ export class CreateTicket extends Component {
     if (errorAlert !== prevProps.errorAlert) {
       if (errorAlert.alertMsg.subject) {
         this.setState({
+          isLoading: false,
           errors: { ...errors, subject: errorAlert.alertMsg.subject }
         });
       }
       if (errorAlert.alertMsg.title) {
         this.setState({
+          isLoading: false,
           errors: { ...errors, title: errorAlert.alertMsg.title }
         });
       }
       if (errorAlert.alertMsg.password2) {
         this.setState({
+          isLoading: false,
           errors: { ...errors, slug: errorAlert.alertMsg.slug }
-        });
-      }
-      if (errorAlert.alertMsg.priority) {
-        this.setState({
-          errors: { ...errors, priority: errorAlert.alertMsg.priority }
         });
       }
 
       if (errorAlert.alertMsg.description) {
         this.setState({
+          isLoading: false,
           errors: { ...errors, description: errorAlert.alertMsg.description }
         });
       }
       if (errorAlert.alertMsg) {
         this.setState({
+          isLoading: false,
           errors: {
             ...errors,
             other: errorAlert.alertMsg
@@ -149,7 +150,8 @@ export class CreateTicket extends Component {
   render() {
     const { handleSubmit } = this.props;
     const {
-      errors: { subject, title, description, slug, other }
+      errors: { subject, title, description, slug, other },
+      isLoading
     } = this.state;
 
     return (
@@ -163,7 +165,7 @@ export class CreateTicket extends Component {
             size="small"
             error
             header="Sign up error: "
-            list={[subject, title, description, slug, other]}
+            content={subject || title || description || slug || other}
           />
         ) : null}
         <Form
@@ -191,7 +193,9 @@ export class CreateTicket extends Component {
           />
           <br />
           <div style={{ paddingTop: 10 }}>
-            <Button color="blue">Submit</Button>
+            <Button color="blue" loading={isLoading}>
+              Submit
+            </Button>
           </div>
         </Form>
       </Container>
