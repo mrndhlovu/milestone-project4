@@ -34,6 +34,7 @@ class SignupModal extends Component {
       errors: {
         email: "",
         password: "",
+        password2: "",
         username: "",
         other: "",
         isLoading: ""
@@ -46,8 +47,8 @@ class SignupModal extends Component {
 
   handleSignupClick(values) {
     this.setState({ isLoading: true });
-    const { username, email, password } = values;
-    const inputs = { username, email, password };
+    const inputs = JSON.stringify({ values });
+
     this.props.signup(inputs);
   }
 
@@ -117,11 +118,19 @@ class SignupModal extends Component {
           icon={
             field.label === "Password" || field.label === "Confirm Password"
               ? "lock"
+              : field.label === "Email"
+              ? "mail"
               : "user"
           }
           iconPosition="left"
           placeholder={field.label}
-          autoComplete={field.password || field.password2 ? false : field.name}
+          autoComplete={
+            field.label === "Password" || field.label === "Confirm Password"
+              ? "new-password"
+              : field.label === "Email"
+              ? "email"
+              : field.name
+          }
           type={
             field.label === "Password" || field.label === "Confirm Password"
               ? "password"
@@ -140,7 +149,7 @@ class SignupModal extends Component {
     } = this.props;
     const { buttonDisabled, isLoading } = this.state;
     const {
-      errors: { email, password, username, other }
+      errors: { email, password, password2, username, other }
     } = this.state;
 
     if (isAuthenticated) {
@@ -156,12 +165,12 @@ class SignupModal extends Component {
 
           <Grid textAlign="center" verticalAlign="middle">
             <Grid.Column style={{ maxWidth: 500 }}>
-              {email || password || username || other ? (
+              {email || password || username || other || password2 ? (
                 <Message
                   size="small"
                   error
                   header="Sign up error: "
-                  content={email || password || username || other}
+                  content={email || password || username || other || password2}
                 />
               ) : null}
               <Form
@@ -187,7 +196,7 @@ class SignupModal extends Component {
                     component={this.renderField}
                   />
                   <Field
-                    name="password1"
+                    name="password2"
                     label="Confirm Password"
                     component={this.renderField}
                   />
@@ -239,6 +248,9 @@ function validate(values) {
     formErrors.password = "Enter a password";
   }
 
+  if (!values.password2) {
+    formErrors.password2 = "Enter a confirmation email";
+  }
   if (!values.email) {
     formErrors.email = "Enter a Email";
   }
