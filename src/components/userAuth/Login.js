@@ -63,7 +63,9 @@ class LoginModal extends Component {
           icon={field.label === "Password" ? "lock" : "user"}
           iconPosition="left"
           placeholder={field.label}
-          autoComplete={field.name}
+          autoComplete={
+            field.label === " Password" ? "current-password" : "username"
+          }
           type={field.label === "Password" ? "password" : "text"}
           error={touched && error ? error : null}
           pointing="below"
