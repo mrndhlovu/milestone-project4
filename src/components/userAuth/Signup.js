@@ -114,11 +114,19 @@ class SignupModal extends Component {
           color="red"
           {...field.input}
           fluid
-          icon={field.label === "Password" ? "lock" : "user"}
+          icon={
+            field.label === "Password" || field.label === "Confirm Password"
+              ? "lock"
+              : "user"
+          }
           iconPosition="left"
           placeholder={field.label}
           autoComplete={field.password || field.password2 ? false : field.name}
-          type={field.name}
+          type={
+            field.label === "Password" || field.label === "Confirm Password"
+              ? "password"
+              : "text"
+          }
           error={error && touched ? error : null}
         />
       </Fragment>
@@ -176,6 +184,11 @@ class SignupModal extends Component {
                   <Field
                     name="password"
                     label="Password"
+                    component={this.renderField}
+                  />
+                  <Field
+                    name="password1"
+                    label="Confirm Password"
                     component={this.renderField}
                   />
 
