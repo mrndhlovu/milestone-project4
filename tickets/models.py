@@ -1,10 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from accounts.models import UserProfile
+
 
 # Create ticket model
+
+
+User = get_user_model()
 
 
 class Ticket(models.Model):
@@ -13,7 +16,9 @@ class Ticket(models.Model):
         ('medium', 'Medium'),
         ('high', 'High'),
     )
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     title = models.CharField(max_length=120)
     subject = models.CharField(max_length=120)
     description = models.TextField()
@@ -21,8 +26,9 @@ class Ticket(models.Model):
         max_length=6, choices=PRIORITY_LEVELS, default='low')
     in_progress = models.BooleanField(default=False)
     slug = models.SlugField(blank=True)
+
     owner = models.ForeignKey(
-        UserProfile, on_delete=models.DO_NOTHING, null=True, default=None)
+        User, on_delete=models.CASCADE, null=True, default=None)
 
     def __str__(self):
         return self.title
