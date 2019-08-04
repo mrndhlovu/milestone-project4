@@ -3,7 +3,7 @@ import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import { Button, Container, Menu, Icon } from "semantic-ui-react";
+import { Button, Container, Menu, Icon, Label } from "semantic-ui-react";
 
 import { logOut } from "../../actions/AuthActions";
 
@@ -11,6 +11,7 @@ const StyledSpan = styled.span`
   color: green;
   padding-right: 0.5rem;
 `;
+const StyledCartSpan = styled.span``;
 
 export class DesktopNav extends Component {
   constructor(props) {
@@ -22,7 +23,8 @@ export class DesktopNav extends Component {
         tickets: false,
         pricing: false,
         home: false
-      }
+      },
+      itemCount: ""
     };
 
     this.renderNavButtons = this.renderNavButtons.bind(this);
@@ -51,11 +53,26 @@ export class DesktopNav extends Component {
     this.props.logOut();
   }
 
+  renderCart() {
+    const { itemCount } = this.state;
+    console.log(itemCount);
+    return (
+      <Menu.Item>
+        <StyledCartSpan>
+          <Label as={NavLink} to="/cart" color="black">
+            <Icon name="cart" />
+            {itemCount}
+          </Label>
+        </StyledCartSpan>
+      </Menu.Item>
+    );
+  }
+
   renderNavButtons() {
-    const { sessionToken } = this.props.userAuth;
+    const { isAuthenticated } = this.props.userAuth;
     const { fixed } = this.state;
 
-    return sessionToken ? (
+    return isAuthenticated ? (
       <Button
         inverted={!fixed}
         primary={fixed}
@@ -152,6 +169,7 @@ export class DesktopNav extends Component {
             </Menu.Item>
 
             <Menu.Item position="right">
+              {this.renderCart()}
               {this.renderUserLabel()}
               {this.renderNavButtons()}
             </Menu.Item>
