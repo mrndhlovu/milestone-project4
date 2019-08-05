@@ -11,6 +11,7 @@ const StyledSpan = styled.span`
   color: green;
   padding-right: 0.5rem;
 `;
+
 const StyledCartSpan = styled.span``;
 
 export class DesktopNav extends Component {
@@ -59,7 +60,7 @@ export class DesktopNav extends Component {
     return (
       <Menu.Item>
         <StyledCartSpan>
-          <Label as={NavLink} to="/cart" color="black">
+          <Label as={NavLink} to="/checkout" color="black">
             <Icon name="cart" />
             {itemCount}
           </Label>
