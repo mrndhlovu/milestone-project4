@@ -124,7 +124,7 @@ export class CreateTicket extends Component {
     const { handleSubmit, field } = this.props;
     const {
       errors: { subject, title, description, slug, other, owner },
-      errors,
+
       isLoading
     } = this.state;
 
