@@ -4,11 +4,6 @@ import { PaymentMethod } from "../../constants/constants";
 
 import { Form, Button, Card, Message } from "semantic-ui-react";
 
-const description = [
-  "Amy is a violinist with 2 years experience in the wedding industry.",
-  "She enjoys the outdoors and currently resides in upstate New York."
-].join(" ");
-
 export class PaymentDetail extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +17,7 @@ export class PaymentDetail extends Component {
     return (
       <Card fluid>
         <Card.Content header="Payment Details" />
-        <Card.Content description={description}>
+        <Card.Content>
           <Form.Select
             fluid
             label="Payment Method"
