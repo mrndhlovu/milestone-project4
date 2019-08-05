@@ -47,8 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    'tickets',
     'accounts',
+
+    'tickets',
+
     'products',
     'chart',
 
@@ -181,3 +183,5 @@ django_heroku.settings(locals())
 
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+USER_AUTH_MODEL = 'accounts.UserProfile'

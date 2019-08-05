@@ -55,7 +55,7 @@ export class DesktopNav extends Component {
 
   renderCart() {
     const { itemCount } = this.state;
-    console.log(itemCount);
+
     return (
       <Menu.Item>
         <StyledCartSpan>
