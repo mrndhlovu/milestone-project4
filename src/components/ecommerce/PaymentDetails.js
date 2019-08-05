@@ -1,50 +1,72 @@
 import React, { Component } from "react";
 
-import { PaymentMethod } from "../../constants/constants";
+import { PaymentMethods } from "../../constants/constants";
 
 import { Form, Button, Card, Message } from "semantic-ui-react";
 
-export class PaymentDetail extends Component {
+export class PaymentDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: ""
+      paymentOption: ""
     };
+
+    this.handlePaymentOption = this.handlePaymentOption.bind(this);
   }
+
+  handlePaymentOption(event, methods) {
+    const paymentOption = event.target.innerText;
+
+    methods.map(method => {
+      return paymentOption === method.text
+        ? this.setState({ paymentOption: method.text })
+        : null;
+    });
+  }
+
+  renderPaymentMethod() {
+    const { paymentOption } = this.state;
+    return paymentOption === "Stripe" ? (
+      <Form.Group widths="equal">
+        <Form.Input
+          fluid
+          id="form-subcomponent-shorthand-input-first-name"
+          label="Card Number *"
+          placeholder="**** **** **** **** "
+        />
+        <Form.Input
+          fluid
+          id="form-subcomponent-shorthand-input-first-name"
+          label="Expiration *"
+          placeholder="MM / YY"
+        />
+        <Form.Input
+          fluid
+          id="form-subcomponent-shorthand-input-last-name"
+          label="CVC *"
+          placeholder="CVC"
+        />
+      </Form.Group>
+    ) : null;
+  }
+
   render() {
-    const { hasError } = this.state;
+    const { hasError, paymentOption } = this.state;
 
     return (
       <Card fluid>
         <Card.Content header="Payment Details" />
         <Card.Content>
           <Form.Select
+            icon={paymentOption ? "stripe card" : "paypal card"}
             fluid
             label="Payment Method"
-            options={PaymentMethod}
+            options={PaymentMethods}
             placeholder="Payment Method"
+            onChange={event => this.handlePaymentOption(event, PaymentMethods)}
           />
 
-          <Form.Input
-            fluid
-            id="form-subcomponent-shorthand-input-first-name"
-            label="Card Number"
-            placeholder="**** **** **** **** "
-          />
-          <Form.Group widths="equal">
-            <Form.Input
-              fluid
-              id="form-subcomponent-shorthand-input-first-name"
-              label="Expiration *"
-              placeholder="MM / YY"
-            />
-            <Form.Input
-              fluid
-              id="form-subcomponent-shorthand-input-last-name"
-              label="CVC"
-              placeholder="CVC"
-            />
-          </Form.Group>
+          {paymentOption ? this.renderPaymentMethod() : null}
           {hasError ? (
             <Message
               error
@@ -63,4 +85,4 @@ export class PaymentDetail extends Component {
   }
 }
 
-export default PaymentDetail;
+export default PaymentDetails;
