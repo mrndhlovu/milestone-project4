@@ -27,9 +27,9 @@ export class OrderSummary extends Component {
             color: "teal",
             labelPosition: "left",
             icon: "cart",
-            content: "Coupon number"
+            content: "Apply Discount"
           }}
-          actionPosition="left"
+          actionPosition="right"
           placeholder="e.g: DISCOUNT10"
         />
       </Card.Content>
