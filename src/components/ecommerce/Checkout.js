@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import styled from "styled-components";
 
@@ -12,31 +12,21 @@ const StyledContainer = styled(Container)`
   padding-top: 1.5rem;
 `;
 
-export class Checkout extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasError: ""
-    };
-  }
-  render() {
-    return (
-      <StyledContainer>
-        <Grid>
-          <Grid.Row columns={2}>
-            <Grid.Column>
-              <BillingInformation />
-            </Grid.Column>
+const Checkout = () => (
+  <StyledContainer>
+    <Grid>
+      <Grid.Row columns={2}>
+        <Grid.Column>
+          <BillingInformation />
+        </Grid.Column>
 
-            <Grid.Column>
-              <OrderSummary />
-              <PaymentDetails />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </StyledContainer>
-    );
-  }
-}
+        <Grid.Column>
+          <OrderSummary />
+          <PaymentDetails />
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  </StyledContainer>
+);
 
 export default Checkout;
