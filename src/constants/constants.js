@@ -24,6 +24,7 @@ export const Countries = [
   { key: "bj", value: "bj", text: "Benin" }
 ];
 
-export const PaymentMethod = [
-  { key: "cc", value: "cc", text: "Stripe Credit Card" }
+export const PaymentMethods = [
+  { key: "st", value: "st", text: "Stripe" },
+  { key: "pp", value: "pp", text: "Paypal" }
 ];
