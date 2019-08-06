@@ -60,7 +60,7 @@ export class DesktopNav extends Component {
     return (
       <Menu.Item>
         <StyledCartSpan>
-          <Label as={NavLink} to="/checkout" color="black">
+          <Label as={NavLink} to="/cart" color="black">
             <Icon name="cart" />
             {itemCount}
           </Label>

@@ -9,10 +9,10 @@ User = get_user_model()
 
 
 class Ticket(models.Model):
-    PRIORITY_LEVELS = (
-        ('low', 'Low'),
-        ('medium', 'Medium'),
-        ('high', 'High'),
+    STATUS = (
+        ('todo', 'To-do'),
+        ('doing', 'Doing'),
+        ('done', 'Done'),
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -20,12 +20,14 @@ class Ticket(models.Model):
     title = models.CharField(max_length=120)
     subject = models.CharField(max_length=120)
     description = models.TextField()
-    prority_level = models.CharField(
-        max_length=6, choices=PRIORITY_LEVELS, default='low')
+    votes = models.IntegerField(default=0)
+    status = models.CharField(
+        max_length=6, choices=STATUS, default='todo')
     in_progress = models.BooleanField(default=False)
     slug = models.SlugField(blank=True)
     owner = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, null=True, default=None)
+    views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
