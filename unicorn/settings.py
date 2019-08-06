@@ -46,8 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
+
     'profiles',
     'accounts',
+    'memberships',
 
     'tickets',
 
@@ -185,3 +188,7 @@ django_heroku.settings(locals())
 CORS_ORIGIN_ALLOW_ALL = True
 
 USER_AUTH_MODEL = 'accounts.UserProfile'
+
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE')
+
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET')
