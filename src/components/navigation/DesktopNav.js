@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Button, Container, Menu, Icon, Label } from "semantic-ui-react";
 
 import { logOut } from "../../actions/AuthActions";
+import { navLinkText } from "../../constants/constants";
 
 const StyledSpan = styled.span`
   color: green;
@@ -20,7 +21,8 @@ export class DesktopNav extends Component {
     this.state = {
       fixed: false,
       isActive: {
-        features: false,
+        products: false,
+        blog: false,
         tickets: false,
         pricing: false,
         home: false
@@ -123,8 +125,27 @@ export class DesktopNav extends Component {
     });
   }
 
+  renderNavigationLinks() {
+    const { isActive } = this.state;
+    return Object.keys(navLinkText).map(index => {
+      const { header, key } = navLinkText[index];
+
+      return (
+        <Menu.Item
+          key={index}
+          active={isActive[key] === true ? true : false}
+          as={NavLink}
+          to={key === "home" ? "" : `/${key}`}
+          onClick={this.showActiveLink.bind(this, key)}
+        >
+          {header}
+        </Menu.Item>
+      );
+    });
+  }
+
   render() {
-    const { fixed, isActive } = this.state;
+    const { fixed } = this.state;
 
     return (
       <div>
@@ -136,39 +157,7 @@ export class DesktopNav extends Component {
           size="large"
         >
           <Container>
-            <Menu.Item
-              active={isActive.home === true ? true : false}
-              as={NavLink}
-              to=""
-              onClick={this.showActiveLink.bind(this, "home")}
-            >
-              Home
-            </Menu.Item>
-            <Menu.Item
-              active={isActive.features ? true : false}
-              to="/products"
-              as={NavLink}
-              onClick={this.showActiveLink.bind(this, "products")}
-            >
-              Products
-            </Menu.Item>
-            <Menu.Item
-              active={isActive.pricing ? true : false}
-              as={NavLink}
-              to="/pricing"
-              onClick={this.showActiveLink.bind(this, "pricing")}
-            >
-              Pricing
-            </Menu.Item>
-            <Menu.Item
-              active={isActive.tickets ? true : false}
-              as={NavLink}
-              to="/tickets"
-              onClick={this.showActiveLink.bind(this, "tickets")}
-            >
-              Tickets
-            </Menu.Item>
-
+            {this.renderNavigationLinks()}
             <Menu.Item position="right">
               {this.renderCart()}
               {this.renderUserLabel()}

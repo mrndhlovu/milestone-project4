@@ -265,3 +265,11 @@ export const unicornProServices = [
   "Comment on tickets",
   "Blog access"
 ];
+
+export const navLinkText = [
+  { header: "Home", key: "home" },
+  { header: "Products", key: "products" },
+  { header: "Pricing", key: "pricing" },
+  { header: "Tickets", key: "tickets" },
+  { header: "Blog", key: "blog" }
+];

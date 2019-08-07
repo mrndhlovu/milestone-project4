@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { Link, withRouter, NavLink } from "react-router-dom";
-import styled from "styled-components";
-
 import { connect } from "react-redux";
 
-import { logOut } from "../../actions/AuthActions";
-
+import styled from "styled-components";
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
+
+import { navLinkText } from "../../constants/constants";
+import { logOut } from "../../actions/AuthActions";
 
 const StyledSpan = styled.span`
   margin: 13px 0 0 auto;
@@ -69,6 +69,24 @@ export class MobileSideBar extends Component {
     );
   }
 
+  renderNavigationLinks() {
+    return Object.keys(navLinkText).map(index => {
+      const { header, key } = navLinkText[index];
+
+      return (
+        <Menu.Item
+          key={index}
+          onClick={this.handleSidebarHide}
+          as={Link}
+          name={key}
+          to={key === "home" ? "" : `/${key}`}
+        >
+          {header}
+        </Menu.Item>
+      );
+    });
+  }
+
   render() {
     const { sidebarOpened } = this.state;
     const { children } = this.props;
@@ -83,40 +101,7 @@ export class MobileSideBar extends Component {
           vertical
           visible={sidebarOpened}
         >
-          <Fragment>
-            <Menu.Item
-              onClick={this.handleSidebarHide}
-              as={Link}
-              name="home"
-              to="/"
-            >
-              Home
-            </Menu.Item>
-          </Fragment>
-          <Menu.Item
-            onClick={this.handleSidebarHide}
-            as={Link}
-            name="products"
-            to="/products"
-          >
-            Products
-          </Menu.Item>
-          <Menu.Item
-            onClick={this.handleSidebarHide}
-            as={Link}
-            to="/pricing"
-            name="pricing"
-          >
-            Pricing
-          </Menu.Item>
-          <Menu.Item
-            onClick={this.handleSidebarHide}
-            as={Link}
-            to="/tickets"
-            name="tickets"
-          >
-            Tickets
-          </Menu.Item>
+          {this.renderNavigationLinks()}
           {this.renderAuthButtons()}
         </Sidebar>
 
