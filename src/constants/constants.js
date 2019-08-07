@@ -252,12 +252,12 @@ export const Countries = [
 
 export const unicornFreeServices = [
   "View Tickets",
-  "Donations",
+  "Make donations",
   "View bugs and features status"
 ];
 
 export const unicornProServices = [
-  "Donations",
+  "Make donations",
   "View bugs and features status",
   "View tickets",
   "Create tickets",
