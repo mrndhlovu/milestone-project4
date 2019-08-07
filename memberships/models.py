@@ -18,13 +18,13 @@ MEMBERSHIP_OPTIONS = (
 
 class Membership(models.Model):
     slug = models.SlugField()
-    membership_otion = models.CharField(
+    membership_option = models.CharField(
         choices=MEMBERSHIP_OPTIONS, default='Free', max_length=50)
     price = models.IntegerField(default=10)
     stripe_plan_id = models.CharField(max_length=40)
 
     def __str__(self):
-        return self.membership_otion
+        return self.membership_option
 
 
 class UserMembership(models.Model):
@@ -34,16 +34,17 @@ class UserMembership(models.Model):
     membership = models.ForeignKey(
         Membership, on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return self.user.username
+
 
 def post_save_create_user_membership(sender, instance, created, *args, **kwargs):
-    if created:
-        UserMembership.objects.get_or_create(user=instance)
     user_membership, created = UserMembership.objects.get_or_create(
         user=instance)
 
     if user_membership.membership_stripe_user_id is None or user_membership.membership_stripe_user_id == '':
         new_customer_id = stripe.Customer.create(email=instance.email)
-        membership_stripe_user_id = new_customer_id['id']
+        user_membership.membership_stripe_user_id = new_customer_id['id']
         user_membership.save()
 
 
