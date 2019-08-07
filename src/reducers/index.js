@@ -3,10 +3,10 @@ import ticketsReducer from "./ticketsReducer";
 import authReducer from "./authReducer";
 import { reducer as formReducer } from "redux-form";
 import createTicketReducer from "./createTicketReducer";
-import ticketDetaiReducer from "../reducers/ticketDetailReducer";
-import errorsReducer from "../reducers/errorsReducer";
-import messagesReducer from "../reducers/messagesReducer";
-import userReducer from "../reducers/userReducer";
+import ticketDetaiReducer from "./ticketDetailReducer";
+import errorsReducer from "./errorsReducer";
+import messagesReducer from "./messagesReducer";
+import userReducer from "./userReducer";
 
 export default combineReducers({
   tickets: ticketsReducer,

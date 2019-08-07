@@ -71,7 +71,7 @@ export class Pricing extends Component {
               <Grid.Row>
                 <Grid.Column style={{ padding: "5em 5em 5em 1em" }}>
                   <Header as="h4" attached="top">
-                    $5 Per / month billed monthly
+                    $0 Per / month
                   </Header>
                   <div>
                     <Segment>
@@ -114,7 +114,7 @@ export class Pricing extends Component {
 
                 <Grid.Column style={{ padding: "5em 1em 5em 5em" }}>
                   <Header as="h4" attached="top">
-                    $15 Per user / month billed annually
+                    $10 Per user / month billed annually
                   </Header>
                   <div>
                     <Segment>

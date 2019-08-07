@@ -249,3 +249,19 @@ export const Countries = [
   { text: "Zambia", value: "zm" },
   { text: "Zimbabwe", value: "zw" }
 ];
+
+export const unicornFreeServices = [
+  "View Tickets",
+  "Donations",
+  "View bugs and features status"
+];
+
+export const unicornProServices = [
+  "Donations",
+  "View bugs and features status",
+  "View tickets",
+  "Create tickets",
+  "Vote on tickets",
+  "Comment on tickets",
+  "Blog access"
+];
