@@ -6,7 +6,6 @@ import HeadingImage from "../home/HeadingImage";
 import {
   Button,
   Container,
-  Divider,
   Grid,
   Header,
   List,
@@ -28,6 +27,7 @@ export class Pricing extends Component {
       headerButtonText: "File a ticket",
       subHeading: "Problems are everywhere, solutions are here!"
     };
+    this.handleAddToCart = this.handleAddToCart.bind(this);
   }
 
   renderServicesList(services) {
@@ -42,6 +42,8 @@ export class Pricing extends Component {
       );
     });
   }
+
+  handleAddToCart() {}
 
   render() {
     const {
@@ -92,9 +94,8 @@ export class Pricing extends Component {
                   </div>
                   <Button
                     attached="bottom"
-                    content="Get Started Now"
-                    as={NavLink}
-                    to="/checkout"
+                    content="Add to Cart"
+                    onClick={this.handleAddToCart}
                     color="orange"
                   />
                 </Grid.Column>
