@@ -271,5 +271,5 @@ export const navLinkText = [
   { header: "Products", key: "products" },
   { header: "Pricing", key: "pricing" },
   { header: "Tickets", key: "tickets" },
-  { header: "Blog", key: "blog" }
+  { header: "Blog", key: "blog-article-list" }
 ];
