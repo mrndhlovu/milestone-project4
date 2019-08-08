@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { Form, Segment, Grid, Card } from "semantic-ui-react";
 
-import { Countries } from "../../constants/Constants";
+import { Countries } from "../../constants/constants";
 
 export class BillingInformation extends Component {
   render() {

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
-import { navLinkText } from "../../constants/Constants";
+import { navLinkText } from "../../constants/constants";
 import { logOut } from "../../actions/AuthActions";
 
 const StyledSpan = styled.span`

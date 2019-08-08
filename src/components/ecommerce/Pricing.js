@@ -16,7 +16,7 @@ import {
 import {
   unicornFreeServices,
   unicornProServices
-} from "../../constants/Constants";
+} from "../../constants/constants";
 
 export class Pricing extends Component {
   constructor(props) {

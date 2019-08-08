@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { PaymentMethods } from "../../constants/Constants";
+import { PaymentMethods } from "../../constants/constants";
 
 import { Form, Button, Card, Message } from "semantic-ui-react";
 
