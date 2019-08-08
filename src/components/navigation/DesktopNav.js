@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { Button, Container, Menu, Icon, Label } from "semantic-ui-react";
 
 import { logOut } from "../../actions/AuthActions";
-import { navLinkText } from "../../constants/Constants";
+import { navLinkText } from "../../constants/constants";
 
 const StyledSpan = styled.span`
   color: green;
@@ -86,7 +86,7 @@ export class DesktopNav extends Component {
       </Button>
     ) : (
       <Fragment>
-        <Button inverted={!fixed} as={NavLink} to="/login">
+        <Button size="small" inverted={!fixed} as={NavLink} to="/login">
           Log in
         </Button>
         <Button
@@ -95,6 +95,7 @@ export class DesktopNav extends Component {
           style={{ marginLeft: "0.5em" }}
           as={NavLink}
           to="/signup"
+          size="small"
         >
           Sign Up
         </Button>
@@ -154,7 +155,7 @@ export class DesktopNav extends Component {
           inverted={!fixed}
           pointing={!fixed}
           secondary={!fixed}
-          size="large"
+          size="small"
         >
           <Container>
             {this.renderNavigationLinks()}
