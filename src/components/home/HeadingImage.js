@@ -10,10 +10,6 @@ const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
 `;
 
-const StyledButton = styled(Button)`
-  border-radius: 1px;
-`;
-
 class HomepageHeading extends Component {
   constructor(props) {
     super(props);
