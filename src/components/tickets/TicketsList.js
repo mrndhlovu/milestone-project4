@@ -8,9 +8,6 @@ import {
   Label,
   List,
   Segment,
-  Dimmer,
-  Loader,
-  Image,
   Feed,
   Divider
 } from "semantic-ui-react";
