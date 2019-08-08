@@ -87,7 +87,6 @@ export class TicketsList extends Component {
   }
 
   render() {
-    const { isLoading, dataReceived } = this.props.isLoading;
     const {
       headerText,
       headerButtonUrl,
@@ -95,14 +94,7 @@ export class TicketsList extends Component {
       subHeading
     } = this.state;
 
-    return isLoading && !dataReceived ? (
-      <Fragment>
-        <Dimmer active inverted>
-          <Loader size="mini">Loading</Loader>
-        </Dimmer>
-        <Image src="/images/wireframe/short-paragraph.png" />
-      </Fragment>
-    ) : (
+    return (
       <Fragment>
         <HeadingImage
           data={{ headerText, headerButtonUrl, headerButtonText, subHeading }}
