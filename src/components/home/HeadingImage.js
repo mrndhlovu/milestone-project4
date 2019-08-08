@@ -10,6 +10,10 @@ const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
 `;
 
+const StyledButton = styled(Button)`
+  border-radius: 1px;
+`;
+
 class HomepageHeading extends Component {
   constructor(props) {
     super(props);
@@ -30,10 +34,10 @@ class HomepageHeading extends Component {
             content={headerText}
             inverted
             style={{
-              fontSize: mobile ? "2em" : "4em",
+              fontSize: mobile ? "2em" : "3em",
               fontWeight: "normal",
               marginBottom: 0,
-              marginTop: mobile ? "1.5em" : "3em"
+              marginTop: mobile ? "1em" : "1em"
             }}
           />
           <Header
@@ -46,7 +50,7 @@ class HomepageHeading extends Component {
               marginTop: mobile ? "0.5em" : "1.5em"
             }}
           />
-          <Button primary size="huge" as={NavLink} to={headerButtonUrl}>
+          <Button primary size="large" as={NavLink} to={headerButtonUrl}>
             {headerButtonText}
             <Icon name="right arrow" />
           </Button>
