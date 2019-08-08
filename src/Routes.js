@@ -12,6 +12,7 @@ import Signup from "./components/userAuth/Signup";
 import Products from "./components/ecommerce/Products";
 import Cart from "./components/ecommerce/Cart";
 import Checkout from "./components/ecommerce/Checkout";
+import ArticleList from "./components/blog/ArticleList";
 
 const BaseRouter = () => {
   return (
@@ -25,6 +26,7 @@ const BaseRouter = () => {
         <Route path="/pricing" component={Pricing} />
         <Route path="/products" component={Products} />
 
+        <AuthRouteCheck path="/blog" component={ArticleList} />
         <AuthRouteCheck path="/cart" component={Cart} />
         <AuthRouteCheck path="/checkout" component={Checkout} />
         <AuthRouteCheck path="/create-ticket" component={CreateTicket} />
