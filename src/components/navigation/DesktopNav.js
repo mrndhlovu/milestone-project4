@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { Button, Container, Menu, Icon, Label } from "semantic-ui-react";
 
 import { logOut } from "../../actions/AuthActions";
-import { navLinkText } from "../../constants/constants";
+import { navLinkText } from "../../constants/Constants";
 
 const StyledSpan = styled.span`
   color: green;
