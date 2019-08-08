@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 
 import { Container, Grid, Header, List } from "semantic-ui-react";
 
@@ -8,32 +9,47 @@ export class navFooter extends Component {
       <Container>
         <Grid divided inverted stackable>
           <Grid.Row>
-            <Grid.Column width={3}>
+            <Grid.Column width={4}>
               <Header inverted as="h4" content="About" />
               <List link inverted>
-                <List.Item as="a">Sitemap</List.Item>
-                <List.Item as="a">Contact Us</List.Item>
-                <List.Item as="a">Religious Ceremonies</List.Item>
-                <List.Item as="a">Gazebo Plans</List.Item>
+                <List.Item href="https://github.com/mrndhlovu">
+                  <List.Icon
+                    name="github"
+                    size="large"
+                    verticalAlign="middle"
+                  />
+                  GitHub
+                </List.Item>
+                <List.Item href="https://www.linkedin.com/in/mduduzi-ndhlovu/">
+                  <List.Icon
+                    name="linkedin"
+                    size="large"
+                    verticalAlign="middle"
+                  />
+                  LinkedIn
+                </List.Item>
               </List>
             </Grid.Column>
-            <Grid.Column width={3}>
-              <Header inverted as="h4" content="Services" />
+
+            <Grid.Column width={8}>
+              <Header inverted as="h4" content="Menu" />
               <List link inverted>
-                <List.Item as="a">Banana Pre-Order</List.Item>
-                <List.Item as="a">DNA FAQ</List.Item>
-                <List.Item as="a">How To Access</List.Item>
-                <List.Item as="a">Favorite X-Men</List.Item>
+                <List.Item as={NavLink} to="/blog-article-list">
+                  Blog
+                </List.Item>
+                <List.Item as={NavLink} to="/cart">
+                  Cart
+                </List.Item>
+                <List.Item as={NavLink} to="/pricing">
+                  Pricing
+                </List.Item>
+                <List.Item as={NavLink} to="/tickets">
+                  Tickets
+                </List.Item>
+                <List.Item as={NavLink} to="/products">
+                  Products
+                </List.Item>
               </List>
-            </Grid.Column>
-            <Grid.Column width={7}>
-              <Header as="h4" inverted>
-                Footer Header
-              </Header>
-              <p>
-                Extra space for a call to action inside the footer that could
-                help re-engage users.
-              </p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
