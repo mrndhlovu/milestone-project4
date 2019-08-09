@@ -67,7 +67,7 @@ export class Pricing extends Component {
                   <Header
                     as="h2"
                     attached="top"
-                    color="blue"
+                    color="black"
                     textAlign="center"
                     content="Unicorn Free"
                     subheader="$0 Per / month"
@@ -85,7 +85,7 @@ export class Pricing extends Component {
                     content="Free Signup"
                     as={NavLink}
                     to="/signup"
-                    color="purple"
+                    color="black"
                   />
                 </Grid.Column>
 
@@ -93,6 +93,7 @@ export class Pricing extends Component {
                   <Header
                     as="h2"
                     textAlign="center"
+                    color="orange"
                     attached="top"
                     content="Unicorn Pro"
                     subheader="$10 Per user / month billed annually"
