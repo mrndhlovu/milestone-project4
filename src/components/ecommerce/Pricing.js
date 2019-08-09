@@ -64,9 +64,15 @@ export class Pricing extends Component {
             <Grid celled="internally" columns="equal" stackable>
               <Grid.Row>
                 <Grid.Column style={{ padding: "5em 5em 5em 1em" }}>
-                  <Header as="h4" attached="top">
-                    $0 Per / month
-                  </Header>
+                  <Header
+                    as="h2"
+                    attached="top"
+                    color="blue"
+                    textAlign="center"
+                    content="Unicorn Free"
+                    subheader="$0 Per / month"
+                  />
+
                   <div>
                     <Segment>
                       <List>
@@ -84,9 +90,14 @@ export class Pricing extends Component {
                 </Grid.Column>
 
                 <Grid.Column style={{ padding: "5em 1em 5em 5em" }}>
-                  <Header as="h4" attached="top">
-                    $10 Per user / month billed annually
-                  </Header>
+                  <Header
+                    as="h2"
+                    textAlign="center"
+                    attached="top"
+                    content="Unicorn Pro"
+                    subheader="$10 Per user / month billed annually"
+                  />
+
                   <div>
                     <Segment>
                       <List>{this.renderServicesList(unicornProServices)}</List>
