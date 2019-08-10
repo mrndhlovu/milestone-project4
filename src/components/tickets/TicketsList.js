@@ -9,11 +9,13 @@ import {
   List,
   Segment,
   Feed,
-  Divider
+  Divider,
+  Icon
 } from "semantic-ui-react";
 
 import { fetchTicketsList } from "../../actions/TicketActions";
 import HeadingImage from "../home/HeadingImage";
+import { getFormatedDate } from "../../constants/constants";
 
 export class TicketsList extends Component {
   constructor(props) {
@@ -37,18 +39,6 @@ export class TicketsList extends Component {
       const { title, subject, id, created_at, slug, views, votes } = ticket;
       console.log(ticket);
 
-      const date = new Date(created_at);
-      const wholeDate =
-        date.getFullYear() +
-        "-" +
-        ("0" + (date.getMonth() + 1)).slice(-2) +
-        "-" +
-        ("0" + date.getDate()).slice(-2) +
-        " " +
-        ("0" + date.getHours()).slice(-2) +
-        ":" +
-        ("0" + date.getMinutes()).slice(-2);
-
       return (
         <Fragment key={id}>
           <Feed>
@@ -58,7 +48,7 @@ export class TicketsList extends Component {
                   {title.toUpperCase()}
                 </Header>
                 <span style={{ paddingTop: 5 }}>
-                  <Feed.Date>{wholeDate}</Feed.Date>
+                  <Feed.Date>{getFormatedDate(created_at)}</Feed.Date>
                 </span>
 
                 <Feed.Summary>
@@ -69,7 +59,12 @@ export class TicketsList extends Component {
               </Feed.Content>
               <div floated="right">
                 <Label color="teal" as="a">
+                  <Icon name="user" color="black" />
                   Votes:{votes}
+                </Label>
+                <Label color="teal" as="a">
+                  <Icon name="eye" color="black" />
+                  Views:{views}
                 </Label>
               </div>
             </Feed.Event>
