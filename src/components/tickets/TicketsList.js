@@ -34,7 +34,8 @@ export class TicketsList extends Component {
     const { ticketsList } = this.props;
 
     return ticketsList.map(ticket => {
-      const { title, subject, id, created_at, slug } = ticket;
+      const { title, subject, id, created_at, slug, views, votes } = ticket;
+      console.log(ticket);
 
       const date = new Date(created_at);
       const wholeDate =
@@ -68,7 +69,7 @@ export class TicketsList extends Component {
               </Feed.Content>
               <div floated="right">
                 <Label color="teal" as="a">
-                  Votes: 22
+                  Votes:{votes}
                 </Label>
               </div>
             </Feed.Event>

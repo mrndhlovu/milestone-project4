@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { Button, Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
-import Slugify from "../../utils/Slugify";
+import { slugify } from "../../constants/constants";
 
 export class CreateTicket extends Component {
   constructor(props) {
@@ -58,7 +58,7 @@ export class CreateTicket extends Component {
 
   handleSubmitClick(values) {
     const { subject } = values;
-    const slug = Slugify(subject);
+    const slug = slugify(subject);
     const updatedValues = { ...values, slug };
 
     this.props.createTicket(updatedValues);
@@ -127,7 +127,6 @@ export class CreateTicket extends Component {
     const { handleSubmit, field } = this.props;
     const {
       errors: { subject, title, description, slug, other, owner },
-
       isLoading
     } = this.state;
 
@@ -193,13 +192,11 @@ const mapStateToProps = state => {
 };
 
 function validate(values) {
-  // console.log("Form values: ", values);
   const formErrors = {};
 
   if (!values.title) {
     formErrors.title = "Enter a title";
   }
-
   if (!values.description) {
     formErrors.description = "Enter a description";
   }
