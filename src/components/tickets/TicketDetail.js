@@ -84,12 +84,13 @@ export class TicketDetail extends Component {
           </Card.Content>
         </Card>
         <Segment>
+          <Header as="h4" content="Comments" />
+
           {isAuthenticated ? (
             <TicketComments />
           ) : (
             <Fragment>
-              <Header as="h4" content="Comments" />
-              <Message negative>
+              <Message warning attached>
                 To view and make comments you need a
                 <StyledSpan>
                   <NavLink to="/pricing">Unicorn Pro Account.</NavLink>
