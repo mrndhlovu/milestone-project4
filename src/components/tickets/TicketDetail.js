@@ -1,24 +1,28 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+import styled from "styled-components";
 
 import { requestTicketsDetail } from "../../actions/TicketActions";
+import { getFormatedDate } from "../../constants/constants";
+import TicketComments from "./TicketComments";
+import UILoadingSpinner from "../../utils/UILoadingSpinner";
 
 import {
-  Container,
-  Header,
-  Segment,
-  Dimmer,
-  Loader,
-  Image,
-  Divider,
-  Icon,
-  Statistic,
   Button,
   Card,
-  Comment,
-  Form
+  Container,
+  Divider,
+  Header,
+  Message,
+  Segment,
+  Statistic
 } from "semantic-ui-react";
+
+const StyledSpan = styled.span`
+  padding-left: 0.3rem;
+`;
 
 export class TicketDetail extends Component {
   constructor(props) {
@@ -32,30 +36,17 @@ export class TicketDetail extends Component {
 
   render() {
     const {
-      dataReceived,
-      isLoading,
-      ticket: { title, created_at, description }
-    } = this.props.ticket;
+      ticket: {
+        dataReceived,
+        isLoading,
+        ticket: { title, created_at, description, votes, views }
+      },
+      authUser,
+      authUser: { isAuthenticated }
+    } = this.props;
 
-    const date = new Date(created_at);
-    const wholeDate =
-      date.getFullYear() +
-      "-" +
-      ("0" + (date.getMonth() + 1)).slice(-2) +
-      "-" +
-      ("0" + date.getDate()).slice(-2) +
-      "  / " +
-      ("0" + date.getHours()).slice(-2) +
-      ":" +
-      ("0" + date.getMinutes()).slice(-2);
-
-    return isLoading && !dataReceived ? (
-      <div>
-        <Dimmer active inverted>
-          <Loader size="mini">Loading</Loader>
-        </Dimmer>
-        <Image src="/images/wireframe/short-paragraph.png" />
-      </div>
+    return dataReceived && isLoading ? (
+      <UILoadingSpinner />
     ) : (
       <Container style={{ paddingTop: 20 }}>
         <div style={{ paddingTop: 10 }}>
@@ -63,13 +54,17 @@ export class TicketDetail extends Component {
             color="blue"
             size="tiny"
             floated="right"
-            as={Link}
+            as={NavLink}
             to="/create-ticket"
           >
             Create a ticket
           </Button>
         </div>
-        <Header as="h3" color="blue" subheader={`Ticket filed: ${wholeDate}`} />
+        <Header
+          as="h3"
+          color="blue"
+          subheader={`Ticket filed: ${getFormatedDate(created_at)}`}
+        />
 
         <Divider />
 
@@ -80,100 +75,30 @@ export class TicketDetail extends Component {
           <Card.Content extra>
             <Statistic.Group size="mini" color="grey">
               <Statistic>
-                <Statistic.Value>22</Statistic.Value>
+                <Statistic.Value>{votes}</Statistic.Value>
                 <Statistic.Label>Votes</Statistic.Label>
               </Statistic>
               <Statistic>
-                <Statistic.Value>31,200</Statistic.Value>
+                <Statistic.Value>{views}</Statistic.Value>
                 <Statistic.Label>Views</Statistic.Label>
-              </Statistic>
-              <Statistic>
-                <Statistic.Value>22</Statistic.Value>
-                <Statistic.Label>Members</Statistic.Label>
               </Statistic>
             </Statistic.Group>
           </Card.Content>
         </Card>
         <Segment>
-          <Comment.Group>
-            <Header as="h3" content="Comments" />
-            <Divider />
-
-            <Comment>
-              <Icon disabled name="user" />
-              <Comment.Content>
-                <Comment.Author as="a">Matt</Comment.Author>
-                <Comment.Metadata>
-                  <div>Today at 5:42PM</div>
-                </Comment.Metadata>
-                <Comment.Text>How artistic!</Comment.Text>
-                <Comment.Actions>
-                  <Comment.Action>Reply</Comment.Action>
-                </Comment.Actions>
-              </Comment.Content>
-            </Comment>
-
-            <Comment>
-              <Icon />
-              <Comment.Content>
-                <Comment.Author as="a">Elliot Fu</Comment.Author>
-                <Comment.Metadata>
-                  <div>Yesterday at 12:30AM</div>
-                </Comment.Metadata>
-                <Comment.Text>
-                  <p>
-                    This has been very useful for my research. Thanks as well!
-                  </p>
-                </Comment.Text>
-                <Comment.Actions>
-                  <Comment.Action>Reply</Comment.Action>
-                </Comment.Actions>
-              </Comment.Content>
-              <Comment.Group>
-                <Comment>
-                  <Icon disabled name="user" />
-                  <Comment.Content>
-                    <Comment.Author as="a">Jenny Hess</Comment.Author>
-                    <Comment.Metadata>
-                      <div>Just now</div>
-                    </Comment.Metadata>
-                    <Comment.Text>
-                      Elliot you are always so right :)
-                    </Comment.Text>
-                    <Comment.Actions>
-                      <Comment.Action>Reply</Comment.Action>
-                    </Comment.Actions>
-                  </Comment.Content>
-                </Comment>
-              </Comment.Group>
-            </Comment>
-
-            <Comment>
-              <Icon disabled name="user" />
-              <Comment.Content>
-                <Comment.Author as="a">Joe Henderson</Comment.Author>
-                <Comment.Metadata>
-                  <div>5 days ago</div>
-                </Comment.Metadata>
-                <Comment.Text>
-                  Dude, this is awesome. Thanks so much
-                </Comment.Text>
-                <Comment.Actions>
-                  <Comment.Action>Reply</Comment.Action>
-                </Comment.Actions>
-              </Comment.Content>
-            </Comment>
-
-            <Form reply>
-              <Form.TextArea />
-              <Button
-                content="Add Reply"
-                labelPosition="left"
-                icon="edit"
-                primary
-              />
-            </Form>
-          </Comment.Group>
+          {isAuthenticated ? (
+            <TicketComments />
+          ) : (
+            <Fragment>
+              <Header as="h4" content="Comments" />
+              <Message negative>
+                To view and make comments you need a
+                <StyledSpan>
+                  <NavLink to="/pricing">Unicorn Pro Account.</NavLink>
+                </StyledSpan>
+              </Message>
+            </Fragment>
+          )}
         </Segment>
       </Container>
     );
