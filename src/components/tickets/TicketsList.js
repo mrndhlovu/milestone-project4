@@ -37,7 +37,6 @@ export class TicketsList extends Component {
 
     return ticketsList.map(ticket => {
       const { title, subject, id, created_at, slug, views, votes } = ticket;
-      console.log(ticket);
 
       return (
         <Fragment key={id}>
@@ -47,10 +46,9 @@ export class TicketsList extends Component {
                 <Header as={Link} to={`ticket/${id}`} size="small" color="blue">
                   {title.toUpperCase()}
                 </Header>
-                <span style={{ paddingTop: 5 }}>
-                  <Feed.Date>{getFormatedDate(created_at)}</Feed.Date>
-                </span>
-
+                <Feed.Date style={{ paddingTop: 10 }}>
+                  {getFormatedDate(created_at)}
+                </Feed.Date>
                 <Feed.Summary>
                   <a href="/">Laura Faucet </a>
                   created a ticket
@@ -86,6 +84,10 @@ export class TicketsList extends Component {
       headerButtonText,
       subHeading
     } = this.state;
+    const { ticketsList } = this.props;
+
+    const ticketCount =
+      ticketsList !== "" ? Object.keys(ticketsList).length : 0;
 
     return (
       <Fragment>
@@ -94,8 +96,8 @@ export class TicketsList extends Component {
         />
         <Container>
           <Header
-            content="All Tickets"
-            subheader="Currently there are - - tickets "
+            content="Tickets List"
+            subheader={`Ticket count:  ${ticketCount}`}
             as="h4"
             style={{ paddingTop: 20 }}
           />
