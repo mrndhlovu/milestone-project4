@@ -273,3 +273,10 @@ export const navLinkText = [
   { header: "Tickets", key: "tickets" },
   { header: "Blog", key: "blog-article-list" }
 ];
+
+export const slugify = text => {
+  return text
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+};
