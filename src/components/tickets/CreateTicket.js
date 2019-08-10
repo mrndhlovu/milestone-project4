@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import { Button, Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
+import Slugify from "../../utils/Slugify";
 
 export class CreateTicket extends Component {
   constructor(props) {
@@ -56,17 +57,19 @@ export class CreateTicket extends Component {
   }
 
   handleSubmitClick(values) {
-    this.props.createTicket(values);
+    const { subject } = values;
+    const slug = Slugify(subject);
+    const updatedValues = { ...values, slug };
+
+    this.props.createTicket(updatedValues);
   }
 
   componentDidUpdate(prevProps) {
     const {
       errorAlert,
-      // authState: { sessionToken },
       ticket: { dataReceived }
     } = this.props;
     const { errors } = this.state;
-    // console.log(errorAlert);
 
     if (errorAlert !== prevProps.errorAlert) {
       if (errorAlert.alertMsg.subject) {
@@ -153,11 +156,6 @@ export class CreateTicket extends Component {
           <Field name="title" label="Title" component={this.renderField} />
           <Field name="subject" label="Subject" component={this.renderField} />
           <Field
-            name="slug"
-            label="Slugs: e.g javascriprt, pyhton, django"
-            component={this.renderField}
-          />
-          <Field
             name="description"
             label="Description"
             component={this.renderField}
@@ -197,9 +195,7 @@ const mapStateToProps = state => {
 function validate(values) {
   // console.log("Form values: ", values);
   const formErrors = {};
-  if (!values.slug) {
-    formErrors.slug = "Enter a slug";
-  }
+
   if (!values.title) {
     formErrors.title = "Enter a title";
   }
