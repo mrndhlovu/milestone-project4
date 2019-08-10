@@ -41,7 +41,6 @@ export class TicketDetail extends Component {
         isLoading,
         ticket: { title, created_at, description, votes, views }
       },
-      authUser,
       authUser: { isAuthenticated }
     } = this.props;
 
@@ -63,14 +62,13 @@ export class TicketDetail extends Component {
         <Header
           as="h3"
           color="blue"
-          subheader={`Ticket filed: ${getFormatedDate(created_at)}`}
+          subheader={`Filed: ${getFormatedDate(created_at)}`}
         />
 
         <Divider />
 
         <Card style={{ paddingLeft: 10 }} fluid>
           <Card.Content header={title} color="blue" />
-
           <Card.Content description={description} />
           <Card.Content extra>
             <Statistic.Group size="mini" color="grey">
