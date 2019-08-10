@@ -19,7 +19,7 @@ MEMBERSHIP_OPTIONS = (
 class Membership(models.Model):
     slug = models.SlugField()
     membership_option = models.CharField(
-        choices=MEMBERSHIP_OPTIONS, default='Free', max_length=50)
+        choices=MEMBERSHIP_OPTIONS, default='free', max_length=50)
     price = models.IntegerField(default=10)
     stripe_plan_id = models.CharField(max_length=40)
 
@@ -52,10 +52,10 @@ post_save.connect(post_save_create_user_membership, sender=User)
 
 
 class Subcription(models.Model):
-    user_membership = models.ForeignKey(
+    membership_user = models.ForeignKey(
         UserMembership, on_delete=models.CASCADE)
     stripe_user_id = models.CharField(max_length=50)
     is_active = models.BooleanField(default=-True)
 
     def __str__(self):
-        return self.user_membership.user.username
+        return self.membership_user.user.username
