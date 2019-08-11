@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-import { withRouter } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
 import { Redirect } from "react-router";
 
 import styled from "styled-components";
@@ -33,7 +33,7 @@ class LoginModal extends Component {
     super(props);
     this.state = {
       errors: { signInError: "" },
-      isLoading: ""
+      isLoading: false
     };
 
     this.handleLoginClick = this.handleLoginClick.bind(this);
@@ -74,52 +74,36 @@ class LoginModal extends Component {
     );
   }
 
+  showErrorMessage() {
+    const { errorAlert } = this.props.error;
+
+    return Object.keys(errorAlert).map((error, index) => {
+      const message = `${error.toUpperCase()}: ${errorAlert[error]}`;
+
+      return <p key={index}>{message}</p>;
+    });
+  }
+
   // wait for updates then render components accorhing to new state
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const {
-      errorAlert,
       auth: { isAuthenticated }
     } = this.props;
 
-    const { errors } = this.state;
-
-    if (errorAlert !== prevProps.errorAlert) {
-      if (errorAlert.alertMsg.non_field_errors) {
-        this.setState({
-          isLoading: false,
-          errors: {
-            ...errors,
-            signInError: errorAlert.alertMsg.non_field_errors
-          }
-        });
-      }
-      if (errorAlert.alertMsg.errorAlert.non_field_errors) {
-        this.setState({
-          isLoading: false,
-          errors: {
-            ...errors,
-            signInError: errorAlert.alertMsg.errorAlert.non_field_errors
-          }
-        });
-      }
-    }
-    if (isAuthenticated) {
-      // refresh page and keep the use on the on the protected component
-      if (privateRoutes.includes(window.location.pathname)) {
-        this.props.history.push(`${this.props.match.url}`);
-      }
-    }
+    // refresh page and keep the use on the on the protected component
+    isAuthenticated &&
+      privateRoutes.includes(window.location.pathname) &&
+      this.props.history.push(`${this.props.match.url}`);
   }
 
   render() {
     const {
+      valid,
+      pristine,
       handleSubmit,
-      auth: { isAuthenticated }
+      auth: { isAuthenticated, hasError }
     } = this.props;
-    const {
-      isLoading,
-      errors: { signInError }
-    } = this.state;
+    const { isLoading } = this.state;
 
     if (isAuthenticated) {
       return <Redirect to="/" />;
@@ -128,19 +112,19 @@ class LoginModal extends Component {
     return (
       <Fragment>
         <StyleContainer>
-          <Header as="h3" color="teal" textAlign="center" centered="false">
+          <Header as="h2" color="black" textAlign="center" centered="false">
             Login
           </Header>
 
           <Grid textAlign="center" verticalAlign="middle">
             <Grid.Column style={{ maxWidth: 500 }}>
-              {signInError ? (
-                <Message
-                  size="small"
-                  error
-                  header="Sign up error: "
-                  content={signInError}
-                />
+              {hasError ? (
+                <Message error size="small">
+                  <Message.Header>
+                    There seem to be a problem with:
+                  </Message.Header>
+                  {this.showErrorMessage()}
+                </Message>
               ) : null}
               <Form size="large" onSubmit={handleSubmit(this.handleLoginClick)}>
                 <Segment stacked>
@@ -158,12 +142,12 @@ class LoginModal extends Component {
                   />
                   <br />
                   <Button
-                    color="teal"
+                    color="blue"
                     fluid
                     size="large"
                     type="submit"
-                    onClick={this.closeModal}
-                    loading={isLoading ? true : false}
+                    loading={isLoading && !hasError}
+                    disabled={(!valid || pristine) && true}
                   >
                     Login
                   </Button>
@@ -171,9 +155,7 @@ class LoginModal extends Component {
               </Form>
               <Message>
                 <StyledSpan>Dont have an account?</StyledSpan>
-                <Button size="medium" positive onClick={this.showSignupModal}>
-                  Sign up
-                </Button>
+                <NavLink to="/signup">Sign up</NavLink>
               </Message>
             </Grid.Column>
           </Grid>
@@ -186,7 +168,7 @@ class LoginModal extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.auth,
-    errorAlert: state.errorAlert
+    error: state.errorAlert.alertMsg
   };
 };
 
