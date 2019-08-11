@@ -121,10 +121,10 @@ export const authState = () => {
   };
 };
 
-export const login = (username, password) => {
+export const login = body => {
   return dispatch => {
     dispatch(fetchData());
-    requestLogin(username, password).then(
+    requestLogin(body).then(
       response => {
         const sessionToken = response.data.token;
         const sessionLife = new Date(new Date().getTime() + 1800 * 1000);

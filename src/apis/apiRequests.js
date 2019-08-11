@@ -22,13 +22,11 @@ export async function requestUser() {
   return axios.get(`${baseUrl}/accounts/api/auth/user`, params);
 }
 
-export async function requestSignup(inputs) {
-  const body = JSON.stringify({ inputs });
+export async function requestSignup(body) {
   return axios.post(`${baseUrl}/accounts/api/auth/signup`, body, params);
 }
 
-export async function requestLogin(username, password) {
-  const body = JSON.stringify({ username, password });
+export async function requestLogin(body) {
   return axios.post(`${baseUrl}/accounts/api/auth/login`, body, params);
 }
 

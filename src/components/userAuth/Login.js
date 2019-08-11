@@ -43,9 +43,7 @@ class LoginModal extends Component {
   // request a login, and redirect to home page
   handleLoginClick(values) {
     this.setState({ isLoading: true });
-
-    const { username, password } = values;
-    this.props.login(username, password);
+    this.props.login(values);
   }
 
   renderField(field) {
