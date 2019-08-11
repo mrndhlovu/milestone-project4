@@ -52,10 +52,10 @@ post_save.connect(post_save_create_user_membership, sender=User)
 
 
 class Subcription(models.Model):
-    membership_user = models.ForeignKey(
+    user_membership = models.ForeignKey(
         UserMembership, on_delete=models.CASCADE)
     stripe_user_id = models.CharField(max_length=50)
     is_active = models.BooleanField(default=-True)
 
     def __str__(self):
-        return self.membership_user.user.username
+        return self.user_membership.user.username
