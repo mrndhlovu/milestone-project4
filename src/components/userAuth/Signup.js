@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { reduxForm, Field } from "redux-form";
+import { NavLink } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -31,13 +32,15 @@ class SignupModal extends Component {
     this.state = {
       showModal: true,
       loginModal: false,
+      isLoading: false,
+      buttonDisabled: true,
+
       errors: {
         email: "",
         password: "",
         password2: "",
         username: "",
-        other: "",
-        isLoading: ""
+        other: ""
       }
     };
 
@@ -47,61 +50,23 @@ class SignupModal extends Component {
 
   handleSignupClick(values) {
     this.setState({ isLoading: true });
-    const inputs = JSON.stringify({ values });
-
-    this.props.signup(inputs);
+    this.props.signup(values);
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      errorAlert,
-      authState: { isAuthenticated }
-    } = this.props;
-    const { errors } = this.state;
+  componentDidUpdate() {
+    const { isAuthenticated } = this.props.authState;
 
-    if (errorAlert !== prevProps.errorAlert) {
-      if (errorAlert.alertMsg.errorAlert.email) {
-        this.setState({
-          isLoading: false,
-          errors: { ...errors, email: errorAlert.alertMsg.errorAlert.email }
-        });
-      }
-      if (errorAlert.alertMsg.errorAlertpassword) {
-        this.setState({
-          isLoading: false,
-          errors: {
-            ...errors,
-            password: errorAlert.alertMsg.errorAlert.password
-          }
-        });
-      }
+    isAuthenticated && window.location.reload();
+  }
 
-      // if (errorAlert.alertMsg.errorAlert.detail) {
-      //   alert.error(`Error: ${errorAlert.alertMsg.errorAlert.detail}`);
-      // }
+  showErrorMessage() {
+    const { errorAlert } = this.props.error;
 
-      if (errorAlert.alertMsg.errorAlert.username) {
-        this.setState({
-          errors: {
-            isLoading: false,
-            ...errors,
-            username: errorAlert.alertMsg.errorAlert.username
-          }
-        });
-      }
-      if (errorAlert.alertMsg.errorAlert.non_field_errors) {
-        this.setState({
-          isLoading: false,
-          errors: {
-            ...errors,
-            other: errorAlert.alertMsg.errorAlert.non_field_errors.join()
-          }
-        });
-      }
-    }
-    if (isAuthenticated) {
-      window.location.reload();
-    }
+    return Object.keys(errorAlert).map((error, index) => {
+      const message = `${error.toUpperCase()}: ${errorAlert[error]}`;
+
+      return <p key={index}>{message}</p>;
+    });
   }
 
   renderField(field) {
@@ -144,13 +109,12 @@ class SignupModal extends Component {
 
   render() {
     const {
+      valid,
+      pristine,
       handleSubmit,
-      authState: { isAuthenticated }
+      authState: { isAuthenticated, hasError }
     } = this.props;
-    const { buttonDisabled, isLoading } = this.state;
-    const {
-      errors: { email, password, password2, username, other }
-    } = this.state;
+    const { isLoading } = this.state;
 
     if (isAuthenticated) {
       return <Redirect to="/" />;
@@ -159,20 +123,20 @@ class SignupModal extends Component {
     return (
       <Fragment>
         <StyleContainer>
-          <Header as="h3" color="teal" textAlign="center" centered="false">
-            Create an Unicorn account
+          <Header as="h2" textAlign="center" centered="false">
+            Create your Unicorn Account, its free!
           </Header>
 
-          <Grid textAlign="center" verticalAlign="middle">
+          <Grid textAlign="center">
             <Grid.Column style={{ maxWidth: 500 }}>
-              {email || password || username || other || password2 ? (
-                <Message
-                  size="small"
-                  error
-                  header="Sign up error: "
-                  content={email || password || username || other || password2}
-                />
-              ) : null}
+              {hasError && (
+                <Message error size="small">
+                  <Message.Header>
+                    There seem to be a problem with:
+                  </Message.Header>
+                  {this.showErrorMessage()}
+                </Message>
+              )}
               <Form
                 size="large"
                 onSubmit={handleSubmit(this.handleSignupClick)}
@@ -204,11 +168,12 @@ class SignupModal extends Component {
                   <br />
 
                   <Button
-                    color="teal"
+                    color="blue"
                     fluid
                     size="large"
                     type="submit"
-                    loading={isLoading ? true : false}
+                    loading={isLoading && !hasError}
+                    disabled={(!valid || pristine) && true}
                   >
                     Sign up
                   </Button>
@@ -216,13 +181,7 @@ class SignupModal extends Component {
               </Form>
               <Message attached="bottom">
                 <StyledSpan>Already have an account?</StyledSpan>
-                <Button
-                  positive
-                  onClick={this.showLoginModal}
-                  disabled={buttonDisabled}
-                >
-                  Login
-                </Button>
+                <NavLink to="/login">Login</NavLink>
               </Message>
             </Grid.Column>
           </Grid>
@@ -235,12 +194,13 @@ class SignupModal extends Component {
 const mapStateToProps = state => {
   return {
     authState: state.auth,
-    errorAlert: state.errorAlert
+    error: state.errorAlert.alertMsg
   };
 };
 
 function validate(values) {
   const formErrors = {};
+
   if (!values.username) {
     formErrors.username = "Enter a username";
   }
