@@ -1,11 +1,10 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.auth import get_user_model
 
 
 # Create ticket model
 
-User = get_user_model()
+User = settings.AUTH_USER_MODEL
 
 
 class Ticket(models.Model):
@@ -25,12 +24,9 @@ class Ticket(models.Model):
         max_length=6, choices=STATUS, default='todo')
     in_progress = models.BooleanField(default=False)
     slug = models.SlugField(blank=True)
-    owner = models.ForeignKey(
-        User, on_delete=models.DO_NOTHING, null=True, default=None)
+    owner = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=True, blank=True)
     views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
-
-    def snippet(self):
-        return self.description[:40] + '...'

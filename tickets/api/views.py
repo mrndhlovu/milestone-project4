@@ -1,6 +1,8 @@
 from tickets.models import Ticket
 from .serializers import TicketSerializer
 from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class TicketViewSet(viewsets.ModelViewSet):
@@ -8,16 +10,16 @@ class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
 
-    def restore_object(self, attrs, instance=None):
-        new_instance = False
-        if not instance:
-            new_instance = True
+    def create(self, request, *args, **kwargs):
+        # Copy parsed content from HTTP request
+        data = request.data.copy()
 
-        instance = super().restore_object(attrs, instance)
+        # Add id of currently logged user
+        data['owner'] = request.user.id
 
-        # Only set the owner if this is a new instance
-        if new_instance:
-            request = self.context.get('request', None)
-            setattr(instance, 'owner', request.user)
-
-        return instance
+        # Default behavior but pass our modified data instead
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
