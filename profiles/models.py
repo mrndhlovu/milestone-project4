@@ -2,9 +2,9 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save, pre_save
-from memberships.models import UserMembership
+from products.models import Product
 from memberships.models import Subcription
-from memberships.models import Membership
+
 
 User = settings.AUTH_USER_MODEL
 
@@ -12,9 +12,8 @@ User = settings.AUTH_USER_MODEL
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True, blank=True)
-    UserMembership = models.ManyToManyField(UserMembership)
-    Membership = models.ManyToManyField(Membership)
     Subcription = models.ManyToManyField(Subcription)
+    Product = models.ManyToManyField(Product)
 
     def __str__(self):
         return self.user.email
