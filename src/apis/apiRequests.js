@@ -15,6 +15,10 @@ export async function requestProductsList() {
   return axios.get(`${baseUrl}/products/`);
 }
 
+export async function requestMembershipsList() {
+  return axios.get(`${baseUrl}/memberships/`);
+}
+
 export async function requestUser() {
   const sessionToken = localStorage.getItem("sessionToken");
   params.headers["Authorization"] = `Token ${sessionToken}`;
