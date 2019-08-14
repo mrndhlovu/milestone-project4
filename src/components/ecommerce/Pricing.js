@@ -52,8 +52,9 @@ export class Pricing extends Component {
     this.props.fetchMembershipsList();
   }
 
-  renderMembershipOption(type) {
+  renderMembershipOption() {
     const { memberships } = this.props;
+    const type = "free";
 
     return memberships.map(membership => {
       const { price, id, slug } = membership;
@@ -72,8 +73,8 @@ export class Pricing extends Component {
             content={header.toUpperCase()}
             subheader={
               type === slug
-                ? `${price} Per / month`
-                : `${price} Per user / month billed annually`
+                ? `$ ${price} Per / month`
+                : `$ ${price} Per User / month`
             }
           />
 
@@ -115,7 +116,7 @@ export class Pricing extends Component {
         <Segment style={{ padding: "0em" }}>
           <Container>
             <Grid celled="internally" columns="equal" stackable>
-              <Grid.Row>{this.renderMembershipOption("free")}</Grid.Row>
+              <Grid.Row>{this.renderMembershipOption()}</Grid.Row>
             </Grid>
           </Container>
         </Segment>
