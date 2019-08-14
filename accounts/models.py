@@ -42,7 +42,7 @@ class CustomUser(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
 
     REQUIRED_FIELDS = []
 
