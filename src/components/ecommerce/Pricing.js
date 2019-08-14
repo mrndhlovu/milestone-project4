@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 import HeadingImage from "../home/HeadingImage";
 
@@ -17,6 +18,8 @@ import {
   unicornFreeServices,
   unicornProServices
 } from "../../constants/constants";
+
+import { fetchMembershipsList } from "../../actions/MembershipsActions";
 
 export class Pricing extends Component {
   constructor(props) {
@@ -45,6 +48,55 @@ export class Pricing extends Component {
 
   handleAddToCart() {}
 
+  componentDidMount() {
+    this.props.fetchMembershipsList();
+  }
+
+  renderMembershipOption(type) {
+    const { memberships } = this.props;
+
+    return memberships.map(membership => {
+      const { price, id, slug } = membership;
+      const buttonText = type === slug ? "Free Signup" : "Add to Cart";
+      const buttonColor = type === slug ? "black" : "orange";
+      const redirectUrl = type === slug ? "/signup" : "/cart";
+
+      return (
+        <Grid.Column style={{ padding: "5em 5em 5em 1em" }} key={id}>
+          <Header
+            as="h2"
+            attached="top"
+            color={type === slug ? "black" : "purple"}
+            textAlign="center"
+            content="Unicorn Free"
+            subheader={
+              type === slug
+                ? `${price} Per / month`
+                : `${price} Per user / month billed annually`
+            }
+          />
+
+          <div>
+            <Segment>
+              <List>
+                {type === slug
+                  ? this.renderServicesList(unicornFreeServices)
+                  : this.renderServicesList(unicornProServices)}
+              </List>
+            </Segment>
+          </div>
+          <Button
+            attached="bottom"
+            content={buttonText}
+            as={NavLink}
+            to={redirectUrl}
+            color={buttonColor}
+          />
+        </Grid.Column>
+      );
+    });
+  }
+
   render() {
     const {
       headerText,
@@ -62,56 +114,7 @@ export class Pricing extends Component {
         <Segment style={{ padding: "0em" }}>
           <Container>
             <Grid celled="internally" columns="equal" stackable>
-              <Grid.Row>
-                <Grid.Column style={{ padding: "5em 5em 5em 1em" }}>
-                  <Header
-                    as="h2"
-                    attached="top"
-                    color="black"
-                    textAlign="center"
-                    content="Unicorn Free"
-                    subheader="$0 Per / month"
-                  />
-
-                  <div>
-                    <Segment>
-                      <List>
-                        {this.renderServicesList(unicornFreeServices)}
-                      </List>
-                    </Segment>
-                  </div>
-                  <Button
-                    attached="bottom"
-                    content="Free Signup"
-                    as={NavLink}
-                    to="/signup"
-                    color="black"
-                  />
-                </Grid.Column>
-
-                <Grid.Column style={{ padding: "5em 1em 5em 5em" }}>
-                  <Header
-                    as="h2"
-                    textAlign="center"
-                    color="orange"
-                    attached="top"
-                    content="Unicorn Pro"
-                    subheader="$10 Per user / month billed annually"
-                  />
-
-                  <div>
-                    <Segment>
-                      <List>{this.renderServicesList(unicornProServices)}</List>
-                    </Segment>
-                  </div>
-                  <Button
-                    attached="bottom"
-                    content="Add to Cart"
-                    onClick={this.handleAddToCart}
-                    color="orange"
-                  />
-                </Grid.Column>
-              </Grid.Row>
+              <Grid.Row>{this.renderMembershipOption("free")}</Grid.Row>
             </Grid>
           </Container>
         </Segment>
@@ -120,4 +123,13 @@ export class Pricing extends Component {
   }
 }
 
-export default Pricing;
+const mapStateToProps = state => {
+  return {
+    memberships: state.memberships.membershipList
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { fetchMembershipsList }
+)(Pricing);
