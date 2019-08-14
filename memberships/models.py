@@ -13,25 +13,25 @@ User = settings.AUTH_USER_MODEL
 
 MEMBERSHIP_OPTIONS = (
     ('free', 'Free'),
-    ('pro', 'Professional'),
+    ('pro', 'Professional')
 )
 
 
 class Membership(models.Model):
     slug = models.SlugField()
-    membership_option = models.CharField(
-        choices=MEMBERSHIP_OPTIONS, default='Free', max_length=50)
+    membership_type = models.CharField(
+        choices=MEMBERSHIP_OPTIONS, default="free", max_length=50)
     price = models.IntegerField(default=10)
     stripe_plan_id = models.CharField(max_length=40)
 
     def __str__(self):
-        return self.membership_option
+        return self.membership_type
 
 
 class UserMembership(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    membership_stripe_user_id = models.CharField(max_length=50)
+    stripe_customer_key = models.CharField(max_length=20)
     membership = models.ForeignKey(
         Membership, on_delete=models.SET_NULL, null=True)
 
@@ -40,13 +40,19 @@ class UserMembership(models.Model):
 
 
 def post_save_create_user_membership(sender, instance, created, *args, **kwargs):
+    if created:
+        UserMembership.objects.get_or_create(user=instance)
+
     user_membership, created = UserMembership.objects.get_or_create(
         user=instance)
 
-    if user_membership.membership_stripe_user_id is None or user_membership.membership_stripe_user_id == '':
-        new_subcriber_id = stripe.Customer.create(email=instance.email)
-        default_membership = Membership.objects.get(membership_option='Free')
-        user_membership.membership_stripe_user_id = new_subcriber_id['id']
+    if user_membership.stripe_customer_key is None or user_membership.stripe_customer_key == '':
+        new_customer_key = stripe.Customer.create(email=instance.email)
+        try:
+            default_membership = Membership.objects.get(membership_type="free")
+        except Membership.DoesNotExist:
+            default_membership = None
+        user_membership.stripe_customer_key = new_customer_key["id"]
         user_membership.membership = default_membership
         user_membership.save()
 
