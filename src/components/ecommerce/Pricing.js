@@ -60,6 +60,7 @@ export class Pricing extends Component {
       const buttonText = type === slug ? "Free Signup" : "Add to Cart";
       const buttonColor = type === slug ? "black" : "orange";
       const redirectUrl = type === slug ? "/signup" : "/cart";
+      const header = type === slug ? `Unicorn ${slug}` : `Unicorn ${slug}`;
 
       return (
         <Grid.Column style={{ padding: "5em 5em 5em 1em" }} key={id}>
@@ -68,7 +69,7 @@ export class Pricing extends Component {
             attached="top"
             color={type === slug ? "black" : "purple"}
             textAlign="center"
-            content="Unicorn Free"
+            content={header.toUpperCase()}
             subheader={
               type === slug
                 ? `${price} Per / month`
@@ -87,7 +88,7 @@ export class Pricing extends Component {
           </div>
           <Button
             attached="bottom"
-            content={buttonText}
+            content={buttonText.toUpperCase()}
             as={NavLink}
             to={redirectUrl}
             color={buttonColor}
