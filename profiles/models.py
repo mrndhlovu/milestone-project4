@@ -3,7 +3,8 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from products.models import Product
-from memberships.models import Subcription
+from memberships.models import Subcription, UserMembership, Membership
+from accounts.models import CustomUser
 
 
 User = settings.AUTH_USER_MODEL
@@ -16,7 +17,7 @@ class UserProfile(models.Model):
     Product = models.ManyToManyField(Product)
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
 
 
 def user_profile_receiver(sender, instance, created, *args, **kwargs):
