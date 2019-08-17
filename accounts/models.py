@@ -1,48 +1,49 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
+from django.contrib.auth.base_user import (AbstractBaseUser, BaseUserManager)
+from django.utils.translation import ugettext_lazy as _
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, full_name=None, password=None, is_admin=False, is_staff=False, user_is_active=True, ):
-        if not username:
-            raise ValueError("Users must have a username")
+    use_in_migrations = True
+
+    def _create_user(self, email, username, password, ** extra_fields):
+
         if not email:
             raise ValueError("Users must have an email address")
-        if not password:
-            raise ValueError("Users must have a password")
 
-        user = self.model(email=self.normalize_email(email),
-                          full_name=full_name, username=username)
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.username = username
-        user.staff = is_staff
-        user.admin = is_admin
-        user.user_is_active = user_is_active
         user.save(using=self._db)
+
         return user
 
-    def create_user_is_staff(self, username, password=None):
-        user = self.create_user(username, password=password, is_staff=True)
-        return user
+    def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
 
-    def create_user_is_superuser(self, username, password=None):
-        user = self.create_user(
-            username, password=password, is_staff=True, is_admin=True)
-        return user
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError(
+                'Superuser must have a value set to True to is_superuser')
+
+        return self._create_user(email, password, extra_fields)
 
 
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(max_length=100, unique=True)
     username = models.CharField(max_length=100, blank=True, null=True)
-    full_name = models.CharField(max_length=100, blank=True, null=True)
-    user_is_active = models.BooleanField(default=True)
-    staff = models.BooleanField(default=False)
-    admin = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    first_name = models.CharField(max_length=40, blank=True, null=True)
+    last_name = models.CharField(max_length=40, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(
+        _('date joined'), auto_now_add=True)
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
 
     REQUIRED_FIELDS = []
 
@@ -50,6 +51,13 @@ class CustomUser(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
+    def get_full_name(self):
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def get_username(self):
+        return self.username
 
 
 def post_save_user_create_reciever(sender, instance, created, *args, **kwargs):

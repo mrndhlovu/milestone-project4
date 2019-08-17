@@ -1,28 +1,32 @@
 
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save, pre_save
-from products.models import Product
-from memberships.models import Subcription, UserMembership, Membership
+# from products.models import Product
 from accounts.models import CustomUser
-
-
-User = settings.AUTH_USER_MODEL
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+# from memberships.models import Subcription, UserMembership, Membership
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True, blank=True)
-    Subcription = models.ManyToManyField(Subcription)
-    Product = models.ManyToManyField(Product)
+    bio = models.TextField(max_length=500, blank=True)
+    occupation = models.CharField(max_length=30, blank=True)
+    # Subcription = models.ManyToManyField(Subcription)
+    # Product = models.ManyToManyField(Product)
 
     def __str__(self):
         return self.user.username
 
 
-def user_profile_receiver(sender, instance, created, *args, **kwargs):
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        user_profile = UserProfile.objects.create(user=instance)
+        UserProfile.objects.create(user=instance)
 
 
-post_save.connect(user_profile_receiver, sender=User)
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userprofile.save()
