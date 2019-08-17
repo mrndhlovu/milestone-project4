@@ -15,7 +15,6 @@ class Ticket(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     title = models.CharField(max_length=120)
     subject = models.CharField(max_length=120)
     description = models.TextField()
@@ -24,7 +23,7 @@ class Ticket(models.Model):
         max_length=6, choices=STATUS, default='todo')
     in_progress = models.BooleanField(default=False)
     slug = models.SlugField(blank=True)
-    owner = models.OneToOneField(
+    owner = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True)
     views = models.IntegerField(default=0)
 
