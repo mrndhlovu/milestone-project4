@@ -17,24 +17,32 @@ import {
   Header,
   Message,
   Segment,
-  Statistic
+  Statistic,
+  Icon
 } from "semantic-ui-react";
 
 const StyledSpan = styled.span`
-  padding-left: 0.3rem;
+  padding-left: 0.3rem !important;
+  padding-top: 0.8rem !important;
 `;
 
 export class TicketDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      likeIsDisabled: true
+    };
+    this.handleVoteClick = this.handleVoteClick.bind(this);
   }
 
   componentWillMount() {
     this.props.requestTicketsDetail(this.props.match.params.id);
   }
 
+  handleVoteClick(event, user) {}
+
   render() {
+    const { likeIsDisabled } = this.state;
     const {
       ticket: {
         dataReceived,
@@ -73,12 +81,26 @@ export class TicketDetail extends Component {
           <Card.Content extra>
             <Statistic.Group size="mini" color="grey">
               <Statistic>
-                <Statistic.Value>{votes}</Statistic.Value>
-                <Statistic.Label>Votes</Statistic.Label>
+                <Statistic.Value>{votes > 0 ? votes : 0}</Statistic.Value>
+                <StyledSpan>
+                  <Statistic.Label as="a">
+                    <Icon
+                      name="thumbs up"
+                      size="large"
+                      color="grey"
+                      disabled={
+                        isAuthenticated ? !likeIsDisabled : likeIsDisabled
+                      }
+                      onClick={this.handleVoteClick}
+                    />
+                  </Statistic.Label>
+                </StyledSpan>
               </Statistic>
               <Statistic>
-                <Statistic.Value>{views}</Statistic.Value>
-                <Statistic.Label>Views</Statistic.Label>
+                <Statistic.Value>{views > 0 ? views : 0}</Statistic.Value>
+                <StyledSpan>
+                  <Statistic.Label>Views</Statistic.Label>
+                </StyledSpan>
               </Statistic>
             </Statistic.Group>
           </Card.Content>
