@@ -18,7 +18,7 @@ import { fetchTicketsList } from "../../actions/TicketActions";
 import HeadingImage from "../home/HeadingImage";
 import { getFormatedDate } from "../../constants/constants";
 
-const StyledTimeSpan = styled.span`
+const StyledSpan = styled.span`
   font-size: 0.8rem;
 `;
 
@@ -61,22 +61,21 @@ export class TicketsList extends Component {
                   {title.toUpperCase()}
                 </Header>
                 <Feed.Summary>
-                  By:
-                  <span> @{username.toLowerCase()} </span>
+                  <StyledSpan> By:@{username.toLowerCase()} </StyledSpan>
                 </Feed.Summary>
                 <Feed.Date style={{ paddingTop: 10 }}>
-                  <StyledTimeSpan>{getFormatedDate(created_at)}</StyledTimeSpan>
+                  <StyledSpan>{getFormatedDate(created_at)}</StyledSpan>
                 </Feed.Date>
                 <Feed.Extra text>{subject}</Feed.Extra>
               </Feed.Content>
               <div floated="right">
-                <Label color="teal" as="a">
+                <Label color="teal">
                   <Icon name="user" color="black" />
-                  Votes:{votes}
+                  Votes:{votes > 0 ? votes : 0}
                 </Label>
-                <Label color="teal" as="a">
+                <Label color="teal">
                   <Icon name="eye" color="black" />
-                  Views:{views}
+                  Views:{views > 0 ? views : 0}
                 </Label>
               </div>
             </Feed.Event>
