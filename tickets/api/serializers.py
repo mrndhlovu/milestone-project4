@@ -7,3 +7,9 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = '__all__'
+
+    def to_representation(self, instance):
+        rep = super(TicketSerializer, self).to_representation(instance)
+
+        rep['username'] = instance.username.username
+        return rep

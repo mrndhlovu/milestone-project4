@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 import {
   Container,
@@ -16,6 +17,10 @@ import {
 import { fetchTicketsList } from "../../actions/TicketActions";
 import HeadingImage from "../home/HeadingImage";
 import { getFormatedDate } from "../../constants/constants";
+
+const StyledTimeSpan = styled.span`
+  font-size: 0.8rem;
+`;
 
 export class TicketsList extends Component {
   constructor(props) {
@@ -36,7 +41,16 @@ export class TicketsList extends Component {
     const { ticketsList } = this.props;
 
     return ticketsList.map(ticket => {
-      const { title, subject, id, created_at, slug, views, votes } = ticket;
+      const {
+        title,
+        subject,
+        id,
+        created_at,
+        slug,
+        views,
+        votes,
+        username
+      } = ticket;
 
       return (
         <Fragment key={id}>
@@ -46,13 +60,13 @@ export class TicketsList extends Component {
                 <Header as={Link} to={`ticket/${id}`} size="small" color="blue">
                   {title.toUpperCase()}
                 </Header>
-                <Feed.Date style={{ paddingTop: 10 }}>
-                  {getFormatedDate(created_at)}
-                </Feed.Date>
                 <Feed.Summary>
-                  <a href="/">Laura Faucet </a>
-                  created a ticket
+                  By:
+                  <span> @{username.toLowerCase()} </span>
                 </Feed.Summary>
+                <Feed.Date style={{ paddingTop: 10 }}>
+                  <StyledTimeSpan>{getFormatedDate(created_at)}</StyledTimeSpan>
+                </Feed.Date>
                 <Feed.Extra text>{subject}</Feed.Extra>
               </Feed.Content>
               <div floated="right">

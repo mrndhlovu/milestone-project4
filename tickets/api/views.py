@@ -16,6 +16,7 @@ class TicketViewSet(viewsets.ModelViewSet):
 
         # Add id of currently logged user
         data['owner'] = request.user.id
+        data['username'] = request.user.id
 
         # Default behavior but pass our modified data instead
         serializer = self.get_serializer(data=data)

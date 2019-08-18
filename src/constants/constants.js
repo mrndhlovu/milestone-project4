@@ -296,3 +296,7 @@ export const getFormatedDate = rawDate => {
     ("0" + date.getMinutes()).slice(-2)
   );
 };
+
+export const capitalizeFirstLetter = string => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
