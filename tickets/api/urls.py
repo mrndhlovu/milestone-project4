@@ -1,7 +1,10 @@
 from rest_framework.routers import DefaultRouter
-from .views import TicketViewSet
+from .views import TicketListView, TicketVoteToggleAPIView, TicketDetailView
+from django.urls import path, re_path
 
-router = DefaultRouter()
-router.register(r'', TicketViewSet, base_name='tickets'),
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', TicketListView.as_view()),
+    path('<pk>/', TicketDetailView.as_view()),
+    path('api/<id>/vote/', TicketVoteToggleAPIView.as_view()),
+]
