@@ -7,8 +7,15 @@ const params = {
   }
 };
 
+const sessionToken = localStorage.getItem("sessionToken");
+
 export async function requestTicketsList() {
   return axios.get(`${baseUrl}/tickets/`);
+}
+
+export async function requestTicketVoteUpdate(id) {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+  return axios.get(`${baseUrl}/tickets/api/${id}/vote/`, params);
 }
 
 export async function requestProductsList() {
@@ -20,7 +27,6 @@ export async function requestMembershipsList() {
 }
 
 export async function requestUser() {
-  const sessionToken = localStorage.getItem("sessionToken");
   params.headers["Authorization"] = `Token ${sessionToken}`;
 
   return axios.get(`${baseUrl}/accounts/api/auth/user`, params);
