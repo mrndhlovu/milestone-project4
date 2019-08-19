@@ -38,12 +38,28 @@ export class TicketDetail extends Component {
     this.handleVoteClick = this.handleVoteClick.bind(this);
   }
 
+  updateVoteCount() {
+    const { votes } = this.props.ticket.ticket;
+    this.setState({ voteCount: votes });
+  }
+
   componentWillMount() {
-    this.props.requestTicketsDetail(this.props.match.params.id);
+    const { id } = this.props.match.params;
+    this.props.requestTicketsDetail(id);
   }
 
   handleVoteClick(ticketId) {
     this.props.updatedTicketVote(ticketId);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { votes } = this.props.ticket.ticket;
+    const { vote } = this.props;
+
+    if (prevProps.votes !== votes) {
+      const { updated } = vote.voteStatus;
+      updated && window.location.reload();
+    }
   }
 
   render() {
@@ -134,7 +150,8 @@ export class TicketDetail extends Component {
 const mapStateToProps = state => {
   return {
     ticket: state.ticketDetail,
-    authUser: state.auth
+    authUser: state.auth,
+    vote: state.vote
   };
 };
 
