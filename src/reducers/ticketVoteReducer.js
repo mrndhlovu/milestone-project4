@@ -13,7 +13,7 @@ const initialState = {
   isLoading: false
 };
 
-const fetchingTicket = (state, action) => {
+const fetchingData = (state, action) => {
   return checkObjectUpdate(state, {
     voteStatus: {},
     dataReceived: false,
@@ -43,7 +43,7 @@ const dataReceived = (state, action) => {
 export default function(state = initialState, action) {
   switch (action.type) {
     case FETCHING_DATA:
-      return fetchingTicket(state, action);
+      return fetchingData(state, action);
     case ERROR_ALERT:
       return hasError(state, action);
     case UPDATED_TICKET_VOTE:
