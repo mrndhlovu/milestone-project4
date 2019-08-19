@@ -46,7 +46,7 @@ export async function requestLogout(sessionToken) {
 }
 
 export async function requestCreateTicket(body) {
-  return axios.post(`${baseUrl}/tickets/`, body, params);
+  return axios.post(`${baseUrl}/tickets/api/create/`, body, params);
 }
 
 export async function fetchTicketDetail(id) {
