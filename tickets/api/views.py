@@ -51,13 +51,15 @@ class TicketVoteToggleAPIView(APIView):
             voted = False
             updated = True
             obj.votes.remove(user)
+
         else:
             voted = True
             updated = True
             obj.votes.add(user)
+
         data = {
             'voted': voted,
-            'updated': updated
+            'updated': updated,
         }
 
         return Response(data)
