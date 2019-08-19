@@ -7,7 +7,7 @@ import {
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
 
 const initialState = {
-  voteStatus: [],
+  voteStatus: {},
   dataReceived: false,
   hasError: false,
   isLoading: false
@@ -15,7 +15,7 @@ const initialState = {
 
 const fetchingTicket = (state, action) => {
   return checkObjectUpdate(state, {
-    voteStatus: [],
+    voteStatus: {},
     dataReceived: false,
     hasError: false,
     isLoading: true
@@ -24,7 +24,7 @@ const fetchingTicket = (state, action) => {
 
 const hasError = (state, action) => {
   return checkObjectUpdate(state, {
-    voteStatus: [],
+    voteStatus: {},
     dataReceived: false,
     hasError: true,
     isLoading: false
