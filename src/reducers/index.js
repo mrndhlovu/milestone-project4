@@ -8,6 +8,7 @@ import errorsReducer from "./errorsReducer";
 import messagesReducer from "./messagesReducer";
 import userReducer from "./userReducer";
 import membershipsReducer from "./membershipsReducer";
+import ticketVoteReducer from "./ticketVoteReducer";
 
 export default combineReducers({
   tickets: ticketsReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
   errorAlert: errorsReducer,
   messages: messagesReducer,
   user: userReducer,
-  memberships: membershipsReducer
+  memberships: membershipsReducer,
+  vote: ticketVoteReducer
 });
