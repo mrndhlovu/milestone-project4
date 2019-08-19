@@ -4,7 +4,10 @@ import { NavLink } from "react-router-dom";
 
 import styled from "styled-components";
 
-import { requestTicketsDetail } from "../../actions/TicketActions";
+import {
+  requestTicketsDetail,
+  updatedTicketVote
+} from "../../actions/TicketActions";
 import { getFormatedDate } from "../../constants/constants";
 import TicketComments from "./TicketComments";
 import UILoadingSpinner from "../../utils/UILoadingSpinner";
@@ -39,7 +42,9 @@ export class TicketDetail extends Component {
     this.props.requestTicketsDetail(this.props.match.params.id);
   }
 
-  handleVoteClick(event, user) {}
+  handleVoteClick(ticketId) {
+    this.props.updatedTicketVote(ticketId);
+  }
 
   render() {
     const { likeIsDisabled } = this.state;
@@ -47,7 +52,7 @@ export class TicketDetail extends Component {
       ticket: {
         dataReceived,
         isLoading,
-        ticket: { title, created_at, description, votes, views }
+        ticket: { title, created_at, description, votes, views, id }
       },
       authUser: { isAuthenticated }
     } = this.props;
@@ -91,7 +96,7 @@ export class TicketDetail extends Component {
                       disabled={
                         isAuthenticated ? !likeIsDisabled : likeIsDisabled
                       }
-                      onClick={this.handleVoteClick}
+                      onClick={() => this.handleVoteClick(id)}
                     />
                   </Statistic.Label>
                 </StyledSpan>
@@ -135,5 +140,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { requestTicketsDetail }
+  { requestTicketsDetail, updatedTicketVote }
 )(TicketDetail);
