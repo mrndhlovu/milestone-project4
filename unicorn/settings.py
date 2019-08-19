@@ -42,8 +42,8 @@ INSTALLED_APPS = [
 
     'tickets',
 
-    'products',
-    'chart',
+    # 'products',
+    # 'chart',
 
     # 'rest_framework.authtoken',
     # 'rest_auth',

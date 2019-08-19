@@ -7,6 +7,7 @@ import ticketDetaiReducer from "./ticketDetailReducer";
 import errorsReducer from "./errorsReducer";
 import messagesReducer from "./messagesReducer";
 import userReducer from "./userReducer";
+import userProfileReducer from "./userProfileReducer";
 import membershipsReducer from "./membershipsReducer";
 import ticketVoteReducer from "./ticketVoteReducer";
 
@@ -20,5 +21,6 @@ export default combineReducers({
   messages: messagesReducer,
   user: userReducer,
   memberships: membershipsReducer,
-  vote: ticketVoteReducer
+  vote: ticketVoteReducer,
+  userProfile: userProfileReducer
 });

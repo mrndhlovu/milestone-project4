@@ -4,14 +4,17 @@ import {
   USER_AUTH_START,
   USER_AUTH_SUCCESS,
   FETCHING_USER,
-  RECEIVED_USER
+  RECEIVED_USER,
+  FETCHING_USER_PROFILE,
+  RECEIVED_USER_PROFILE
 } from "./ActionTypes";
 
 import {
   requestLogin,
   requestSignup,
   requestLogout,
-  requestUser
+  requestUser,
+  requestUserProfile
 } from "../apis/apiRequests";
 
 import { fetchData, createMessage, errorsAlert } from "./index";
@@ -71,9 +74,22 @@ function fetchingUser() {
   };
 }
 
+function fetchingUserProfile() {
+  return {
+    type: FETCHING_USER_PROFILE
+  };
+}
+
 function receivedUser(user) {
   return {
     type: RECEIVED_USER,
+    payload: user
+  };
+}
+
+function receivedUserProfile(user) {
+  return {
+    type: RECEIVED_USER_PROFILE,
     payload: user
   };
 }
@@ -93,6 +109,7 @@ export const startAuth = () => {
     dispatch(authStart());
     dispatch(checkSession());
     dispatch(fetchUser());
+    dispatch(fetchUserProfile());
   };
 };
 
@@ -111,6 +128,8 @@ export const authState = () => {
       dispatch(checkSessionTime(sessionLife));
     } else {
       dispatch(fetchUser());
+      dispatch(fetchUserProfile());
+
       dispatch(authSuccess(sessionToken));
 
       const sessionLifeSpan =
@@ -199,6 +218,21 @@ export const fetchUser = sessionToken => {
     requestUser(sessionToken).then(
       response => {
         dispatch(receivedUser(response.data));
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
+      }
+    );
+  };
+};
+
+//  Fetch logged in user details
+export const fetchUserProfile = sessionToken => {
+  return dispatch => {
+    dispatch(fetchingUserProfile());
+    requestUserProfile(sessionToken).then(
+      response => {
+        dispatch(receivedUserProfile(response.data));
       },
       error => {
         dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));

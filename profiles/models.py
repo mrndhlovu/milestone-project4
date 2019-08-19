@@ -15,12 +15,11 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     occupation = models.CharField(max_length=30, blank=True)
     Membership = models.ManyToManyField(Membership)
-    Subcription = models.ManyToManyField(Subcription)
 
     # Product = models.ManyToManyField(Product)
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
 
 @receiver(post_save, sender=User)
