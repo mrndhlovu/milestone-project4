@@ -3,13 +3,15 @@ import {
   CREATE_TICKET,
   RECEIVE_TICKET,
   RECEIVE_TICKET_DETAIL,
-  FETCH_TICKET_DETAIL
+  FETCH_TICKET_DETAIL,
+  UPDATED_TICKET_VOTE
 } from "./ActionTypes";
 
 import {
   requestTicketsList,
   requestCreateTicket,
-  fetchTicketDetail
+  fetchTicketDetail,
+  requestTicketVoteUpdate
 } from "../apis/apiRequests";
 
 import { fetchData, errorsAlert } from "./index";
@@ -45,6 +47,13 @@ function creatingTicket(response) {
 function receiveTicket(response) {
   return {
     type: RECEIVE_TICKET,
+    payload: response
+  };
+}
+
+function updatedVote(response) {
+  return {
+    type: UPDATED_TICKET_VOTE,
     payload: response
   };
 }
@@ -92,6 +101,24 @@ export const requestTicketsDetail = id => {
     fetchTicketDetail(id).then(
       response => {
         dispatch(receiveTicketDetail(response.data));
+      },
+      error => {
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
+      }
+    );
+  };
+};
+
+export const updatedTicketVote = id => {
+  return dispatch => {
+    dispatch(fetchData());
+    requestTicketVoteUpdate(id).then(
+      response => {
+        dispatch(updatedVote(response.data));
       },
       error => {
         const errors = {
