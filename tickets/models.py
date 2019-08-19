@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-# Create ticket model
+from django.urls import reverse
 
 User = settings.AUTH_USER_MODEL
 
@@ -32,20 +32,3 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.title
-
-
-# class Vote(models.Model):
-#     user = models.ForeignKey(
-#         User, on_delete=models.CASCADE, related_name='voter')
-#     ticket = models.OneToOneField(
-#         Ticket, on_delete=models.CASCADE, related_name='vticket')
-
-#     def __str__(self):
-#         return self.title
-
-
-# @receiver(post_save, sender=Vote)
-# def update_votes(self, **kwargs):
-#     ticket = self.post
-#     ticket.votes_count += 1
-#     ticket.save()

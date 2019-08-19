@@ -1,11 +1,15 @@
-from tickets.models import Ticket
 from .serializers import TicketSerializer
-from rest_framework import viewsets, permissions
-from rest_framework.response import Response
+from accounts.models import CustomUser
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import status
+from rest_framework import permissions, authentication, generics
+from rest_framework.response import Response
+from rest_framework.generics import ListAPIView, DestroyAPIView, RetrieveAPIView
+from rest_framework.views import APIView
+from tickets.models import Ticket
 
 
-class TicketViewSet(viewsets.ModelViewSet):
+class TicketListView(ListAPIView):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
@@ -24,3 +28,36 @@ class TicketViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class TicketDetailView(RetrieveAPIView):
+    serializer_class = TicketSerializer
+    queryset = Ticket.objects.all()
+    permission_classes = [permissions.AllowAny]
+
+
+class TicketVoteToggleAPIView(APIView):
+    authetication_classes = (authentication.SessionAuthentication)
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, id=None, format=None):
+        id = self.kwargs.get('id')
+        obj = get_object_or_404(Ticket, id=id)
+        user = self.request.user
+        updated = False
+        voted = False
+
+        if user in obj.votes.all():
+            voted = False
+            updated = True
+            obj.votes.remove(user)
+        else:
+            voted = True
+            updated = True
+            obj.votes.add(user)
+        data = {
+            'voted': voted,
+            'updated': updated
+        }
+
+        return Response(data)
