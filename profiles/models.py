@@ -6,7 +6,7 @@ from accounts.models import CustomUser
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-# from memberships.models import Subcription, UserMembership, Membership
+from memberships.models import Subcription, Membership
 
 
 class UserProfile(models.Model):
@@ -14,7 +14,9 @@ class UserProfile(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True)
     occupation = models.CharField(max_length=30, blank=True)
-    # Subcription = models.ManyToManyField(Subcription)
+    Membership = models.ManyToManyField(Membership)
+    Subcription = models.ManyToManyField(Subcription)
+
     # Product = models.ManyToManyField(Product)
 
     def __str__(self):
