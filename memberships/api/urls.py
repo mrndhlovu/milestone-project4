@@ -1,7 +1,7 @@
-from rest_framework.routers import DefaultRouter
-from .views import MembershipViewSet
+from django.urls import path, re_path
+from .views import MembershipListView
 
-router = DefaultRouter()
-router.register(r'', MembershipViewSet, base_name='memberships'),
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', MembershipListView.as_view(), name='select')
+]
