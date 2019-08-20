@@ -1,8 +1,11 @@
 from django.conf import settings
+from django.contrib.auth.base_user import (AbstractBaseUser, BaseUserManager)
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import pre_save, post_save
-from django.contrib.auth.base_user import (AbstractBaseUser, BaseUserManager)
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
+from memberships.models import Membership
 
 
 class UserManager(BaseUserManager):
@@ -66,3 +69,27 @@ def post_save_user_create_reciever(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(post_save_user_create_reciever, sender=CustomUser)
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=True, blank=True)
+    bio = models.TextField(max_length=500, blank=True)
+    occupation = models.CharField(max_length=30, blank=True)
+    Membership = models.ManyToManyField(Membership)
+
+    # Product = models.ManyToManyField(Product)
+
+    def __str__(self):
+        return self.user.email
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userprofile.save()
