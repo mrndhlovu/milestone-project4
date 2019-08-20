@@ -1,17 +1,16 @@
 from .serializers import TicketSerializer, TicketCreateSerializer
-from accounts.models import CustomUser
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import status
 from rest_framework import permissions, authentication, generics
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, DestroyAPIView, RetrieveAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.views import APIView
 from tickets.models import Ticket
 
 
 class TicketListView(ListAPIView):
     serializer_class = TicketSerializer
-    queryset = Ticket.objects.all()
+    queryset = Ticket.objects.all().order_by('id')
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
@@ -31,6 +30,8 @@ class TicketListView(ListAPIView):
 
 
 class TicketDetailView(RetrieveAPIView):
+    # comments = Comment.objects.filter(ticket=ticket).order_by('-id')
+
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
