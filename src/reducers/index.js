@@ -10,6 +10,7 @@ import userReducer from "./userReducer";
 import userProfileReducer from "./userProfileReducer";
 import membershipsReducer from "./membershipsReducer";
 import ticketVoteReducer from "./ticketVoteReducer";
+import commentsReducer from "./commentsReducer";
 
 export default combineReducers({
   tickets: ticketsReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
   user: userReducer,
   memberships: membershipsReducer,
   vote: ticketVoteReducer,
-  userProfile: userProfileReducer
+  userProfile: userProfileReducer,
+  comments: commentsReducer
 });

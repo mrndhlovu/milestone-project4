@@ -60,5 +60,5 @@ export async function fetchTicketDetail(id) {
 }
 
 export async function requestTicketComments(id) {
-  return axios.get(`${baseUrl}/tickets/${id}/`);
+  return axios.get(`${baseUrl}/comments/`);
 }
