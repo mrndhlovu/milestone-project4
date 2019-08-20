@@ -8,7 +8,8 @@ import {
   Button,
   Comment,
   Form,
-  Message
+  Message,
+  Header
 } from "semantic-ui-react";
 
 import { fetchComments } from "../../actions/TicketActions";
@@ -27,35 +28,43 @@ export class TicketComments extends Component {
     const { commentsList } = this.props.comments;
     const ticketId = parseInt(this.props.match.params.id);
 
-    return Object.keys(commentsList).map(index => {
-      const { object_id, user, timestamp, comment } = commentsList[index];
+    if (commentsList !== {}) {
+      return (
+        <Fragment>
+          <Header as="h4" content="Comments" />
+          <Divider />
 
-      return object_id === ticketId ? (
-        <Fragment key={index}>
-          <Comment>
-            <Icon disabled name="user" />
-            <Comment.Content>
-              <Comment.Author as="a">{user}</Comment.Author>
-              <Comment.Metadata>
-                <div>Date:{getFormatedDate(timestamp)}</div>
-              </Comment.Metadata>
-              <Comment.Text>{comment}</Comment.Text>
-            </Comment.Content>
-          </Comment>
+          {Object.keys(commentsList).map(index => {
+            const { object_id, user, timestamp, comment } = commentsList[index];
+
+            return (
+              object_id === ticketId && (
+                <Fragment key={index}>
+                  <Comment>
+                    <Icon disabled name="user" />
+                    <Comment.Content>
+                      <Comment.Author as="a">{user}</Comment.Author>
+                      <Comment.Metadata>
+                        <div>Date:{getFormatedDate(timestamp)}</div>
+                      </Comment.Metadata>
+                      <Comment.Text>{comment}</Comment.Text>
+                    </Comment.Content>
+                  </Comment>
+                </Fragment>
+              )
+            );
+          })}
         </Fragment>
-      ) : (
-        <Message key={index} warning attached>
-          No comments yet
-        </Message>
       );
-    });
+    } else {
+      return <Message>No commets yet.</Message>;
+    }
   }
 
   render() {
     return (
       <Fragment>
         <Comment.Group>
-          <Divider />
           <Fragment>{this.renderComments()}</Fragment>
           <Form reply>
             <Form.TextArea />
