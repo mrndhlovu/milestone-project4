@@ -94,8 +94,6 @@ export class TicketDetail extends Component {
           subheader={`Filed: ${getFormatedDate(created_at)}`}
         />
 
-        <Divider />
-
         <Card style={{ paddingLeft: 10 }} fluid>
           <Card.Content header={title} color="blue" />
           <Card.Content description={description} />
@@ -127,8 +125,6 @@ export class TicketDetail extends Component {
           </Card.Content>
         </Card>
         <Segment>
-          <Header as="h4" content="Comments" />
-
           {isAuthenticated ? (
             <TicketComments />
           ) : (
