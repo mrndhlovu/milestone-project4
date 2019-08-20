@@ -11,7 +11,7 @@ User = settings.AUTH_USER_MODEL
 class Comment(models.Model):
     ticket = models.ForeignKey(
         Ticket, on_delete=models.CASCADE, blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     comment = models.TextField(max_length=200)
     timestamp = models.DateTimeField(auto_now_add=True)
 

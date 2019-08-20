@@ -35,7 +35,7 @@ export async function requestUser() {
 export async function requestUserProfile(id) {
   params.headers["Authorization"] = `Token ${sessionToken}`;
 
-  return axios.get(`${baseUrl}/profiles/api/auth/profile/`, params);
+  return axios.get(`${baseUrl}/accounts/api/auth/profile/`, params);
 }
 
 export async function requestSignup(body) {

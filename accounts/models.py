@@ -47,7 +47,6 @@ class CustomUser(AbstractBaseUser):
         _('date joined'), auto_now_add=True)
 
     USERNAME_FIELD = 'email'
-
     REQUIRED_FIELDS = []
 
     objects = UserManager()
