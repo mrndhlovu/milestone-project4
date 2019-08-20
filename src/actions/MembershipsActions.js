@@ -1,4 +1,4 @@
-import { RECEIVE_MEMBERSHIPS_LIST } from "./ActionTypes";
+import { RECEIVE_MEMBERSHIPS_LIST, FETCHING_MEMBERSHIPS } from "./ActionTypes";
 import { requestMembershipsList } from "../apis/apiRequests";
 import { fetchData, errorsAlert } from "./index";
 
@@ -11,7 +11,7 @@ function receivedMembershipsList(response) {
 
 export const fetchMembershipsList = () => {
   return dispatch => {
-    dispatch(fetchData());
+    dispatch(fetchData(FETCHING_MEMBERSHIPS));
     requestMembershipsList().then(
       response => {
         dispatch(receivedMembershipsList(response.data));

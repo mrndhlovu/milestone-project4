@@ -6,7 +6,9 @@ import {
   FETCHING_USER,
   RECEIVED_USER,
   FETCHING_USER_PROFILE,
-  RECEIVED_USER_PROFILE
+  RECEIVED_USER_PROFILE,
+  REQUEST_SIGNUP,
+  REQUEST_LOGIN
 } from "./ActionTypes";
 
 import {
@@ -142,7 +144,7 @@ export const authState = () => {
 
 export const login = body => {
   return dispatch => {
-    dispatch(fetchData());
+    dispatch(fetchData(REQUEST_LOGIN));
     requestLogin(body).then(
       response => {
         const sessionToken = response.data.token;
@@ -188,7 +190,7 @@ export const logOut = () => {
 // Request sign up, if response is successfull create a session
 export const signup = inputs => {
   return dispatch => {
-    dispatch(fetchData());
+    dispatch(fetchData(REQUEST_SIGNUP));
     requestSignup(inputs).then(
       response => {
         const sessionToken = response.data.token;

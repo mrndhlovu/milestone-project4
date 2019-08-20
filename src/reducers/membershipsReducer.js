@@ -1,6 +1,6 @@
 import {
   RECEIVE_MEMBERSHIPS_LIST,
-  FETCHING_DATA
+  FETCHING_MEMBERSHIPS
 } from "../actions/ActionTypes";
 
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
@@ -32,7 +32,7 @@ const dataReceived = (state, action) => {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case FETCHING_DATA:
+    case FETCHING_MEMBERSHIPS:
       return fetchingData(state, action);
     case RECEIVE_MEMBERSHIPS_LIST:
       return dataReceived(state, action);

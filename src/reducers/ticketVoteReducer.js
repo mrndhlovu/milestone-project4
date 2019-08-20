@@ -1,6 +1,6 @@
 import {
   UPDATED_TICKET_VOTE,
-  FETCHING_DATA,
+  REQUEST_TICKET_VOTE,
   ERROR_ALERT
 } from "../actions/ActionTypes";
 
@@ -42,7 +42,7 @@ const dataReceived = (state, action) => {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case FETCHING_DATA:
+    case REQUEST_TICKET_VOTE:
       return fetchingData(state, action);
     case ERROR_ALERT:
       return hasError(state, action);

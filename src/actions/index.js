@@ -1,8 +1,8 @@
-import { CREATE_MESSAGE, FETCHING_DATA, GET_ERRORS } from "./ActionTypes";
+import { CREATE_MESSAGE, GET_ERRORS } from "./ActionTypes";
 
-export const fetchData = () => {
+export const fetchData = action => {
   return {
-    type: FETCHING_DATA
+    type: action
   };
 };
 

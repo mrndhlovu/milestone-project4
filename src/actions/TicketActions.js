@@ -4,14 +4,19 @@ import {
   RECEIVE_TICKET,
   RECEIVE_TICKET_DETAIL,
   FETCH_TICKET_DETAIL,
-  UPDATED_TICKET_VOTE
+  UPDATED_TICKET_VOTE,
+  RECEIVE_COMMENTS,
+  FETCH_COMMENTS,
+  REQUEST_TICKET_VOTE,
+  FETCH_TICKET_LIST
 } from "./ActionTypes";
 
 import {
   requestTicketsList,
   requestCreateTicket,
   fetchTicketDetail,
-  requestTicketVoteUpdate
+  requestTicketVoteUpdate,
+  requestTicketComments
 } from "../apis/apiRequests";
 
 import { fetchData, errorsAlert } from "./index";
@@ -51,6 +56,13 @@ function receiveTicket(response) {
   };
 }
 
+function receivedComments(response) {
+  return {
+    type: RECEIVE_COMMENTS,
+    payload: response
+  };
+}
+
 function updatedVote(response) {
   return {
     type: UPDATED_TICKET_VOTE,
@@ -61,7 +73,7 @@ function updatedVote(response) {
 // fetch tickets list
 export const fetchTicketsList = () => {
   return dispatch => {
-    dispatch(fetchData());
+    dispatch(fetchData(FETCH_TICKET_LIST));
     requestTicketsList().then(
       response => {
         dispatch(receivedTicketsList(response.data));
@@ -115,10 +127,28 @@ export const requestTicketsDetail = id => {
 
 export const updatedTicketVote = id => {
   return dispatch => {
-    dispatch(fetchData());
+    dispatch(fetchData(REQUEST_TICKET_VOTE));
     requestTicketVoteUpdate(id).then(
       response => {
         dispatch(updatedVote(response.data));
+      },
+      error => {
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
+      }
+    );
+  };
+};
+
+export const fetchComments = id => {
+  return dispatch => {
+    dispatch(fetchData(FETCH_COMMENTS));
+    requestTicketComments(id).then(
+      response => {
+        dispatch(receivedComments(response.data));
       },
       error => {
         const errors = {

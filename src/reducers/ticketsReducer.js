@@ -1,6 +1,6 @@
 import {
   RECEIVE_TICKETS_LIST,
-  FETCHING_DATA,
+  FETCH_TICKET_LIST,
   ERROR_ALERT
 } from "../actions/ActionTypes";
 
@@ -42,7 +42,7 @@ const dataReceived = (state, action) => {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case FETCHING_DATA:
+    case FETCH_TICKET_LIST:
       return fetchingData(state, action);
     case ERROR_ALERT:
       return hasError(state, action);
