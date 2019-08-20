@@ -58,3 +58,7 @@ export async function requestCreateTicket(body) {
 export async function fetchTicketDetail(id) {
   return axios.get(`${baseUrl}/tickets/${id}/`);
 }
+
+export async function requestTicketComments(id) {
+  return axios.get(`${baseUrl}/tickets/${id}/`);
+}
