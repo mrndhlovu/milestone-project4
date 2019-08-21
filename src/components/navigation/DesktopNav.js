@@ -94,7 +94,7 @@ export class DesktopNav extends Component {
           primary={fixed}
           style={{ marginLeft: "0.5em" }}
           as={NavLink}
-          to="/signup"
+          to="/pricing"
           size="small"
         >
           Sign Up

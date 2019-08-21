@@ -62,7 +62,7 @@ export class MobileSideBar extends Component {
         <Menu.Item as={NavLink} to="/login">
           Log in
         </Menu.Item>
-        <Menu.Item as={NavLink} to="/signup">
+        <Menu.Item as={NavLink} to="/pricing">
           Sign Up
         </Menu.Item>
       </Fragment>
