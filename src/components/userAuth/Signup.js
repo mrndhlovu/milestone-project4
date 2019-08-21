@@ -124,7 +124,7 @@ class SignupModal extends Component {
       <Fragment>
         <StyleContainer>
           <Header as="h2" textAlign="center" centered="false">
-            Create your Unicorn Account, its free!
+            Lets get you setup for your Unicorn Account
           </Header>
 
           <Grid textAlign="center">
