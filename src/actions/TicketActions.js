@@ -8,7 +8,11 @@ import {
   RECEIVE_COMMENTS,
   FETCH_COMMENTS,
   REQUEST_TICKET_VOTE,
-  FETCH_TICKET_LIST
+  FETCH_TICKET_LIST,
+  REQUEST_TICKET_UPDATE,
+  RECEIVE_TICKET_UPDATE,
+  TICKET_DELETED,
+  REQUEST_TICKET_DELETE
 } from "./ActionTypes";
 
 import {
@@ -16,10 +20,12 @@ import {
   requestCreateTicket,
   fetchTicketDetail,
   requestTicketVoteUpdate,
-  requestTicketComments
+  requestTicketComments,
+  requestTicketUpdate,
+  requestTicketDelete
 } from "../apis/apiRequests";
 
-import { fetchData, errorsAlert } from "./index";
+import { fetchData, errorsAlert, createMessage } from "./index";
 
 function receivedTicketsList(response) {
   return {
@@ -49,6 +55,20 @@ function creatingTicket(response) {
   };
 }
 
+function deletingTicket(response) {
+  return {
+    type: REQUEST_TICKET_DELETE,
+    payload: response
+  };
+}
+
+function updatingTicket(response) {
+  return {
+    type: REQUEST_TICKET_UPDATE,
+    payload: response
+  };
+}
+
 function receiveTicket(response) {
   return {
     type: RECEIVE_TICKET,
@@ -63,9 +83,23 @@ function receivedComments(response) {
   };
 }
 
+function receiveTicketUpdate(response) {
+  return {
+    type: RECEIVE_TICKET_UPDATE,
+    payload: response
+  };
+}
+
 function updatedVote(response) {
   return {
     type: UPDATED_TICKET_VOTE,
+    payload: response
+  };
+}
+
+function ticketDeleted(response) {
+  return {
+    type: TICKET_DELETED,
     payload: response
   };
 }
@@ -113,6 +147,44 @@ export const requestTicketsDetail = id => {
     fetchTicketDetail(id).then(
       response => {
         dispatch(receiveTicketDetail(response.data));
+      },
+      error => {
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
+      }
+    );
+  };
+};
+
+export const updateTicket = (id, updates) => {
+  return dispatch => {
+    dispatch(updatingTicket());
+    requestTicketUpdate(id, updates).then(
+      response => {
+        dispatch(createMessage({ successMsg: "Ticket updated" }));
+        dispatch(receiveTicketUpdate(response.data));
+      },
+      error => {
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
+      }
+    );
+  };
+};
+
+export const deleteTicket = id => {
+  return dispatch => {
+    dispatch(deletingTicket());
+    requestTicketDelete(id).then(
+      response => {
+        dispatch(createMessage({ successMsg: "Ticket deleted" }));
+        dispatch(ticketDeleted(response.data));
       },
       error => {
         const errors = {
