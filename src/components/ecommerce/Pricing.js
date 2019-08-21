@@ -28,7 +28,8 @@ export class Pricing extends Component {
       headerText: "Pricing",
       headerButtonUrl: "/create-ticket",
       headerButtonText: "File a ticket",
-      subHeading: "Problems are everywhere, solutions are here!"
+      subHeading: "Problems are everywhere, solutions are here!",
+      freeMembership: true
     };
     this.handleAddToCart = this.handleAddToCart.bind(this);
   }
@@ -53,14 +54,27 @@ export class Pricing extends Component {
   }
 
   renderMembershipOption() {
+    const {
+      authUser: { isAuthenticated }
+    } = this.props;
+
     const { memberships } = this.props;
     const type = "free";
+    const { freeMembership } = this.state;
 
     return memberships.map(membership => {
       const { price, id, slug } = membership;
-      const buttonText = type === slug ? "Free Signup" : "Add to Cart";
+      const buttonText =
+        type === slug
+          ? isAuthenticated
+            ? "Your current membership"
+            : "Free Signup"
+          : isAuthenticated
+          ? "Upgrade your membership"
+          : "Unicorn Pro";
       const buttonColor = type === slug ? "black" : "orange";
-      const redirectUrl = type === slug ? "/signup" : "/cart";
+      const redirectUrl =
+        type === slug ? (isAuthenticated ? "/pricing" : "/signup") : "/cart";
       const header = type === slug ? `Unicorn ${slug}` : `Unicorn ${slug}`;
 
       return (
@@ -127,7 +141,8 @@ export class Pricing extends Component {
 
 const mapStateToProps = state => {
   return {
-    memberships: state.memberships.membershipList
+    memberships: state.memberships.membershipList,
+    authUser: state.auth
   };
 };
 
