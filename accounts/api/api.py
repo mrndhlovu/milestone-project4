@@ -6,6 +6,14 @@ from accounts.models import UserProfile
 from .serializers import UserProfileSerializer
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView
+from memberships.models import UserMembership
+
+
+def get_user_membership(request):
+    user_membership_qs = UserMembership.objects.filter(user=request.user)
+    if user_membership_qs.exists():
+        return user_membership_qs.first()
+    return None
 
 
 # Create user api
@@ -23,6 +31,14 @@ class UserProfileListView(ListAPIView):
     serializer_class = UserProfileSerializer
     queryset = UserProfile.objects.all()
     permission_classes = [permissions.AllowAny]
+
+    def get_serializer_context(self, *args, **kwargs):
+        context = super().get_serializer_context(**kwargs)
+        current_membership = get_user_membership(self.request)
+
+        context['current_membership'] = str(current_membership.membership)
+
+        return context
 
 
 # Create registration api

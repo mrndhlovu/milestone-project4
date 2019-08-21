@@ -10,6 +10,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = '__all__'
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+
+        rep['current_membership'] = self.context['current_membership']
+        return rep
+
 
 # Serializer for user
 class UserSerializer(serializers.ModelSerializer):

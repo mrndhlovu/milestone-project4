@@ -140,6 +140,7 @@ export class Pricing extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.userProfile.profile);
   return {
     memberships: state.memberships.membershipList,
     authUser: state.auth
