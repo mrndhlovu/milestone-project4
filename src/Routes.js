@@ -6,6 +6,7 @@ import Pricing from "./components/ecommerce/Pricing";
 import TicketsList from "./components/tickets/TicketsList";
 import TicketDetail from "./components/tickets/TicketDetail";
 import CreateTicket from "./components/tickets/CreateTicket";
+import EditTicket from "./components/tickets/EditTicket";
 import AuthRouteCheck from "./utils/AuthRouteCheck";
 import Login from "./components/userAuth/Login";
 import Signup from "./components/userAuth/Signup";
@@ -32,6 +33,7 @@ const BaseRouter = () => {
         <AuthRouteCheck path="/cart" component={Cart} />
         <AuthRouteCheck path="/checkout" component={Checkout} />
         <AuthRouteCheck path="/create-ticket" component={CreateTicket} />
+        <AuthRouteCheck path="/edit-ticket/:id" component={EditTicket} />
       </Switch>
     </Fragment>
   );
