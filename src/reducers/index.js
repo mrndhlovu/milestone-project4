@@ -11,6 +11,7 @@ import userProfileReducer from "./userProfileReducer";
 import membershipsReducer from "./membershipsReducer";
 import ticketVoteReducer from "./ticketVoteReducer";
 import commentsReducer from "./commentsReducer";
+import editTicketReducer from "./editTicketReducer";
 
 export default combineReducers({
   tickets: ticketsReducer,
@@ -24,5 +25,6 @@ export default combineReducers({
   memberships: membershipsReducer,
   vote: ticketVoteReducer,
   userProfile: userProfileReducer,
-  comments: commentsReducer
+  comments: commentsReducer,
+  ticketUpdate: editTicketReducer
 });
