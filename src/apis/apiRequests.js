@@ -13,6 +13,14 @@ export async function requestTicketsList() {
   return axios.get(`${baseUrl}/tickets/`);
 }
 
+export async function requestTicketUpdate(id, body) {
+  return axios.put(`${baseUrl}/tickets/update/${id}/`, body);
+}
+
+export async function requestTicketDelete(id) {
+  return axios.delete(`${baseUrl}/tickets/delete/${id}/`);
+}
+
 export async function requestTicketVoteUpdate(id) {
   params.headers["Authorization"] = `Token ${sessionToken}`;
   return axios.get(`${baseUrl}/tickets/api/${id}/vote/`, params);
