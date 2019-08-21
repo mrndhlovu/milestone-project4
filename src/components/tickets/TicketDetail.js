@@ -6,7 +6,8 @@ import styled from "styled-components";
 
 import {
   requestTicketsDetail,
-  updatedTicketVote
+  updatedTicketVote,
+  deleteTicket
 } from "../../actions/TicketActions";
 import { getFormatedDate } from "../../constants/constants";
 import TicketComments from "./TicketComments";
@@ -16,7 +17,6 @@ import {
   Button,
   Card,
   Container,
-  Divider,
   Header,
   Message,
   Segment,
@@ -36,6 +36,7 @@ export class TicketDetail extends Component {
       likeIsDisabled: true
     };
     this.handleVoteClick = this.handleVoteClick.bind(this);
+    this.handleTicketDelete = this.handleTicketDelete.bind(this);
   }
 
   updateVoteCount() {
@@ -45,7 +46,15 @@ export class TicketDetail extends Component {
 
   componentWillMount() {
     const { id } = this.props.match.params;
+
     this.props.requestTicketsDetail(id);
+  }
+
+  handleTicketDelete() {
+    const { id } = this.props.match.params;
+    this.props.deleteTicket(id);
+
+    setTimeout(this.props.history.push(`/tickets/`), 1000);
   }
 
   handleVoteClick(ticketId) {
@@ -78,15 +87,17 @@ export class TicketDetail extends Component {
     ) : (
       <Container style={{ paddingTop: 20 }}>
         <div style={{ paddingTop: 10 }}>
-          <Button
-            color="blue"
-            size="tiny"
-            floated="right"
-            as={NavLink}
-            to="/create-ticket"
-          >
-            Create a ticket
-          </Button>
+          <Button.Group floated="right">
+            <Button color="blue" size="tiny" as={NavLink} to="/create-ticket">
+              Create
+            </Button>
+            <Button color="blue" as={NavLink} to={`/edit-ticket/${id}`}>
+              Edit
+            </Button>
+            <Button color="red" onClick={this.handleTicketDelete}>
+              Delete
+            </Button>
+          </Button.Group>
         </div>
         <Header
           as="h3"
@@ -146,6 +157,7 @@ export class TicketDetail extends Component {
 const mapStateToProps = state => {
   return {
     ticket: state.ticketDetail,
+    ticketDelete: state.ticketUpdate,
     authUser: state.auth,
     vote: state.vote
   };
@@ -153,5 +165,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { requestTicketsDetail, updatedTicketVote }
+  { requestTicketsDetail, updatedTicketVote, deleteTicket }
 )(TicketDetail);
