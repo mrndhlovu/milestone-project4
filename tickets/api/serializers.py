@@ -15,17 +15,3 @@ class TicketSerializer(serializers.ModelSerializer):
         rep['votes'] = instance.votes.count()
 
         return rep
-
-
-class TicketCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ticket
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        rep = super(TicketCreateSerializer, self).to_representation(instance)
-
-        rep['username'] = instance.username.username
-        rep['votes'] = instance.votes.count()
-
-        return rep
