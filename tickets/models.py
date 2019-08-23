@@ -25,8 +25,7 @@ class Ticket(models.Model):
     slug = models.SlugField(blank=True)
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True)
-    username = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True, related_name='owner_username')
+
     votes = models.ManyToManyField(
         User, blank=True, related_name='ticket_votes')
     views = models.IntegerField(default=0)
