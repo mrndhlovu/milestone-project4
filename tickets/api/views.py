@@ -7,6 +7,15 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.views import APIView
 from tickets.models import Ticket
 from comments.models import Comment
+from django.contrib.auth.models import User
+
+
+def get_ticket_owner(request):
+    ticket_owner_qs = User.objects.filter(username=request.user)
+
+    if ticket_owner_qs.exists():
+        return ticket_owner_qs.first()
+    return None
 
 
 class TicketListView(ListAPIView):
@@ -14,18 +23,14 @@ class TicketListView(ListAPIView):
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
 
-    def create(self, request, *args, **kwargs):
+    def get_serializer_context(self, *args, **kwargs):
+        context = super().get_serializer_context(**kwargs)
 
-        data = request.data.copy()
+        current_ticket_owner = get_ticket_owner(self.request)
+        context['owner'] = current_ticket_owner.id
+        context['username'] = current_ticket_owner.id
 
-        data['owner'] = request.user.id
-        data['username'] = request.user.id
-
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return context
 
 
 class TicketDetailView(RetrieveAPIView):
@@ -42,10 +47,11 @@ class CreateTicketView(CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
+        current_ticket_owner = get_ticket_owner(request)
 
         data = request.data.copy()
-        data['owner'] = request.user.id
-        data['username'] = request.user.id
+        data['owner'] = current_ticket_owner.id
+        data['username'] = current_ticket_owner.id
 
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -57,6 +63,15 @@ class CreateTicketView(CreateAPIView):
 class TicketVoteToggleAPIView(APIView):
     authetication_classes = (authentication.SessionAuthentication)
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_context(self, *args, **kwargs):
+        context = super().get_serializer_context(**kwargs)
+        current_ticket_owner = get_ticket_owner(self.request)
+
+        context['owner'] = current_ticket_owner.id
+        context['username'] = current_ticket_owner.id
+
+        return context
 
     def get(self, request, id=None, format=None):
         id = self.kwargs.get('id')
@@ -89,10 +104,11 @@ class TicketUpdateView(UpdateAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def create(self, request, *args, **kwargs):
+        current_ticket_owner = get_ticket_owner(request)
 
         data = request.data.copy()
-        data['owner'] = request.user.id
-        data['username'] = request.user.id
+        data['owner'] = current_ticket_owner.id
+        data['username'] = current_ticket_owner.id
 
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
