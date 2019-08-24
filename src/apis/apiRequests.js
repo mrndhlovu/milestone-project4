@@ -31,7 +31,9 @@ export async function requestProductsList() {
 }
 
 export async function requestMembershipsList() {
-  return axios.get(`${baseUrl}/memberships/`);
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.get(`${baseUrl}/memberships/`, params);
 }
 
 export async function requestUser() {
