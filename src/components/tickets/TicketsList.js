@@ -57,7 +57,12 @@ export class TicketsList extends Component {
           <Feed>
             <Feed.Event>
               <Feed.Content>
-                <Header as={Link} to={`ticket/${id}`} size="small" color="blue">
+                <Header
+                  as={Link}
+                  to={`/ticket/${id}`}
+                  size="small"
+                  color="blue"
+                >
                   {title.toUpperCase()}
                 </Header>
                 <Feed.Summary>
