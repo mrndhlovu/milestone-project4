@@ -23,14 +23,18 @@ class TicketListView(ListAPIView):
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
 
-    def get_serializer_context(self, *args, **kwargs):
-        context = super().get_serializer_context(**kwargs)
+    def create(self, request, *args, **kwargs):
+        current_ticket_owner = get_ticket_owner(request)
 
-        current_ticket_owner = get_ticket_owner(self.request)
-        context['owner'] = current_ticket_owner.id
-        context['username'] = current_ticket_owner.id
+        data = request.data.copy()
+        data['owner'] = current_ticket_owner.id
+        data['username'] = current_ticket_owner.id
 
-        return context
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class TicketDetailView(RetrieveAPIView):
