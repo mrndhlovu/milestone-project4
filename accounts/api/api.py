@@ -26,6 +26,17 @@ class UserProfileDetailAPI(generics.RetrieveAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
+    def get_serializer_context(self, *args, **kwargs):
+        context = super().get_serializer_context(**kwargs)
+
+        if self.request.method == 'GET':
+            current_membership = get_user_membership(self.request)
+            context['current_membership'] = str(current_membership.membership)
+        else:
+            context['current_membership'] = None
+
+        return context
+
 
 class UserProfileListView(ListAPIView):
     serializer_class = UserProfileSerializer

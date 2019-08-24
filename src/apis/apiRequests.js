@@ -40,10 +40,16 @@ export async function requestUser() {
   return axios.get(`${baseUrl}/accounts/api/auth/user`, params);
 }
 
-export async function requestUserProfile(id) {
+export async function requestUserProfile() {
   params.headers["Authorization"] = `Token ${sessionToken}`;
 
   return axios.get(`${baseUrl}/accounts/api/auth/profile/`, params);
+}
+
+export async function requestUserProfileDetail(id) {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.get(`${baseUrl}/accounts/api/auth/profile/${id}/`, params);
 }
 
 export async function requestSignup(body) {
