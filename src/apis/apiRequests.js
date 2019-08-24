@@ -10,9 +10,7 @@ const params = {
 const sessionToken = localStorage.getItem("sessionToken");
 
 export async function requestTicketsList() {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
-  return axios.get(`${baseUrl}/tickets/`, params);
+  return axios.get(`${baseUrl}/tickets/`);
 }
 
 export async function requestTicketUpdate(id, body) {
@@ -21,7 +19,9 @@ export async function requestTicketUpdate(id, body) {
 }
 
 export async function requestTicketDelete(id) {
-  return axios.delete(`${baseUrl}/tickets/delete/${id}/`);
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.delete(`${baseUrl}/tickets/delete/${id}/`, params);
 }
 
 export async function requestTicketVoteUpdate(id) {
