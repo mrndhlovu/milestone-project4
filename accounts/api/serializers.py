@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from accounts.models import UserProfile
+from accounts.models import UserProfile, CustomUser, User
+from django.db import models
+
+
 # from memberships.api.serializers import MembershipSerializer
 
 
@@ -14,17 +17,25 @@ class UserProfileSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
 
         rep['current_membership'] = self.context['current_membership']
+
         return rep
 
 
 # Serializer for user
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name')
+        model = CustomUser
+        exclude = ('password',)
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+
+        rep['current_membership'] = self.context['current_membership']
+
+        return rep
 
 
-# Serializer for user registration
 class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -36,8 +47,16 @@ class SignupSerializer(serializers.ModelSerializer):
             validated_data['username'], validated_data['email'], validated_data['password'])
         return user
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+
+        rep['current_membership'] = self.context['current_membership']
+
+        return rep
 
 # Serializer for user login
+
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
@@ -47,3 +66,14 @@ class LoginSerializer(serializers.Serializer):
         if user and user.is_active:
             return user
         raise serializers.ValidationError("Incorrect Credentials")
+
+    class Meta:
+        model = CustomUser
+        exclude = ('password',)
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+
+        rep['current_membership'] = self.context['current_membership']
+
+        return rep

@@ -7,24 +7,24 @@ from .serializers import UserProfileSerializer
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView
 from memberships.models import UserMembership
+from rest_framework import status
 
 
 def get_user_membership(request):
     user_membership_qs = UserMembership.objects.filter(user=request.user)
+
     if user_membership_qs.exists():
         return user_membership_qs.first()
     return None
 
 
 # Create user api
-class UserProfileAPI(generics.RetrieveAPIView):
+class UserProfileDetailAPI(generics.RetrieveAPIView):
     permissions._classes = [
         permissions.AllowAny,
     ]
+    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-
-    def get_object(self):
-        return self.request.user
 
 
 class UserProfileListView(ListAPIView):
@@ -34,14 +34,16 @@ class UserProfileListView(ListAPIView):
 
     def get_serializer_context(self, *args, **kwargs):
         context = super().get_serializer_context(**kwargs)
-        current_membership = get_user_membership(self.request)
 
-        context['current_membership'] = str(current_membership.membership)
+        if self.request.method == 'GET':
+            current_membership = get_user_membership(self.request)
+            context['current_membership'] = str(current_membership.membership)
+        else:
+            context['current_membership'] = None
 
         return context
 
 
-# Create registration api
 class SignupAPI(generics.GenericAPIView):
     serializer_class = SignupSerializer
 
@@ -51,8 +53,18 @@ class SignupAPI(generics.GenericAPIView):
         user = serializer.save()
         return Response({"user": UserSerializer(user, context=self.get_serializer_context()).data, "token": AuthToken.objects.create(user)[1]})
 
+    def get_serializer_context(self, *args, **kwargs):
+        context = super().get_serializer_context(**kwargs)
 
-# Create login api
+        if self.request.method == 'GET':
+            current_membership = get_user_membership(self.request)
+            context['current_membership'] = str(current_membership.membership)
+        else:
+            context['current_membership'] = None
+
+        return context
+
+
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
@@ -62,8 +74,18 @@ class LoginAPI(generics.GenericAPIView):
         user = serializer.validated_data
         return Response({"user": UserSerializer(user, context=self.get_serializer_context()).data, "token": AuthToken.objects.create(user)[1]})
 
+    def get_serializer_context(self, *args, **kwargs):
+        context = super().get_serializer_context(**kwargs)
 
-# Create user api
+        if self.request.method == 'GET':
+            current_membership = get_user_membership(self.request)
+            context['current_membership'] = str(current_membership.membership)
+        else:
+            context['current_membership'] = str(None)
+
+        return context
+
+
 class UserAPI(generics.RetrieveAPIView):
     permissions._classes = [
         permissions.IsAuthenticated,
@@ -72,3 +94,14 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+    def get_serializer_context(self, *args, **kwargs):
+        context = super().get_serializer_context(**kwargs)
+
+        if self.request.method == 'GET':
+            current_membership = get_user_membership(self.request)
+            context['current_membership'] = str(current_membership.membership)
+        else:
+            context['current_membership'] = None
+
+        return context
