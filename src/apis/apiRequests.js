@@ -10,10 +10,13 @@ const params = {
 const sessionToken = localStorage.getItem("sessionToken");
 
 export async function requestTicketsList() {
-  return axios.get(`${baseUrl}/tickets/`);
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.get(`${baseUrl}/tickets/`, params);
 }
 
 export async function requestTicketUpdate(id, body) {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
   return axios.put(`${baseUrl}/tickets/update/${id}/`, body);
 }
 
@@ -34,6 +37,12 @@ export async function requestMembershipsList() {
   params.headers["Authorization"] = `Token ${sessionToken}`;
 
   return axios.get(`${baseUrl}/memberships/`, params);
+}
+
+export async function requestMembershipsDetail(id) {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.get(`${baseUrl}/memberships/type/${id}/`, params);
 }
 
 export async function requestUser() {
@@ -68,6 +77,8 @@ export async function requestLogout(sessionToken) {
 }
 
 export async function requestCreateTicket(body) {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
   return axios.post(`${baseUrl}/tickets/api/create/`, body, params);
 }
 
