@@ -2,7 +2,9 @@ import React, { Component } from "react";
 
 import { PaymentMethods } from "../../constants/constants";
 
-import { Form, Button, Card, Message } from "semantic-ui-react";
+import { CardElement } from "react-stripe-elements";
+
+import { Form, Button, Card, Message, Segment } from "semantic-ui-react";
 
 export class PaymentDetails extends Component {
   constructor(props) {
@@ -28,30 +30,16 @@ export class PaymentDetails extends Component {
     const { paymentOption } = this.state;
     return paymentOption === "Stripe" ? (
       <Form.Group widths="equal">
-        <Form.Input
-          fluid
-          id="form-subcomponent-shorthand-input-first-name"
-          label="Card Number *"
-          placeholder="**** **** **** **** "
-        />
-        <Form.Input
-          fluid
-          id="form-subcomponent-shorthand-input-first-name"
-          label="Expiration *"
-          placeholder="MM / YY"
-        />
-        <Form.Input
-          fluid
-          id="form-subcomponent-shorthand-input-last-name"
-          label="CVC *"
-          placeholder="CVC"
-        />
+        <Segment>
+          <CardElement />
+        </Segment>
       </Form.Group>
     ) : null;
   }
 
   render() {
     const { hasError, paymentOption } = this.state;
+    const { onSubmitClick } = this.props;
 
     return (
       <Card fluid>
@@ -62,7 +50,7 @@ export class PaymentDetails extends Component {
             fluid
             label="Payment Method"
             options={PaymentMethods}
-            placeholder="Payment Method"
+            placeholder="Select payment method"
             onChange={event => this.handlePaymentOption(event, PaymentMethods)}
           />
 
@@ -76,8 +64,8 @@ export class PaymentDetails extends Component {
           ) : null}
         </Card.Content>
         <Card.Content extra>
-          <Button color="orange" fluid>
-            BUY NOW
+          <Button color="orange" fluid onClick={onSubmitClick}>
+            PAY NOW
           </Button>
         </Card.Content>
       </Card>
