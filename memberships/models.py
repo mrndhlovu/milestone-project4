@@ -63,7 +63,7 @@ post_save.connect(post_save_create_user_membership, sender=User)
 class Subcription(models.Model):
     user_membership = models.ForeignKey(
         UserMembership, on_delete=models.CASCADE)
-    stripe_user_id = models.CharField(max_length=50)
+    stripe_customer_id = models.CharField(max_length=50)
     is_active = models.BooleanField(default=-True)
 
     def __str__(self):
@@ -72,11 +72,11 @@ class Subcription(models.Model):
     @property
     def get_created_date(self):
         subscription = stripe.Subscription.retrieve(
-            self.stripe_user_id)
+            self.stripe_customer_id)
         return datetime.fromtimestamp(subscription.created)
 
     @property
     def get_next_billing_date(self):
         subscription = stripe.Subscription.retrieve(
-            self.stripe_user_id)
+            self.stripe_customer_id)
         return datetime.fromtimestamp(subscription.current_period_end)

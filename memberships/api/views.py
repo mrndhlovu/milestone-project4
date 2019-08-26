@@ -10,7 +10,6 @@ import json
 import stripe
 from django.contrib import messages
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
 
 
 def get_user_membership(request):
@@ -31,7 +30,7 @@ def get_user_subcription(request):
 
 
 def get_selected_membership(request):
-    membership_type = request.session['choosen_membership_type']
+    membership_type = request['choosen_membership_type']
     choosen_membership_qs = Membership.objects.filter(
         membership_type=membership_type)
     if choosen_membership_qs.exists():
@@ -74,66 +73,106 @@ class MembershipListView(ListAPIView):
 
         message = {'choosen_membership_type': choosen_membership.membership_type}
 
-        return JsonResponse({'message': message}, status=status.HTTP_200_OK)
+        return JsonResponse(message, status=200)
 
 
-# @login_required
-def PaymentView(request):
+class MembershipPaymentView(ListAPIView):
+    serializer_class = MembershipSerializer
+    queryset = Membership.objects.all()
+    permissions._classes = [
+        permissions.AllowAny,
+    ]
 
-    # user_membership = get_user_membership(request)
+    def post(self, request, **kwargs):
+        data = json.loads(request.body.decode('utf-8'))
 
-    # print('<<<<<<<<<GOT_HERE>>>>>>>>>>', user_membership)
+        user_membership = get_user_membership(request)
 
-    try:
-        choosen_membership = get_selected_membership(request)
-    except:
-        message = 'Not found'
-        return JsonResponse({'message': message}, status=status.HTTP_400_BAD_REQUEST)
-
-    publish_key = settings.STRIPE_PUBLISHABLE
-
-    if request.method == "POST":
         try:
-            token = request.POST['stripeToken']
-
-            # UPDATE FOR STRIPE API CHANGE 2018-05-21
-
-            '''
-            First we need to add the source for the customer
-            '''
-
-            customer = stripe.Customer.retrieve(
-                user_membership.stripe_customer_id)
-            customer.source = token  # 4242424242424242
-            customer.save()
-
-            '''
-            Now we can create the subscription using only the customer as we don't need to pass their
-            credit card source anymore
-            '''
-
-            subscription = stripe.Subscription.create(
-                customer=user_membership.stripe_customer_id,
-                items=[
-                    {"plan": choosen_membership.stripe_plan_id},
-                ]
-            )
-
-            return redirect(reverse('memberships:update-transactions',
-                                    kwargs={
-                                        'subscription_id': subscription.id
-                                    }))
+            choosen_membership = get_selected_membership(data)
 
         except:
-            messages.info(
-                request, "An error has occurred, investigate it in the console")
+            message = 'Not found'
+            return JsonResponse({'message': message}, status=status.HTTP_400_BAD_REQUEST)
 
-    context = {
-        'publishKey': publish_key,
-        'selected_membership': choosen_membership
-    }
+        publish_key = settings.STRIPE_PUBLISHABLE_KEY
 
-    return JsonResponse(context, status=200)
+        if request.method == "POST":
+            try:
+
+                token = data['stripeToken']
+
+                # UPDATE FOR STRIPE API CHANGE 2018-05-21
+
+                '''
+                First we need to add the source for the customer
+                '''
+
+                customer = stripe.Customer.retrieve(
+                    user_membership.stripe_customer_key)
+
+                customer.default_source = token  # 4242424242424242
+                customer.save()
+
+                '''
+                Now we can create the subscription using only the customer as we don't need to pass their
+                credit card source anymore
+                '''
+
+                subscription = stripe.Subscription.create(
+                    customer=user_membership.stripe_customer_key,
+                    items=[
+                        {"plan": choosen_membership.stripe_plan_id},
+                    ]
+                )
+
+                response_object = {'subscription_id': subscription.id}
+
+                return JsonResponse(response_object, status=200)
+
+            except:
+
+                return JsonResponse({'message': 'An error has occurred, investigate it in the console'}, status=status.HTTP_404_NOT_FOUND)
+
+        context = {
+            'publishKey': publish_key,
+            'choosen_membership': choosen_membership
+        }
+
+        return JsonResponse(context, status=200)
+
+
+class MembershipTransactionUpdateView(ListAPIView):
+    serializer_class = MembershipSerializer
+    queryset = Membership.objects.all()
+    permissions._classes = [
+        permissions.AllowAny,
+    ]
+
+    def post(self, request, **kwargs):
+
+        data = json.loads(request.body.decode('utf-8'))
+
+        user_membership = get_user_membership(request)
+        choosen_membership = get_selected_membership(data)
+        user_membership.membership = choosen_membership
+
+        user_membership.save()
+
+        subscription_id = data['subscription_id']
+
+        sub, created = Subcription.objects.get_or_create(
+            user_membership=user_membership, is_active=True, stripe_customer_id=subscription_id)
+
+        sub.save()
+
+        context = {
+            'data': data,
+            'message': 'Successfully created {} membership'.format(
+                choosen_membership)
+        }
+
+        return JsonResponse(context, status=200, safe=False)
 
 
 class MembershipsDetailAPI(RetrieveAPIView):
