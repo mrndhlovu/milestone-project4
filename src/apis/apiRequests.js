@@ -7,6 +7,29 @@ const params = {
   }
 };
 
+// const stripeToken = localStorage.getItem("stripeToken");
+// const stripeParams = {
+//   method: "POST",
+//   headers: { "Content-Type": "text/plain" },
+//   body: stripeToken
+// };
+
+const selectedMembership = JSON.stringify({
+  membership_type: "free"
+});
+
+const transcationUpdates = JSON.stringify({
+  subscription_id: "sub_FgsqeRavyFD1GJ",
+  choosen_membership_type: "free"
+});
+
+const stripeToken = localStorage.getItem("stripeToken");
+
+const choosenMembership = JSON.stringify({
+  choosen_membership_type: "free",
+  stripeToken: stripeToken
+});
+
 const sessionToken = localStorage.getItem("sessionToken");
 
 export async function requestTicketsList() {
@@ -44,6 +67,39 @@ export async function requestMembershipsDetail(id) {
 
   return axios.get(`${baseUrl}/memberships/type/${id}/`, params);
 }
+
+export async function requestSelectedMemberships() {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.post(
+    `${baseUrl}/memberships/select/`,
+    selectedMembership,
+    params
+  );
+}
+
+export async function requestMembershipPayment() {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.post(
+    `${baseUrl}/memberships/payments/`,
+    choosenMembership,
+    params
+  );
+}
+
+export async function requestTransactionUpdate() {
+  params.headers["Authorization"] = `Token ${sessionToken}`;
+
+  return axios.post(
+    `${baseUrl}/memberships/update-transaction/`,
+    transcationUpdates,
+    params
+  );
+}
+// requestSelectedMemberships();
+// requestMembershipPayment();
+requestTransactionUpdate();
 
 export async function requestUser() {
   params.headers["Authorization"] = `Token ${sessionToken}`;
