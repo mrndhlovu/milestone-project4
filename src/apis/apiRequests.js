@@ -1,9 +1,28 @@
 import axios from "axios";
 import { baseUrl } from "../utils/urls";
+import {
+  STRIPE_TOKEN,
+  SESSION_TOKEN,
+  SUBCRIPTION_ID,
+  MEMBERSHIP
+} from "../constants/constants";
+
+const authQueryParams = {
+  headers: {
+    Authorization: `Token ${SESSION_TOKEN}`,
+    "Content-Type": "application/json"
+  }
+};
+
+const queryParams = {
+  headers: {
+    "Content-Type": "application/json"
+  }
+};
 
 const params = {
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "text/plain"
   }
 };
 
@@ -14,42 +33,43 @@ const params = {
 //   body: stripeToken
 // };
 
-const selectedMembership = JSON.stringify({
-  membership_type: "free"
-});
+localStorage.setItem("membership", "pro");
 
-const transcationUpdates = JSON.stringify({
-  subscription_id: "sub_FgsqeRavyFD1GJ",
-  choosen_membership_type: "free"
-});
+const stripeQueryParams = {
+  method: "POST",
+  headers: { "Content-Type": "text/plain" },
+  body: `${STRIPE_TOKEN}`,
+  Authorization: `Token ${SESSION_TOKEN}`
+};
 
-const stripeToken = localStorage.getItem("stripeToken");
+const SELECTED_MEMBERSHIP = {
+  membership_type: `${MEMBERSHIP}`
+};
 
-const choosenMembership = JSON.stringify({
-  choosen_membership_type: "free",
-  stripeToken: stripeToken
-});
+const transcationUpdates = {
+  subscription_id: `${SUBCRIPTION_ID}`,
+  membership_type: `${MEMBERSHIP}`
+};
 
-const sessionToken = localStorage.getItem("sessionToken");
+const choosenMembership = {
+  membership_type: `${MEMBERSHIP}`,
+  stripeToken: `${STRIPE_TOKEN}`
+};
 
 export async function requestTicketsList() {
   return axios.get(`${baseUrl}/tickets/`);
 }
 
 export async function requestTicketUpdate(id, body) {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
   return axios.put(`${baseUrl}/tickets/update/${id}/`, body);
 }
 
 export async function requestTicketDelete(id) {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
-  return axios.delete(`${baseUrl}/tickets/delete/${id}/`, params);
+  return axios.delete(`${baseUrl}/tickets/delete/${id}/`, authQueryParams);
 }
 
 export async function requestTicketVoteUpdate(id) {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-  return axios.get(`${baseUrl}/tickets/api/${id}/vote/`, params);
+  return axios.get(`${baseUrl}/tickets/api/${id}/vote/`, authQueryParams);
 }
 
 export async function requestProductsList() {
@@ -57,30 +77,23 @@ export async function requestProductsList() {
 }
 
 export async function requestMembershipsList() {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
-  return axios.get(`${baseUrl}/memberships/`, params);
+  return axios.get(`${baseUrl}/memberships/types/`);
 }
 
-export async function requestMembershipsDetail(id) {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
-  return axios.get(`${baseUrl}/memberships/type/${id}/`, params);
+export async function requestUserMembershipsProfile() {
+  return axios.get(`${baseUrl}/memberships/user-profile/`, authQueryParams);
 }
 
 export async function requestSelectedMemberships() {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
   return axios.post(
     `${baseUrl}/memberships/select/`,
-    selectedMembership,
-    params
+    SELECTED_MEMBERSHIP,
+    authQueryParams
   );
 }
 
 export async function requestMembershipPayment() {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
+  params.headers["Authorization"] = `Token ${SESSION_TOKEN}`;
   return axios.post(
     `${baseUrl}/memberships/payments/`,
     choosenMembership,
@@ -89,7 +102,7 @@ export async function requestMembershipPayment() {
 }
 
 export async function requestTransactionUpdate() {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
+  params.headers["Authorization"] = `Token ${SESSION_TOKEN}`;
 
   return axios.post(
     `${baseUrl}/memberships/update-transaction/`,
@@ -97,51 +110,46 @@ export async function requestTransactionUpdate() {
     params
   );
 }
-// requestSelectedMemberships();
-// requestMembershipPayment();
-requestTransactionUpdate();
 
 export async function requestUser() {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
-  return axios.get(`${baseUrl}/accounts/api/auth/user`, params);
+  return axios.get(`${baseUrl}/accounts/api/auth/user`, authQueryParams);
 }
 
 export async function requestUserProfile() {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
-  return axios.get(`${baseUrl}/accounts/api/auth/profile/`, params);
+  return axios.get(`${baseUrl}/accounts/api/auth/profile/`, authQueryParams);
 }
 
 export async function requestUserProfileDetail(id) {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
-  return axios.get(`${baseUrl}/accounts/api/auth/profile/${id}/`, params);
+  return axios.get(
+    `${baseUrl}/accounts/api/auth/profile/${id}/`,
+    authQueryParams
+  );
 }
 
 export async function requestSignup(body) {
-  return axios.post(`${baseUrl}/accounts/api/auth/signup`, body, params);
+  return axios.post(`${baseUrl}/accounts/api/auth/signup`, body, queryParams);
 }
 
 export async function requestLogin(body) {
-  return axios.post(`${baseUrl}/accounts/api/auth/login`, body, params);
+  return axios.post(`${baseUrl}/accounts/api/auth/login`, body, queryParams);
 }
 
-export async function requestLogout(sessionToken) {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-  return axios.post(`${baseUrl}/accounts/api/auth/logout`, null, params);
+export async function requestLogout() {
+  return axios.post(
+    `${baseUrl}/accounts/api/auth/logout`,
+    null,
+    authQueryParams
+  );
 }
 
 export async function requestCreateTicket(body) {
-  params.headers["Authorization"] = `Token ${sessionToken}`;
-
-  return axios.post(`${baseUrl}/tickets/api/create/`, body, params);
+  return axios.post(`${baseUrl}/tickets/api/create/`, body, authQueryParams);
 }
 
 export async function fetchTicketDetail(id) {
   return axios.get(`${baseUrl}/tickets/${id}/`);
 }
 
-export async function requestTicketComments(id) {
+export async function requestTicketComments() {
   return axios.get(`${baseUrl}/comments/`);
 }
