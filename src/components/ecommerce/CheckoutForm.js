@@ -4,13 +4,10 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 import { injectStripe, Elements, StripeProvider } from "react-stripe-elements";
-import { Grid, Container, Header, Segment } from "semantic-ui-react";
+import { Grid, Container, Header, Segment, Message } from "semantic-ui-react";
 
-import BillingInformation from "./BillingInformation";
 import PaymentDetails from "./PaymentDetails";
 import OrderSummary from "./OrderSummary";
-
-import { submit } from "../../actions/CheckoutActions";
 
 const StyledContainer = styled(Container)`
   padding-top: 1.5rem;
@@ -19,34 +16,59 @@ const StyledContainer = styled(Container)`
 class CheckoutForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      error: false,
+      message: "",
+      isLoading: false
+    };
     this.clickedSubmit = this.clickedSubmit.bind(this);
   }
 
-  async submit(ev) {
-    // User clicked submit
-  }
-
   clickedSubmit() {
-    console.log("USER CLICKED SUBMIT");
+    const { stripe, requestPayment } = this.props;
+    stripe &&
+      stripe.createToken().then(result => {
+        if (result.error) {
+          this.setState({
+            error: true,
+            isLoading: false,
+            message: result.error.message
+          });
+        } else {
+          localStorage.setItem("stripeToken", result.token.id);
+        }
+      });
   }
 
   render() {
+    const { isLoading, error, message } = this.state;
     return (
       <Fragment>
         <StyledContainer>
-          <Header as="h3" block>
+          <Header as="h3" block textAlign="center">
             Checkout
           </Header>
           <Segment>
             <Grid>
-              <Grid.Row columns={2}>
-                <Grid.Column>
-                  <BillingInformation />
-                </Grid.Column>
-                <Grid.Column>
+              <Grid.Row>
+                <Grid.Column width={3}></Grid.Column>
+                <Grid.Column width={10}>
+                  {error && (
+                    <Message negative>
+                      <Message.Header>Payment not successful!</Message.Header>
+                      <p>{message}</p>
+                    </Message>
+                  )}
+
                   <OrderSummary />
-                  <PaymentDetails onSubmitClick={this.clickedSubmit} />
+                  <PaymentDetails
+                    onSubmitClick={this.clickedSubmit}
+                    data={this.props}
+                    loading={isLoading}
+                    error={error}
+                  />
                 </Grid.Column>
+                <Grid.Column width={3}></Grid.Column>
               </Grid.Row>
             </Grid>
           </Segment>
@@ -68,7 +90,4 @@ const StripeFormWrapper = () => (
   </StripeProvider>
 );
 
-export default connect(
-  null,
-  { submit }
-)(StripeFormWrapper);
+export default StripeFormWrapper;
