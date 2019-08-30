@@ -16,7 +16,7 @@ import {
   requestSignup,
   requestLogout,
   requestUser,
-  requestUserProfile
+  requestUserMembershipsProfile
 } from "../apis/apiRequests";
 
 import { fetchData, createMessage, errorsAlert } from "./index";
@@ -232,7 +232,7 @@ export const fetchUser = sessionToken => {
 export const fetchUserProfile = sessionToken => {
   return dispatch => {
     dispatch(fetchingUserProfile());
-    requestUserProfile(sessionToken).then(
+    requestUserMembershipsProfile(sessionToken).then(
       response => {
         dispatch(receivedUserProfile(response.data));
       },
