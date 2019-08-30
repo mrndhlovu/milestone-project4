@@ -38,8 +38,8 @@ urllib3 = "==1.25.3"
 whitenoise = "==3.3.1"
 django-heroku = "*"
 django-rest-knox = "==4.0.1"
-stripe = "*"
 django = "*"
+stripe = "*"
 
 [requires]
 python_version = "3.6"
