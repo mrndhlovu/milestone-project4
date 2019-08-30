@@ -20,7 +20,7 @@ MEMBERSHIP_OPTIONS = (
 class Membership(models.Model):
     slug = models.SlugField()
     membership_type = models.CharField(
-        choices=MEMBERSHIP_OPTIONS, default="free", max_length=50)
+        choices=MEMBERSHIP_OPTIONS, max_length=50, null=True, default='free')
     price = models.IntegerField(default=10)
     stripe_plan_id = models.CharField(max_length=40)
 
@@ -31,7 +31,7 @@ class Membership(models.Model):
 class UserMembership(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    stripe_customer_key = models.CharField(max_length=20)
+    stripe_customer_id = models.CharField(max_length=20)
     membership = models.ForeignKey(
         Membership, on_delete=models.SET_NULL, null=True)
 
@@ -46,13 +46,13 @@ def post_save_create_user_membership(sender, instance, created, *args, **kwargs)
     user_membership, created = UserMembership.objects.get_or_create(
         user=instance)
 
-    if user_membership.stripe_customer_key is None or user_membership.stripe_customer_key == '':
+    if user_membership.stripe_customer_id is None or user_membership.stripe_customer_id == '':
         new_customer_key = stripe.Customer.create(email=instance.email)
         try:
             default_membership = Membership.objects.get(membership_type="free")
         except Membership.DoesNotExist:
             default_membership = None
-        user_membership.stripe_customer_key = new_customer_key["id"]
+        user_membership.stripe_customer_id = new_customer_key["id"]
         user_membership.membership = default_membership
         user_membership.save()
 
@@ -63,7 +63,7 @@ post_save.connect(post_save_create_user_membership, sender=User)
 class Subcription(models.Model):
     user_membership = models.ForeignKey(
         UserMembership, on_delete=models.CASCADE)
-    stripe_customer_id = models.CharField(max_length=50)
+    stripe_subscription_id = models.CharField(max_length=40)
     is_active = models.BooleanField(default=-True)
 
     def __str__(self):
@@ -72,11 +72,12 @@ class Subcription(models.Model):
     @property
     def get_created_date(self):
         subscription = stripe.Subscription.retrieve(
-            self.stripe_customer_id)
+            self.stripe_subscription_id)
         return datetime.fromtimestamp(subscription.created)
 
     @property
     def get_next_billing_date(self):
         subscription = stripe.Subscription.retrieve(
-            self.stripe_customer_id)
+            self.stripe_subscription_id)
+
         return datetime.fromtimestamp(subscription.current_period_end)
