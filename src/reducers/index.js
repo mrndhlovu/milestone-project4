@@ -1,30 +1,32 @@
 import { combineReducers } from "redux";
-import ticketsReducer from "./ticketsReducer";
-import authReducer from "./authReducer";
 import { reducer as formReducer } from "redux-form";
-import createTicketReducer from "./createTicketReducer";
-import ticketDetaiReducer from "./ticketDetailReducer";
-import errorsReducer from "./errorsReducer";
-import messagesReducer from "./messagesReducer";
-import userReducer from "./userReducer";
-import userProfileReducer from "./userProfileReducer";
-import membershipsReducer from "./membershipsReducer";
-import ticketVoteReducer from "./ticketVoteReducer";
+import authReducer from "./authReducer";
+import checkOutReducer from "./checkOutReducer";
 import commentsReducer from "./commentsReducer";
+import createTicketReducer from "./createTicketReducer";
 import editTicketReducer from "./editTicketReducer";
+import errorsReducer from "./errorsReducer";
+import membershipsReducer from "./membershipsReducer";
+import messagesReducer from "./messagesReducer";
+import ticketDetaiReducer from "./ticketDetailReducer";
+import ticketsReducer from "./ticketsReducer";
+import ticketVoteReducer from "./ticketVoteReducer";
+import userProfileReducer from "./userProfileReducer";
+import userReducer from "./userReducer";
 
 export default combineReducers({
-  tickets: ticketsReducer,
   auth: authReducer,
+  checkOut: checkOutReducer,
+  comments: commentsReducer,
+  errorAlert: errorsReducer,
   form: formReducer,
+  memberships: membershipsReducer,
+  messages: messagesReducer,
   ticket: createTicketReducer,
   ticketDetail: ticketDetaiReducer,
-  errorAlert: errorsReducer,
-  messages: messagesReducer,
+  tickets: ticketsReducer,
+  ticketUpdate: editTicketReducer,
   user: userReducer,
-  memberships: membershipsReducer,
-  vote: ticketVoteReducer,
   userProfile: userProfileReducer,
-  comments: commentsReducer,
-  ticketUpdate: editTicketReducer
+  vote: ticketVoteReducer
 });
