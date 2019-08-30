@@ -1,46 +1,113 @@
-import { USER_AUTH_START } from "./ActionTypes";
+import {
+  SUBMITTING_PAYMENT,
+  PAYMENT_SUCCESS,
+  PAYMENT_FAIL,
+  TRANSCATION_UPDATE_FAIL,
+  TRANSCATION_UPDATED,
+  UPDATE_TRANSCATION,
+  CHOOSEN_MEMBERSHIP_FOUND,
+  FIND_MEMBERSHIP_ERROR,
+  FIND_CHOOSEN_MEMBERSHIP
+} from "./ActionTypes";
 
-import { requestMembershipPayment } from "../apis/apiRequests";
+import {
+  requestMembershipPayment,
+  requestSelectedMemberships,
+  requestTransactionUpdate
+} from "../apis/apiRequests";
 
-import { createMessage } from "./index";
+import { createMessage, fetchData, errorsAlert } from "./index";
 
-export const receivedPaymentError = () => {
+export const receivedPaymentSuccess = action => {
   return {
-    type: USER_AUTH_START
+    type: PAYMENT_SUCCESS,
+    payload: action
   };
 };
 
-export const submittingPayment = () => {
+export const paymentFail = action => {
   return {
-    type: USER_AUTH_START
+    type: PAYMENT_FAIL,
+    payload: action
   };
 };
 
-export const createToken = token => {
-  //   const stripeToken = localStorage.setItem("stripeToken", token);
-
+export const receivedTransUpdate = action => {
   return {
-    type: USER_AUTH_START
+    type: TRANSCATION_UPDATED,
+    payload: action
   };
 };
 
-export const receivedPaymentSuccess = () => {
+export const updateTransFail = action => {
   return {
-    type: USER_AUTH_START
+    type: TRANSCATION_UPDATE_FAIL,
+    payload: action
   };
 };
 
-export const submit = () => {
+export const receivedSelectMembership = action => {
+  return {
+    type: CHOOSEN_MEMBERSHIP_FOUND,
+    payload: action
+  };
+};
+
+export const selectedMembershipError = action => {
+  return {
+    type: FIND_MEMBERSHIP_ERROR,
+    payload: action
+  };
+};
+
+export const requestChoosenMembership = () => {
   return dispatch => {
-    dispatch(submittingPayment());
+    dispatch(fetchData(FIND_CHOOSEN_MEMBERSHIP));
+    requestSelectedMemberships().then(
+      response => {
+        dispatch(receivedSelectMembership(response.data));
+        dispatch(createMessage({ successMsg: "Membership selected" }));
+      },
+      error => {
+        dispatch(selectedMembershipError(error.data));
+        dispatch(createMessage({ errorMsg: "Payment failed" }));
+      }
+    );
+  };
+};
+
+export const requestPayment = () => {
+  return dispatch => {
+    dispatch(fetchData(SUBMITTING_PAYMENT));
     requestMembershipPayment().then(
       response => {
+        localStorage.setItem("subscriptionId", response.data.subscription_id);
+        dispatch(requestUpdate());
+
         dispatch(receivedPaymentSuccess(response.data));
         dispatch(createMessage({ successMsg: "Payment was successful" }));
       },
       error => {
-        dispatch(receivedPaymentError(error.data));
-        dispatch(createMessage({ errorMsg: "Payment failed" }));
+        dispatch(createMessage({ successMsg: error.message }));
+        dispatch(paymentFail(error));
+      }
+    );
+  };
+};
+
+export const requestUpdate = () => {
+  return dispatch => {
+    dispatch(fetchData(UPDATE_TRANSCATION));
+    requestTransactionUpdate().then(
+      response => {
+        dispatch(receivedTransUpdate(response));
+        dispatch(createMessage({ successMsg: response.data.message }));
+        // localStorage.removeItem("subscriptionId");
+        // localStorage.removeItem("stripeToken");
+      },
+      error => {
+        dispatch(createMessage({ successMsg: error.message }));
+        dispatch(updateTransFail(error));
       }
     );
   };
