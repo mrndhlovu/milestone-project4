@@ -24,6 +24,9 @@ class TicketListView(ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
+
+        data = request.data.copy()
+
         current_ticket_owner = get_ticket_owner(request)
 
         data = request.data.copy()
