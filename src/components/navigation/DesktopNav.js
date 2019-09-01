@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { NavLink, withRouter } from "react-router-dom";
+import { NavLink, withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
@@ -9,7 +9,7 @@ import { logOut } from "../../actions/AuthActions";
 import { navLinkText } from "../../constants/constants";
 
 const StyledSpan = styled.span`
-  color: green;
+  color: green !important;
   padding-right: 0.5rem;
 `;
 
@@ -104,19 +104,30 @@ export class DesktopNav extends Component {
   }
 
   renderUserLabel() {
-    const { username } = this.props.user;
+    const { username, current_membership } = this.props.user;
 
-    return username ? (
-      <StyledSpan>
-        <Icon name="user" size="small" />
-        {username}
-      </StyledSpan>
-    ) : null;
+    return (
+      username && (
+        <Fragment>
+          <StyledSpan as={Link} to="/user-profile">
+            <Icon name="user" size="small" />
+            {username}
+          </StyledSpan>
+          <StyledSpan as={Link} to="/pricing">
+            <Label
+              color={current_membership == "pro" ? "orange" : "teal"}
+              size="tiny"
+            >
+              {current_membership.toUpperCase()}
+            </Label>
+          </StyledSpan>
+        </Fragment>
+      )
+    );
   }
 
   showActiveLink(name) {
     const { isActive } = this.state;
-
     Object.keys(isActive).map(item => {
       return name === item
         ? this.setState({
