@@ -3,7 +3,7 @@ from accounts.models import UserProfile
 from comments.models import Comment
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from memberships.models import Membership, UserMembership, Subcription
+from memberships.models import Membership, UserMembership, Subscription
 from tickets.models import Ticket
 
 
@@ -16,7 +16,7 @@ admin.site.register(UserProfile)
 
 admin.site.register(Membership)
 admin.site.register(UserMembership)
-admin.site.register(Subcription)
+admin.site.register(Subscription)
 
 admin.site.register(Ticket)
 admin.site.register(Comment)
