@@ -5,7 +5,7 @@ import {
   SESSION_TOKEN,
   SUBCRIPTION_ID,
   MEMBERSHIP
-} from "../constants/constants";
+} from "../constants/localStorageConstants";
 
 const authQueryParams = {
   headers: {
@@ -52,8 +52,8 @@ const transcationUpdates = {
 };
 
 const choosenMembership = {
-  membership_type: `${MEMBERSHIP}`,
-  stripeToken: `${STRIPE_TOKEN}`
+  stripeToken: `${STRIPE_TOKEN}`,
+  membership_type: `${MEMBERSHIP}`
 };
 
 export async function requestTicketsList() {
@@ -82,6 +82,14 @@ export async function requestMembershipsList() {
 
 export async function requestUserMembershipsProfile() {
   return axios.get(`${baseUrl}/memberships/user-profile/`, authQueryParams);
+}
+
+export async function requestCancelSubsricption() {
+  return axios.post(
+    `${baseUrl}/memberships/cancel-subscription/`,
+    null,
+    authQueryParams
+  );
 }
 
 export async function requestSelectedMemberships() {
