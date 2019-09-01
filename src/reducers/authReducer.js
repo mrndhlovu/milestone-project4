@@ -7,22 +7,21 @@ import {
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
 
 const initialState = {
-  sessionToken: null,
-  hasError: null,
+  hasError: false,
   isLoading: false,
   isAuthenticated: false
 };
 
 const authStart = (state, action) => {
   return checkObjectUpdate(state, {
-    hasError: null,
-    isLoading: true
+    hasError: false,
+    isLoading: true,
+    isAuthenticated: false
   });
 };
 
 const logOut = (state, action) => {
   return checkObjectUpdate(state, {
-    sessionToken: null,
     isAuthenticated: false
   });
 };
@@ -31,15 +30,14 @@ const authFail = (state, action) => {
   return checkObjectUpdate(state, {
     hasError: true,
     isAuthenticated: false,
-    sessionToken: null
+    isLoading: false
   });
 };
 
 const authSuccess = (state, action) => {
   return checkObjectUpdate(state, {
-    hasError: null,
+    hasError: false,
     isLoading: false,
-    sessionToken: action,
     isAuthenticated: true
   });
 };
