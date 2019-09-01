@@ -1,6 +1,8 @@
 import {
   RECEIVE_MEMBERSHIPS_LIST,
-  FETCHING_MEMBERSHIPS
+  FETCHING_MEMBERSHIPS,
+  REQUEST_CANCEL_SUBSCRIPTION,
+  RECEIVE_SUBSCRIPTION_CANCELED
 } from "../actions/ActionTypes";
 
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
@@ -32,9 +34,9 @@ const dataReceived = (state, action) => {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case FETCHING_MEMBERSHIPS:
+    case REQUEST_CANCEL_SUBSCRIPTION || FETCHING_MEMBERSHIPS:
       return fetchingData(state, action);
-    case RECEIVE_MEMBERSHIPS_LIST:
+    case RECEIVE_MEMBERSHIPS_LIST || RECEIVE_SUBSCRIPTION_CANCELED:
       return dataReceived(state, action);
     default:
       return state;
