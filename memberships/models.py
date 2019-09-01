@@ -60,7 +60,7 @@ def post_save_create_user_membership(sender, instance, created, *args, **kwargs)
 post_save.connect(post_save_create_user_membership, sender=User)
 
 
-class Subcription(models.Model):
+class Subscription(models.Model):
     user_membership = models.ForeignKey(
         UserMembership, on_delete=models.CASCADE)
     stripe_subscription_id = models.CharField(max_length=40)

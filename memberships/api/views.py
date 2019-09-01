@@ -2,7 +2,7 @@ from .serializers import MembershipSerializer, MembershipProfileSerializer
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, redirect
-from memberships.models import Membership, UserMembership, Subcription
+from memberships.models import Membership, UserMembership, Subscription
 from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
@@ -24,12 +24,12 @@ def get_user_membership(request):
     return None
 
 
-def get_user_subcription(request):
-    user_subcription_qs = Subcription.objects.filter(
+def get_user_subscription(request):
+    user_subscription_qs = Subscription.objects.filter(
         user_membership=get_user_membership(request))
-    if user_subcription_qs.exists():
-        user_subcription = user_subcription_qs.first()
-        return user_subcription
+    if user_subscription_qs.exists():
+        user_subscription = user_subscription_qs.first()
+        return user_subscription
     return None
 
 
@@ -66,7 +66,7 @@ class MembershipListView(ListAPIView):
 
         choosen_membership_type = get_selected_membership(request_data)
         user_membership = get_user_membership(request)
-        user_subcription = get_user_subcription(request)
+        user_subscription = get_user_subscription(request)
 
         choosen_membership_qs = Membership.objects.filter(
             membership_type=choosen_membership_type)
@@ -76,7 +76,7 @@ class MembershipListView(ListAPIView):
 
         if user_membership.membership == choosen_membership:
 
-            if user_subcription is not None:
+            if user_subscription is not None:
                 message = 'You already have this membership!'
                 return JsonResponse({'message': message}, status=status.HTTP_200_OK)
 
@@ -99,6 +99,7 @@ class MembershipPaymentView(ListAPIView):
 
         try:
             choosen_membership = get_selected_membership(request_data)
+
         except:
             message = 'Not found'
             return JsonResponse({'message': message}, status=status.HTTP_400_BAD_REQUEST)
@@ -112,8 +113,11 @@ class MembershipPaymentView(ListAPIView):
                     user_membership.stripe_customer_id)
 
                 customer.source = token
+                print(request_data)
+
                 customer.save()
 
+                print(choosen_membership)
                 subscription = stripe.Subscription.create(
                     customer=user_membership.stripe_customer_id,
                     items=[
@@ -129,8 +133,8 @@ class MembershipPaymentView(ListAPIView):
 
             except:
                 message = {
-                    'message': 'An error has occurred, investigate it in the console'}
-                return JsonResponse(message, status=status.HTTP_404_NOT_FOUND)
+                    'message': 'An error has occurred, payment not successful'}
+                return Response(message, status=status.HTTP_404_NOT_FOUND)
 
         context = {
             'publishKey': publish_key,
@@ -159,10 +163,10 @@ class MembershipTransactionUpdateView(ListAPIView):
 
         subscription_id = request_data['subscription_id']
 
-        subcription, created = Subcription.objects.get_or_create(
+        subscription, created = Subscription.objects.get_or_create(
             user_membership=user_membership, is_active=True)
-        subcription.stripe_subscription_id = subscription_id
-        subcription.save()
+        subscription.stripe_subscription_id = subscription_id
+        subscription.save()
 
         context = {
             'data': request_data,
@@ -186,7 +190,7 @@ class MembershipsProfileAPI(ListAPIView):
         permissions.AllowAny,
     ]
     serializer_class = MembershipProfileSerializer
-    queryset = Subcription.objects.all()
+    queryset = Subscription.objects.all()
 
 
 class CancelSubscriptionAPI(ListAPIView):
@@ -194,13 +198,14 @@ class CancelSubscriptionAPI(ListAPIView):
         permissions.AllowAny,
     ]
     serializer_class = MembershipSerializer
-    queryset = Subcription.objects.all()
+    queryset = Subscription.objects.all()
 
     def post(self, request, **kwargs):
 
         try:
-            user_subcription = get_user_subcription(request)
-            if user_subcription.is_active is False:
+            user_subscription = get_user_subscription(request)
+
+            if user_subscription.is_active is False:
 
                 message = 'No active subscription found!'
                 return JsonResponse({'message': message}, status=status.HTTP_400_BAD_REQUEST)
@@ -209,12 +214,12 @@ class CancelSubscriptionAPI(ListAPIView):
             message = 'Error! could not cancel your subscription'
             return JsonResponse({'message': message}, status=status.HTTP_400_BAD_REQUEST)
 
-        subcription = stripe.Subscription.retrieve(
-            user_subcription.stripe_subscription_id)
-        subcription.delete()
+        subscription = stripe.Subscription.retrieve(
+            user_subscription.stripe_subscription_id)
+        subscription.delete()
 
-        user_subcription.is_active = False
-        user_subcription.delete()
+        user_subscription.is_active = False
+        user_subscription.delete()
 
         free_membership = Membership.objects.filter(
             membership_type='free').first()

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from memberships.models import Membership, Subcription
+from memberships.models import Membership, Subscription
 
 
 class MembershipSerializer(serializers.ModelSerializer):
@@ -17,7 +17,7 @@ class MembershipSerializer(serializers.ModelSerializer):
 
 class MembershipProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Subcription
+        model = Subscription
         exclude = ('id', 'stripe_subscription_id')
 
     def to_representation(self, instance):
@@ -25,7 +25,7 @@ class MembershipProfileSerializer(serializers.ModelSerializer):
                     self).to_representation(instance)
 
         rep['user_membership'] = str(instance.user_membership)
-        rep['user_subcription'] = str(instance.user_membership.membership)
+        rep['user_subscription'] = str(instance.user_membership.membership)
         rep['next_billing'] = instance.get_next_billing_date
         rep['created_at'] = instance.get_created_date
 
