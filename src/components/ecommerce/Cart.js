@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { Card, Button, List, Container, Divider } from "semantic-ui-react";
 
-export const StyledContainer = styled(Container)`
+export const StyledContainerWrapper = styled(Container)`
   padding-top: 1.5rem;
 `;
 
@@ -41,7 +41,7 @@ export class Cart extends Component {
   render() {
     return (
       <div>
-        <StyledContainer>
+        <StyledContainerWrapper>
           <Card fluid>
             <Card.Content header="Your Cart" />
             <Card.Content>
@@ -63,7 +63,7 @@ export class Cart extends Component {
               </Button>
             </Card.Content>
           </Card>
-        </StyledContainer>
+        </StyledContainerWrapper>
       </div>
     );
   }
