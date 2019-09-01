@@ -13,24 +13,6 @@ export class BillingInformation extends Component {
           <Grid.Column>
             <Segment attached="top">
               <Form>
-                <Form.Field>
-                  <label>Email address</label>
-                  <input placeholder="Email" />
-                </Form.Field>
-                <Form.Group widths="equal">
-                  <Form.Input
-                    fluid
-                    id="form-subcomponent-shorthand-input-first-name"
-                    label="First name"
-                    placeholder="First name"
-                  />
-                  <Form.Input
-                    fluid
-                    id="form-subcomponent-shorthand-input-last-name"
-                    label="Last name"
-                    placeholder="Last name"
-                  />
-                </Form.Group>
                 <Form.Group widths="equal">
                   <Form.Input
                     fluid
