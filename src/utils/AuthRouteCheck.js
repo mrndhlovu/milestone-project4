@@ -9,18 +9,19 @@ const AuthRouteCheck = ({ component: Component, auth, ...rest }) => (
     {...rest}
     render={props => {
       const { isLoading, isAuthenticated } = auth;
-      return !isAuthenticated ? (
-        <Redirect to="/login" />
-      ) : isLoading ? (
-        <Fragment>
-          <Dimmer active inverted>
-            <Loader size="mini">Loading</Loader>
-          </Dimmer>
-          <Image src="/images/wireframe/short-paragraph.png" />
-        </Fragment>
-      ) : (
-        <Component {...props} />
-      );
+      if (!isAuthenticated && !isLoading) {
+        return <Redirect to="/login" />;
+      } else if (isLoading) {
+        return (
+          <Fragment>
+            <Dimmer active inverted>
+              <Loader size="mini">Loading</Loader>
+            </Dimmer>
+          </Fragment>
+        );
+      } else {
+        return <Component {...props} />;
+      }
     }}
   />
 );
