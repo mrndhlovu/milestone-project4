@@ -234,7 +234,7 @@ export const fetchUserProfile = sessionToken => {
     dispatch(fetchingUserProfile());
     requestUserMembershipsProfile(sessionToken).then(
       response => {
-        dispatch(receivedUserProfile(response.data));
+        dispatch(receivedUserProfile(response.data[0]));
       },
       error => {
         dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
