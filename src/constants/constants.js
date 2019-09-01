@@ -1,7 +1,14 @@
+import styled from "styled-components";
+import { Container } from "semantic-ui-react";
+
 export const PaymentMethods = [
   { key: "st", value: "st", text: "Stripe" },
   { key: "pp", value: "pp", text: "Paypal" }
 ];
+
+export const StyledContainerWrapper = styled(Container)`
+  padding-top: 1.5rem;
+`;
 
 export const unicornFreeServices = [
   "View Tickets",
@@ -53,14 +60,6 @@ export const getFormatedDate = rawDate => {
 export const capitalizeFirstLetter = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-
-export const STRIPE_TOKEN = localStorage.getItem("stripeToken");
-
-export const SESSION_TOKEN = localStorage.getItem("sessionToken");
-
-export const SUBCRIPTION_ID = localStorage.getItem("subscriptionId");
-
-export const MEMBERSHIP = localStorage.getItem("membership");
 
 export const Countries = [
   { text: "Afghanistan", value: "af" },
