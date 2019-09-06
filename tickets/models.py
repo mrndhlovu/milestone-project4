@@ -3,9 +3,17 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.urls import reverse
+from comments.models import Comment
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 
 
-User = settings.AUTH_USER_MODEL
+def get_comment_owner(request):
+    comment_owner_qs = User.objects.filter(username=request.user)
+
+    if comment_owner_qs.exists():
+        return comment_owner_qs.first()
+    return None
 
 
 class Ticket(models.Model):
@@ -31,3 +39,24 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def comments(self):
+
+        comments = Comment.objects.filter_by_instance(
+            self).values('comment', 'user_id', 'timestamp', 'content_type', 'parent', 'object_id', 'id')
+
+        newComments = {}
+
+        for num, comment in enumerate(comments, start=0):
+            user = User.objects.get(pk=comment['user_id'])
+
+            newComments['comment-' + str(num)] = comments[num]
+            comment.update({'username': user.username})
+
+        return newComments
+
+    @property
+    def get_content_type(self):
+        content_type = ContentType.objects.get_for_model(self.__class__)
+        return content_type
