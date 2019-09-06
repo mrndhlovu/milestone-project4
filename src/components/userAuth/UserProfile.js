@@ -3,17 +3,7 @@ import { connect } from "react-redux";
 import { getFormatedDate } from "../../constants/constants";
 import { Redirect } from "react-router-dom";
 
-import {
-  Image,
-  Item,
-  Segment,
-  Button,
-  Icon,
-  Card,
-  Label,
-  Header,
-  Confirm
-} from "semantic-ui-react";
+import { Item, Card, Label, Confirm } from "semantic-ui-react";
 import { StyledContainerWrapper } from "../../constants/constants";
 
 import { cancelSubscription } from "../../actions/MembershipActions";
