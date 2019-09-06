@@ -35,6 +35,7 @@ export class EditTicket extends Component {
   }
 
   handleFieldChange = (fieldName, event) => {
+    event.preventDefault();
     this.setState({
       editFields: {
         ...this.state.editFields,
@@ -55,7 +56,7 @@ export class EditTicket extends Component {
                 id={key}
                 control={Input}
                 label={key.toUpperCase()}
-                value={ticket[key]}
+                defaultValue={ticket[key]}
                 onChange={event => this.handleFieldChange(key, event)}
               />
             ) : (
@@ -63,7 +64,7 @@ export class EditTicket extends Component {
                 id={key}
                 control={TextArea}
                 label={key.toUpperCase()}
-                value={ticket[key]}
+                defaultValue={ticket[key]}
                 onChange={event => this.handleFieldChange(key, event)}
               />
             )}
@@ -75,11 +76,12 @@ export class EditTicket extends Component {
 
   handleSubmitClick() {
     const ticketId = parseInt(this.props.match.params.id);
-    const { editFields, updating } = this.state;
+    const { editFields } = this.state;
 
     this.setState({ updating: true });
 
     const updatedValues = { ...editFields };
+
     this.props.updateTicket(ticketId, updatedValues);
   }
 
