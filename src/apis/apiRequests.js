@@ -26,21 +26,7 @@ const params = {
   }
 };
 
-// const stripeToken = localStorage.getItem("stripeToken");
-// const stripeParams = {
-//   method: "POST",
-//   headers: { "Content-Type": "text/plain" },
-//   body: stripeToken
-// };
-
 localStorage.setItem("membership", "pro");
-
-const stripeQueryParams = {
-  method: "POST",
-  headers: { "Content-Type": "text/plain" },
-  body: `${STRIPE_TOKEN}`,
-  Authorization: `Token ${SESSION_TOKEN}`
-};
 
 const SELECTED_MEMBERSHIP = {
   membership_type: `${MEMBERSHIP}`
@@ -160,4 +146,16 @@ export async function fetchTicketDetail(id) {
 
 export async function requestTicketComments() {
   return axios.get(`${baseUrl}/comments/`);
+}
+
+export async function requestCreateComment(body) {
+  return axios.post(
+    `${baseUrl}/comments/create-comment/`,
+    body,
+    authQueryParams
+  );
+}
+
+export async function requestCreateReply(body) {
+  return axios.post(`${baseUrl}/comments/create-reply/`, body, authQueryParams);
 }
