@@ -115,7 +115,7 @@ export class DesktopNav extends Component {
           </StyledSpan>
           <StyledSpan as={Link} to="/pricing">
             <Label
-              color={current_membership == "pro" ? "orange" : "teal"}
+              color={current_membership === "pro" ? "orange" : "teal"}
               size="tiny"
             >
               {current_membership.toUpperCase()}
