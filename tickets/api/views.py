@@ -1,5 +1,5 @@
-from .serializers import TicketSerializer
-from django.shortcuts import get_list_or_404, get_object_or_404
+from .serializers import TicketSerializer, TicketDetailSerializer
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import permissions, authentication, generics
 from rest_framework.response import Response
@@ -41,9 +41,7 @@ class TicketListView(ListAPIView):
 
 
 class TicketDetailView(RetrieveAPIView):
-
-    serializer_class = TicketSerializer
-
+    serializer_class = TicketDetailSerializer
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
 
