@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { Dimmer, Loader, Image } from "semantic-ui-react";
+import { Dimmer, Loader } from "semantic-ui-react";
 
 const AuthRouteCheck = ({ component: Component, auth, ...rest }) => (
   <Route
