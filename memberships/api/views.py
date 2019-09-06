@@ -10,7 +10,6 @@ import json
 import stripe
 from django.contrib import messages
 from django.urls import reverse
-from django.shortcuts import get_list_or_404, get_object_or_404
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
