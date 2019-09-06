@@ -19,7 +19,7 @@ import {
   unicornProServices
 } from "../../constants/constants";
 
-import { fetchMembershipsList } from "../../actions/MembershipsActions";
+import { fetchMembershipsList } from "../../actions/MembershipActions";
 
 export class Pricing extends Component {
   constructor(props) {
@@ -60,7 +60,6 @@ export class Pricing extends Component {
 
     const { memberships } = this.props;
     const type = "free";
-    const { freeMembership } = this.state;
 
     return memberships.map(membership => {
       const { price, id, slug } = membership;
@@ -140,7 +139,6 @@ export class Pricing extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.userProfile.profile);
   return {
     memberships: state.memberships.membershipList,
     authUser: state.auth
