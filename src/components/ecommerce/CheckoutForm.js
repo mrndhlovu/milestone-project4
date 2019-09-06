@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
 
 import styled from "styled-components";
 
@@ -9,7 +8,7 @@ import { Grid, Container, Header, Segment, Message } from "semantic-ui-react";
 import PaymentDetails from "./PaymentDetails";
 import OrderSummary from "./OrderSummary";
 
-const StyledContainer = styled(Container)`
+const StyledContainerWrapper = styled(Container)`
   padding-top: 1.5rem;
 `;
 
@@ -25,7 +24,7 @@ class CheckoutForm extends Component {
   }
 
   clickedSubmit() {
-    const { stripe, requestPayment } = this.props;
+    const { stripe } = this.props;
     stripe &&
       stripe.createToken().then(result => {
         if (result.error) {
@@ -44,7 +43,7 @@ class CheckoutForm extends Component {
     const { isLoading, error, message } = this.state;
     return (
       <Fragment>
-        <StyledContainer>
+        <StyledContainerWrapper>
           <Header as="h3" block textAlign="center">
             Checkout
           </Header>
@@ -72,7 +71,7 @@ class CheckoutForm extends Component {
               </Grid.Row>
             </Grid>
           </Segment>
-        </StyledContainer>
+        </StyledContainerWrapper>
       </Fragment>
     );
   }
