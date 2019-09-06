@@ -12,9 +12,10 @@ import Login from "./components/userAuth/Login";
 import Signup from "./components/userAuth/Signup";
 import Products from "./components/ecommerce/Products";
 import Cart from "./components/ecommerce/Cart";
-import Checkout from "./components/ecommerce/Checkout";
+import CheckoutForm from "./components/ecommerce/CheckoutForm";
 import ArticleList from "./components/blog/ArticleList";
 import ArticleDetail from "./components/blog/ArticleDetail";
+import UserProfile from "./components/userAuth/UserProfile";
 
 const BaseRouter = () => {
   return (
@@ -27,11 +28,12 @@ const BaseRouter = () => {
         <Route path="/ticket/:id" component={TicketDetail} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/products" component={Products} />
+        <Route path="/user-profile" component={UserProfile} />
 
         <AuthRouteCheck path="/blog-article-list" component={ArticleList} />
         <AuthRouteCheck path="/blog-article/:id" component={ArticleDetail} />
         <AuthRouteCheck path="/cart" component={Cart} />
-        <AuthRouteCheck path="/checkout" component={Checkout} />
+        <Route path="/checkout" component={CheckoutForm} />
         <AuthRouteCheck path="/create-ticket" component={CreateTicket} />
         <AuthRouteCheck path="/edit-ticket/:id" component={EditTicket} />
       </Switch>
