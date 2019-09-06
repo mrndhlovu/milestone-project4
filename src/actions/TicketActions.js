@@ -5,14 +5,16 @@ import {
   RECEIVE_TICKET_DETAIL,
   FETCH_TICKET_DETAIL,
   UPDATED_TICKET_VOTE,
-  RECEIVE_COMMENTS,
-  FETCH_COMMENTS,
+  CREATED_COMMENT,
+  CREATING_COMMENT,
   REQUEST_TICKET_VOTE,
   FETCH_TICKET_LIST,
   REQUEST_TICKET_UPDATE,
   RECEIVE_TICKET_UPDATE,
   TICKET_DELETED,
-  REQUEST_TICKET_DELETE
+  REQUEST_TICKET_DELETE,
+  CREATING_REPLY,
+  RECEIVED_REPLY
 } from "./ActionTypes";
 
 import {
@@ -20,9 +22,10 @@ import {
   requestCreateTicket,
   fetchTicketDetail,
   requestTicketVoteUpdate,
-  requestTicketComments,
+  requestCreateComment,
   requestTicketUpdate,
-  requestTicketDelete
+  requestTicketDelete,
+  requestCreateReply
 } from "../apis/apiRequests";
 
 import { fetchData, errorsAlert, createMessage } from "./index";
@@ -76,9 +79,16 @@ function receiveTicket(response) {
   };
 }
 
-function receivedComments(response) {
+function receivedComment(response) {
   return {
-    type: RECEIVE_COMMENTS,
+    type: CREATED_COMMENT,
+    payload: response
+  };
+}
+
+function receivedCommentReply(response) {
+  return {
+    type: RECEIVED_REPLY,
     payload: response
   };
 }
@@ -215,12 +225,30 @@ export const updatedTicketVote = id => {
   };
 };
 
-export const fetchComments = id => {
+export const createComment = id => {
   return dispatch => {
-    dispatch(fetchData(FETCH_COMMENTS));
-    requestTicketComments(id).then(
+    dispatch(fetchData(CREATING_COMMENT));
+    requestCreateComment(id).then(
       response => {
-        dispatch(receivedComments(response.data));
+        dispatch(receivedComment(response.data));
+      },
+      error => {
+        const errors = {
+          errorAlert: error.response.data,
+          status: error.response.status
+        };
+        dispatch(errorsAlert(errors));
+      }
+    );
+  };
+};
+
+export const createReply = id => {
+  return dispatch => {
+    dispatch(fetchData(CREATING_REPLY));
+    requestCreateReply(id).then(
+      response => {
+        dispatch(receivedCommentReply(response.data));
       },
       error => {
         const errors = {
