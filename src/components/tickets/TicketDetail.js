@@ -77,7 +77,7 @@ export class TicketDetail extends Component {
       ticket: {
         dataReceived,
         isLoading,
-        ticket: { title, created_at, description, votes, views, id }
+        ticket: { title, created_at, description, votes, views, id, comments }
       },
       authUser: { isAuthenticated }
     } = this.props;
@@ -118,9 +118,7 @@ export class TicketDetail extends Component {
                       name="thumbs up"
                       size="large"
                       color="grey"
-                      disabled={
-                        isAuthenticated ? !likeIsDisabled : likeIsDisabled
-                      }
+                      disabled={isAuthenticated && !likeIsDisabled}
                       onClick={() => this.handleVoteClick(id)}
                     />
                   </Statistic.Label>
@@ -137,7 +135,7 @@ export class TicketDetail extends Component {
         </Card>
         <Segment>
           {isAuthenticated ? (
-            <TicketComments />
+            <TicketComments comments={comments} ticketId={id} />
           ) : (
             <Fragment>
               <Message warning attached>
