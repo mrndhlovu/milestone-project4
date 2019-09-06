@@ -16,7 +16,7 @@ import {
   requestTransactionUpdate
 } from "../apis/apiRequests";
 
-import { createMessage, fetchData, errorsAlert } from "./index";
+import { createMessage, fetchData } from "./index";
 
 export const receivedPaymentSuccess = action => {
   return {
