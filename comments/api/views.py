@@ -6,6 +6,29 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.views import APIView
 from comments.models import Comment
+from tickets.models import Ticket
+from django.contrib.auth.models import User
+import json
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.contrib.contenttypes.models import ContentType
+
+
+def get_comment_owner(request):
+
+    comment_owner_qs = User.objects.filter(username=request.user)
+
+    if comment_owner_qs.exists():
+        return comment_owner_qs.first()
+    return None
+
+
+def get_parent_id(request):
+    comment_parent_qs = Comment.objects.filter(
+        parent_id=request.data['parent'])
+
+    if comment_parent_qs.exists():
+        return comment_parent_qs.first()
+    return None
 
 
 class CommentsListView(ListAPIView):
@@ -14,16 +37,84 @@ class CommentsListView(ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
-        # Copy parsed content from HTTP request
-        data = request.data.copy()
 
-        # Add id of currently logged user
+        data = request.data.copy()
 
         data['user'] = request.user.id
 
-        # Default behavior but pass our modified data instead
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class CreateCommentView(CreateAPIView):
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, **kwargs):
+        data = request.data.copy()
+
+        instance = get_object_or_404(Ticket, id=data['object_id'])
+        content_type = instance.get_content_type
+
+        try:
+            user = get_comment_owner(request)
+            object_id = data['object_id']
+
+        except:
+            context = {
+                'message': 'Failed to submit comment: Ticket was not found'
+            }
+            return JsonResponse(context, status=status.HTTP_404_NOT_FOUND, )
+
+        comment_reply, created = Comment.objects.get_or_create(
+            user=user,
+            content_type=content_type,
+            object_id=object_id,
+            comment=data['comment'],
+
+        )
+
+        context = {
+            'message': 'Comment created'
+        }
+
+        return JsonResponse(context, status=status.HTTP_201_CREATED, )
+
+
+class CreateCommentReplyView(CreateAPIView):
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, **kwargs):
+
+        data = request.data.copy()
+        instance = get_object_or_404(Ticket, id=data['object_id'])
+        comment_instance = get_object_or_404(Comment, id=data['parent'])
+
+        content_type = instance.get_content_type
+        try:
+            user = get_comment_owner(request)
+            parent_id = get_parent_id(request)
+            object_id = data['object_id']
+
+        except:
+            parent_id = None
+
+        comment_reply, created = Comment.objects.get_or_create(
+            user=user,
+            content_type=content_type,
+            object_id=object_id,
+            comment=data['comment'],
+            parent=comment_instance
+        )
+
+        context = {
+            'message': 'Reply submitted'
+        }
+
+        return JsonResponse(context, status=status.HTTP_201_CREATED, )
