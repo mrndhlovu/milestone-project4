@@ -6,29 +6,41 @@ import {
   unicornProServices
 } from "../../constants/constants";
 
+import { getSelectedMemberShip } from "../../utils/appUtils";
+
 import { Button, Header, List, Segment } from "semantic-ui-react";
+
+const handleOptionClick = membershipOption => {
+  const membership = getSelectedMemberShip(membershipOption);
+
+  localStorage.setItem("selectedMembership", `${membership}`);
+};
 
 export const MembershipOptions = ({
   memberships,
   isAuthenticated,
   membershipChoice
 }) => {
-  const type = "free";
+  const currentMembership = localStorage.getItem("currentMembership");
 
   return memberships.map(membership => {
     const { price, id, slug } = membership;
 
     const buttonText =
-      type === slug
+      currentMembership === slug
         ? isAuthenticated
           ? "Your current membership"
           : "Free Signup"
         : isAuthenticated
         ? "Upgrade your membership"
         : "Unicorn Pro";
-    const buttonColor = type === slug ? "blue" : "orange";
+    const buttonColor = currentMembership === slug ? "blue" : "orange";
     const redirectUrl =
-      type === slug ? (isAuthenticated ? "/pricing" : "/signup") : "/cart";
+      currentMembership === slug
+        ? isAuthenticated
+          ? "/pricing"
+          : "/signup"
+        : "/cart";
     const header = `Unicorn ${slug}`;
 
     return (
@@ -36,11 +48,11 @@ export const MembershipOptions = ({
         <Header
           as="h2"
           attached="top"
-          color={type === slug ? "blue" : "orange"}
+          color={currentMembership === slug ? "blue" : "orange"}
           textAlign="center"
           content={header.toUpperCase()}
           subheader={
-            type === slug
+            currentMembership === slug
               ? `$ ${price} Per / month`
               : `$ ${price} Per User / month`
           }
@@ -49,7 +61,7 @@ export const MembershipOptions = ({
         <div>
           <Segment>
             <List>
-              {type === slug
+              {currentMembership === slug
                 ? membershipChoice(unicornFreeServices)
                 : membershipChoice(unicornProServices)}
             </List>
@@ -61,6 +73,12 @@ export const MembershipOptions = ({
           as={NavLink}
           to={redirectUrl}
           color={buttonColor}
+          onClick={() =>
+            handleOptionClick(
+              currentMembership === slug ? currentMembership : "pro",
+              redirectUrl
+            )
+          }
         />
       </Segment>
     );
