@@ -1,9 +1,24 @@
 import { CREATE_MESSAGE, GET_ERRORS } from "./ActionTypes";
 
-export const fetchData = action => {
+function getFetchErrors(error) {
+  return {
+    errorAlert: error.response.data,
+    status: error.response.status
+  };
+}
+
+export const requestSuccess = (type, response) => {
+  return { type: type, payload: response };
+};
+
+export const makeRequest = action => {
   return {
     type: action
   };
+};
+
+export const dataRequestFail = (type, error) => {
+  return { type, error };
 };
 
 export const createMessage = message => {
@@ -16,6 +31,6 @@ export const createMessage = message => {
 export const errorsAlert = errors => {
   return {
     type: GET_ERRORS,
-    payload: errors
+    payload: getFetchErrors(errors)
   };
 };
