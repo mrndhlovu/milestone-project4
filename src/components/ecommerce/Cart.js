@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 
 import styled from "styled-components";
 
+import { getMemberships } from "../../selectors/appSelectors";
+
 import { Card, Button, List, Container, Divider } from "semantic-ui-react";
 
 export const StyledContainerWrapper = styled(Container)`
@@ -68,5 +70,11 @@ export class Cart extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    memberships: getMemberships(state)
+  };
+};
 
 export default Cart;
