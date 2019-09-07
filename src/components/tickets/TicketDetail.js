@@ -13,8 +13,9 @@ import { getFormatedDate } from "../../constants/constants";
 import TicketComments from "./TicketComments";
 import UILoadingSpinner from "../../utils/UILoadingSpinner";
 
+import EditButtons from "./EditButtons";
+
 import {
-  Button,
   Card,
   Container,
   Header,
@@ -87,17 +88,7 @@ export class TicketDetail extends Component {
     ) : (
       <Container style={{ paddingTop: 20 }}>
         <div style={{ paddingTop: 10 }}>
-          <Button.Group floated="right">
-            <Button color="blue" size="tiny" as={NavLink} to="/create-ticket">
-              Create
-            </Button>
-            <Button color="blue" as={NavLink} to={`/edit-ticket/${id}`}>
-              Edit
-            </Button>
-            <Button color="red" onClick={this.handleTicketDelete}>
-              Delete
-            </Button>
-          </Button.Group>
+          <EditButtons onDelete={this.handleTicketDelete} ticketId={id} />
         </div>
         <Header
           as="h3"
