@@ -31,21 +31,25 @@ const hasError = (state, action) => {
 };
 
 const dataReceived = (state, action) => {
-  return {
+  return checkObjectUpdate(state, {
     dataReceived: true,
     hasError: false,
     isLoading: false
-  };
+  });
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case CREATING_COMMENT || CREATING_REPLY:
+    case CREATING_REPLY:
       return fetchingData(state, action);
+    case CREATING_COMMENT:
+      return fetchingData(state, action);
+    case CREATED_COMMENT:
+      return dataReceived(state, action);
+    case RECEIVED_REPLY:
+      return dataReceived(state, action);
     case ERROR_ALERT:
       return hasError(state, action);
-    case CREATED_COMMENT || RECEIVED_REPLY:
-      return dataReceived(state, action);
     default:
       return state;
   }
