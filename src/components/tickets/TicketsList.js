@@ -1,26 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
 
-import {
-  Container,
-  Header,
-  Label,
-  List,
-  Segment,
-  Feed,
-  Divider,
-  Icon
-} from "semantic-ui-react";
+import { Container, Header, List, Segment } from "semantic-ui-react";
 
 import { fetchTicketsList } from "../../actions/TicketActions";
 import HeadingImage from "../home/HeadingImage";
-import { getFormatedDate } from "../../constants/constants";
-
-const StyledSpan = styled.span`
-  font-size: 0.8rem;
-`;
+import { getTicketList } from "../../selectors/appSelectors";
+import Tickets from "./Tickets";
 
 export class TicketsList extends Component {
   constructor(props) {
@@ -35,64 +21,6 @@ export class TicketsList extends Component {
 
   componentDidMount() {
     this.props.fetchTicketsList();
-  }
-
-  renderTicketsList() {
-    const { ticketsList } = this.props;
-
-    return ticketsList.map(ticket => {
-      const {
-        title,
-        subject,
-        id,
-        created_at,
-        slug,
-        views,
-        votes,
-        username
-      } = ticket;
-
-      return (
-        <Fragment key={id}>
-          <Feed>
-            <Feed.Event>
-              <Feed.Content>
-                <Header
-                  as={Link}
-                  to={`/ticket/${id}`}
-                  size="small"
-                  color="blue"
-                >
-                  {title.toUpperCase()}
-                </Header>
-                <Feed.Summary>
-                  <StyledSpan> By:@{username.toLowerCase()} </StyledSpan>
-                </Feed.Summary>
-                <Feed.Date style={{ paddingTop: 10 }}>
-                  <StyledSpan>{getFormatedDate(created_at)}</StyledSpan>
-                </Feed.Date>
-                <Feed.Extra text>{subject}</Feed.Extra>
-              </Feed.Content>
-              <div floated="right">
-                <Label color="teal">
-                  <Icon name="user" color="black" />
-                  Votes:{votes > 0 ? votes : 0}
-                </Label>
-                <Label color="teal">
-                  <Icon name="eye" color="black" />
-                  Views:{views > 0 ? views : 0}
-                </Label>
-              </div>
-            </Feed.Event>
-          </Feed>
-
-          <Label.Group color="teal" size="tiny">
-            <Label as="a">{slug}</Label>
-          </Label.Group>
-          <Divider />
-        </Fragment>
-      );
-    });
   }
 
   render() {
@@ -122,7 +50,7 @@ export class TicketsList extends Component {
           <Segment attached>
             <Container>
               <List divided relaxed>
-                {this.renderTicketsList()}
+                <Tickets ticketsList={ticketsList} />
               </List>
             </Container>
           </Segment>
@@ -134,9 +62,8 @@ export class TicketsList extends Component {
 
 const mapStateToProps = state => {
   return {
-    ticketsList: state.tickets.ticketsList,
-    isLoading: state.tickets,
-    user: state.user.user
+    ticketsList: getTicketList(state).ticketsList,
+    isLoading: state.tickets
   };
 };
 
