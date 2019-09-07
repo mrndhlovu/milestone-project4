@@ -1,18 +1,15 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 
-import { Dimmer, Loader, Image } from "semantic-ui-react";
+import { Dimmer, Loader } from "semantic-ui-react";
 
-export class UILoadingSpinner extends Component {
-  render() {
-    return (
-      <Fragment>
-        <Dimmer active inverted>
-          <Loader size="mini">Loading</Loader>
-        </Dimmer>
-        <Image src="/images/wireframe/short-paragraph.png" />
-      </Fragment>
-    );
-  }
-}
+export const UILoadingSpinner = () => {
+  return (
+    <Fragment>
+      <Dimmer active inverted>
+        <Loader size="mini">Loading</Loader>
+      </Dimmer>
+    </Fragment>
+  );
+};
 
 export default UILoadingSpinner;
