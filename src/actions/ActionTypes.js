@@ -1,5 +1,4 @@
 export const ERROR_ALERT = "ERROR_ALERT";
-export const FETCHING_DATA = "FETCHING_DATA";
 
 export const REQUEST_LOGIN = "REQUEST_LOGIN";
 export const REQUEST_SIGNUP = "REQUEST_SIGNUP";
