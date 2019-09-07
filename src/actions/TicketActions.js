@@ -28,106 +28,23 @@ import {
   requestCreateReply
 } from "../apis/apiRequests";
 
-import { fetchData, errorsAlert, createMessage } from "./index";
-
-function receivedTicketsList(response) {
-  return {
-    type: RECEIVE_TICKETS_LIST,
-    payload: response
-  };
-}
-
-function fetchTicket(response) {
-  return {
-    type: FETCH_TICKET_DETAIL,
-    payload: response
-  };
-}
-
-function receiveTicketDetail(response) {
-  return {
-    type: RECEIVE_TICKET_DETAIL,
-    payload: response
-  };
-}
-
-function creatingTicket(response) {
-  return {
-    type: CREATE_TICKET,
-    payload: response
-  };
-}
-
-function deletingTicket(response) {
-  return {
-    type: REQUEST_TICKET_DELETE,
-    payload: response
-  };
-}
-
-function updatingTicket(response) {
-  return {
-    type: REQUEST_TICKET_UPDATE,
-    payload: response
-  };
-}
-
-function receiveTicket(response) {
-  return {
-    type: RECEIVE_TICKET,
-    payload: response
-  };
-}
-
-function receivedComment(response) {
-  return {
-    type: CREATED_COMMENT,
-    payload: response
-  };
-}
-
-function receivedCommentReply(response) {
-  return {
-    type: RECEIVED_REPLY,
-    payload: response
-  };
-}
-
-function receiveTicketUpdate(response) {
-  return {
-    type: RECEIVE_TICKET_UPDATE,
-    payload: response
-  };
-}
-
-function updatedVote(response) {
-  return {
-    type: UPDATED_TICKET_VOTE,
-    payload: response
-  };
-}
-
-function ticketDeleted(response) {
-  return {
-    type: TICKET_DELETED,
-    payload: response
-  };
-}
+import {
+  makeRequest,
+  errorsAlert,
+  createMessage,
+  requestSuccess
+} from "./index";
 
 // fetch tickets list
 export const fetchTicketsList = () => {
   return dispatch => {
-    dispatch(fetchData(FETCH_TICKET_LIST));
+    dispatch(makeRequest(FETCH_TICKET_LIST));
     requestTicketsList().then(
       response => {
-        dispatch(receivedTicketsList(response.data));
+        dispatch(requestSuccess(RECEIVE_TICKETS_LIST, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };
@@ -135,17 +52,13 @@ export const fetchTicketsList = () => {
 
 export const createTicket = data => {
   return dispatch => {
-    dispatch(creatingTicket());
+    dispatch(makeRequest(CREATE_TICKET));
     requestCreateTicket(data).then(
       response => {
-        dispatch(receiveTicket(response));
+        dispatch(requestSuccess(RECEIVE_TICKET, response));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };
@@ -153,17 +66,13 @@ export const createTicket = data => {
 
 export const requestTicketsDetail = id => {
   return dispatch => {
-    dispatch(fetchTicket());
+    dispatch(makeRequest(FETCH_TICKET_DETAIL));
     fetchTicketDetail(id).then(
       response => {
-        dispatch(receiveTicketDetail(response.data));
+        dispatch(requestSuccess(RECEIVE_TICKET_DETAIL, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };
@@ -171,18 +80,14 @@ export const requestTicketsDetail = id => {
 
 export const updateTicket = (id, updates) => {
   return dispatch => {
-    dispatch(updatingTicket());
+    dispatch(makeRequest(REQUEST_TICKET_UPDATE));
     requestTicketUpdate(id, updates).then(
       response => {
         dispatch(createMessage({ successMsg: "Ticket updated" }));
-        dispatch(receiveTicketUpdate(response.data));
+        dispatch(requestSuccess(RECEIVE_TICKET_UPDATE, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };
@@ -190,18 +95,14 @@ export const updateTicket = (id, updates) => {
 
 export const deleteTicket = id => {
   return dispatch => {
-    dispatch(deletingTicket());
+    dispatch(makeRequest(REQUEST_TICKET_DELETE));
     requestTicketDelete(id).then(
       response => {
         dispatch(createMessage({ successMsg: "Ticket deleted" }));
-        dispatch(ticketDeleted(response.data));
+        dispatch(requestSuccess(TICKET_DELETED, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };
@@ -209,17 +110,13 @@ export const deleteTicket = id => {
 
 export const updatedTicketVote = id => {
   return dispatch => {
-    dispatch(fetchData(REQUEST_TICKET_VOTE));
+    dispatch(makeRequest(REQUEST_TICKET_VOTE));
     requestTicketVoteUpdate(id).then(
       response => {
-        dispatch(updatedVote(response.data));
+        dispatch(requestSuccess(UPDATED_TICKET_VOTE, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };
@@ -227,17 +124,13 @@ export const updatedTicketVote = id => {
 
 export const createComment = id => {
   return dispatch => {
-    dispatch(fetchData(CREATING_COMMENT));
+    dispatch(makeRequest(CREATING_COMMENT));
     requestCreateComment(id).then(
       response => {
-        dispatch(receivedComment(response.data));
+        dispatch(requestSuccess(CREATED_COMMENT, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };
@@ -245,17 +138,13 @@ export const createComment = id => {
 
 export const createReply = id => {
   return dispatch => {
-    dispatch(fetchData(CREATING_REPLY));
+    dispatch(makeRequest(CREATING_REPLY));
     requestCreateReply(id).then(
       response => {
-        dispatch(receivedCommentReply(response.data));
+        dispatch(requestSuccess(RECEIVED_REPLY, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };

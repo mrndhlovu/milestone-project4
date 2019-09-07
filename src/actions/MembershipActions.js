@@ -10,35 +10,17 @@ import {
   requestCancelSubsricption
 } from "../apis/apiRequests";
 
-import { fetchData, errorsAlert } from "./index";
-
-function receivedMembershipsList(response) {
-  return {
-    type: RECEIVE_MEMBERSHIPS_LIST,
-    payload: response
-  };
-}
-
-function receivedCancelSubsricption(response) {
-  return {
-    type: RECEIVE_SUBSCRIPTION_CANCELED,
-    payload: response
-  };
-}
+import { makeRequest, errorsAlert, requestSuccess } from "./index";
 
 export const fetchMembershipsList = () => {
   return dispatch => {
-    dispatch(fetchData(FETCHING_MEMBERSHIPS));
+    dispatch(makeRequest(FETCHING_MEMBERSHIPS));
     requestMembershipsList().then(
       response => {
-        dispatch(receivedMembershipsList(response.data));
+        dispatch(requestSuccess(RECEIVE_MEMBERSHIPS_LIST, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };
@@ -46,17 +28,13 @@ export const fetchMembershipsList = () => {
 
 export const cancelSubscription = () => {
   return dispatch => {
-    dispatch(fetchData(REQUEST_CANCEL_SUBSCRIPTION));
+    dispatch(makeRequest(REQUEST_CANCEL_SUBSCRIPTION));
     requestCancelSubsricption().then(
       response => {
-        dispatch(receivedCancelSubsricption(response.data));
+        dispatch(requestSuccess(RECEIVE_SUBSCRIPTION_CANCELED, response.data));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(errorsAlert(error));
       }
     );
   };

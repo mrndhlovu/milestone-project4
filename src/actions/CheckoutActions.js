@@ -16,60 +16,23 @@ import {
   requestTransactionUpdate
 } from "../apis/apiRequests";
 
-import { createMessage, fetchData } from "./index";
-
-export const receivedPaymentSuccess = action => {
-  return {
-    type: PAYMENT_SUCCESS,
-    payload: action
-  };
-};
-
-export const paymentFail = action => {
-  return {
-    type: PAYMENT_FAIL,
-    payload: action
-  };
-};
-
-export const receivedTransUpdate = action => {
-  return {
-    type: TRANSCATION_UPDATED,
-    payload: action
-  };
-};
-
-export const updateTransFail = action => {
-  return {
-    type: TRANSCATION_UPDATE_FAIL,
-    payload: action
-  };
-};
-
-export const receivedSelectMembership = action => {
-  return {
-    type: CHOOSEN_MEMBERSHIP_FOUND,
-    payload: action
-  };
-};
-
-export const selectedMembershipError = action => {
-  return {
-    type: FIND_MEMBERSHIP_ERROR,
-    payload: action
-  };
-};
+import {
+  createMessage,
+  makeRequest,
+  dataRequestFail,
+  requestSuccess
+} from "./index";
 
 export const requestChoosenMembership = () => {
   return dispatch => {
-    dispatch(fetchData(FIND_CHOOSEN_MEMBERSHIP));
+    dispatch(makeRequest(FIND_CHOOSEN_MEMBERSHIP));
     requestSelectedMemberships().then(
       response => {
-        dispatch(receivedSelectMembership(response.data));
+        dispatch(requestSuccess(CHOOSEN_MEMBERSHIP_FOUND, response.data));
         dispatch(createMessage({ successMsg: "Membership selected" }));
       },
       error => {
-        dispatch(selectedMembershipError(error.data));
+        dispatch(dataRequestFail(FIND_MEMBERSHIP_ERROR, error.data));
         dispatch(createMessage({ errorMsg: "Payment failed" }));
       }
     );
@@ -78,18 +41,17 @@ export const requestChoosenMembership = () => {
 
 export const requestPayment = () => {
   return dispatch => {
-    dispatch(fetchData(SUBMITTING_PAYMENT));
+    dispatch(makeRequest(SUBMITTING_PAYMENT));
     requestMembershipPayment().then(
       response => {
+        dispatch(requestSuccess(PAYMENT_SUCCESS, response.data));
         localStorage.setItem("subscriptionId", response.data.subscription_id);
         dispatch(requestUpdate());
-
-        dispatch(receivedPaymentSuccess(response.data));
         dispatch(createMessage({ successMsg: "Payment was successful" }));
       },
       error => {
         dispatch(createMessage({ successMsg: error.message }));
-        dispatch(paymentFail(error));
+        dispatch(dataRequestFail(PAYMENT_FAIL, error));
       }
     );
   };
@@ -97,17 +59,17 @@ export const requestPayment = () => {
 
 export const requestUpdate = () => {
   return dispatch => {
-    dispatch(fetchData(UPDATE_TRANSCATION));
+    dispatch(makeRequest(UPDATE_TRANSCATION));
     requestTransactionUpdate().then(
       response => {
-        dispatch(receivedTransUpdate(response));
+        dispatch(requestSuccess(TRANSCATION_UPDATED, response));
         dispatch(createMessage({ successMsg: response.data.message }));
-        // localStorage.removeItem("subscriptionId");
-        // localStorage.removeItem("stripeToken");
+        localStorage.removeItem("subscriptionId");
+        localStorage.removeItem("stripeToken");
       },
       error => {
         dispatch(createMessage({ successMsg: error.message }));
-        dispatch(updateTransFail(error));
+        dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
       }
     );
   };
