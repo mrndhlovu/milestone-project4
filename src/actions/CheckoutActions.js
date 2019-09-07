@@ -22,6 +22,7 @@ import {
   dataRequestFail,
   requestSuccess
 } from "./index";
+import { getSelectedMemberShip } from "../utils/appUtils";
 
 export const requestChoosenMembership = () => {
   return dispatch => {
