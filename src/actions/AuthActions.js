@@ -19,7 +19,13 @@ import {
   requestUserMembershipsProfile
 } from "../apis/apiRequests";
 
-import { fetchData, createMessage, errorsAlert } from "./index";
+import {
+  makeRequest,
+  createMessage,
+  errorsAlert,
+  dataRequestFail,
+  requestSuccess
+} from "./index";
 
 function authStart() {
   const sessionLife = localStorage.getItem("sessionLife");
@@ -34,31 +40,6 @@ function authStart() {
   }
 }
 
-function authSuccess(sessionToken) {
-  return {
-    type: USER_AUTH_SUCCESS,
-    payload: sessionToken
-  };
-}
-function authFail(error) {
-  return {
-    type: USER_AUTH_FAIL,
-    error
-  };
-}
-
-function authLogout() {
-  return {
-    type: USER_AUTH_LOGOUT
-  };
-}
-
-function checkSession() {
-  return {
-    type: USER_AUTH_FAIL
-  };
-}
-
 function checkSessionTime(sessionLife) {
   return (
     dispatch => {
@@ -68,32 +49,6 @@ function checkSessionTime(sessionLife) {
     },
     error => {}
   );
-}
-
-function fetchingUser() {
-  return {
-    type: FETCHING_USER
-  };
-}
-
-function fetchingUserProfile() {
-  return {
-    type: FETCHING_USER_PROFILE
-  };
-}
-
-function receivedUser(user) {
-  return {
-    type: RECEIVED_USER,
-    payload: user
-  };
-}
-
-function receivedUserProfile(user) {
-  return {
-    type: RECEIVED_USER_PROFILE,
-    payload: user
-  };
 }
 
 // create session if auth response is successfull
@@ -109,7 +64,6 @@ function createSession(sessionToken, sessionLife) {
 export const startAuth = () => {
   return dispatch => {
     dispatch(authStart());
-    dispatch(checkSession());
     dispatch(fetchUser());
     dispatch(fetchUserProfile());
   };
@@ -126,13 +80,13 @@ export const authState = () => {
     const sessionLife = new Date(sessionSpan);
 
     if (sessionLife <= new Date()) {
-      dispatch(authLogout());
+      dispatch(makeRequest(USER_AUTH_LOGOUT));
       dispatch(checkSessionTime(sessionLife));
     } else {
       dispatch(fetchUser());
       dispatch(fetchUserProfile());
 
-      dispatch(authSuccess(sessionToken));
+      dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
 
       const sessionLifeSpan =
         (sessionLife.getTime() - new Date().getTime()) / 1000;
@@ -144,22 +98,18 @@ export const authState = () => {
 
 export const login = body => {
   return dispatch => {
-    dispatch(fetchData(REQUEST_LOGIN));
+    dispatch(makeRequest(REQUEST_LOGIN));
     requestLogin(body).then(
       response => {
         const sessionToken = response.data.token;
         const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
-        dispatch(authSuccess(sessionToken));
+        dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
         dispatch(createMessage({ successMsg: "You are logged in!" }));
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
-        dispatch(authFail(error));
+        dispatch(errorsAlert(error));
+        dispatch(dataRequestFail(USER_AUTH_FAIL, error));
       }
     );
   };
@@ -171,7 +121,7 @@ export const logOut = () => {
   const token = localStorage.getItem("sessionToken");
   return token
     ? dispatch => {
-        dispatch(authLogout());
+        dispatch(makeRequest(USER_AUTH_LOGOUT));
         requestLogout(token).then(response => {
           localStorage.removeItem("sessionToken");
           localStorage.removeItem("sessionLife");
@@ -190,7 +140,7 @@ export const logOut = () => {
 // Request sign up, if response is successfull create a session
 export const signup = inputs => {
   return dispatch => {
-    dispatch(fetchData(REQUEST_SIGNUP));
+    dispatch(makeRequest(REQUEST_SIGNUP));
     requestSignup(inputs).then(
       response => {
         const sessionToken = response.data.token;
@@ -198,7 +148,7 @@ export const signup = inputs => {
         dispatch(
           createMessage({ successMsg: "You have successfully signed up!" })
         );
-        dispatch(authSuccess(sessionToken));
+        dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
       },
       error => {
@@ -207,7 +157,7 @@ export const signup = inputs => {
           status: error.response.status
         };
         dispatch(errorsAlert(errors));
-        dispatch(authFail(error));
+        dispatch(dataRequestFail(USER_AUTH_FAIL, error));
       }
     );
   };
@@ -216,10 +166,10 @@ export const signup = inputs => {
 //  Fetch logged in user details
 export const fetchUser = sessionToken => {
   return dispatch => {
-    dispatch(fetchingUser());
+    dispatch(makeRequest(FETCHING_USER));
     requestUser(sessionToken).then(
       response => {
-        dispatch(receivedUser(response.data));
+        dispatch(requestSuccess(RECEIVED_USER, response.data));
       },
       error => {
         dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
@@ -231,10 +181,10 @@ export const fetchUser = sessionToken => {
 //  Fetch logged in user details
 export const fetchUserProfile = sessionToken => {
   return dispatch => {
-    dispatch(fetchingUserProfile());
+    dispatch(makeRequest(FETCHING_USER_PROFILE));
     requestUserMembershipsProfile(sessionToken).then(
       response => {
-        dispatch(receivedUserProfile(response.data[0]));
+        dispatch(requestSuccess(RECEIVED_USER_PROFILE, response.data[0]));
       },
       error => {
         dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
