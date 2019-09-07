@@ -5,26 +5,12 @@ import HeadingImage from "../home/HeadingImage";
 export class Features extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      headerText: "Products",
-      headerButtonUrl: "/pricing",
-      headerButtonText: "See what suite you",
-      subHeading: "How it will work for you?"
-    };
+    this.state = {};
   }
   render() {
-    const {
-      headerText,
-      headerButtonUrl,
-      headerButtonText,
-      subHeading
-    } = this.state;
-
     return (
       <Fragment>
-        <HeadingImage
-          data={{ headerText, headerButtonUrl, headerButtonText, subHeading }}
-        />
+        <HeadingImage />
         Features
       </Fragment>
     );

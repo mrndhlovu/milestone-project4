@@ -25,12 +25,7 @@ const StyledHeaderSpan = styled.span`
 export class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      headerText: "Unicorn Attractor",
-      headerButtonUrl: "/pricing",
-      headerButtonText: "Get Started",
-      subHeading: "Head start on coding issues and save hours!"
-    };
+    this.state = {};
     this.handlelogout = this.handlelogout.bind(this);
   }
 
@@ -38,17 +33,9 @@ export class Home extends Component {
     this.props.logOut();
   }
   render() {
-    const {
-      headerText,
-      headerButtonUrl,
-      headerButtonText,
-      subHeading
-    } = this.state;
     return (
       <Fragment>
-        <HeadingImage
-          data={{ headerText, headerButtonUrl, headerButtonText, subHeading }}
-        />
+        <HeadingImage />
         <Segment style={{ padding: "3rem 0rem" }} vertical>
           <Grid container stackable verticalAlign="middle" textAlign="center">
             <Grid.Row>
