@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { withAlert } from "react-alert";
 import { connect } from "react-redux";
+import { getErrors, getMessage } from "../selectors/appSelectors";
 
 export class Alerts extends Component {
   constructor(props) {
@@ -49,8 +50,8 @@ export class Alerts extends Component {
 
 const mapStateToProps = state => {
   return {
-    errorAlert: state.errorAlert,
-    messages: state.messages
+    errorAlert: getErrors(state),
+    messages: getMessage(state)
   };
 };
 
