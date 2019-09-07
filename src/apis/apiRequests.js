@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl } from "../utils/urls";
+import { getRootUrl } from "../utils/urls";
 import {
   STRIPE_TOKEN,
   SESSION_TOKEN,
@@ -38,41 +38,41 @@ const transcationUpdates = {
 };
 
 const choosenMembership = {
-  stripeToken: `${STRIPE_TOKEN}`,
-  membership_type: `${MEMBERSHIP}`
+  membership_type: `${MEMBERSHIP}`,
+  stripeToken: `${STRIPE_TOKEN}`
 };
 
 export async function requestTicketsList() {
-  return axios.get(`${baseUrl}/tickets/`);
+  return axios.get(`${getRootUrl}/tickets/`);
 }
 
 export async function requestTicketUpdate(id, body) {
-  return axios.put(`${baseUrl}/tickets/update/${id}/`, body);
+  return axios.put(`${getRootUrl}/tickets/update/${id}/`, body);
 }
 
 export async function requestTicketDelete(id) {
-  return axios.delete(`${baseUrl}/tickets/delete/${id}/`, authQueryParams);
+  return axios.delete(`${getRootUrl}/tickets/delete/${id}/`, authQueryParams);
 }
 
 export async function requestTicketVoteUpdate(id) {
-  return axios.get(`${baseUrl}/tickets/api/${id}/vote/`, authQueryParams);
+  return axios.get(`${getRootUrl}/tickets/api/${id}/vote/`, authQueryParams);
 }
 
 export async function requestProductsList() {
-  return axios.get(`${baseUrl}/products/`);
+  return axios.get(`${getRootUrl}/products/`);
 }
 
 export async function requestMembershipsList() {
-  return axios.get(`${baseUrl}/memberships/types/`);
+  return axios.get(`${getRootUrl}/memberships/types/`);
 }
 
 export async function requestUserMembershipsProfile() {
-  return axios.get(`${baseUrl}/memberships/user-profile/`, authQueryParams);
+  return axios.get(`${getRootUrl}/memberships/user-profile/`, authQueryParams);
 }
 
 export async function requestCancelSubsricption() {
   return axios.post(
-    `${baseUrl}/memberships/cancel-subscription/`,
+    `${getRootUrl}/memberships/cancel-subscription/`,
     null,
     authQueryParams
   );
@@ -80,7 +80,7 @@ export async function requestCancelSubsricption() {
 
 export async function requestSelectedMemberships() {
   return axios.post(
-    `${baseUrl}/memberships/select/`,
+    `${getRootUrl}/memberships/select/`,
     SELECTED_MEMBERSHIP,
     authQueryParams
   );
@@ -89,7 +89,7 @@ export async function requestSelectedMemberships() {
 export async function requestMembershipPayment() {
   params.headers["Authorization"] = `Token ${SESSION_TOKEN}`;
   return axios.post(
-    `${baseUrl}/memberships/payments/`,
+    `${getRootUrl}/memberships/payments/`,
     choosenMembership,
     params
   );
@@ -99,63 +99,71 @@ export async function requestTransactionUpdate() {
   params.headers["Authorization"] = `Token ${SESSION_TOKEN}`;
 
   return axios.post(
-    `${baseUrl}/memberships/update-transaction/`,
+    `${getRootUrl}/memberships/update-transaction/`,
     transcationUpdates,
     params
   );
 }
 
 export async function requestUser() {
-  return axios.get(`${baseUrl}/accounts/api/auth/user`, authQueryParams);
+  return axios.get(`${getRootUrl}/accounts/api/auth/user`, authQueryParams);
 }
 
 export async function requestUserProfile() {
-  return axios.get(`${baseUrl}/accounts/api/auth/profile/`, authQueryParams);
+  return axios.get(`${getRootUrl}/accounts/api/auth/profile/`, authQueryParams);
 }
 
 export async function requestUserProfileDetail(id) {
   return axios.get(
-    `${baseUrl}/accounts/api/auth/profile/${id}/`,
+    `${getRootUrl}/accounts/api/auth/profile/${id}/`,
     authQueryParams
   );
 }
 
 export async function requestSignup(body) {
-  return axios.post(`${baseUrl}/accounts/api/auth/signup`, body, queryParams);
+  return axios.post(
+    `${getRootUrl}/accounts/api/auth/signup`,
+    body,
+    queryParams
+  );
 }
 
 export async function requestLogin(body) {
-  return axios.post(`${baseUrl}/accounts/api/auth/login`, body, queryParams);
+  return axios.post(`${getRootUrl}/accounts/api/auth/login`, body, queryParams);
 }
 
 export async function requestLogout() {
   return axios.post(
-    `${baseUrl}/accounts/api/auth/logout`,
+    `${getRootUrl}/accounts/api/auth/logout`,
     null,
     authQueryParams
   );
 }
 
 export async function requestCreateTicket(body) {
-  return axios.post(`${baseUrl}/tickets/api/create/`, body, authQueryParams);
+  return axios.post(`${getRootUrl}/tickets/api/create/`, body, authQueryParams);
 }
 
 export async function fetchTicketDetail(id) {
-  return axios.get(`${baseUrl}/tickets/${id}/`);
+  return axios.get(`${getRootUrl}/tickets/${id}/`);
 }
 
 export async function requestTicketComments() {
-  return axios.get(`${baseUrl}/comments/`);
+  return axios.get(`${getRootUrl}/comments/`);
 }
 
 export async function requestCreateComment(body) {
   return axios.post(
-    `${baseUrl}/comments/create-comment/`,
+    `${getRootUrl}/comments/create-comment/`,
     body,
     authQueryParams
   );
 }
 
 export async function requestCreateReply(body) {
-  return axios.post(`${baseUrl}/comments/create-reply/`, body, authQueryParams);
+  return axios.post(
+    `${getRootUrl}/comments/create-reply/`,
+    body,
+    authQueryParams
+  );
 }
