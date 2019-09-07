@@ -1,4 +1,4 @@
-import { getPageId } from "../utils/headerUtils";
+import { getPageId } from "../utils/appUtils";
 
 const HEADER_TEXT = {
   home: {
