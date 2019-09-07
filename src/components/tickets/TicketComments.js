@@ -15,6 +15,7 @@ import {
 import { getFormatedDate } from "../../constants/constants";
 import { createComment, createReply } from "../../actions/TicketActions";
 import { getUserProfile, getComments } from "../../selectors/appSelectors";
+import CommentReply from "./CommentReply";
 
 export class TicketComments extends Component {
   constructor(props) {
@@ -77,26 +78,6 @@ export class TicketComments extends Component {
     }
   }
 
-  renderReplys(parentId) {
-    const { comments } = this.props;
-    return Object.keys(comments).map(index => {
-      const { username, timestamp, comment, parent } = comments[index];
-
-      return (
-        parent &&
-        parentId === parent && (
-          <Fragment key={index}>
-            <Comment.Author as="a">{username}</Comment.Author>
-            <Comment.Metadata>
-              <Header as="h6">{getFormatedDate(timestamp)}</Header>
-            </Comment.Metadata>
-            <Comment.Text>{comment}</Comment.Text>
-          </Fragment>
-        )
-      );
-    });
-  }
-
   renderComments() {
     const { comments } = this.props;
     const { hideReplyInput } = this.state;
@@ -137,7 +118,9 @@ export class TicketComments extends Component {
                       </Comment.Actions>
                     </Comment.Content>
 
-                    <Comment.Group>{this.renderReplys(id)}</Comment.Group>
+                    <Comment.Group>
+                      <CommentReply comments={comments} parentId={id} />
+                    </Comment.Group>
                   </Comment>
 
                   {!hideReplyInput && (
