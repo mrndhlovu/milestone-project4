@@ -11,12 +11,7 @@ import Tickets from "./Tickets";
 export class TicketsList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      headerText: "Tickets",
-      headerButtonUrl: "/create-ticket",
-      headerButtonText: "Create a ticket",
-      subHeading: "Head start on coding issues and save hours!"
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -24,12 +19,6 @@ export class TicketsList extends Component {
   }
 
   render() {
-    const {
-      headerText,
-      headerButtonUrl,
-      headerButtonText,
-      subHeading
-    } = this.state;
     const { ticketsList } = this.props;
 
     const ticketCount =
@@ -37,9 +26,7 @@ export class TicketsList extends Component {
 
     return (
       <Fragment>
-        <HeadingImage
-          data={{ headerText, headerButtonUrl, headerButtonText, subHeading }}
-        />
+        <HeadingImage />
         <Container>
           <Header
             content="Tickets List"
