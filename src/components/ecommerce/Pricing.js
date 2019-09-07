@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 
 import HeadingImage from "../home/HeadingImage";
 import { getMemberships, getUser } from "../../selectors/appSelectors";
+import { StyledContainerWrapper } from "../../constants/constants";
 
-import { Container, Grid, List, Segment, Icon } from "semantic-ui-react";
+import { List, Icon } from "semantic-ui-react";
 
 import { fetchMembershipsList } from "../../actions/MembershipActions";
 import MembershipOptions from "./MembershipOptions";
@@ -46,20 +47,13 @@ export class Pricing extends Component {
     return (
       <Fragment>
         <HeadingImage />
-
-        <Segment style={{ padding: "0em" }}>
-          <Container>
-            <Grid celled="internally" columns="equal" stackable>
-              <Grid.Row>
-                <MembershipOptions
-                  isAuthenticated={isAuthenticated}
-                  memberships={memberships}
-                  membershipChoice={this.renderServicesList}
-                />
-              </Grid.Row>
-            </Grid>
-          </Container>
-        </Segment>
+        <StyledContainerWrapper>
+          <MembershipOptions
+            isAuthenticated={isAuthenticated}
+            memberships={memberships}
+            membershipChoice={this.renderServicesList}
+          />
+        </StyledContainerWrapper>
       </Fragment>
     );
   }
