@@ -14,6 +14,7 @@ import {
 
 import { getFormatedDate } from "../../constants/constants";
 import { createComment, createReply } from "../../actions/TicketActions";
+import { getUserProfile, getComments } from "../../selectors/appSelectors";
 
 export class TicketComments extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ export class TicketComments extends Component {
       ticketId,
       createComment,
       createReply,
-      user: { id }
+      profile: { id }
     } = this.props;
 
     if (parentId !== null) {
@@ -68,10 +69,10 @@ export class TicketComments extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { commentsState } = this.props;
+    const { userComments } = this.props;
 
-    if (prevProps.commentsState !== commentsState) {
-      const { dataReceived } = commentsState;
+    if (prevProps.userComments !== userComments) {
+      const { dataReceived } = userComments;
       dataReceived && window.location.reload();
     }
   }
@@ -87,7 +88,7 @@ export class TicketComments extends Component {
           <Fragment key={index}>
             <Comment.Author as="a">{username}</Comment.Author>
             <Comment.Metadata>
-              <div>Date:{getFormatedDate(timestamp)}</div>
+              <Header as="h6">{getFormatedDate(timestamp)}</Header>
             </Comment.Metadata>
             <Comment.Text>{comment}</Comment.Text>
           </Fragment>
@@ -117,9 +118,11 @@ export class TicketComments extends Component {
                   <Comment>
                     <Icon disabled name="user" />
                     <Comment.Content>
-                      <Comment.Author as="a">{username}</Comment.Author>
+                      <Comment.Author as="a">
+                        <Header as="h5">{username}</Header>
+                      </Comment.Author>
                       <Comment.Metadata>
-                        <div>Date:{getFormatedDate(timestamp)}</div>
+                        <Header as="h6">{getFormatedDate(timestamp)}</Header>
                       </Comment.Metadata>
                       <Comment.Text>{comment}</Comment.Text>
                       <Comment.Actions>
@@ -129,7 +132,7 @@ export class TicketComments extends Component {
                             this.setState({ hideReplyInput: !hideReplyInput })
                           }
                         >
-                          Reply
+                          <span color="blue"> Reply</span>
                         </Comment.Text>
                       </Comment.Actions>
                     </Comment.Content>
@@ -145,7 +148,7 @@ export class TicketComments extends Component {
                         }
                       />
                       <Button
-                        content="Add Reply"
+                        content="submit reply"
                         onClick={() => this.handleSubmit(id)}
                         labelPosition="left"
                         icon="edit"
@@ -190,11 +193,8 @@ export class TicketComments extends Component {
 
 const mapStateToProps = state => {
   return {
-    ticket: state.ticketDetail,
-    authUser: state.auth,
-    vote: state.vote,
-    commentsState: state.comments,
-    user: state.user.user
+    userComments: getComments(state),
+    profile: getUserProfile(state)
   };
 };
 
