@@ -168,9 +168,9 @@ class MembershipTransactionUpdateView(ListAPIView):
         subscription.save()
 
         context = {
-            'data': request_data,
             'message': 'Successfully created {} membership'.format(
-                choosen_membership)
+                choosen_membership),
+            'membership': str(choosen_membership)
         }
 
         return JsonResponse(context, status=200, safe=False)
