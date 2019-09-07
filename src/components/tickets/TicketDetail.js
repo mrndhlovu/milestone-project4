@@ -11,6 +11,12 @@ import {
 } from "../../actions/TicketActions";
 import { getFormatedDate } from "../../constants/constants";
 import TicketComments from "./TicketComments";
+import {
+  getVotes,
+  getUser,
+  getTicketDetail,
+  getTicketUpdate
+} from "../../selectors/appSelectors";
 import UILoadingSpinner from "../../utils/UILoadingSpinner";
 
 import EditButtons from "./EditButtons";
@@ -145,10 +151,10 @@ export class TicketDetail extends Component {
 
 const mapStateToProps = state => {
   return {
-    ticket: state.ticketDetail,
-    ticketDelete: state.ticketUpdate,
-    authUser: state.auth,
-    vote: state.vote
+    ticket: getTicketDetail(state),
+    ticketDelete: getTicketUpdate(state),
+    authUser: getUser(state),
+    vote: getVotes(state)
   };
 };
 
