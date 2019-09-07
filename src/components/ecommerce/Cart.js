@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 import styled from "styled-components";
 
@@ -77,4 +78,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default Cart;
+export default connect(mapStateToProps)(Cart);
