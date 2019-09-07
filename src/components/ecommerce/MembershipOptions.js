@@ -6,7 +6,7 @@ import {
   unicornProServices
 } from "../../constants/constants";
 
-import { Button, Grid, Header, List, Segment } from "semantic-ui-react";
+import { Button, Header, List, Segment } from "semantic-ui-react";
 
 export const MembershipOptions = ({
   memberships,
@@ -26,17 +26,17 @@ export const MembershipOptions = ({
         : isAuthenticated
         ? "Upgrade your membership"
         : "Unicorn Pro";
-    const buttonColor = type === slug ? "black" : "orange";
+    const buttonColor = type === slug ? "blue" : "orange";
     const redirectUrl =
       type === slug ? (isAuthenticated ? "/pricing" : "/signup") : "/cart";
-    const header = type === slug ? `Unicorn ${slug}` : `Unicorn ${slug}`;
+    const header = `Unicorn ${slug}`;
 
     return (
-      <Grid.Column style={{ padding: "5em 5em 5em 1em" }} key={id}>
+      <Segment key={id}>
         <Header
           as="h2"
           attached="top"
-          color={type === slug ? "black" : "purple"}
+          color={type === slug ? "blue" : "orange"}
           textAlign="center"
           content={header.toUpperCase()}
           subheader={
@@ -62,7 +62,7 @@ export const MembershipOptions = ({
           to={redirectUrl}
           color={buttonColor}
         />
-      </Grid.Column>
+      </Segment>
     );
   });
 };
