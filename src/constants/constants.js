@@ -60,3 +60,12 @@ export const getFormatedDate = rawDate => {
 export const capitalizeFirstLetter = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+export const MEMBERSHIP_OPTIONS = {
+  free: {
+    membership_type: "free"
+  },
+  pro: {
+    membership_type: "pro"
+  }
+};
