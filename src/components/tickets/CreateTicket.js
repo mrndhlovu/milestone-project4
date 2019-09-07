@@ -7,22 +7,26 @@ import { Button, Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
 import { slugify } from "../../constants/constants";
+import { getErrors, getUser, getTicket } from "../../selectors/appSelectors";
 
 export class CreateTicket extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
-      errors: {
-        title: "",
-        subject: "",
-        slug: "",
-        other: "",
-        description: "",
-        owner: ""
-      }
+      isLoading: false
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    const {
+      ticket: { dataReceived }
+    } = this.props;
+
+    if (dataReceived) {
+      const { id } = this.props.ticket.ticketsList.data;
+      this.props.history.push(`/ticket/${id}`);
+    }
   }
 
   renderField(field) {
@@ -64,71 +68,9 @@ export class CreateTicket extends Component {
     this.props.createTicket(updatedValues);
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      errorAlert,
-      ticket: { dataReceived }
-    } = this.props;
-    const { errors } = this.state;
-
-    if (errorAlert !== prevProps.errorAlert) {
-      if (errorAlert.alertMsg.subject) {
-        this.setState({
-          isLoading: false,
-          errors: { ...errors, subject: errorAlert.alertMsg.subject }
-        });
-      }
-      if (errorAlert.alertMsg.title) {
-        this.setState({
-          isLoading: false,
-          errors: { ...errors, title: errorAlert.alertMsg.title }
-        });
-      }
-      if (errorAlert.alertMsg.password2) {
-        this.setState({
-          isLoading: false,
-          errors: { ...errors, slug: errorAlert.alertMsg.slug }
-        });
-      }
-
-      if (errorAlert.alertMsg.errorAlert.owner) {
-        this.setState({
-          isLoading: false,
-          errors: {
-            ...errors,
-            owner: errorAlert.alertMsg.errorAlert.owner.join()
-          }
-        });
-      }
-
-      if (errorAlert.alertMsg.description) {
-        this.setState({
-          isLoading: false,
-          errors: { ...errors, description: errorAlert.alertMsg.description }
-        });
-      }
-      if (errorAlert.alertMsg.errorAlert) {
-        this.setState({
-          isLoading: false,
-          errors: {
-            ...errors,
-            other: errorAlert.alertMsg.errorAlert
-          }
-        });
-      }
-    }
-    if (dataReceived) {
-      const { id } = this.props.ticket.ticketsList.data;
-      this.props.history.push(`/ticket/${id}`);
-    }
-  }
-
   render() {
-    const { handleSubmit, field } = this.props;
-    const {
-      errors: { subject, title, description, slug, other, owner },
-      isLoading
-    } = this.state;
+    const { handleSubmit, field, errorAlert } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <Container style={{ paddingTop: 20 }}>
@@ -136,16 +78,12 @@ export class CreateTicket extends Component {
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
         />
-        {subject || title || description || other || slug || owner ? (
+        {errorAlert.status !== "" ? (
           <Message
             size="small"
             error
             header="Error creating ticket: "
-            content={
-              subject || title || description || other || slug || owner
-                ? owner
-                : null
-            }
+            content={errorAlert.alertMsg}
           />
         ) : null}
         <Form
@@ -173,7 +111,11 @@ export class CreateTicket extends Component {
           </Field>
           <br />
           <div style={{ paddingTop: 10 }}>
-            <Button color="blue" loading={isLoading}>
+            <Button
+              color="blue"
+              loading={isLoading}
+              onClick={() => this.setState({ isLoading: true })}
+            >
               Submit
             </Button>
           </div>
@@ -185,9 +127,9 @@ export class CreateTicket extends Component {
 
 const mapStateToProps = state => {
   return {
-    errorAlert: state.errorAlert,
-    authState: state.auth,
-    ticket: state.ticket
+    errorAlert: getErrors(state),
+    authState: getUser(state),
+    ticket: getTicket(state)
   };
 };
 
