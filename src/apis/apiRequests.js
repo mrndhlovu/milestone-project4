@@ -1,46 +1,18 @@
 import axios from "axios";
-import { getRootUrl } from "../utils/urls";
 import {
-  STRIPE_TOKEN,
-  SESSION_TOKEN,
-  SUBCRIPTION_ID,
-  MEMBERSHIP
-} from "../constants/localStorageConstants";
+  getRootUrl,
+  authQueryParams,
+  params,
+  queryParams
+} from "../utils/urls";
 
-const authQueryParams = {
-  headers: {
-    Authorization: `Token ${SESSION_TOKEN}`,
-    "Content-Type": "application/json"
-  }
-};
+import { SESSION_TOKEN } from "../constants/localStorageConstants";
 
-const queryParams = {
-  headers: {
-    "Content-Type": "application/json"
-  }
-};
-
-const params = {
-  headers: {
-    "Content-Type": "text/plain"
-  }
-};
-
-localStorage.setItem("membership", "pro");
-
-const SELECTED_MEMBERSHIP = {
-  membership_type: `${MEMBERSHIP}`
-};
-
-const transcationUpdates = {
-  subscription_id: `${SUBCRIPTION_ID}`,
-  membership_type: `${MEMBERSHIP}`
-};
-
-const choosenMembership = {
-  membership_type: `${MEMBERSHIP}`,
-  stripeToken: `${STRIPE_TOKEN}`
-};
+import {
+  getMembershipType,
+  getTransactionUpdate,
+  getChoosenMembership
+} from "../constants/constants";
 
 export async function requestTicketsList() {
   return axios.get(`${getRootUrl}/tickets/`);
@@ -79,18 +51,21 @@ export async function requestCancelSubsricption() {
 }
 
 export async function requestSelectedMemberships() {
+  const selectedMembership = localStorage.getItem("selectedMembership");
+
   return axios.post(
     `${getRootUrl}/memberships/select/`,
-    SELECTED_MEMBERSHIP,
+    getMembershipType(selectedMembership),
     authQueryParams
   );
 }
 
 export async function requestMembershipPayment() {
   params.headers["Authorization"] = `Token ${SESSION_TOKEN}`;
+
   return axios.post(
     `${getRootUrl}/memberships/payments/`,
-    choosenMembership,
+    getChoosenMembership(),
     params
   );
 }
@@ -100,7 +75,7 @@ export async function requestTransactionUpdate() {
 
   return axios.post(
     `${getRootUrl}/memberships/update-transaction/`,
-    transcationUpdates,
+    getTransactionUpdate(),
     params
   );
 }
