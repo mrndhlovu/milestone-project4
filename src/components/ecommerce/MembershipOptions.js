@@ -6,6 +6,8 @@ import {
   unicornProServices
 } from "../../constants/constants";
 
+import { CURRENT_MEMBERSHIP } from "../../constants/localStorageConstants";
+
 import { getSelectedMemberShip } from "../../utils/appUtils";
 
 import { Button, Header, List, Segment } from "semantic-ui-react";
@@ -15,14 +17,13 @@ const handleOptionClick = membershipOption => {
 
   localStorage.setItem("selectedMembership", `${membership}`);
 };
+const currentMembership = CURRENT_MEMBERSHIP ? CURRENT_MEMBERSHIP : "free";
 
 export const MembershipOptions = ({
   memberships,
   isAuthenticated,
   membershipChoice
 }) => {
-  const currentMembership = localStorage.getItem("currentMembership");
-
   return memberships.map(membership => {
     const { price, id, slug } = membership;
 
@@ -61,7 +62,7 @@ export const MembershipOptions = ({
         <div>
           <Segment>
             <List>
-              {currentMembership === slug
+              {CURRENT_MEMBERSHIP === slug
                 ? membershipChoice(unicornFreeServices)
                 : membershipChoice(unicornProServices)}
             </List>
@@ -75,7 +76,7 @@ export const MembershipOptions = ({
           color={buttonColor}
           onClick={() =>
             handleOptionClick(
-              currentMembership === slug ? currentMembership : "pro",
+              CURRENT_MEMBERSHIP === slug ? CURRENT_MEMBERSHIP : "pro",
               redirectUrl
             )
           }
