@@ -13,9 +13,7 @@ import MembershipOptions from "./MembershipOptions";
 export class Pricing extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      freeMembership: true
-    };
+    this.state = {};
     this.handleAddToCart = this.handleAddToCart.bind(this);
   }
 
