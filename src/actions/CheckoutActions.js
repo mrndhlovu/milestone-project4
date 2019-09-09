@@ -22,7 +22,6 @@ import {
   dataRequestFail,
   requestSuccess
 } from "./index";
-import { getSelectedMemberShip } from "../utils/appUtils";
 
 export const requestChoosenMembership = () => {
   return dispatch => {
@@ -47,8 +46,9 @@ export const requestPayment = () => {
       response => {
         dispatch(requestSuccess(PAYMENT_SUCCESS, response.data));
         localStorage.setItem("subscriptionId", response.data.subscription_id);
-        dispatch(requestUpdate());
-        dispatch(createMessage({ successMsg: "Payment was successful" }));
+        setTimeout(function() {
+          dispatch(requestUpdate());
+        }, 500);
       },
       error => {
         dispatch(createMessage({ successMsg: error.message }));
