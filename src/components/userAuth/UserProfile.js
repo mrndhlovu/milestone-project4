@@ -4,9 +4,14 @@ import { getFormatedDate } from "../../constants/constants";
 import { Redirect } from "react-router-dom";
 
 import { Item, Card, Label, Confirm } from "semantic-ui-react";
-import { StyledContainerWrapper } from "../../constants/constants";
 
+import { StyledContainerWrapper } from "../../constants/constants";
 import { cancelSubscription } from "../../actions/MembershipActions";
+import {
+  getUserProfile,
+  getUser,
+  getMembershipProfile
+} from "../../selectors/appSelectors";
 
 export class UserProfile extends Component {
   constructor(props) {
@@ -91,9 +96,9 @@ export class UserProfile extends Component {
 
 const mapStateToProps = state => {
   return {
-    profile: state.userProfile.profile,
-    auth: state.auth,
-    user: state.user.user
+    profile: getMembershipProfile(state),
+    auth: getUser(state),
+    user: getUserProfile(state)
   };
 };
 
