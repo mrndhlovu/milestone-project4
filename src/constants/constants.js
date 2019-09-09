@@ -1,10 +1,7 @@
 import styled from "styled-components";
 import { Container } from "semantic-ui-react";
 
-export const PaymentMethods = [
-  { key: "st", value: "st", text: "Stripe" },
-  { key: "pp", value: "pp", text: "Paypal" }
-];
+import { MEMBERSHIP_SELECTED } from "../constants/localStorageConstants";
 
 export const StyledContainerWrapper = styled(Container)`
   padding-top: 1.5rem;
@@ -57,9 +54,8 @@ export const getFormatedDate = rawDate => {
   );
 };
 
-export const capitalizeFirstLetter = string => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
+export const capitalizeFirstLetter = string =>
+  string.charAt(0).toUpperCase() + string.slice(1);
 
 export const MEMBERSHIP_OPTIONS = {
   free: {
@@ -68,4 +64,28 @@ export const MEMBERSHIP_OPTIONS = {
   pro: {
     membership_type: "pro"
   }
+};
+
+export const getMembershipType = type => {
+  return {
+    membership_type: `${type}`
+  };
+};
+
+export const getTransactionUpdate = () => {
+  const subscriptionId = localStorage.getItem("subscriptionId");
+
+  return {
+    subscription_id: `${subscriptionId}`,
+    membership_type: `${MEMBERSHIP_SELECTED}`
+  };
+};
+
+export const getChoosenMembership = () => {
+  const token = localStorage.getItem("stripeToken");
+
+  return {
+    membership_type: `${MEMBERSHIP_SELECTED}`,
+    stripeToken: `${token}`
+  };
 };
