@@ -7,3 +7,5 @@ export const SESSION_LIFE = localStorage.getItem("sessionLife");
 export const SUBCRIPTION_ID = localStorage.getItem("subscriptionId");
 
 export const MEMBERSHIP_SELECTED = localStorage.getItem("selectedMembership");
+
+export const CURRENT_MEMBERSHIP = localStorage.getItem("currentMembership");
