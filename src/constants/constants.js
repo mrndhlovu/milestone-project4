@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { Container } from "semantic-ui-react";
 
-import { MEMBERSHIP_SELECTED } from "../constants/localStorageConstants";
-
 export const StyledContainerWrapper = styled(Container)`
   padding-top: 1.5rem;
 `;
@@ -74,18 +72,20 @@ export const getMembershipType = type => {
 
 export const getTransactionUpdate = () => {
   const subscriptionId = localStorage.getItem("subscriptionId");
+  const selectedMembership = localStorage.getItem("selectedMembership");
 
   return {
     subscription_id: `${subscriptionId}`,
-    membership_type: `${MEMBERSHIP_SELECTED}`
+    membership_type: `${selectedMembership}`
   };
 };
 
 export const getChoosenMembership = () => {
   const token = localStorage.getItem("stripeToken");
+  const selectedMembership = localStorage.getItem("selectedMembership");
 
   return {
-    membership_type: `${MEMBERSHIP_SELECTED}`,
+    membership_type: `${selectedMembership}`,
     stripeToken: `${token}`
   };
 };
