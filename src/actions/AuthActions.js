@@ -6,14 +6,17 @@ import {
   FETCHING_USER,
   RECEIVED_USER,
   REQUEST_SIGNUP,
-  REQUEST_LOGIN
+  REQUEST_LOGIN,
+  FETCH_MEMBER_PROFILE,
+  RECEIVE_MEMBER_PROFILE
 } from "./ActionTypes";
 
 import {
   requestLogin,
   requestSignup,
   requestLogout,
-  requestUser
+  requestUser,
+  requestUserMembershipsProfile
 } from "../apis/apiRequests";
 
 import {
@@ -25,10 +28,13 @@ import {
 } from "./index";
 
 import { getSelectedMemberShip } from "../utils/appUtils";
+import {
+  SESSION_TOKEN,
+  SESSION_LIFE
+} from "../constants/localStorageConstants";
 
 function authStart() {
-  const sessionLife = localStorage.getItem("sessionLife");
-  if (sessionLife) {
+  if (SESSION_LIFE) {
     return {
       type: USER_AUTH_START
     };
@@ -65,6 +71,7 @@ export const startAuth = () => {
   return dispatch => {
     dispatch(authStart());
     dispatch(fetchUser());
+    dispatch(fetchUserProfile());
   };
 };
 
@@ -72,19 +79,16 @@ export const startAuth = () => {
 // count down if auth state is not reset in 30min dispatch logout, if reset create a new 30min session
 export const authState = () => {
   return dispatch => {
-    const sessionToken = localStorage.getItem("sessionToken");
-    const sessionSpan = localStorage.getItem("sessionLife");
-
     // session will last for 30mins if the app is not in use
-    const sessionLife = new Date(sessionSpan);
+    const sessionLife = new Date(SESSION_LIFE);
 
     if (sessionLife <= new Date()) {
       dispatch(makeRequest(USER_AUTH_LOGOUT));
       dispatch(checkSessionTime(sessionLife));
     } else {
       dispatch(fetchUser());
-
-      dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
+      dispatch(fetchUserProfile());
+      dispatch(requestSuccess(USER_AUTH_SUCCESS, SESSION_TOKEN));
 
       const sessionLifeSpan =
         (sessionLife.getTime() - new Date().getTime()) / 1000;
@@ -116,15 +120,16 @@ export const login = body => {
 // Check if there a session token to use for logout, if there is proceed if logout is successful on the server the delete localstorage
 
 export const logOut = () => {
-  const token = localStorage.getItem("sessionToken");
-  return token
+  return SESSION_TOKEN
     ? dispatch => {
         dispatch(makeRequest(USER_AUTH_LOGOUT));
-        requestLogout(token).then(response => {
+        requestLogout(SESSION_TOKEN).then(response => {
           localStorage.removeItem("sessionToken");
           localStorage.removeItem("sessionLife");
           localStorage.removeItem("currentMembership");
           localStorage.removeItem("stripeToken");
+          localStorage.removeItem("selectedMembership");
+
           dispatch(
             createMessage({
               successMsg: "You have successfully logged out!"
@@ -170,11 +175,29 @@ export const fetchUser = sessionToken => {
     dispatch(makeRequest(FETCHING_USER));
     requestUser(sessionToken).then(
       response => {
-        dispatch(requestSuccess(RECEIVED_USER, response.data));
-        localStorage.setItem(
-          "currentMembership",
-          getSelectedMemberShip(response.data.current_membership)
+        const selectedMembership = getSelectedMemberShip(
+          response.data.current_membership
         );
+        dispatch(requestSuccess(RECEIVED_USER, response.data));
+        localStorage.setItem("currentMembership", selectedMembership);
+        // localStorage.setItem(
+        //   "stripeToken",
+        //   selectedMembership === "free" ? null : STRIPE_TOKEN
+        // );
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
+      }
+    );
+  };
+};
+
+export const fetchUserProfile = sessionToken => {
+  return dispatch => {
+    dispatch(makeRequest(FETCH_MEMBER_PROFILE));
+    requestUserMembershipsProfile(sessionToken).then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_MEMBER_PROFILE, response.data[0]));
       },
       error => {
         dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
