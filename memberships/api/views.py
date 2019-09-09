@@ -112,11 +112,10 @@ class MembershipPaymentView(ListAPIView):
                     user_membership.stripe_customer_id)
 
                 customer.source = token
-                print(request_data)
 
                 customer.save()
+                # print(request_data)
 
-                print(choosen_membership)
                 subscription = stripe.Subscription.create(
                     customer=user_membership.stripe_customer_id,
                     items=[
