@@ -23,6 +23,12 @@ class CheckoutForm extends Component {
     this.clickedSubmit = this.clickedSubmit.bind(this);
   }
 
+  // componentDidUpdate(prevProps) {
+  //   const { token } = this.state;
+  //   if (prevProps.token !== token) {
+  //   }
+  // }
+
   clickedSubmit() {
     const { stripe } = this.props;
     stripe &&
@@ -61,7 +67,7 @@ class CheckoutForm extends Component {
 
                   <OrderSummary />
                   <PaymentDetails
-                    onSubmitClick={this.clickedSubmit}
+                    payNowClick={this.clickedSubmit}
                     data={this.props}
                     loading={isLoading}
                     error={error}
