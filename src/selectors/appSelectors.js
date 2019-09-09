@@ -13,3 +13,4 @@ export const getComments = state => state.comments;
 export const getVotes = state => state.votes;
 
 export const getMemberships = state => state.memberships.membershipList;
+export const getMembershipProfile = state => state.userProfile.profile;
