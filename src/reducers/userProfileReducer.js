@@ -1,6 +1,6 @@
 import {
-  FETCHING_USER_PROFILE,
-  RECEIVED_USER_PROFILE
+  FETCH_MEMBER_PROFILE,
+  RECEIVE_MEMBER_PROFILE
 } from "../actions/ActionTypes";
 
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
@@ -23,9 +23,9 @@ const receivedUserProfile = (state, action) => {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case FETCHING_USER_PROFILE:
+    case FETCH_MEMBER_PROFILE:
       return fetchingUserProfile(state, action);
-    case RECEIVED_USER_PROFILE:
+    case RECEIVE_MEMBER_PROFILE:
       return receivedUserProfile(state, action);
     default:
       return state;
