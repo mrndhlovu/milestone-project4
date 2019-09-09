@@ -30,11 +30,14 @@ export class PaymentDetails extends Component {
     this.props.requestChoosenMembership();
   }
 
-  handleSubmit() {
-    const { onSubmitClick, requestPayment } = this.props;
+  handlePayNow() {
+    const { payNowClick, requestPayment } = this.props;
 
-    onSubmitClick();
-    requestPayment();
+    payNowClick();
+
+    setTimeout(function() {
+      requestPayment();
+    }, 1000);
   }
 
   render() {
@@ -54,7 +57,7 @@ export class PaymentDetails extends Component {
           <Button
             color="orange"
             fluid
-            onClick={() => this.handleSubmit()}
+            onClick={() => this.handlePayNow()}
             loading={isLoading}
           >
             PAY NOW
