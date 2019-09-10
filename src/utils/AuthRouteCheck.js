@@ -3,13 +3,15 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { Dimmer, Loader } from "semantic-ui-react";
+import { isAuthenticated } from "../utils/appUtils";
+import { getUser } from "../selectors/appSelectors";
 
 const AuthRouteCheck = ({ component: Component, auth, ...rest }) => (
   <Route
     {...rest}
     render={props => {
-      const { isLoading, isAuthenticated } = auth;
-      if (!isAuthenticated && !isLoading) {
+      const { isLoading } = auth;
+      if (!isAuthenticated() && !isLoading) {
         return <Redirect to="/login" />;
       } else if (isLoading) {
         return (
@@ -28,7 +30,7 @@ const AuthRouteCheck = ({ component: Component, auth, ...rest }) => (
 
 const mapStateToProps = state => {
   return {
-    auth: state.auth
+    auth: getUser(state)
   };
 };
 
