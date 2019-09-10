@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
 import { Button, Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
 import { slugify } from "../../constants/constants";
 import { getErrors, getUser, getTicket } from "../../selectors/appSelectors";
+import { hasProMembership } from "../../utils/appUtils";
 
 export class CreateTicket extends Component {
   constructor(props) {
@@ -64,13 +65,15 @@ export class CreateTicket extends Component {
     const { subject } = values;
     const slug = slugify(subject);
     const updatedValues = { ...values, slug };
-
     this.props.createTicket(updatedValues);
   }
 
   render() {
     const { handleSubmit, field, errorAlert } = this.props;
     const { isLoading } = this.state;
+    if (!hasProMembership()) {
+      return <Redirect to="/login" />;
+    }
 
     return (
       <Container style={{ paddingTop: 20 }}>
