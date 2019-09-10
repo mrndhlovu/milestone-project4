@@ -18,6 +18,7 @@ import {
   getTicketUpdate
 } from "../../selectors/appSelectors";
 import UILoadingSpinner from "../../utils/UILoadingSpinner";
+import { isTicketOwner, hasProMembership } from "../../utils/appUtils";
 
 import EditButtons from "./EditButtons";
 
@@ -84,7 +85,16 @@ export class TicketDetail extends Component {
       ticket: {
         dataReceived,
         isLoading,
-        ticket: { title, created_at, description, votes, views, id, comments }
+        ticket: {
+          title,
+          created_at,
+          description,
+          votes,
+          views,
+          id,
+          comments,
+          owner
+        }
       },
       authUser: { isAuthenticated }
     } = this.props;
@@ -94,7 +104,9 @@ export class TicketDetail extends Component {
     ) : (
       <Container style={{ paddingTop: 20 }}>
         <div style={{ paddingTop: 10 }}>
-          <EditButtons onDelete={this.handleTicketDelete} ticketId={id} />
+          {isTicketOwner(owner) && hasProMembership() && (
+            <EditButtons onDelete={this.handleTicketDelete} ticketId={id} />
+          )}
         </div>
         <Header
           as="h3"
@@ -131,7 +143,7 @@ export class TicketDetail extends Component {
           </Card.Content>
         </Card>
         <Segment>
-          {isAuthenticated ? (
+          {hasProMembership() ? (
             <TicketComments comments={comments} ticketId={id} />
           ) : (
             <Fragment>
