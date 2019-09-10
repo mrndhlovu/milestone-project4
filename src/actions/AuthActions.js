@@ -27,7 +27,13 @@ import {
   requestSuccess
 } from "./index";
 
-import { getSelectedMemberShip } from "../utils/appUtils";
+import {
+  getSelectedMemberShip,
+  destroyLocalStorage,
+  createUserProfile,
+  refresh
+} from "../utils/appUtils";
+
 import {
   SESSION_TOKEN,
   SESSION_LIFE
@@ -50,7 +56,7 @@ function checkSessionTime(sessionLife) {
     dispatch => {
       setTimeout(() => {
         dispatch(logOut());
-      }, sessionLife);
+      }, sessionLife * 1000);
     },
     error => {}
   );
@@ -108,6 +114,7 @@ export const login = body => {
         dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
         dispatch(createMessage({ successMsg: "You are logged in!" }));
+        refresh();
       },
       error => {
         dispatch(errorsAlert(error));
@@ -124,12 +131,7 @@ export const logOut = () => {
     ? dispatch => {
         dispatch(makeRequest(USER_AUTH_LOGOUT));
         requestLogout(SESSION_TOKEN).then(response => {
-          localStorage.removeItem("sessionToken");
-          localStorage.removeItem("sessionLife");
-          localStorage.removeItem("currentMembership");
-          localStorage.removeItem("stripeToken");
-          localStorage.removeItem("selectedMembership");
-
+          destroyLocalStorage();
           dispatch(
             createMessage({
               successMsg: "You have successfully logged out!"
@@ -156,6 +158,7 @@ export const signup = data => {
         );
         dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
+        refresh();
       },
       error => {
         const errors = {
@@ -170,20 +173,19 @@ export const signup = data => {
 };
 
 //  Fetch logged in user details
-export const fetchUser = sessionToken => {
+export const fetchUser = () => {
   return dispatch => {
     dispatch(makeRequest(FETCHING_USER));
-    requestUser(sessionToken).then(
+    requestUser().then(
       response => {
-        const selectedMembership = getSelectedMemberShip(
-          response.data.current_membership
-        );
+        const { username, id, email, current_membership } = response.data;
         dispatch(requestSuccess(RECEIVED_USER, response.data));
-        localStorage.setItem("currentMembership", selectedMembership);
-        // localStorage.setItem(
-        //   "stripeToken",
-        //   selectedMembership === "free" ? null : STRIPE_TOKEN
-        // );
+        createUserProfile(username, id, email, current_membership);
+
+        localStorage.setItem(
+          "currentMembership",
+          getSelectedMemberShip(current_membership)
+        );
       },
       error => {
         dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
