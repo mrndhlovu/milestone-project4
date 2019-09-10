@@ -10,7 +10,7 @@ export const getTicketList = state => state.tickets;
 export const getTicket = state => state.ticket;
 
 export const getComments = state => state.comments;
-export const getVotes = state => state.votes;
+export const getVotes = state => state.vote;
 
 export const getMemberships = state => state.memberships.membershipList;
 export const getMembershipProfile = state => state.userProfile.profile;
