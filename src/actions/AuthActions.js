@@ -137,6 +137,7 @@ export const logOut = () => {
               successMsg: "You have successfully logged out!"
             })
           );
+          refresh();
         });
       }
     : dispatch => {
