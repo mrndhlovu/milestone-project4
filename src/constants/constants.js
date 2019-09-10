@@ -89,3 +89,10 @@ export const getChoosenMembership = () => {
     stripeToken: `${token}`
   };
 };
+
+export const USER_PROFILE = {
+  username: "",
+  userId: "",
+  email: "",
+  currentMembership: ""
+};
