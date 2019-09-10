@@ -37,19 +37,10 @@ INSTALLED_APPS = [
 
     'accounts',
     'memberships',
-
+    'cart',
     'tickets',
     'comments',
 
-    # 'products',
-    # 'chart',
-
-    # 'rest_framework.authtoken',
-    # 'rest_auth',
-    # 'rest_auth.registration',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
     'rest_framework',
     'corsheaders',
     'knox'
@@ -164,11 +155,6 @@ REST_FRAMEWORK = {
 }
 
 django_heroku.settings(locals())
-
-
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
-# ACCOUNT_AUTHENTICATION_METHOD = 'username'
-# ACCOUNT_EMAIL_REQUIRED = False
 
 
 CORS_ORIGIN_ALLOW_ALL = True
