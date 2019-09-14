@@ -12,7 +12,7 @@ import {
   Header
 } from "semantic-ui-react";
 
-import { getFormatedDate } from "../../constants/constants";
+import { getFormatedDate } from "../../utils/appUtils";
 import { createComment, createReply } from "../../actions/TicketActions";
 import { getUserProfile, getComments } from "../../selectors/appSelectors";
 import CommentReply from "./CommentReply";

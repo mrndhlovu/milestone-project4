@@ -6,9 +6,8 @@ import { withRouter, Redirect } from "react-router-dom";
 import { Button, Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../../actions/TicketActions";
-import { slugify } from "../../constants/constants";
 import { getErrors, getUser, getTicket } from "../../selectors/appSelectors";
-import { hasProMembership } from "../../utils/appUtils";
+import { hasProMembership, slugify } from "../../utils/appUtils";
 
 export class CreateTicket extends Component {
   constructor(props) {

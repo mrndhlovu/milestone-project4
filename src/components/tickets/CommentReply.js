@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import { getFormatedDate } from "../../constants/constants";
+import { getFormatedDate } from "../../utils/appUtils";
 
 import { Comment, Header } from "semantic-ui-react";
 

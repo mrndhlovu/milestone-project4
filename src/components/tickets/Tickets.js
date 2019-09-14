@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { Header, Label, Feed, Divider, Icon } from "semantic-ui-react";
 
-import { getFormatedDate } from "../../constants/constants";
+import { getFormatedDate } from "../../utils/appUtils";
 
 const StyledSpan = styled.span`
   font-size: 0.8rem;

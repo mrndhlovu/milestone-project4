@@ -9,7 +9,7 @@ import {
   updatedTicketVote,
   deleteTicket
 } from "../../actions/TicketActions";
-import { getFormatedDate } from "../../constants/constants";
+
 import TicketComments from "./TicketComments";
 import {
   getVotes,
@@ -18,7 +18,11 @@ import {
   getTicketUpdate
 } from "../../selectors/appSelectors";
 import UILoadingSpinner from "../../utils/UILoadingSpinner";
-import { isTicketOwner, hasProMembership } from "../../utils/appUtils";
+import {
+  isTicketOwner,
+  hasProMembership,
+  getFormatedDate
+} from "../../utils/appUtils";
 
 import EditButtons from "./EditButtons";
 

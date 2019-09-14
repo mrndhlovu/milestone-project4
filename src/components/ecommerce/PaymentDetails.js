@@ -5,10 +5,7 @@ import { CardElement } from "react-stripe-elements";
 
 import { Form, Button, Card, Segment } from "semantic-ui-react";
 
-import {
-  requestPayment,
-  requestChoosenMembership
-} from "../../actions/CheckoutActions";
+import { requestPayment, addToCart } from "../../actions/CheckoutActions";
 
 export class PaymentDetails extends Component {
   constructor(props) {
@@ -27,7 +24,7 @@ export class PaymentDetails extends Component {
   }
 
   componentDidMount() {
-    this.props.requestChoosenMembership();
+    this.props.addToCart();
   }
 
   handlePayNow() {
@@ -74,5 +71,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { requestPayment, requestChoosenMembership }
+  { requestPayment, addToCart }
 )(PaymentDetails);

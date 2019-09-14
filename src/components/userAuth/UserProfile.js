@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getFormatedDate } from "../../constants/constants";
 import { Redirect } from "react-router-dom";
 
 import { Item, Card, Label, Confirm } from "semantic-ui-react";
 
 import { StyledContainerWrapper } from "../../constants/constants";
 import { cancelSubscription } from "../../actions/MembershipActions";
+import { getFormatedDate } from "../../utils/appUtils";
+
 import {
   getUserProfile,
   getUser,

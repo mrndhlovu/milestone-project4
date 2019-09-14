@@ -29,32 +29,6 @@ export const navLinkText = [
   { header: "Blog", key: "blog-article-list" }
 ];
 
-export const slugify = text => {
-  return text
-    .toLowerCase()
-    .replace(/ /g, "-")
-    .replace(/[^\w-]+/g, "");
-};
-
-export const getFormatedDate = rawDate => {
-  const date = new Date(rawDate);
-
-  return (
-    date.getFullYear() +
-    "-" +
-    ("0" + (date.getMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + date.getDate()).slice(-2) +
-    " " +
-    ("0" + date.getHours()).slice(-2) +
-    ":" +
-    ("0" + date.getMinutes()).slice(-2)
-  );
-};
-
-export const capitalizeFirstLetter = string =>
-  string.charAt(0).toUpperCase() + string.slice(1);
-
 export const MEMBERSHIP_OPTIONS = {
   free: {
     membership_type: "free"
@@ -64,35 +38,16 @@ export const MEMBERSHIP_OPTIONS = {
   }
 };
 
-export const getMembershipType = type => {
-  return {
-    membership_type: `${type}`
-  };
-};
-
-export const getTransactionUpdate = () => {
-  const subscriptionId = localStorage.getItem("subscriptionId");
-  const selectedMembership = localStorage.getItem("selectedMembership");
-
-  return {
-    subscription_id: `${subscriptionId}`,
-    membership_type: `${selectedMembership}`
-  };
-};
-
-export const getChoosenMembership = () => {
-  const token = localStorage.getItem("stripeToken");
-  const selectedMembership = localStorage.getItem("selectedMembership");
-
-  return {
-    membership_type: `${selectedMembership}`,
-    stripeToken: `${token}`
-  };
-};
-
 export const USER_PROFILE = {
   username: "",
   userId: "",
   email: "",
   currentMembership: ""
+};
+
+export const INITIAL_STATE = {
+  data: {},
+  dataReceived: false,
+  hasError: false,
+  isLoading: false
 };
