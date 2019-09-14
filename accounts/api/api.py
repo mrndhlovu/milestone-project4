@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from knox.models import AuthToken
 from .serializers import UserSerializer, SignupSerializer, LoginSerializer
 from accounts.models import UserProfile
+from memberships.models import Subscription
 from .serializers import UserProfileSerializer
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView
@@ -18,6 +19,15 @@ def get_user_membership(request):
     return None
 
 
+def get_user_subscription(request):
+    user_subscription_qs = Subscription.objects.filter(
+        user_membership=get_user_membership(request))
+    if user_subscription_qs.exists():
+        user_subscription = user_subscription_qs.first()
+        return user_subscription
+    return None
+
+
 # Create user api
 class UserProfileDetailAPI(generics.RetrieveAPIView):
     permissions._classes = [
@@ -30,10 +40,27 @@ class UserProfileDetailAPI(generics.RetrieveAPIView):
         context = super().get_serializer_context(**kwargs)
 
         if self.request.method == 'GET':
-            current_membership = get_user_membership(self.request)
-            context['current_membership'] = str(current_membership.membership)
+
+            context['current_membership'] = str(
+                get_user_membership(self.request).membership)
+            subscription = get_user_subscription(self.request)
+
+            try:
+
+                reference_code = subscription.stripe_subscription_id
+            except:
+                reference_code = None
+
+            data = {
+                'current_membership': str(get_user_membership(self.request).membership),
+                'subscription_id': str(reference_code),
+                'username': str(self.request.user.username)
+            }
+
+            context['membership_profile'] = data
+
         else:
-            context['current_membership'] = None
+            context['membership_profile'] = None
 
         return context
 

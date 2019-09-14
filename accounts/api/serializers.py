@@ -17,6 +17,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
 
         rep['current_membership'] = self.context['current_membership']
+        rep['membership_profile'] = self.context['membership_profile']
 
         return rep
 
