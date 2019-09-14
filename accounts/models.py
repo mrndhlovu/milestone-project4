@@ -75,6 +75,7 @@ class UserProfile(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True)
     occupation = models.CharField(max_length=30, blank=True)
+    current_membership = models.ManyToManyField(Membership, blank=True)
 
     # Product = models.ManyToManyField(Product)
 
