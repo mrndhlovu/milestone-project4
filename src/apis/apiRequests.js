@@ -60,11 +60,7 @@ export async function addMembershipToCart() {
   );
 }
 
-const removeParams = {
-  membership_type: "pro"
-};
-
-export async function requestRemoveMembership() {
+export async function deleteMembershipFromCart() {
   return axios.post(
     `${getRootUrl}/memberships/remove/`,
     getMembershipType(selectedMembership),

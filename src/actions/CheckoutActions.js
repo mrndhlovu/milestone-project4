@@ -9,10 +9,11 @@ import {
   REQUEST_PENDING_ORDER,
   DELETED_FROM_CART,
   DELETE_FROM_CART,
-  RECEIVE_CHECKOUT, 
+  RECEIVE_CHECKOUT,
   REQUEST_CHECKOUT,
   RECEIVE_ADD_T0_CART,
-  REQUEST_ADD_TO_CART
+  REQUEST_ADD_TO_CART,
+  ERROR_ALERT
 } from "./ActionTypes";
 
 import {
@@ -20,7 +21,8 @@ import {
   addMembershipToCart,
   requestTransactionUpdate,
   requestCheckout,
-  requestPendingOrder,requestDeleteFromCart
+  requestPendingOrder,
+  deleteMembershipFromCart
 } from "../apis/apiRequests";
 
 import {
@@ -101,22 +103,6 @@ export const getPendingOrder = () => {
 
 export const getCheckout = () => {
   return dispatch => {
-    dispatch(makeRequest(check));
-    requestCheckout().then(
-      response => {
-        dispatch(requestSuccess(RECEIVE_PENDING_ORDER, response));
-        dispatch(createMessage({ successMsg: response.data.message }));
-      },
-      error => {
-        dispatch(createMessage({ successMsg: error.message }));
-        dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
-      }
-    );
-  };
-};
-
-export const getCheckout = () => {
-  return dispatch => {
     dispatch(makeRequest(REQUEST_CHECKOUT));
     requestCheckout().then(
       response => {
@@ -131,11 +117,10 @@ export const getCheckout = () => {
   };
 };
 
-
 export const deleteFromCart = () => {
   return dispatch => {
     dispatch(makeRequest(DELETE_FROM_CART));
-    requestDeleteFromCart().then(
+    deleteMembershipFromCart().then(
       response => {
         dispatch(requestSuccess(DELETED_FROM_CART, response));
         dispatch(createMessage({ successMsg: response.data.message }));
