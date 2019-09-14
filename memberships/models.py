@@ -4,8 +4,6 @@ from django.db.models.signals import post_save
 import stripe
 from datetime import datetime
 
-# Create your models here.
-
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -32,11 +30,19 @@ class UserMembership(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     stripe_customer_id = models.CharField(max_length=20)
+    is_member = models.BooleanField(default=False, null=True)
     membership = models.ForeignKey(
         Membership, on_delete=models.SET_NULL, null=True)
+    date_signedup = models.DateField(auto_now=True, null=True)
 
     def __str__(self):
         return self.user.username
+
+    def get_selected_membership(self):
+        return self.membership
+
+    def get_membership_total(self):
+        return self.sum([membership.Membership.price for member in self.membership.all()])
 
 
 def post_save_create_user_membership(sender, instance, created, *args, **kwargs):
@@ -65,6 +71,8 @@ class Subscription(models.Model):
         UserMembership, on_delete=models.CASCADE)
     stripe_subscription_id = models.CharField(max_length=40)
     is_active = models.BooleanField(default=-True)
+    date_added = models.DateTimeField(auto_now=True, null=True)
+    date_subscribed = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.user_membership.user.username
