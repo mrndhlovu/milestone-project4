@@ -1,15 +1,14 @@
 from .serializers import MembershipSerializer, MembershipProfileSerializer
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_list_or_404, get_object_or_404, redirect
+from django.http import JsonResponse
+from django.shortcuts import get_list_or_404, get_object_or_404
 from memberships.models import Membership, UserMembership, Subscription
 from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
+from accounts.models import UserProfile, CustomUser
 import json
 import stripe
-from django.contrib import messages
-from django.urls import reverse
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -44,28 +43,34 @@ def get_selected_membership(request):
     return None
 
 
-class MembershipListView(ListAPIView):
+def get_user_profile(request):
+    return get_object_or_404(UserProfile, user=request.user)
+
+
+def get_pending_order(request):
+    order = UserMembership.objects.filter(
+        user=request.user, is_member=False)
+    if order.exists():
+        return order[0]
+    return 0
+
+
+class MembershipAddToCart(ListAPIView):
     serializer_class = MembershipSerializer
     queryset = Membership.objects.all()
     permissions._classes = [
         permissions.AllowAny,
     ]
 
-    def get_serializer_context(self, *args, **kwargs):
-        context = super().get_serializer_context(**kwargs)
-
-        current_user_membership = get_user_membership(self.request)
-        context['current_user_membership'] = str(
-            current_user_membership.membership)
-
-        return context
-
     def post(self, request, **kwargs):
         request_data = json.loads(request.body.decode('utf-8'))
 
-        choosen_membership_type = get_selected_membership(request_data)
-        user_membership = get_user_membership(request)
+        user_profile = get_user_profile(request)
+
         user_subscription = get_user_subscription(request)
+        user_membership = get_user_membership(request)
+
+        choosen_membership_type = get_selected_membership(request_data)
 
         choosen_membership_qs = Membership.objects.filter(
             membership_type=choosen_membership_type)
@@ -79,12 +84,89 @@ class MembershipListView(ListAPIView):
                 message = 'You already have this membership!'
                 return JsonResponse({'message': message}, status=status.HTTP_200_OK)
 
-        message = {'choosen_membership_type': choosen_membership.membership_type}
+        user_profile.current_membership.add(choosen_membership)
 
-        return JsonResponse(message, status=200)
+        user_profile.save()
+
+        context = {
+            'choosen_membership_type': choosen_membership.membership_type,
+            'message': '{} membership added to cart'.format(choosen_membership.membership_type).upper()
+
+        }
+
+        return JsonResponse(context, status=200)
 
 
-class MembershipPaymentView(ListAPIView):
+class MembershipDeleteFromCart(ListAPIView):
+    serializer_class = MembershipSerializer
+    queryset = Membership.objects.all()
+    permissions._classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        request_data = json.loads(request.body.decode('utf-8'))
+        user_profile = get_user_profile(request)
+
+        remove_selected_membership = get_selected_membership(request_data)
+
+        try:
+            if remove_selected_membership is not None:
+
+                user_profile.current_membership.remove(
+                    remove_selected_membership)
+
+            context = {
+                'message': '{} membership removed from cart'.format(remove_selected_membership)
+            }
+
+            return JsonResponse(context, status=200)
+
+        except:
+            context = {
+                'message': 'Cant find {} membership to delete.'.format(remove_selected_membership)
+            }
+
+            return JsonResponse(context, status=404)
+
+
+class MembershipPendingOrder(ListAPIView):
+    serializer_class = MembershipSerializer
+    queryset = Membership.objects.all()
+    permissions._classes = [
+        permissions.AllowAny,
+    ]
+
+    def post(self, request, **kwargs):
+        request_data = json.loads(request.body.decode('utf-8'))
+
+        order_pending = get_pending_order(request)
+
+        context = {
+            'order': str(order_pending)
+        }
+
+        return JsonResponse(context, status=200)
+
+
+class MembershipCheckoutOrder(ListAPIView):
+    serializer_class = MembershipSerializer
+    queryset = Membership.objects.all()
+    permissions._classes = [
+        permissions.AllowAny,
+    ]
+
+    def post(self, request, **kwargs):
+        request_data = json.loads(request.body.decode('utf-8'))
+
+        order_pending = get_pending_order(request)
+
+        context = {
+            'order': str(order_pending)
+        }
+
+        return JsonResponse(context, status=200)
+
+
+class MembershipCheckoutView(ListAPIView):
     serializer_class = MembershipSerializer
     queryset = Membership.objects.all()
     permissions._classes = [
@@ -114,7 +196,6 @@ class MembershipPaymentView(ListAPIView):
                 customer.source = token
 
                 customer.save()
-                # print(request_data)
 
                 subscription = stripe.Subscription.create(
                     customer=user_membership.stripe_customer_id,
