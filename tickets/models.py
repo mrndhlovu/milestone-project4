@@ -32,7 +32,7 @@ class Ticket(models.Model):
     in_progress = models.BooleanField(default=False)
     slug = models.SlugField(blank=True)
     owner = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True)
+        User, on_delete=models.SET_NULL, null=True, blank=True)
     votes = models.ManyToManyField(
         User, blank=True, related_name='ticket_votes')
     views = models.IntegerField(default=0)
