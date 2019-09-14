@@ -5,15 +5,22 @@ import {
   TRANSCATION_UPDATE_FAIL,
   TRANSCATION_UPDATED,
   UPDATE_TRANSCATION,
-  CHOOSEN_MEMBERSHIP_FOUND,
-  FIND_MEMBERSHIP_ERROR,
-  FIND_CHOOSEN_MEMBERSHIP
+  RECEIVE_PENDING_ORDER,
+  REQUEST_PENDING_ORDER,
+  DELETED_FROM_CART,
+  DELETE_FROM_CART,
+  RECEIVE_CHECKOUT, 
+  REQUEST_CHECKOUT,
+  RECEIVE_ADD_T0_CART,
+  REQUEST_ADD_TO_CART
 } from "./ActionTypes";
 
 import {
   requestMembershipPayment,
-  requestSelectedMemberships,
-  requestTransactionUpdate
+  addMembershipToCart,
+  requestTransactionUpdate,
+  requestCheckout,
+  requestPendingOrder,requestDeleteFromCart
 } from "../apis/apiRequests";
 
 import {
@@ -23,16 +30,16 @@ import {
   requestSuccess
 } from "./index";
 
-export const requestChoosenMembership = () => {
+export const addToCart = () => {
   return dispatch => {
-    dispatch(makeRequest(FIND_CHOOSEN_MEMBERSHIP));
-    requestSelectedMemberships().then(
+    dispatch(makeRequest(REQUEST_ADD_TO_CART));
+    addMembershipToCart().then(
       response => {
-        dispatch(requestSuccess(CHOOSEN_MEMBERSHIP_FOUND, response.data));
+        dispatch(requestSuccess(RECEIVE_ADD_T0_CART, response.data));
         dispatch(createMessage({ successMsg: "Membership selected" }));
       },
       error => {
-        dispatch(dataRequestFail(FIND_MEMBERSHIP_ERROR, error.data));
+        dispatch(dataRequestFail(ERROR_ALERT, error.data));
         dispatch(createMessage({ errorMsg: "Payment failed" }));
       }
     );
@@ -47,7 +54,7 @@ export const requestPayment = () => {
         dispatch(requestSuccess(PAYMENT_SUCCESS, response.data));
         localStorage.setItem("subscriptionId", response.data.subscription_id);
         setTimeout(function() {
-          dispatch(requestUpdate());
+          dispatch(updateTranscation());
         }, 500);
       },
       error => {
@@ -58,7 +65,7 @@ export const requestPayment = () => {
   };
 };
 
-export const requestUpdate = () => {
+export const updateTranscation = () => {
   return dispatch => {
     dispatch(makeRequest(UPDATE_TRANSCATION));
     requestTransactionUpdate().then(
@@ -71,6 +78,71 @@ export const requestUpdate = () => {
       error => {
         dispatch(createMessage({ successMsg: error.message }));
         dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
+      }
+    );
+  };
+};
+
+export const getPendingOrder = () => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_PENDING_ORDER));
+    requestPendingOrder().then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_PENDING_ORDER, response));
+        dispatch(createMessage({ successMsg: response.data.message }));
+      },
+      error => {
+        dispatch(createMessage({ successMsg: error.message }));
+        dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
+      }
+    );
+  };
+};
+
+export const getCheckout = () => {
+  return dispatch => {
+    dispatch(makeRequest(check));
+    requestCheckout().then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_PENDING_ORDER, response));
+        dispatch(createMessage({ successMsg: response.data.message }));
+      },
+      error => {
+        dispatch(createMessage({ successMsg: error.message }));
+        dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
+      }
+    );
+  };
+};
+
+export const getCheckout = () => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_CHECKOUT));
+    requestCheckout().then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_CHECKOUT, response));
+        dispatch(createMessage({ successMsg: response.data.message }));
+      },
+      error => {
+        dispatch(createMessage({ successMsg: error.message }));
+        dispatch(dataRequestFail(ERROR_ALERT, error));
+      }
+    );
+  };
+};
+
+
+export const deleteFromCart = () => {
+  return dispatch => {
+    dispatch(makeRequest(DELETE_FROM_CART));
+    requestDeleteFromCart().then(
+      response => {
+        dispatch(requestSuccess(DELETED_FROM_CART, response));
+        dispatch(createMessage({ successMsg: response.data.message }));
+      },
+      error => {
+        dispatch(createMessage({ successMsg: error.message }));
+        dispatch(dataRequestFail(ERROR_ALERT, error));
       }
     );
   };

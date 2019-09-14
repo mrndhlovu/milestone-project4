@@ -12,7 +12,9 @@ import {
   getMembershipType,
   getTransactionUpdate,
   getChoosenMembership
-} from "../constants/constants";
+} from "../utils/appUtils";
+
+const selectedMembership = localStorage.getItem("selectedMembership");
 
 export async function requestTicketsList() {
   return axios.get(`${getRootUrl}/tickets/`);
@@ -50,11 +52,21 @@ export async function requestCancelSubsricption() {
   );
 }
 
-export async function requestSelectedMemberships() {
-  const selectedMembership = localStorage.getItem("selectedMembership");
-
+export async function addMembershipToCart() {
   return axios.post(
-    `${getRootUrl}/memberships/select/`,
+    `${getRootUrl}/memberships/add-to-cart/`,
+    getMembershipType(selectedMembership),
+    authQueryParams
+  );
+}
+
+const removeParams = {
+  membership_type: "pro"
+};
+
+export async function requestRemoveMembership() {
+  return axios.post(
+    `${getRootUrl}/memberships/remove/`,
     getMembershipType(selectedMembership),
     authQueryParams
   );
@@ -76,6 +88,26 @@ export async function requestTransactionUpdate() {
   return axios.post(
     `${getRootUrl}/memberships/update-transaction/`,
     getTransactionUpdate(),
+    params
+  );
+}
+
+export async function requestCheckout() {
+  params.headers["Authorization"] = `Token ${SESSION_TOKEN}`;
+
+  return axios.post(
+    `${getRootUrl}/memberships/checkout/`,
+    getMembershipType(selectedMembership),
+    params
+  );
+}
+
+export async function requestPendingOrder() {
+  params.headers["Authorization"] = `Token ${SESSION_TOKEN}`;
+
+  return axios.post(
+    `${getRootUrl}/memberships/pending-order/`,
+    getMembershipType(selectedMembership),
     params
   );
 }
