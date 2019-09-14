@@ -37,13 +37,8 @@ export const hasProMembership = () => {
 };
 export const isAuthenticated = () => {
   const token = localStorage.getItem("sessionToken");
-  const hasMembership = getUser();
-  return (
-    hasMembership &&
-    hasMembership.currentMembership &&
-    hasMembership.userId &&
-    token
-  );
+
+  return getUser() && getUser().currentMembership && getUser().userId && token;
 };
 
 export const destroyLocalStorage = () => window.localStorage.clear();
@@ -66,3 +61,55 @@ export const createUserProfile = (
 };
 
 export const refresh = () => window.location.reload();
+
+export const capitalizeFirstLetter = string =>
+  string.charAt(0).toUpperCase() + string.slice(1);
+
+export const getTransactionUpdate = () => {
+  const subscriptionId = localStorage.getItem("subscriptionId");
+  const selectedMembership = localStorage.getItem("selectedMembership");
+
+  return {
+    subscription_id: `${subscriptionId}`,
+    membership_type: `${selectedMembership}`
+  };
+};
+
+export const getChoosenMembership = () => {
+  const token = localStorage.getItem("stripeToken");
+  const selectedMembership = localStorage.getItem("selectedMembership");
+
+  return {
+    membership_type: `${selectedMembership}`,
+    stripeToken: `${token}`
+  };
+};
+
+export const getMembershipType = type => {
+  return {
+    membership_type: `${type}`
+  };
+};
+
+export const getFormatedDate = rawDate => {
+  const date = new Date(rawDate);
+
+  return (
+    date.getFullYear() +
+    "-" +
+    ("0" + (date.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + date.getDate()).slice(-2) +
+    " " +
+    ("0" + date.getHours()).slice(-2) +
+    ":" +
+    ("0" + date.getMinutes()).slice(-2)
+  );
+};
+
+export const slugify = text => {
+  return text
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+};

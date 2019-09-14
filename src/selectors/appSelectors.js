@@ -14,3 +14,5 @@ export const getVotes = state => state.vote;
 
 export const getMemberships = state => state.memberships.membershipList;
 export const getMembershipProfile = state => state.userProfile.profile;
+
+export const getCheckout = state => state.getCheckout;

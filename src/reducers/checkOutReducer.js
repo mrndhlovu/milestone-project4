@@ -5,55 +5,40 @@ import {
   TRANSCATION_UPDATE_FAIL,
   TRANSCATION_UPDATED,
   UPDATE_TRANSCATION,
-  CHOOSEN_MEMBERSHIP_FOUND,
-  FIND_MEMBERSHIP_ERROR,
-  FIND_CHOOSEN_MEMBERSHIP
+  ERROR_ALERT,
+  RECEIVE_PENDING_ORDER,
+  REQUEST_PENDING_ORDER,
+  DELETED_FROM_CART,
+  DELETE_FROM_CART,
+  RECEIVE_CHECKOUT,
+  REQUEST_CHECKOUT,
+  RECEIVE_ADD_T0_CART,
+  REQUEST_ADD_TO_CART
 } from "../actions/ActionTypes";
 
-import { checkObjectUpdate } from "../utils/checkObjectUpdate";
+import { INITIAL_STATE } from "../constants/constants";
+import {
+  hasError,
+  fetchingData,
+  dataReceived
+} from "../utils/appCheckoutUtils";
 
-const initialState = {
-  data: {},
-  dataReceived: false,
-  hasError: false,
-  isLoading: false
-};
-
-const fetchingData = (state, action) => {
-  return checkObjectUpdate(state, {
-    data: {},
-    dataReceived: false,
-    hasError: false,
-    isLoading: true
-  });
-};
-
-const hasError = (state, action) => {
-  return checkObjectUpdate(state, {
-    data: {},
-    dataReceived: false,
-    hasError: true,
-    isLoading: false
-  });
-};
-
-const dataReceived = (state, action) => {
-  return {
-    data: action.payload,
-    dataReceived: true,
-    hasError: false,
-    isLoading: false
-  };
-};
-
-export default function(state = initialState, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FIND_CHOOSEN_MEMBERSHIP || SUBMITTING_PAYMENT || UPDATE_TRANSCATION:
+    case REQUEST_ADD_TO_CART || DELETE_FROM_CART || REQUEST_PENDING_ORDER:
       return fetchingData(state, action);
-    case TRANSCATION_UPDATE_FAIL || PAYMENT_FAIL || FIND_MEMBERSHIP_ERROR:
+
+    case UPDATE_TRANSCATION || SUBMITTING_PAYMENT || REQUEST_CHECKOUT:
+      return fetchingData(state, action);
+    case TRANSCATION_UPDATE_FAIL || PAYMENT_FAIL || ERROR_ALERT:
       return hasError(state, action);
-    case TRANSCATION_UPDATED || PAYMENT_SUCCESS || CHOOSEN_MEMBERSHIP_FOUND:
+
+    case TRANSCATION_UPDATED || PAYMENT_SUCCESS || RECEIVE_CHECKOUT:
       return dataReceived(state, action);
+
+    case RECEIVE_PENDING_ORDER || DELETED_FROM_CART || RECEIVE_ADD_T0_CART:
+      return dataReceived(state, action);
+
     default:
       return state;
   }
