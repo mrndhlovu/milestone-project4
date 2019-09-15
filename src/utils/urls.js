@@ -23,3 +23,18 @@ export const queryParams = {
     "Content-Type": "application/json"
   }
 };
+
+export const getPageId = () => {
+  const location = window.location.pathname.slice(1);
+  return location === "" ? "home" : location;
+};
+
+export const getRedirectParam = membership => {
+  let location = getPageId();
+
+  if (location === "pricing" && membership !== "pro") {
+    return "/signup";
+  } else {
+    return "/cart";
+  }
+};
