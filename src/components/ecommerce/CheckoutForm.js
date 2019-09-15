@@ -23,12 +23,6 @@ class CheckoutForm extends Component {
     this.clickedSubmit = this.clickedSubmit.bind(this);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const { token } = this.state;
-  //   if (prevProps.token !== token) {
-  //   }
-  // }
-
   clickedSubmit() {
     const { stripe } = this.props;
     stripe &&
