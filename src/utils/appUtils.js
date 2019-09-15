@@ -1,12 +1,5 @@
 import { MEMBERSHIP_OPTIONS, USER_PROFILE } from "../constants/constants";
 
-export const getPageId = () => {
-  const location = window.location.pathname.slice(1);
-  const pageId = location === "" ? "home" : location;
-
-  return pageId;
-};
-
 export const getSelectedMemberShip = choice => {
   let selectedMembership;
 
@@ -73,6 +66,14 @@ export const getTransactionUpdate = () => {
     subscription_id: `${subscriptionId}`,
     membership_type: `${selectedMembership}`
   };
+};
+
+export const getCurrentMembership = () => {
+  const membership = localStorage.getItem("currentMembership");
+
+  if (membership === "pro") return "pro";
+  else if (membership === "free") return "free";
+  else return "guest";
 };
 
 export const getChoosenMembership = () => {
