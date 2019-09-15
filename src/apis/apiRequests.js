@@ -14,7 +14,9 @@ import {
   getChoosenMembership
 } from "../utils/appUtils";
 
-const selectedMembership = localStorage.getItem("selectedMembership");
+import { getCartItems } from "../utils/appCheckoutUtils";
+
+const cartItem = getCartItems();
 
 export async function requestTicketsList() {
   return axios.get(`${getRootUrl}/tickets/`);
@@ -55,7 +57,7 @@ export async function requestCancelSubsricption() {
 export async function addMembershipToCart() {
   return axios.post(
     `${getRootUrl}/memberships/add-to-cart/`,
-    getMembershipType(selectedMembership),
+    getMembershipType(cartItem),
     authQueryParams
   );
 }
@@ -63,9 +65,13 @@ export async function addMembershipToCart() {
 export async function deleteMembershipFromCart() {
   return axios.post(
     `${getRootUrl}/memberships/remove/`,
-    getMembershipType(selectedMembership),
+    getMembershipType(cartItem),
     authQueryParams
   );
+}
+
+export async function requestOrderItemDetail(id) {
+  return axios.get(`${getRootUrl}/memberships/types/${id}/`, authQueryParams);
 }
 
 export async function requestMembershipPayment() {
@@ -93,7 +99,7 @@ export async function requestCheckout() {
 
   return axios.post(
     `${getRootUrl}/memberships/checkout/`,
-    getMembershipType(selectedMembership),
+    getMembershipType(cartItem),
     params
   );
 }
@@ -103,7 +109,7 @@ export async function requestPendingOrder() {
 
   return axios.post(
     `${getRootUrl}/memberships/pending-order/`,
-    getMembershipType(selectedMembership),
+    getMembershipType(cartItem),
     params
   );
 }
