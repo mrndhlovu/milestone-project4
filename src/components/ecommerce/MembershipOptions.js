@@ -2,46 +2,26 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import {
-  unicornFreeServices,
-  unicornProServices
+  UNICORN_FREE_SERVICES,
+  UNICORN_PRO_SERVICES
 } from "../../constants/constants";
-
-import { CURRENT_MEMBERSHIP } from "../../constants/localStorageConstants";
-
-import { getSelectedMemberShip } from "../../utils/appUtils";
-
+import { getCurrentMembership } from "../../utils/appUtils";
 import { Button, Header, List, Segment } from "semantic-ui-react";
-
-const handleOptionClick = membershipOption => {
-  const membership = getSelectedMemberShip(membershipOption);
-
-  localStorage.setItem("selectedMembership", `${membership}`);
-};
-const currentMembership = CURRENT_MEMBERSHIP ? CURRENT_MEMBERSHIP : "free";
 
 export const MembershipOptions = ({
   memberships,
-  isAuthenticated,
-  membershipChoice
+  membershipChoice,
+  handleAddToCart,
+  buttonTextPro,
+  buttonTextFree,
+  buttonDisabled,
+  redirectParam
 }) => {
   return memberships.map(membership => {
     const { price, id, slug } = membership;
-
-    const buttonText =
-      currentMembership === slug
-        ? isAuthenticated
-          ? "Your current membership"
-          : "Free Signup"
-        : isAuthenticated
-        ? "Upgrade your membership"
-        : "Unicorn Pro";
-    const buttonColor = currentMembership === slug ? "blue" : "orange";
-    const redirectUrl =
-      currentMembership === slug
-        ? isAuthenticated
-          ? "/pricing"
-          : "/signup"
-        : "/cart";
+    const isNotProMember = slug !== "pro";
+    const buttonText = isNotProMember ? buttonTextFree : buttonTextPro;
+    const buttonColor = isNotProMember ? "blue" : "orange";
     const header = `Unicorn ${slug}`;
 
     return (
@@ -49,11 +29,11 @@ export const MembershipOptions = ({
         <Header
           as="h2"
           attached="top"
-          color={currentMembership === slug ? "blue" : "orange"}
+          color={isNotProMember ? "blue" : "orange"}
           textAlign="center"
           content={header.toUpperCase()}
           subheader={
-            currentMembership === slug
+            isNotProMember
               ? `$ ${price} Per / month`
               : `$ ${price} Per User / month`
           }
@@ -62,24 +42,20 @@ export const MembershipOptions = ({
         <div>
           <Segment>
             <List>
-              {CURRENT_MEMBERSHIP === slug
-                ? membershipChoice(unicornFreeServices)
-                : membershipChoice(unicornProServices)}
+              {isNotProMember
+                ? membershipChoice(UNICORN_FREE_SERVICES)
+                : membershipChoice(UNICORN_PRO_SERVICES)}
             </List>
           </Segment>
         </div>
         <Button
-          attached="bottom"
-          content={buttonText.toUpperCase()}
           as={NavLink}
-          to={redirectUrl}
+          to={redirectParam === "" ? "/pricing" : redirectParam}
+          attached="bottom"
+          disabled={slug === getCurrentMembership() && buttonDisabled}
+          content={buttonText.toUpperCase()}
           color={buttonColor}
-          onClick={() =>
-            handleOptionClick(
-              CURRENT_MEMBERSHIP === slug ? CURRENT_MEMBERSHIP : "pro",
-              redirectUrl
-            )
-          }
+          onClick={() => handleAddToCart(slug, id)}
         />
       </Segment>
     );
