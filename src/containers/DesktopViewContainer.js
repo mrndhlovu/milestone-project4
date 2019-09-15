@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 import { Responsive, Segment, Visibility } from "semantic-ui-react";
 
-import DesktopNav from "../components/navigation/DesktopNav";
+import DesktopNavContainer from "../containers/DesktopNavContainer";
 
 const getWidth = () => {
   const isSSR = typeof window === "undefined";
@@ -28,7 +28,7 @@ class DesktopViewContainer extends Component {
           onBottomPassedReverse={this.hideFixedMenu}
         >
           <Segment textAlign="center" inverted vertical>
-            <DesktopNav />
+            <DesktopNavContainer />
           </Segment>
         </Visibility>
 
