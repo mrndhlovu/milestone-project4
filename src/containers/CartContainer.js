@@ -35,7 +35,6 @@ export class CartContainer extends Component {
 
   componentDidMount() {
     const id = getMembershipId();
-    console.log(id);
 
     if (id !== null) {
       this.props.getOrderDetail(id);
