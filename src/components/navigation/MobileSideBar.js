@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
-import { navLinkText } from "../../constants/constants";
+import { NAVIGATION_LINKS } from "../../constants/constants";
 import { logOut } from "../../actions/AuthActions";
 
 const StyledSpan = styled.span`
@@ -70,8 +70,8 @@ export class MobileSideBar extends Component {
   }
 
   renderNavigationLinks() {
-    return Object.keys(navLinkText).map(index => {
-      const { header, key } = navLinkText[index];
+    return Object.keys(NAVIGATION_LINKS).map(index => {
+      const { header, key } = NAVIGATION_LINKS[index];
 
       return (
         <Menu.Item
