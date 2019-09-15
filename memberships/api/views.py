@@ -1,4 +1,4 @@
-from .serializers import MembershipSerializer, MembershipProfileSerializer
+from .serializers import MembershipSerializer, SubscribedUserProfileSerializer, MembershipOrderSerializer
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -48,15 +48,19 @@ def get_user_profile(request):
 
 
 def get_pending_order(request):
+    print(request)
+
+    selected_membership = get_selected_membership(request).id
+
     order = UserMembership.objects.filter(
-        user=request.user, is_member=False)
+        membership=selected_membership, is_member=False).values('id', 'stripe_customer_id', 'is_member', 'membership', 'subscription', 'user_id')
     if order.exists():
         return order[0]
     return 0
 
 
 class MembershipAddToCart(ListAPIView):
-    serializer_class = MembershipSerializer
+    serializer_class = MembershipOrderSerializer
     queryset = Membership.objects.all()
     permissions._classes = [
         permissions.AllowAny,
@@ -128,7 +132,32 @@ class MembershipDeleteFromCart(ListAPIView):
             return JsonResponse(context, status=404)
 
 
-class MembershipPendingOrder(ListAPIView):
+class MembershipFetchCart(ListAPIView):
+    serializer_class = MembershipSerializer
+    queryset = Membership.objects.all()
+    permissions._classes = [
+        permissions.AllowAny,
+    ]
+
+    def post(self, request, **kwargs):
+
+        request_data = json.loads(request.body.decode('utf-8'))
+        try:
+            cart_item = get_pending_order(request_data)
+
+            context = {
+                'order_item': cart_item,
+            }
+
+            return JsonResponse(context, status=200)
+        except:
+            context = {
+                'message': 'You have no active order in your cart',
+            }
+            return JsonResponse(context, status=404)
+
+
+class MembershipPendingOrderApi(ListAPIView):
     serializer_class = MembershipSerializer
     queryset = Membership.objects.all()
     permissions._classes = [
@@ -138,35 +167,16 @@ class MembershipPendingOrder(ListAPIView):
     def post(self, request, **kwargs):
         request_data = json.loads(request.body.decode('utf-8'))
 
-        order_pending = get_pending_order(request)
+        pending_order = get_pending_order(request_data)
 
         context = {
-            'order': str(order_pending)
+            'order_item': pending_order
         }
 
         return JsonResponse(context, status=200)
 
 
-class MembershipCheckoutOrder(ListAPIView):
-    serializer_class = MembershipSerializer
-    queryset = Membership.objects.all()
-    permissions._classes = [
-        permissions.AllowAny,
-    ]
-
-    def post(self, request, **kwargs):
-        request_data = json.loads(request.body.decode('utf-8'))
-
-        order_pending = get_pending_order(request)
-
-        context = {
-            'order': str(order_pending)
-        }
-
-        return JsonResponse(context, status=200)
-
-
-class MembershipCheckoutView(ListAPIView):
+class MembershipCartCheckoutApi(ListAPIView):
     serializer_class = MembershipSerializer
     queryset = Membership.objects.all()
     permissions._classes = [
@@ -256,22 +266,6 @@ class MembershipTransactionUpdateView(ListAPIView):
         return JsonResponse(context, status=200, safe=False)
 
 
-class MembershipTypesAPI(ListAPIView):
-    permissions._classes = [
-        permissions.AllowAny,
-    ]
-    serializer_class = MembershipSerializer
-    queryset = Membership.objects.all()
-
-
-class MembershipsProfileAPI(ListAPIView):
-    permissions._classes = [
-        permissions.AllowAny,
-    ]
-    serializer_class = MembershipProfileSerializer
-    queryset = Subscription.objects.all()
-
-
 class CancelSubscriptionAPI(ListAPIView):
     permissions._classes = [
         permissions.AllowAny,
@@ -312,3 +306,27 @@ class CancelSubscriptionAPI(ListAPIView):
         }
 
         return JsonResponse(context, status=200, safe=False)
+
+
+class MembershipTypesAPI(ListAPIView):
+    permissions._classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = MembershipSerializer
+    queryset = Membership.objects.all()
+
+
+class MembershipTypesRetriveAPI(RetrieveAPIView):
+    permissions._classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = MembershipSerializer
+    queryset = Membership.objects.all()
+
+
+class SubscribedUserRetrieveAPI(RetrieveAPIView):
+    permissions._classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = SubscribedUserProfileSerializer
+    queryset = Subscription.objects.all()
