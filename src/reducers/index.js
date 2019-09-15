@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import authReducer from "./authReducer";
 import checkOutReducer from "./checkOutReducer";
+import checkoutOrderDetailReducer from "./checkoutOrderDetailReducer";
 import commentsReducer from "./commentsReducer";
 import createTicketReducer from "./createTicketReducer";
 import editTicketReducer from "./editTicketReducer";
@@ -17,6 +18,7 @@ import userReducer from "./userReducer";
 export default combineReducers({
   auth: authReducer,
   checkOut: checkOutReducer,
+  checkoutDetail: checkoutOrderDetailReducer,
   comments: commentsReducer,
   errorAlert: errorsReducer,
   form: formReducer,
