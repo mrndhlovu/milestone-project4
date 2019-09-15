@@ -5,13 +5,13 @@ export const StyledContainerWrapper = styled(Container)`
   padding-top: 1.5rem;
 `;
 
-export const unicornFreeServices = [
+export const UNICORN_FREE_SERVICES = [
   "View Tickets",
   "Make donations",
   "View bugs and features status"
 ];
 
-export const unicornProServices = [
+export const UNICORN_PRO_SERVICES = [
   "Make donations",
   "View bugs and features status",
   "View tickets",
@@ -21,7 +21,7 @@ export const unicornProServices = [
   "Blog access"
 ];
 
-export const navLinkText = [
+export const NAVIGATION_LINKS = [
   { header: "Home", key: "home" },
   { header: "Products", key: "products" },
   { header: "Pricing", key: "pricing" },
