@@ -2,7 +2,7 @@ import React from "react";
 
 import styled from "styled-components";
 
-import { getNetPrice } from "../../utils/appCheckoutUtils";
+import { getNetPrice, getTotal } from "../../utils/appCheckoutUtils";
 
 import {
   List,
@@ -21,7 +21,7 @@ const SytledContainer = styled(Container)`
 const styles = { paddingTop: 0, fontSize: 11, color: "#f2711c" };
 
 export const CartItem = ({
-  total,
+  data: { price },
   header,
   description,
   handleClick,
@@ -30,10 +30,10 @@ export const CartItem = ({
   cancelTranscation
 }) => {
   const renderDescription = () => {
-    return description.map((element, index) => {
+    return Object.keys(description).map((element, index) => {
       return (
         <List as="ul" key={index}>
-          <List.Item as="li">{element}</List.Item>
+          <List.Item as="li">{description[element]}</List.Item>
         </List>
       );
     });
@@ -46,11 +46,11 @@ export const CartItem = ({
           <Accordion.Title active={true} onClick={() => handleClick()}>
             <List.Content floated="right" as="a" style={styles}>
               <Icon
-                name={isOpen ? "minus" : "add"}
+                name={!isOpen ? "minus" : "add"}
                 size="small"
                 floated="right"
               />
-              <span>{isOpen ? "Hide" : "Show"} Details</span>
+              <span>{!isOpen ? "Hide" : "Show"} Details</span>
             </List.Content>
             <span>{header}</span>
           </Accordion.Title>
@@ -62,7 +62,7 @@ export const CartItem = ({
             <List.Item>
               {showDeleteButton && (
                 <List.Content floated="right" as="a">
-                  <Icon name="cancel" onClick={() => cancelTranscation()} />
+                  <Icon name="cancel" onClick={cancelTranscation()} />
                 </List.Content>
               )}
 
@@ -71,15 +71,13 @@ export const CartItem = ({
               )}
               <Divider />
               <List.Content floated="right">
-                <List.Header>€ {getNetPrice(total)}</List.Header>
+                <List.Header>€ {getNetPrice(price)}</List.Header>
               </List.Content>
 
               <List.Content>Net Price</List.Content>
               <Divider />
               <List.Content floated="right">
-                <List.Header>
-                  € {total - getNetPrice(total).toFixed(2)}
-                </List.Header>
+                <List.Header>€ {getTotal(price)}</List.Header>
               </List.Content>
               <List.Content>Vat(9%)</List.Content>
             </List.Item>
@@ -88,7 +86,7 @@ export const CartItem = ({
       </List.Content>
       <List floated="right" horizontal>
         <Segment>
-          <Header as="h5">Total: € {total}</Header>
+          <Header as="h5">Total: € {price}</Header>
         </Segment>
       </List>
     </List.Item>
