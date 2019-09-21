@@ -43,7 +43,11 @@ export async function requestMembershipsList() {
 }
 
 export async function requestUserMembershipsProfile() {
-  return axios.get(`${getRootUrl}/memberships/user-profile/`, authQueryParams);
+  return axios.post(
+    `${getRootUrl}/memberships/member-profile/`,
+    null,
+    authQueryParams
+  );
 }
 
 export async function requestCancelSubsricption() {
@@ -57,7 +61,7 @@ export async function requestCancelSubsricption() {
 export async function addMembershipToCart() {
   return axios.post(
     `${getRootUrl}/memberships/add-to-cart/`,
-    getMembershipType(cartItem),
+    getMembershipType(),
     authQueryParams
   );
 }
