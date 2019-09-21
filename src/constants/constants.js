@@ -46,8 +46,14 @@ export const USER_PROFILE = {
 };
 
 export const INITIAL_STATE = {
-  data: {},
+  data: [],
   dataReceived: false,
   hasError: false,
   isLoading: false
+};
+
+export const AUTH_INITIAL_STATE = {
+  hasError: false,
+  isLoading: false,
+  isAuthenticated: false
 };

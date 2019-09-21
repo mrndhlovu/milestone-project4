@@ -2,38 +2,18 @@ import {
   RECEIVE_MEMBERSHIPS_LIST,
   FETCHING_MEMBERSHIPS,
   REQUEST_CANCEL_SUBSCRIPTION,
-  RECEIVE_SUBSCRIPTION_CANCELED
+  RECEIVE_SUBSCRIPTION_CANCELED,
+  FETCH_MEMBERSHIPS_ERROR,
+  CANCEL_SUBSCRIPTION_ERROR
 } from "../actions/ActionTypes";
 
-import { checkObjectUpdate } from "../utils/checkObjectUpdate";
+import { INITIAL_STATE } from "../constants/constants";
+import { hasError, fetchingData, dataReceived } from "../utils/appReducersUtil";
 
-const initialState = {
-  membershipList: [],
-  dataReceived: false,
-  hasError: false,
-  isLoading: false
-};
-
-const fetchingData = (state, action) => {
-  return checkObjectUpdate(state, {
-    membershipList: [],
-    dataReceived: false,
-    hasError: false,
-    isLoading: true
-  });
-};
-
-const dataReceived = (state, action) => {
-  return {
-    membershipList: action.payload,
-    dataReceived: true,
-    hasError: false,
-    isLoading: false
-  };
-};
-
-export default function(state = initialState, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case CANCEL_SUBSCRIPTION_ERROR || FETCH_MEMBERSHIPS_ERROR:
+      return hasError(state, action);
     case REQUEST_CANCEL_SUBSCRIPTION || FETCHING_MEMBERSHIPS:
       return fetchingData(state, action);
     case RECEIVE_MEMBERSHIPS_LIST || RECEIVE_SUBSCRIPTION_CANCELED:

@@ -1,50 +1,17 @@
 import {
   RECEIVE_TICKET,
-  ERROR_ALERT,
+  TICKET_DETAIL_ERROR,
   CREATE_TICKET
 } from "../actions/ActionTypes";
 
-import { checkObjectUpdate } from "../utils/checkObjectUpdate";
+import { INITIAL_STATE } from "../constants/constants";
+import { hasError, fetchingData, dataReceived } from "../utils/appReducersUtil";
 
-const initialState = {
-  ticketsList: [],
-  dataReceived: false,
-  hasError: false,
-  isLoading: false
-};
-
-const createTicket = (state, action) => {
-  return checkObjectUpdate(state, {
-    ticketsList: [],
-    dataReceived: false,
-    hasError: false,
-    isLoading: true
-  });
-};
-
-const hasError = (state, action) => {
-  return checkObjectUpdate(state, {
-    ticketsList: [],
-    dataReceived: false,
-    hasError: true,
-    isLoading: false
-  });
-};
-
-const dataReceived = (state, action) => {
-  return {
-    ticketsList: action.payload,
-    dataReceived: true,
-    hasError: false,
-    isLoading: false
-  };
-};
-
-export default function(state = initialState, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case CREATE_TICKET:
-      return createTicket(state, action);
-    case ERROR_ALERT:
+      return fetchingData(state, action);
+    case TICKET_DETAIL_ERROR:
       return hasError(state, action);
     case RECEIVE_TICKET:
       return dataReceived(state, action);

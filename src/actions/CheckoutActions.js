@@ -15,7 +15,11 @@ import {
   REQUEST_ADD_TO_CART,
   REQUEST_ORDER_DETAIL,
   RECEIVE_ORDER_DETAIL,
-  ERROR_ALERT
+  ADD_T0_CART_ERROR,
+  ORDER_DETAIL_ERROR,
+  PENDING_ORDER_ERROR,
+  CHECKOUT_ERROR,
+  DELETED_FROM_CART_ERROR
 } from "./ActionTypes";
 
 import {
@@ -41,10 +45,10 @@ export const addToCart = () => {
     addMembershipToCart().then(
       response => {
         dispatch(requestSuccess(RECEIVE_ADD_T0_CART, response.data));
-        dispatch(createMessage({ successMsg: "Membership selected" }));
+        dispatch(createMessage({ successMsg: response.data.message }));
       },
       error => {
-        dispatch(dataRequestFail(ERROR_ALERT, error.data));
+        dispatch(dataRequestFail(ADD_T0_CART_ERROR, error.data));
         dispatch(createMessage({ errorMsg: "Payment failed" }));
       }
     );
@@ -63,7 +67,7 @@ export const requestPayment = () => {
         }, 500);
       },
       error => {
-        dispatch(createMessage({ successMsg: error.message }));
+        dispatch(createMessage({ errorMsg: error.message }));
         dispatch(dataRequestFail(PAYMENT_FAIL, error));
       }
     );
@@ -79,9 +83,10 @@ export const updateTranscation = () => {
         dispatch(createMessage({ successMsg: response.data.message }));
         localStorage.removeItem("subscriptionId");
         localStorage.removeItem("stripeToken");
+        localStorage.removeItem("cart");
       },
       error => {
-        dispatch(createMessage({ successMsg: error.message }));
+        dispatch(createMessage({ errorMsg: error.message }));
         dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
       }
     );
@@ -94,11 +99,10 @@ export const getPendingOrder = () => {
     requestPendingOrder().then(
       response => {
         dispatch(requestSuccess(RECEIVE_PENDING_ORDER, response.data));
-        dispatch(createMessage({ successMsg: response.data.message }));
       },
       error => {
-        dispatch(createMessage({ successMsg: error.message }));
-        dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
+        dispatch(createMessage({ errorMsg: error.message }));
+        dispatch(dataRequestFail(PENDING_ORDER_ERROR, error));
       }
     );
   };
@@ -113,8 +117,8 @@ export const getCheckout = () => {
         dispatch(createMessage({ successMsg: response.data.message }));
       },
       error => {
-        dispatch(createMessage({ successMsg: error.message }));
-        dispatch(dataRequestFail(ERROR_ALERT, error));
+        dispatch(createMessage({ errorMsg: error.message }));
+        dispatch(dataRequestFail(CHECKOUT_ERROR, error));
       }
     );
   };
@@ -131,7 +135,7 @@ export const deleteFromCart = () => {
       },
       error => {
         dispatch(createMessage({ successMsg: error.message }));
-        dispatch(dataRequestFail(ERROR_ALERT, error));
+        dispatch(dataRequestFail(DELETED_FROM_CART_ERROR, error));
       }
     );
   };
@@ -143,11 +147,10 @@ export const getOrderDetail = id => {
     requestOrderItemDetail(id).then(
       response => {
         dispatch(requestSuccess(RECEIVE_ORDER_DETAIL, response.data));
-        dispatch(createMessage({ successMsg: response.data.message }));
       },
       error => {
         dispatch(createMessage({ successMsg: error.message }));
-        dispatch(dataRequestFail(ERROR_ALERT, error));
+        dispatch(dataRequestFail(ORDER_DETAIL_ERROR, error));
       }
     );
   };

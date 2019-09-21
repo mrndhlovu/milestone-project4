@@ -2,56 +2,43 @@ import {
   USER_AUTH_FAIL,
   USER_AUTH_START,
   USER_AUTH_SUCCESS,
-  USER_AUTH_LOGOUT
+  USER_AUTH_LOGOUT,
+  REQUEST_LOGOUT,
+  LOGOUT_ERROR
 } from "../actions/ActionTypes";
+
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
+import { AUTH_INITIAL_STATE } from "../constants/constants";
 
-const initialState = {
-  hasError: false,
-  isLoading: false,
-  isAuthenticated: false
-};
-
-const authStart = (state, action) => {
+const makeRequest = (state, action) => {
   return checkObjectUpdate(state, {
-    hasError: false,
-    isLoading: true,
-    isAuthenticated: false
+    ...AUTH_INITIAL_STATE,
+    isLoading: true
   });
 };
 
-const logOut = (state, action) => {
+const hasError = (state, action) => {
   return checkObjectUpdate(state, {
-    isAuthenticated: false
+    ...AUTH_INITIAL_STATE,
+    hasError: true
   });
 };
 
-const authFail = (state, action) => {
+const requestSuccess = (state, action) => {
   return checkObjectUpdate(state, {
-    hasError: true,
-    isAuthenticated: false,
-    isLoading: false
-  });
-};
-
-const authSuccess = (state, action) => {
-  return checkObjectUpdate(state, {
-    hasError: false,
-    isLoading: false,
+    ...AUTH_INITIAL_STATE,
     isAuthenticated: true
   });
 };
 
-export default function(state = initialState, action) {
+export default function(state = AUTH_INITIAL_STATE, action) {
   switch (action.type) {
-    case USER_AUTH_FAIL:
-      return authFail(state, action);
-    case USER_AUTH_LOGOUT:
-      return logOut(state, action);
-    case USER_AUTH_START:
-      return authStart(state, action);
-    case USER_AUTH_SUCCESS:
-      return authSuccess(state, action.payload);
+    case USER_AUTH_FAIL || LOGOUT_ERROR:
+      return hasError(state, action);
+    case USER_AUTH_START || REQUEST_LOGOUT:
+      return makeRequest(state, action);
+    case USER_AUTH_SUCCESS || USER_AUTH_LOGOUT:
+      return requestSuccess(state, action.payload);
     default:
       return state;
   }

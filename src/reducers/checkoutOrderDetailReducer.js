@@ -1,19 +1,15 @@
 import {
-  ERROR_ALERT,
+  ORDER_DETAIL_ERROR,
   REQUEST_ORDER_DETAIL,
   RECEIVE_ORDER_DETAIL
 } from "../actions/ActionTypes";
 
 import { INITIAL_STATE } from "../constants/constants";
-import {
-  hasError,
-  fetchingData,
-  dataReceived
-} from "../utils/appCheckoutUtils";
+import { hasError, fetchingData, dataReceived } from "../utils/appReducersUtil";
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ERROR_ALERT:
+    case ORDER_DETAIL_ERROR:
       return hasError(state, action);
     case REQUEST_ORDER_DETAIL:
       return fetchingData(state, action);

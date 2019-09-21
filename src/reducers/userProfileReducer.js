@@ -1,32 +1,20 @@
 import {
   FETCH_MEMBER_PROFILE,
-  RECEIVE_MEMBER_PROFILE
+  RECEIVE_MEMBER_PROFILE,
+  MEMBER_PROFILE_ERROR
 } from "../actions/ActionTypes";
 
-import { checkObjectUpdate } from "../utils/checkObjectUpdate";
+import { INITIAL_STATE } from "../constants/constants";
+import { hasError, fetchingData, dataReceived } from "../utils/appReducersUtil";
 
-const initialState = {
-  profile: ""
-};
-
-const fetchingUserProfile = (state, action) => {
-  return checkObjectUpdate(state, {
-    profile: ""
-  });
-};
-
-const receivedUserProfile = (state, action) => {
-  return checkObjectUpdate(state, {
-    profile: action.payload
-  });
-};
-
-export default function(state = initialState, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_MEMBER_PROFILE:
-      return fetchingUserProfile(state, action);
+      return fetchingData(state, action);
     case RECEIVE_MEMBER_PROFILE:
-      return receivedUserProfile(state, action);
+      return dataReceived(state, action);
+    case MEMBER_PROFILE_ERROR:
+      return hasError(state, action);
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import {
-  RECEIVE_TICKETS_LIST,
-  FETCH_TICKET_LIST,
-  TICKETS_LIST_ERROR
+  RECEIVE_PENDING_ORDER,
+  REQUEST_PENDING_ORDER,
+  PENDING_ORDER_ERROR
 } from "../actions/ActionTypes";
 
 import { INITIAL_STATE } from "../constants/constants";
@@ -9,11 +9,11 @@ import { hasError, fetchingData, dataReceived } from "../utils/appReducersUtil";
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FETCH_TICKET_LIST:
+    case REQUEST_PENDING_ORDER:
       return fetchingData(state, action);
-    case TICKETS_LIST_ERROR:
+    case PENDING_ORDER_ERROR:
       return hasError(state, action);
-    case RECEIVE_TICKETS_LIST:
+    case RECEIVE_PENDING_ORDER:
       return dataReceived(state, action);
     default:
       return state;

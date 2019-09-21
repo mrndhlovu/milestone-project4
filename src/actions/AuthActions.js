@@ -8,7 +8,9 @@ import {
   REQUEST_SIGNUP,
   REQUEST_LOGIN,
   FETCH_MEMBER_PROFILE,
-  RECEIVE_MEMBER_PROFILE
+  RECEIVE_MEMBER_PROFILE,
+  FETCH_USER_ERROR,
+  MEMBER_PROFILE_ERROR
 } from "./ActionTypes";
 
 import {
@@ -22,13 +24,12 @@ import {
 import {
   makeRequest,
   createMessage,
-  errorsAlert,
+  hasError,
   dataRequestFail,
   requestSuccess
 } from "./index";
 
 import {
-  getSelectedMemberShip,
   destroyLocalStorage,
   createUserProfile,
   refresh
@@ -77,7 +78,6 @@ export const startAuth = () => {
   return dispatch => {
     dispatch(authStart());
     dispatch(fetchUser());
-    dispatch(fetchUserProfile());
   };
 };
 
@@ -94,6 +94,7 @@ export const authState = () => {
     } else {
       dispatch(fetchUser());
       dispatch(fetchUserProfile());
+
       dispatch(requestSuccess(USER_AUTH_SUCCESS, SESSION_TOKEN));
 
       const sessionLifeSpan =
@@ -117,7 +118,8 @@ export const login = body => {
         refresh();
       },
       error => {
-        dispatch(errorsAlert(error));
+        console.log(error.response.data);
+        dispatch(createMessage({ errorMsg: error.response.data }));
         dispatch(dataRequestFail(USER_AUTH_FAIL, error));
       }
     );
@@ -157,16 +159,12 @@ export const signup = data => {
         dispatch(
           createMessage({ successMsg: "You have successfully signed up!" })
         );
-        dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
+        dispatch(hasError(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
         refresh();
       },
       error => {
-        const errors = {
-          errorAlert: error.response.data,
-          status: error.response.status
-        };
-        dispatch(errorsAlert(errors));
+        dispatch(createMessage({ errorMsg: error.response.data }));
         dispatch(dataRequestFail(USER_AUTH_FAIL, error));
       }
     );
@@ -182,14 +180,10 @@ export const fetchUser = () => {
         const { username, id, email, current_membership } = response.data;
         dispatch(requestSuccess(RECEIVED_USER, response.data));
         createUserProfile(username, id, email, current_membership);
-
-        localStorage.setItem(
-          "currentMembership",
-          getSelectedMemberShip(current_membership)
-        );
       },
       error => {
-        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
+        dispatch(createMessage({ errorMsg: error.response.data }));
+        dispatch(dataRequestFail(FETCH_USER_ERROR, error));
       }
     );
   };
@@ -200,10 +194,11 @@ export const fetchUserProfile = sessionToken => {
     dispatch(makeRequest(FETCH_MEMBER_PROFILE));
     requestUserMembershipsProfile(sessionToken).then(
       response => {
-        dispatch(requestSuccess(RECEIVE_MEMBER_PROFILE, response.data[0]));
+        dispatch(requestSuccess(RECEIVE_MEMBER_PROFILE, response.data));
       },
       error => {
-        dispatch(createMessage({ errorMsg: "Session expired, Login again!" }));
+        dispatch(createMessage({ errorMsg: error.response.data }));
+        dispatch(dataRequestFail(MEMBER_PROFILE_ERROR, error));
       }
     );
   };

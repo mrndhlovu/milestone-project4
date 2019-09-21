@@ -1,8 +1,8 @@
-import { GET_ERRORS } from "../actions/ActionTypes";
+import { HAS_ERROR } from "../actions/ActionTypes";
 
 import { checkObjectUpdate } from "../utils/checkObjectUpdate";
 
-const initialState = {
+const INITIAL_STATE = {
   alertMsg: {},
   status: ""
 };
@@ -14,9 +14,9 @@ const withErrorAlert = (state, action) => {
   });
 };
 
-export default function(state = initialState, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case GET_ERRORS:
+    case HAS_ERROR:
       return withErrorAlert(state, action);
     default:
       return state;

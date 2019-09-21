@@ -2,7 +2,9 @@ import {
   RECEIVE_MEMBERSHIPS_LIST,
   FETCHING_MEMBERSHIPS,
   RECEIVE_SUBSCRIPTION_CANCELED,
-  REQUEST_CANCEL_SUBSCRIPTION
+  REQUEST_CANCEL_SUBSCRIPTION,
+  CANCEL_SUBSCRIPTION_ERROR,
+  FETCH_MEMBERSHIPS_ERROR
 } from "./ActionTypes";
 
 import {
@@ -20,7 +22,7 @@ export const fetchMembershipsList = () => {
         dispatch(requestSuccess(RECEIVE_MEMBERSHIPS_LIST, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(FETCH_MEMBERSHIPS_ERROR, error));
       }
     );
   };
@@ -34,7 +36,7 @@ export const cancelSubscription = () => {
         dispatch(requestSuccess(RECEIVE_SUBSCRIPTION_CANCELED, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(CANCEL_SUBSCRIPTION_ERROR, error));
       }
     );
   };

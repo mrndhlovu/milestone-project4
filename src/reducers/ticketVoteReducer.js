@@ -1,50 +1,17 @@
 import {
   UPDATED_TICKET_VOTE,
   REQUEST_TICKET_VOTE,
-  ERROR_ALERT
+  TICKET_VOTE_ERROR
 } from "../actions/ActionTypes";
 
-import { checkObjectUpdate } from "../utils/checkObjectUpdate";
+import { INITIAL_STATE } from "../constants/constants";
+import { hasError, fetchingData, dataReceived } from "../utils/appReducersUtil";
 
-const initialState = {
-  voteStatus: {},
-  dataReceived: false,
-  hasError: false,
-  isLoading: false
-};
-
-const fetchingData = (state, action) => {
-  return checkObjectUpdate(state, {
-    voteStatus: {},
-    dataReceived: false,
-    hasError: false,
-    isLoading: true
-  });
-};
-
-const hasError = (state, action) => {
-  return checkObjectUpdate(state, {
-    voteStatus: {},
-    dataReceived: false,
-    hasError: true,
-    isLoading: false
-  });
-};
-
-const dataReceived = (state, action) => {
-  return {
-    voteStatus: action.payload,
-    dataReceived: true,
-    hasError: false,
-    isLoading: false
-  };
-};
-
-export default function(state = initialState, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case REQUEST_TICKET_VOTE:
       return fetchingData(state, action);
-    case ERROR_ALERT:
+    case TICKET_VOTE_ERROR:
       return hasError(state, action);
     case UPDATED_TICKET_VOTE:
       return dataReceived(state, action);

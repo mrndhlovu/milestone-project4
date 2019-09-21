@@ -3,52 +3,20 @@ import {
   CREATED_COMMENT,
   CREATING_COMMENT,
   CREATING_REPLY,
-  ERROR_ALERT
+  REPLY_ERROR,
+  CREATE_COMMENT_ERROR
 } from "../actions/ActionTypes";
 
-import { checkObjectUpdate } from "../utils/checkObjectUpdate";
+import { INITIAL_STATE } from "../constants/constants";
+import { hasError, fetchingData, dataReceived } from "../utils/appReducersUtil";
 
-const initialState = {
-  dataReceived: false,
-  hasError: false,
-  isLoading: false
-};
-
-const fetchingData = (state, action) => {
-  return checkObjectUpdate(state, {
-    dataReceived: false,
-    hasError: false,
-    isLoading: true
-  });
-};
-
-const hasError = (state, action) => {
-  return checkObjectUpdate(state, {
-    dataReceived: false,
-    hasError: true,
-    isLoading: false
-  });
-};
-
-const dataReceived = (state, action) => {
-  return checkObjectUpdate(state, {
-    dataReceived: true,
-    hasError: false,
-    isLoading: false
-  });
-};
-
-export default function(state = initialState, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case CREATING_REPLY:
+    case CREATING_REPLY || CREATING_COMMENT:
       return fetchingData(state, action);
-    case CREATING_COMMENT:
-      return fetchingData(state, action);
-    case CREATED_COMMENT:
+    case CREATED_COMMENT || RECEIVED_REPLY:
       return dataReceived(state, action);
-    case RECEIVED_REPLY:
-      return dataReceived(state, action);
-    case ERROR_ALERT:
+    case CREATE_COMMENT_ERROR || REPLY_ERROR:
       return hasError(state, action);
     default:
       return state;

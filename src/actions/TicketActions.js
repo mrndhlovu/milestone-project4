@@ -14,7 +14,15 @@ import {
   TICKET_DELETED,
   REQUEST_TICKET_DELETE,
   CREATING_REPLY,
-  RECEIVED_REPLY
+  RECEIVED_REPLY,
+  TICKETS_LIST_ERROR,
+  CREATE_TICKET_ERROR,
+  TICKET_DETAIL_ERROR,
+  TICKET_UPDATE_ERROR,
+  DELETE_TICKET_ERROR,
+  TICKET_VOTE_ERROR,
+  REPLY_ERROR,
+  CREATE_COMMENT_ERROR
 } from "./ActionTypes";
 
 import {
@@ -44,7 +52,7 @@ export const fetchTicketsList = () => {
         dispatch(requestSuccess(RECEIVE_TICKETS_LIST, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(TICKETS_LIST_ERROR, error));
       }
     );
   };
@@ -58,7 +66,7 @@ export const createTicket = data => {
         dispatch(requestSuccess(RECEIVE_TICKET, response));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(CREATE_TICKET_ERROR, error));
       }
     );
   };
@@ -72,7 +80,7 @@ export const requestTicketsDetail = id => {
         dispatch(requestSuccess(RECEIVE_TICKET_DETAIL, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(TICKET_DETAIL_ERROR, error));
       }
     );
   };
@@ -87,7 +95,7 @@ export const updateTicket = (id, updates) => {
         dispatch(requestSuccess(RECEIVE_TICKET_UPDATE, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(TICKET_UPDATE_ERROR, error));
       }
     );
   };
@@ -102,7 +110,7 @@ export const deleteTicket = id => {
         dispatch(requestSuccess(TICKET_DELETED, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(DELETE_TICKET_ERROR, error));
       }
     );
   };
@@ -116,7 +124,7 @@ export const updatedTicketVote = id => {
         dispatch(requestSuccess(UPDATED_TICKET_VOTE, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(TICKET_VOTE_ERROR, error));
       }
     );
   };
@@ -130,7 +138,7 @@ export const createComment = id => {
         dispatch(requestSuccess(CREATED_COMMENT, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(CREATE_COMMENT_ERROR, error));
       }
     );
   };
@@ -144,7 +152,7 @@ export const createReply = id => {
         dispatch(requestSuccess(RECEIVED_REPLY, response.data));
       },
       error => {
-        dispatch(errorsAlert(error));
+        dispatch(errorsAlert(REPLY_ERROR, error));
       }
     );
   };
