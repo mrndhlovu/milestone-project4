@@ -11,7 +11,7 @@ import AppContainer from "./containers/AppContainer";
 import Alerts from "./utils/Alerts";
 
 const alertOptions = {
-  timeout: 6000,
+  timeout: 3000,
   position: "top center"
 };
 
@@ -20,14 +20,14 @@ class App extends Component {
     return (
       <Fragment>
         <Provider store={store}>
-          <AlertProvider template={AlertTemplate} {...alertOptions}>
-            <BrowserRouter>
+          <BrowserRouter>
+            <AlertProvider template={AlertTemplate} {...alertOptions}>
               <AppContainer>
                 <Alerts />
                 <BaseRouter />
               </AppContainer>
-            </BrowserRouter>
-          </AlertProvider>
+            </AlertProvider>
+          </BrowserRouter>
         </Provider>
       </Fragment>
     );
