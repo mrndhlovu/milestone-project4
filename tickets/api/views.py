@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from tickets.models import Ticket
 from comments.models import Comment
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 
 def get_ticket_owner(request):
@@ -22,22 +23,6 @@ class TicketListView(ListAPIView):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
-
-    def create(self, request, *args, **kwargs):
-
-        data = request.data.copy()
-
-        current_ticket_owner = get_ticket_owner(request)
-
-        data = request.data.copy()
-        data['owner'] = current_ticket_owner.id
-        data['username'] = current_ticket_owner.id
-
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class TicketDetailView(RetrieveAPIView):
@@ -80,25 +65,30 @@ class TicketVoteToggleAPIView(APIView):
 
     def get(self, request, id=None, format=None):
         id = self.kwargs.get('id')
-        obj = get_object_or_404(Ticket, id=id)
+        instance = get_object_or_404(Ticket, id=id)
         user = self.request.user
         updated = False
         voted = False
 
-        if user in obj.votes.all():
+        if user in instance.votes.all():
             voted = False
             updated = True
-            obj.votes.remove(user)
+            instance.votes.remove(user)
 
         else:
             voted = True
             updated = True
-            obj.votes.add(user)
+            instance.votes.add(user)
 
         data = {
             'voted': voted,
             'updated': updated,
         }
+
+        if instance.votes.count() >= 2:
+
+            instance.in_progress = True
+            instance.save()
 
         return Response(data)
 

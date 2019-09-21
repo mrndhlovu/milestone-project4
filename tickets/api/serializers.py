@@ -28,5 +28,6 @@ class TicketDetailSerializer(serializers.ModelSerializer):
         rep['username'] = instance.owner.username
         rep['votes'] = instance.votes.count()
         rep['comments'] = instance.comments
+        rep['views'] = instance.get_ticket_views
 
         return rep

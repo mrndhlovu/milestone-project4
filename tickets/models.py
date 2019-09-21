@@ -6,6 +6,7 @@ from django.urls import reverse
 from comments.models import Comment
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import get_object_or_404
 
 
 def get_comment_owner(request):
@@ -27,15 +28,17 @@ class Ticket(models.Model):
     title = models.CharField(max_length=120)
     subject = models.CharField(max_length=120)
     description = models.TextField()
-    status = models.CharField(
-        max_length=6, choices=STATUS, default='todo')
-    in_progress = models.BooleanField(default=False)
-    slug = models.SlugField(blank=True)
+    tag = models.SlugField(blank=True)
     owner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(
+        max_length=6, choices=STATUS, default='todo')
     votes = models.ManyToManyField(
         User, blank=True, related_name='ticket_votes')
     views = models.IntegerField(default=0)
+    in_progress = models.BooleanField(default=False)
+    is_bug = models.BooleanField(default=False)
+    is_feature = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -60,3 +63,11 @@ class Ticket(models.Model):
     def get_content_type(self):
         content_type = ContentType.objects.get_for_model(self.__class__)
         return content_type
+
+    @property
+    def get_ticket_views(self):
+        instance = get_object_or_404(Ticket, id=self.id)
+        instance.views = instance.views + 1
+        instance.save()
+
+        return instance.views
