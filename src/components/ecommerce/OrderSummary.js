@@ -34,7 +34,7 @@ export class OrderSummary extends Component {
       <Card.Content>
         <Input
           action={{
-            color: "teal",
+            color: "orange",
             labelPosition: "left",
             icon: "cart",
             content: "Apply Discount"
