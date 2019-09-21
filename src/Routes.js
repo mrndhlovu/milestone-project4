@@ -5,7 +5,7 @@ import Home from "./components/home/Home";
 import MembershipContainer from "./containers/MembershipsContainer";
 import TicketsListContainer from "./containers/TicketsListContainer";
 import TicketDetailContainer from "./containers/TicketDetailContainer";
-import CreateTicket from "./components/tickets/CreateTicket";
+import CreateTicketContainer from "./containers/CreateTicketContainer";
 import EditTicket from "./components/tickets/EditTicket";
 import AuthRouteCheck from "./utils/AuthRouteCheck";
 import LoginContainer from "./containers/LoginContainer";
@@ -33,7 +33,7 @@ const BaseRouter = () => {
 
       <AuthRouteCheck path="/blog-article-list" component={ArticleList} />
       <AuthRouteCheck path="/blog-article/:id" component={ArticleDetail} />
-      <AuthRouteCheck path="/create-ticket" component={CreateTicket} />
+      <AuthRouteCheck path="/create-ticket" component={CreateTicketContainer} />
       <AuthRouteCheck path="/edit-ticket/:id" component={EditTicket} />
     </Switch>
   );
