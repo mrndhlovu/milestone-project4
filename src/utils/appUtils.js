@@ -1,15 +1,7 @@
-import { MEMBERSHIP_OPTIONS, USER_PROFILE } from "../constants/constants";
+import { USER_PROFILE } from "../constants/constants";
 
-export const getSelectedMemberShip = choice => {
-  let selectedMembership;
-
-  Object.keys(MEMBERSHIP_OPTIONS).forEach(option => {
-    if (choice === MEMBERSHIP_OPTIONS[option].membership_type)
-      return (selectedMembership = MEMBERSHIP_OPTIONS[option].membership_type);
-  });
-
-  return selectedMembership;
-};
+export const getSelectedMemberShip = () =>
+  localStorage.getItem("selectedMembership");
 
 export const getUser = () => JSON.parse(localStorage.getItem("client"));
 
@@ -49,7 +41,7 @@ export const createUserProfile = (
     email,
     currentMembership
   });
-
+  localStorage.setItem("currentMembership", currentMembership);
   localStorage.setItem("client", profile);
 };
 
@@ -86,9 +78,9 @@ export const getChoosenMembership = () => {
   };
 };
 
-export const getMembershipType = type => {
+export const getMembershipType = () => {
   return {
-    membership_type: `${type}`
+    membership_type: `${"pro"}`
   };
 };
 
@@ -113,4 +105,16 @@ export const slugify = text => {
     .toLowerCase()
     .replace(/ /g, "-")
     .replace(/[^\w-]+/g, "");
+};
+
+export const getObjectLength = object => {
+  return object !== "" ? Object.keys(object).length : 0;
+};
+
+export const isItemInCart = () => {
+  const cart = JSON.parse(localStorage.getItem("cart"));
+  if (cart && cart.membership) {
+    return true;
+  }
+  return false;
 };
