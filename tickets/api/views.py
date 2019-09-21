@@ -87,7 +87,7 @@ class TicketVoteToggleAPIView(APIView):
 
         if instance.votes.count() >= 2:
 
-            instance.in_progress = True
+            instance.status = 'doing'
             instance.save()
 
         return Response(data)
