@@ -13,7 +13,7 @@ urlpatterns = [
     path('remove/', MembershipDeleteFromCart.as_view(),
          name='remove_membership_from_cart'),
     path('payments/', MembershipCartCheckoutApi.as_view(), name='payments'),
-    path('user-profile/<pk>/',
+    path('member-profile/',
          SubscribedUserRetrieveAPI.as_view(), name='subscribed_user_profile'),
     path('cancel-subscription/', CancelSubscriptionAPI.as_view(),
          name='cancel_subscription'),

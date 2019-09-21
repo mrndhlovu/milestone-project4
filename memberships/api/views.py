@@ -7,6 +7,7 @@ from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from accounts.models import UserProfile, CustomUser
+from django.forms.models import model_to_dict
 import json
 import stripe
 
@@ -43,17 +44,26 @@ def get_selected_membership(request):
     return None
 
 
+def get_subscription_profile(request):
+
+    user_subscription_qs = Subscription.objects.filter(
+        user_membership=request.user.id).values()
+    if user_subscription_qs.exists():
+        return user_subscription_qs.first()
+
+    return None
+
+
 def get_user_profile(request):
     return get_object_or_404(UserProfile, user=request.user)
 
 
 def get_pending_order(request):
-    print(request)
 
     selected_membership = get_selected_membership(request).id
 
     order = UserMembership.objects.filter(
-        membership=selected_membership, is_member=False).values('id', 'stripe_customer_id', 'is_member', 'membership', 'subscription', 'user_id')
+        membership=selected_membership, is_pro_member=False).values('id', 'stripe_customer_id', 'is_pro_member', 'membership', 'subscription', 'user_id')
     if order.exists():
         return order[0]
     return 0
@@ -216,9 +226,11 @@ class MembershipCartCheckoutApi(ListAPIView):
                     ]
                 )
 
-                response_object = {'subscription_id': subscription.id}
+                context = {
+                    'subscription_id': subscription.id
+                }
 
-                return JsonResponse(response_object, status=200)
+                return JsonResponse(context, status=200)
 
             except:
                 message = {
@@ -227,7 +239,8 @@ class MembershipCartCheckoutApi(ListAPIView):
 
         context = {
             'publishKey': publish_key,
-            'choosen_membership': choosen_membership
+            'choosen_membership': choosen_membership,
+
         }
 
         return JsonResponse(context, status=200)
@@ -243,10 +256,10 @@ class MembershipTransactionUpdateView(ListAPIView):
     def post(self, request, **kwargs):
 
         request_data = json.loads(request.body.decode('utf-8'))
-
         user_membership = get_user_membership(request)
         choosen_membership = get_selected_membership(request_data)
         user_membership.membership = choosen_membership
+        user_membership.is_pro_member = True
 
         user_membership.save()
 
@@ -277,6 +290,7 @@ class CancelSubscriptionAPI(ListAPIView):
 
         try:
             user_subscription = get_user_subscription(request)
+            print(user_subscription)
 
             if user_subscription.is_active is False:
 
@@ -299,6 +313,7 @@ class CancelSubscriptionAPI(ListAPIView):
         user_membership = get_user_membership(request)
 
         user_membership.membership = free_membership
+        user_membership.is_pro_member = False
         user_membership.save()
 
         context = {
@@ -330,3 +345,41 @@ class SubscribedUserRetrieveAPI(RetrieveAPIView):
     ]
     serializer_class = SubscribedUserProfileSerializer
     queryset = Subscription.objects.all()
+
+    def post(self, request, **kwargs):
+        instance = get_object_or_404(UserMembership, user=request.user)
+        try:
+            if instance.is_pro_member:
+                subscription_profile = get_object_or_404(
+                    Subscription, user_membership=instance)
+
+                if subscription_profile is not None:
+                    context = {
+                        'next_billing': str(subscription_profile.get_next_billing_date),
+                        'created_at': str(subscription_profile.get_created_date),
+                        'user_membership': str(subscription_profile.user_membership),
+                        'subscription_profile_id': str(subscription_profile.id),
+                        'is_pro_member': instance.is_pro_member,
+                        'stripe_subscription_id': str(subscription_profile.stripe_subscription_id),
+                        'user_subscription': str(instance.membership)
+                    }
+
+                return JsonResponse(context, status=200, safe=False)
+
+            else:
+                context = {
+                    'next_billing': None,
+                    'created_at': None,
+                    'user_membership': str(instance.user),
+                    'subscription_profile_id': None,
+                    'is_pro_member': instance.is_pro_member,
+                    'stripe_subscription_id': None,
+                    'user_subscription': str(instance.membership)
+                }
+
+                return JsonResponse(context, status=200, safe=False)
+        except:
+            context = {
+                'message': 'Did not find your subscription!'
+            }
+            return JsonResponse(context, status=404, safe=False)

@@ -30,7 +30,7 @@ class UserMembership(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     stripe_customer_id = models.CharField(max_length=20)
-    is_member = models.BooleanField(default=False, null=True)
+    is_pro_member = models.BooleanField(default=False, null=True)
     membership = models.ForeignKey(
         Membership, on_delete=models.SET_NULL, null=True)
     date_signedup = models.DateField(auto_now=True, null=True)
