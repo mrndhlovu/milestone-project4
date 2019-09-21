@@ -31,7 +31,7 @@ export const Tickets = ({ ticketsList }) => {
                 id={id}
               />
 
-              <Feed text>{short_desc}</Feed>
+              <Feed>{short_desc}</Feed>
             </Feed.Content>
             <TicketsIcons votes={votes} status={status} views={views} />
           </Feed.Event>

@@ -12,6 +12,7 @@ import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
 import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import CreateTicketRadioButtons from "../components/tickets/CreateTicketRadioButtons";
+import GridLayout from "./GridLayout";
 
 export class CreateTicketContainer extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ export class CreateTicketContainer extends Component {
     }
 
     return (
-      <Container style={{ paddingTop: 20 }}>
+      <GridLayout>
         <Message
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
@@ -108,7 +109,7 @@ export class CreateTicketContainer extends Component {
             />
           </div>
         </Form>
-      </Container>
+      </GridLayout>
     );
   }
 }
