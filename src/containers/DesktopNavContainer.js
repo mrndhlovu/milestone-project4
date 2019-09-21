@@ -59,7 +59,6 @@ export class DesktopNavContainer extends Component {
 
   componentDidMount() {
     const cart = getCartItems();
-    console.log(cart);
 
     if (cart !== null) {
       this.props.getPendingOrder();
@@ -109,7 +108,7 @@ export class DesktopNavContainer extends Component {
               )}
               <NavigationButtons
                 isAuthenticated={isAuthenticated}
-                handleLogout={this.handleLoginClick}
+                handleLogout={this.handleLogoutClick}
                 fixed={fixed}
               />
             </Menu.Item>

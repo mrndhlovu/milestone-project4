@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import {
   UNICORN_FREE_SERVICES,
@@ -8,14 +8,16 @@ import {
 import { getCurrentMembership } from "../../utils/appUtils";
 import { Button, Header, List, Segment } from "semantic-ui-react";
 
-export const MembershipOptions = ({
+const MembershipOptions = ({
   memberships,
   membershipChoice,
   handleAddToCart,
   buttonTextPro,
   buttonTextFree,
   buttonDisabled,
-  redirectParam
+  redirectParam,
+  history,
+  isAuthenticated
 }) => {
   return memberships.map(membership => {
     const { price, id, slug } = membership;
@@ -49,17 +51,27 @@ export const MembershipOptions = ({
           </Segment>
         </div>
         <Button
-          as={NavLink}
-          to={redirectParam === "" ? "/pricing" : redirectParam}
           attached="bottom"
           disabled={slug === getCurrentMembership() && buttonDisabled}
           content={buttonText.toUpperCase()}
           color={buttonColor}
-          onClick={() => handleAddToCart(slug, id)}
+          onClick={
+            redirectParam
+              ? () => {
+                  setTimeout(() => {
+                    history.push(
+                      getCurrentMembership() === "pro"
+                        ? "/user-profile"
+                        : redirectParam
+                    );
+                  }, 500);
+                }
+              : () => handleAddToCart(slug, id)
+          }
         />
       </Segment>
     );
   });
 };
 
-export default MembershipOptions;
+export default withRouter(MembershipOptions);

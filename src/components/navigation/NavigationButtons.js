@@ -9,7 +9,7 @@ export const NavigationButtons = ({ isAuthenticated, handleLogout, fixed }) => {
       inverted={!fixed}
       primary={fixed}
       style={{ marginLeft: "0.5em" }}
-      onClick={() => handleLogout}
+      onClick={() => handleLogout()}
     >
       Log out
     </Button>
@@ -23,7 +23,7 @@ export const NavigationButtons = ({ isAuthenticated, handleLogout, fixed }) => {
         primary={fixed}
         style={{ marginLeft: "0.5em" }}
         as={NavLink}
-        to="/pricing"
+        to="/signup"
         size="small"
       >
         Sign Up
