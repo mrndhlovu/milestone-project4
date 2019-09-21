@@ -11,9 +11,15 @@ import {
   deleteFromCart
 } from "../actions/CheckoutActions";
 import { getMembershipId, getOrderDesciption } from "../utils/appCheckoutUtils";
-import { getMemberships, getCheckoutDetail } from "../selectors/appSelectors";
+import {
+  getMemberships,
+  getCheckoutDetail,
+  getCartAddOrRemove,
+  getUser
+} from "../selectors/appSelectors";
 import CardButtons from "../components/ecommerce/CartButtons";
 import CartItem from "../components/ecommerce/CartItem";
+import { refresh, getCurrentMembership } from "../utils/appUtils";
 
 export const StyledContainerWrapper = styled(Container)`
   padding-top: 1.5rem;
@@ -23,26 +29,46 @@ export class CartContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      total: 0.0,
       activeIndex: 0,
       isOpen: false,
-      showDeleteButton: false
+      showDeleteButton: false,
+      cartItem: "",
+      description: getOrderDesciption(),
+      membershipId: getMembershipId()
     };
+
     this.handleClick = this.handleClick.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
     this.cancelTranscation = this.cancelTranscation.bind(this);
   }
 
   componentDidMount() {
-    const id = getMembershipId();
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    const id = cart ? cart.order.membershipId : 1;
+    // const { isAuthenticated } = this.props.user;
 
-    if (id !== null) {
-      this.props.getOrderDetail(id);
+    this.props.getOrderDetail(id);
+    this.setState({
+      description: getOrderDesciption(),
+      cartItem: this.props.cartDetail.data
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.cartDetail !== this.props.cartDetail) {
+      this.setState({ cartItem: this.props.cartDetail.data });
     }
   }
 
   cancelTranscation() {
+    localStorage.setItem("selectedMembership", getCurrentMembership());
+    localStorage.removeItem("cart");
+
     this.props.deleteFromCart();
+
+    setTimeout(() => {
+      refresh();
+    }, 500);
   }
 
   handleClick = () => {
@@ -55,17 +81,16 @@ export class CartContainer extends Component {
     this.setState({ showDeleteButton: !showDeleteButton });
   }
 
-  componentWillUpdate(prevProps) {
-    const { checkOut } = this.props.cart;
-    if (prevProps.checkOut !== checkOut) {
-      console.log(checkOut);
-    }
-  }
-
   render() {
-    const { price, slug } = this.props.cart.data;
-    const { activeIndex, isOpen, showDeleteButton } = this.state;
-    const header = `Unicorn ${slug} Account`;
+    const {
+      activeIndex,
+      isOpen,
+      showDeleteButton,
+      description,
+      cartItem
+    } = this.state;
+
+    const header = `Unicorn ${cartItem.slug} Account`;
 
     return (
       <div>
@@ -75,14 +100,14 @@ export class CartContainer extends Component {
             <Card.Content>
               <List divided relaxed>
                 <CartItem
-                  total={price}
-                  description={getOrderDesciption(slug)}
+                  data={cartItem}
+                  description={description}
                   header={header.toUpperCase()}
                   activeIndex={activeIndex}
                   isOpen={isOpen}
                   handleClick={this.handleClick}
                   showDeleteButton={showDeleteButton}
-                  cancelTranscation={this.cancelTranscation}
+                  cancelTranscation={() => this.cancelTranscation}
                 />
               </List>
             </Card.Content>
@@ -97,7 +122,9 @@ export class CartContainer extends Component {
 const mapStateToProps = state => {
   return {
     memberships: getMemberships(state),
-    cart: getCheckoutDetail(state)
+    cartDetail: getCheckoutDetail(state),
+    addorRemove: getCartAddOrRemove(state),
+    user: getUser(state)
   };
 };
 
