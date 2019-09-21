@@ -33,7 +33,7 @@ class AppContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.authenticate();
+    this.props.authState();
   }
 
   render() {
@@ -48,23 +48,17 @@ class AppContainer extends Component {
   }
 }
 
-ResponsiveContainer.propTypes = {
-  children: PropTypes.node
-};
-
 const mapStateToProps = state => {
   return {
     userAuth: state.auth
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    authenticate: () => dispatch(authState())
-  };
+ResponsiveContainer.propTypes = {
+  children: PropTypes.node
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { authState }
 )(AppContainer);
