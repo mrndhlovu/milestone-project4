@@ -14,9 +14,12 @@ import ticketsReducer from "./ticketsReducer";
 import ticketVoteReducer from "./ticketVoteReducer";
 import userProfileReducer from "./userProfileReducer";
 import userReducer from "./userReducer";
+import addRemoveCartItemReducer from "./addRemoveCartItemReducer";
+import pendingOrderReducer from "./pendingOrderReducer";
 
 export default combineReducers({
   auth: authReducer,
+  cartAddOrRemove: addRemoveCartItemReducer,
   checkOut: checkOutReducer,
   checkoutDetail: checkoutOrderDetailReducer,
   comments: commentsReducer,
@@ -24,6 +27,7 @@ export default combineReducers({
   form: formReducer,
   memberships: membershipsReducer,
   messages: messagesReducer,
+  pending: pendingOrderReducer,
   ticket: createTicketReducer,
   ticketDetail: ticketDetaiReducer,
   tickets: ticketsReducer,
