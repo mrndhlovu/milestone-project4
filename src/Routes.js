@@ -10,7 +10,7 @@ import EditTicket from "./components/tickets/EditTicket";
 import AuthRouteCheck from "./utils/AuthRouteCheck";
 import LoginContainer from "./containers/LoginContainer";
 import SignupContainer from "./containers/SignupContainer";
-import Products from "./components/ecommerce/Products";
+import DashboardContainer from "./containers/DashboardContainer";
 import CartContainer from "./containers/CartContainer";
 import CheckoutForm from "./components/ecommerce/CheckoutForm";
 import ArticleList from "./components/blog/ArticleList";
@@ -26,7 +26,7 @@ const BaseRouter = () => {
       <Route path="/tickets" component={TicketsListContainer} />
       <Route path="/ticket/:id" component={TicketDetailContainer} />
       <Route path="/pricing" component={MembershipContainer} />
-      <Route path="/products" component={Products} />
+      <Route path="/dashboard" component={DashboardContainer} />
       <Route path="/user-profile" component={UserProfileContainer} />
       <Route path="/cart" component={CartContainer} />
       <Route path="/checkout" component={CheckoutForm} />
