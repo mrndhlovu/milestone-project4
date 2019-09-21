@@ -31,19 +31,23 @@ export class TicketDetailContainer extends Component {
     this.handleTicketDelete = this.handleTicketDelete.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const {
+      vote,
+      match: {
+        params: { id }
+      }
+    } = this.props;
+
+    if (prevProps.vote !== vote) {
+      const { updated } = vote.data;
+      console.log("updated");
+    }
+  }
+
   componentWillMount() {
     const { id } = this.props.match.params;
     this.props.requestTicketsDetail(id);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { votes } = this.props.ticket.data;
-    const { vote } = this.props;
-
-    if (prevProps.votes !== votes) {
-      const { updated } = vote.data;
-      // updated && window.location.reload();
-    }
   }
 
   updateVoteCount() {
@@ -58,11 +62,7 @@ export class TicketDetailContainer extends Component {
   }
 
   handleVoteClick(ticketId) {
-    const { id } = this.props.match.params;
-
     this.props.updatedTicketVote(ticketId);
-
-    this.props.requestTicketsDetail(id);
   }
 
   render() {
@@ -101,7 +101,6 @@ export class TicketDetailContainer extends Component {
         />
 
         <TicketDetail
-          handleVoteClick={this.handleVoteClick}
           is_pro_member={is_pro_member}
           description={description}
           votes={votes}
