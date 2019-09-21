@@ -7,6 +7,7 @@ import { fetchTicketsList } from "../../actions/TicketActions";
 import HeadingImage from "../home/HeadingImage";
 import { getTicketList } from "../../selectors/appSelectors";
 import Tickets from "./Tickets";
+import { getObjectLength } from "../../utils/appUtils";
 
 export class TicketsList extends Component {
   constructor(props) {
@@ -20,9 +21,9 @@ export class TicketsList extends Component {
 
   render() {
     const { ticketsList } = this.props;
+    console.log(ticketsList);
 
-    const ticketCount =
-      ticketsList !== "" ? Object.keys(ticketsList).length : 0;
+    const ticketCount = getObjectLength(ticketsList);
 
     return (
       <Fragment>
@@ -49,7 +50,7 @@ export class TicketsList extends Component {
 
 const mapStateToProps = state => {
   return {
-    ticketsList: getTicketList(state).ticketsList,
+    ticketsList: getTicketList(state).data,
     isLoading: state.tickets
   };
 };
