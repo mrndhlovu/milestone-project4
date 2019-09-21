@@ -5,7 +5,7 @@ import { Dimmer, Loader } from "semantic-ui-react";
 export const UILoadingSpinner = () => {
   return (
     <Dimmer active inverted>
-      <Loader size="mini">Loading</Loader>
+      <Loader inverted content="Loading" size="mini" />
     </Dimmer>
   );
 };

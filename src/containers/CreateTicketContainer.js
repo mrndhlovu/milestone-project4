@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter, Redirect } from "react-router-dom";
 
-import { Button, Form, Message, Container } from "semantic-ui-react";
+import { Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../actions/TicketActions";
 import { getErrors, getUser, getTicket } from "../selectors/appSelectors";
@@ -11,14 +11,18 @@ import { hasProMembership, slugify } from "../utils/appUtils";
 import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
 import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
+import CreateTicketRadioButtons from "../components/tickets/CreateTicketRadioButtons";
 
 export class CreateTicketContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false
+      isLoading: false,
+      isFeature: false,
+      isBug: true
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -34,17 +38,27 @@ export class CreateTicketContainer extends Component {
     return <CreateTicketFormField field={field} />;
   }
 
+  handleChange() {
+    const { isBug, isFeature } = this.state;
+    this.setState({ isBug: !isBug, isFeature: !isFeature });
+  }
+
   handleSubmitClick(values) {
+    const { isBug, isFeature } = this.state;
     const { subject } = values;
     const tag = slugify(subject);
-    const updatedValues = { ...values, tag };
+    const ticketType = {
+      is_bug: isBug,
+      is_feature: isFeature
+    };
+    const updatedValues = { ...values, tag, ...ticketType };
 
     this.props.createTicket(updatedValues);
   }
 
   render() {
     const { handleSubmit, field, errorAlert, valid, pristine } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, isBug, isFeature, value } = this.state;
 
     if (!hasProMembership()) {
       return <Redirect to="/login" />;
@@ -76,6 +90,13 @@ export class CreateTicketContainer extends Component {
             component={this.renderField}
           />
           <CreateTicketDropdown field={field} />
+
+          <CreateTicketRadioButtons
+            value={value}
+            handleChange={this.handleChange}
+            isBug={isBug}
+            isFeature={isFeature}
+          />
 
           <div style={{ paddingTop: 10 }}>
             <SubmitButton
