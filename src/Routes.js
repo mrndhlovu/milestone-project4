@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 
 import Home from "./components/home/Home";
 import MembershipContainer from "./containers/MembershipsContainer";
-import TicketsList from "./components/tickets/TicketsList";
+import TicketsListContainer from "./containers/TicketsListContainer";
 import TicketDetailContainer from "./containers/TicketDetailContainer";
 import CreateTicket from "./components/tickets/CreateTicket";
 import EditTicket from "./components/tickets/EditTicket";
@@ -23,7 +23,7 @@ const BaseRouter = () => {
       <Route exact path="/" component={Home} />
       <Route path="/login" component={LoginContainer} />
       <Route path="/signup" component={SignupContainer} />
-      <Route path="/tickets" component={TicketsList} />
+      <Route path="/tickets" component={TicketsListContainer} />
       <Route path="/ticket/:id" component={TicketDetailContainer} />
       <Route path="/pricing" component={MembershipContainer} />
       <Route path="/products" component={Products} />

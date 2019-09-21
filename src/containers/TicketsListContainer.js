@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 
 import { Container, Header, List, Segment } from "semantic-ui-react";
 
-import { fetchTicketsList } from "../../actions/TicketActions";
-import HeadingImage from "../home/HeadingImage";
-import { getTicketList } from "../../selectors/appSelectors";
-import Tickets from "./Tickets";
-import { getObjectLength } from "../../utils/appUtils";
+import { fetchTicketsList } from "../actions/TicketActions";
+import HeadingImage from "../components/home/HeadingImage";
+import { getTicketList } from "../selectors/appSelectors";
+import Tickets from "../components/tickets/Tickets";
+import { getObjectLength } from "../utils/appUtils";
 
-export class TicketsList extends Component {
+export class TicketsListContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -21,7 +21,6 @@ export class TicketsList extends Component {
 
   render() {
     const { ticketsList } = this.props;
-    console.log(ticketsList);
 
     const ticketCount = getObjectLength(ticketsList);
 
@@ -58,4 +57,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { fetchTicketsList }
-)(TicketsList);
+)(TicketsListContainer);
