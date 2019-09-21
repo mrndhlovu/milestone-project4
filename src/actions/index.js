@@ -1,36 +1,27 @@
-import { CREATE_MESSAGE, GET_ERRORS } from "./ActionTypes";
+import { CREATE_MESSAGE, HAS_ERROR } from "./ActionTypes";
 
-function getFetchErrors(error) {
-  return {
-    errorAlert: error.response.data,
-    status: error.response.status
-  };
-}
+const getFetchErrors = error => ({
+  errorAlert: error.response.data,
+  status: error.response.status
+});
 
-export const requestSuccess = (type, response) => {
-  return { type: type, payload: response };
-};
+export const makeRequest = type => ({ type });
 
-export const makeRequest = action => {
-  return {
-    type: action
-  };
-};
+export const requestSuccess = (type, payload) => ({ type, payload });
 
-export const dataRequestFail = (type, error) => {
-  return { type, error };
-};
+export const dataRequestFail = (type, error) => ({ type, error });
 
-export const createMessage = message => {
-  return {
-    type: CREATE_MESSAGE,
-    payload: message
-  };
-};
+export const createMessage = message => ({
+  type: CREATE_MESSAGE,
+  payload: message
+});
 
-export const errorsAlert = errors => {
-  return {
-    type: GET_ERRORS,
-    payload: getFetchErrors(errors)
-  };
-};
+export const hasError = message => ({
+  type: HAS_ERROR,
+  payload: message
+});
+
+export const errorsAlert = (type, errors) => ({
+  type: type,
+  payload: getFetchErrors(errors)
+});
