@@ -36,7 +36,6 @@ class Ticket(models.Model):
     votes = models.ManyToManyField(
         User, blank=True, related_name='ticket_votes')
     views = models.IntegerField(default=0)
-    in_progress = models.BooleanField(default=False)
     is_bug = models.BooleanField(default=False)
     is_feature = models.BooleanField(default=False)
 
@@ -71,3 +70,7 @@ class Ticket(models.Model):
         instance.save()
 
         return instance.views
+
+    @property
+    def snippet(self):
+        return self.description[:100] + '...'

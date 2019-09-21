@@ -13,6 +13,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
         rep['username'] = instance.owner.username
         rep['votes'] = instance.votes.count()
+        rep['short_desc'] = str(instance.snippet)
 
         return rep
 
