@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
+import { Grid } from "semantic-ui-react";
+
 import { fetchTicketsList } from "../actions/TicketActions";
 import HeadingImage from "../components/home/HeadingImage";
 import { getTicketList } from "../selectors/appSelectors";
@@ -16,7 +18,7 @@ export class TicketsListContainer extends Component {
 
   render() {
     const { ticketsList } = this.props;
-    const ticketCount = getObjectLength(ticketsList);
+    const ticketCount = getObjectLength(ticketsList.data);
 
     return (
       <Fragment>
@@ -24,9 +26,17 @@ export class TicketsListContainer extends Component {
         {ticketsList.isLoading ? (
           <UILoadingSpinner />
         ) : (
-          <TicketListWrapper ticketCount={ticketCount}>
-            <Tickets ticketsList={ticketsList.data} />
-          </TicketListWrapper>
+          <Grid celled="internally">
+            <Grid.Row>
+              <Grid.Column width={2} />
+              <Grid.Column width={12}>
+                <TicketListWrapper ticketCount={ticketCount}>
+                  <Tickets ticketsList={ticketsList.data} />
+                </TicketListWrapper>
+              </Grid.Column>
+              <Grid.Column width={2} />
+            </Grid.Row>
+          </Grid>
         )}
       </Fragment>
     );

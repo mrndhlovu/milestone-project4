@@ -1,27 +1,22 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
 
-import styled from "styled-components";
+import { Label, Feed, Divider } from "semantic-ui-react";
 
-import { Header, Label, Feed, Divider, Icon } from "semantic-ui-react";
-
-import { getFormatedDate } from "../../utils/appUtils";
-
-const StyledSpan = styled.span`
-  font-size: 0.8rem;
-`;
+import TicketsHeader from "./TicketsHeader";
+import TicketsIcons from "./TicketsIcon";
 
 export const Tickets = ({ ticketsList }) => {
   return ticketsList.map(ticket => {
     const {
       title,
-      subject,
       id,
       created_at,
       tag,
       views,
       votes,
-      username
+      username,
+      status,
+      short_desc
     } = ticket;
 
     return (
@@ -29,32 +24,21 @@ export const Tickets = ({ ticketsList }) => {
         <Feed>
           <Feed.Event>
             <Feed.Content>
-              <Header as={Link} to={`/ticket/${id}`} size="small" color="blue">
-                {title.toUpperCase()}
-              </Header>
-              <Feed.Summary>
-                <StyledSpan> By:@{username.toLowerCase()} </StyledSpan>
-              </Feed.Summary>
-              <Feed.Date style={{ paddingTop: 10 }}>
-                <StyledSpan>{getFormatedDate(created_at)}</StyledSpan>
-              </Feed.Date>
-              <Feed.Extra text>{subject}</Feed.Extra>
+              <TicketsHeader
+                title={title}
+                created_at={created_at}
+                username={username}
+                id={id}
+              />
+
+              <Feed text>{short_desc}</Feed>
             </Feed.Content>
-            <div floated="right">
-              <Label color="teal">
-                <Icon name="user" color="black" />
-                Votes:{votes > 0 ? votes : 0}
-              </Label>
-              <Label color="teal">
-                <Icon name="eye" color="black" />
-                Views:{views > 0 ? views : 0}
-              </Label>
-            </div>
+            <TicketsIcons votes={votes} status={status} views={views} />
           </Feed.Event>
         </Feed>
 
-        <Label.Group color="teal" size="tiny">
-          <Label as="a">{tag}</Label>
+        <Label.Group size="tiny">
+          <Label>{tag}</Label>
         </Label.Group>
         <Divider />
       </Fragment>
