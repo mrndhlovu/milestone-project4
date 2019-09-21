@@ -8,7 +8,7 @@ import { Grid, Container, Header, Segment, Message } from "semantic-ui-react";
 import PaymentDetails from "./PaymentDetails";
 import OrderSummary from "./OrderSummary";
 
-const StyledContainerWrapper = styled(Container)`
+const StyledContainer = styled(Container)`
   padding-top: 1.5rem;
 `;
 
@@ -43,7 +43,7 @@ class CheckoutForm extends Component {
     const { isLoading, error, message } = this.state;
     return (
       <Fragment>
-        <StyledContainerWrapper>
+        <StyledContainer>
           <Header as="h3" block textAlign="center">
             Checkout
           </Header>
@@ -71,7 +71,7 @@ class CheckoutForm extends Component {
               </Grid.Row>
             </Grid>
           </Segment>
-        </StyledContainerWrapper>
+        </StyledContainer>
       </Fragment>
     );
   }
