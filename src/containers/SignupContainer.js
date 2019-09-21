@@ -2,31 +2,25 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { reduxForm, Field } from "redux-form";
-import { NavLink } from "react-router-dom";
 
 import styled from "styled-components";
 
-import { signup } from "../../actions/AuthActions";
+import { signup } from "../actions/AuthActions";
 
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment,
-  Container
-} from "semantic-ui-react";
+import { Form, Grid, Segment, Container } from "semantic-ui-react";
+import FormHeader from "../components/sharedComponents/FormHeader";
+import FormFooter from "../components/sharedComponents/StyledMessage";
+import SubmitButton from "../components/sharedComponents/SubmitButton";
+import ErrorMessage from "../components/sharedComponents/ErrorMessage";
+
+import SignupFormFields from "../components/userAuth/signup/SignUpFormFields";
+import { getUser, getErrors } from "../selectors/appSelectors";
 
 const StyleContainer = styled(Container)`
   padding: 10vh 0;
 `;
 
-const StyledSpan = styled.span`
-  padding-right: 0.5rem;
-`;
-
-class SignupModal extends Component {
+class SignupContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,37 +68,7 @@ class SignupModal extends Component {
       meta: { touched, error }
     } = field;
 
-    return (
-      <Fragment>
-        <Form.Input
-          color="red"
-          {...field.input}
-          fluid
-          icon={
-            field.label === "Password" || field.label === "Confirm Password"
-              ? "lock"
-              : field.label === "Email"
-              ? "mail"
-              : "user"
-          }
-          iconPosition="left"
-          placeholder={field.label}
-          autoComplete={
-            field.label === "Password" || field.label === "Confirm Password"
-              ? "new-password"
-              : field.label === "Email"
-              ? "email"
-              : field.name
-          }
-          type={
-            field.label === "Password" || field.label === "Confirm Password"
-              ? "password"
-              : "text"
-          }
-          error={error && touched ? error : null}
-        />
-      </Fragment>
-    );
+    return <SignupFormFields field={field} touched={touched} error={error} />;
   }
 
   render() {
@@ -123,19 +87,12 @@ class SignupModal extends Component {
     return (
       <Fragment>
         <StyleContainer>
-          <Header as="h2" textAlign="center" centered="false">
-            Lets get you setup for your Unicorn Account
-          </Header>
+          <FormHeader header="Lets get you setup for your Unicorn Account" />
 
           <Grid textAlign="center">
             <Grid.Column style={{ maxWidth: 500 }}>
               {hasError && (
-                <Message error size="small">
-                  <Message.Header>
-                    There seem to be a problem with:
-                  </Message.Header>
-                  {this.showErrorMessage()}
-                </Message>
+                <ErrorMessage showErrorMessage={this.showErrorMessage} />
               )}
               <Form
                 size="large"
@@ -167,22 +124,21 @@ class SignupModal extends Component {
 
                   <br />
 
-                  <Button
-                    color="blue"
-                    fluid
-                    size="large"
-                    type="submit"
-                    loading={isLoading && !hasError}
-                    disabled={(!valid || pristine) && true}
-                  >
-                    Sign up
-                  </Button>
+                  <SubmitButton
+                    isLoading={isLoading}
+                    buttonText="Sign up"
+                    valid={valid}
+                    pristine={pristine}
+                    hasError={hasError}
+                  />
+
+                  <FormFooter
+                    message="Already have an account?"
+                    redirect="/login"
+                    linkText="Login"
+                  />
                 </Segment>
               </Form>
-              <Message attached="bottom">
-                <StyledSpan>Already have an account?</StyledSpan>
-                <NavLink to="/login">Login</NavLink>
-              </Message>
             </Grid.Column>
           </Grid>
         </StyleContainer>
@@ -193,8 +149,8 @@ class SignupModal extends Component {
 
 const mapStateToProps = state => {
   return {
-    authState: state.auth,
-    error: state.errorAlert.alertMsg
+    authState: getUser(state),
+    error: getErrors(state).alertMsg
   };
 };
 
@@ -222,5 +178,5 @@ export default reduxForm({ validate, form: "LoginForm" })(
   connect(
     mapStateToProps,
     { signup }
-  )(SignupModal)
+  )(SignupContainer)
 );
