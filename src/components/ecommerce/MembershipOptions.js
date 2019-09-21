@@ -16,8 +16,7 @@ const MembershipOptions = ({
   buttonTextFree,
   buttonDisabled,
   redirectParam,
-  history,
-  isAuthenticated
+  history
 }) => {
   return memberships.map(membership => {
     const { price, id, slug } = membership;

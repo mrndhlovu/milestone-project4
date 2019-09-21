@@ -6,9 +6,9 @@ const TicketListWrapper = ({ children, ticketCount }) => {
   return (
     <Container>
       <Header
-        content="Tickets List"
-        subheader={`Ticket count:  ${ticketCount}`}
-        as="h4"
+        content="TICKETS"
+        subheader={`TOTAL:  ${ticketCount}`}
+        as="h3"
         style={{ paddingTop: 20 }}
       />
       <Segment attached>

@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { Button, Comment, Form } from "semantic-ui-react";
 
-import { getFormatedDate } from "../utils/appUtils";
 import { createComment, createReply } from "../actions/TicketActions";
 import { getUserProfile, getComments } from "../selectors/appSelectors";
 import CommentsBody from "../components/tickets/CommentsBody";

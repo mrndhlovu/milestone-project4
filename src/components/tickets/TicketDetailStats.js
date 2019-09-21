@@ -2,7 +2,7 @@ import React from "react";
 
 import styled from "styled-components";
 
-import { Card, Statistic, Icon } from "semantic-ui-react";
+import { Card, Statistic, Icon, Header } from "semantic-ui-react";
 
 const StyledSpan = styled.span`
   padding-left: 0.3rem !important;
@@ -17,30 +17,27 @@ const TicketDetailStats = ({
   id
 }) => {
   return (
-    <Card.Content extra>
-      <Statistic.Group size="mini" color="grey">
-        <Statistic>
-          <Statistic.Value>{votes > 0 ? votes : 0}</Statistic.Value>
-          <StyledSpan>
-            <Statistic.Label as="a">
-              <Icon
-                name="thumbs up"
-                size="large"
-                color="grey"
-                disabled={!is_pro_member}
-                onClick={() => handleVoteClick(id)}
-              />
-            </Statistic.Label>
-          </StyledSpan>
-        </Statistic>
-        <Statistic>
-          <Statistic.Value>{views > 0 ? views : 0}</Statistic.Value>
-          <StyledSpan>
-            <Statistic.Label>Views</Statistic.Label>
-          </StyledSpan>
-        </Statistic>
-      </Statistic.Group>
-    </Card.Content>
+    <Statistic.Group size="mini" color="black" style={{ marginLeft: 20 }}>
+      <Statistic style={{ marginRight: 0 }} as="a">
+        <Header as="h5" style={{ marginBottom: 0 }}>
+          {votes > 0 ? votes : 0}
+        </Header>
+        <Icon
+          name="thumbs up"
+          color="grey"
+          as="i"
+          fitted
+          disabled={!is_pro_member}
+          onClick={() => handleVoteClick(id)}
+        />
+      </Statistic>
+      <Statistic style={{ paddingLeft: 0 }}>
+        <Header as="h5" style={{ marginBottom: 5 }}>
+          {views > 0 ? views : 0}
+        </Header>
+        <Icon name="eye" color="grey" fitted />
+      </Statistic>
+    </Statistic.Group>
   );
 };
 
