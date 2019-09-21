@@ -1,15 +1,18 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter, Redirect } from "react-router-dom";
 
 import { Button, Form, Message, Container } from "semantic-ui-react";
 
-import { createTicket } from "../../actions/TicketActions";
-import { getErrors, getUser, getTicket } from "../../selectors/appSelectors";
-import { hasProMembership, slugify } from "../../utils/appUtils";
+import { createTicket } from "../actions/TicketActions";
+import { getErrors, getUser, getTicket } from "../selectors/appSelectors";
+import { hasProMembership, slugify } from "../utils/appUtils";
+import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
+import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
+import SubmitButton from "../components/sharedComponents/SubmitButton";
 
-export class CreateTicket extends Component {
+export class CreateTicketContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,58 +21,31 @@ export class CreateTicket extends Component {
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
   }
 
-  componentDidUpdate() {
-    const {
-      ticket: { dataReceived }
-    } = this.props;
+  componentDidUpdate(prevProps) {
+    const { ticket } = this.props;
 
-    if (dataReceived) {
-      const { id } = this.props.ticket.ticketsList.data;
-      this.props.history.push(`/ticket/${id}`);
+    if (prevProps.ticket !== ticket) {
+      ticket.data.id !== undefined &&
+        this.props.history.push(`/ticket/${ticket.data.id}`);
     }
   }
 
   renderField(field) {
-    const {
-      meta: { touched, error }
-    } = field;
-
-    return field.label === "Description" ? (
-      <Fragment>
-        <Form.TextArea
-          color="red"
-          {...field.input}
-          placeholder={field.label}
-          autoComplete={field.name}
-          type={field.name}
-          error={touched && error ? error : null}
-        />
-      </Fragment>
-    ) : (
-      <Fragment>
-        <Form.Input
-          color="red"
-          {...field}
-          icon="pencil alternate"
-          placeholder={field.label}
-          autoComplete={field.name}
-          type={field.name}
-          error={touched && error ? error : null}
-        />
-      </Fragment>
-    );
+    return <CreateTicketFormField field={field} />;
   }
 
   handleSubmitClick(values) {
     const { subject } = values;
-    const slug = slugify(subject);
-    const updatedValues = { ...values, slug };
+    const tag = slugify(subject);
+    const updatedValues = { ...values, tag };
+
     this.props.createTicket(updatedValues);
   }
 
   render() {
-    const { handleSubmit, field, errorAlert } = this.props;
+    const { handleSubmit, field, errorAlert, valid, pristine } = this.props;
     const { isLoading } = this.state;
+
     if (!hasProMembership()) {
       return <Redirect to="/login" />;
     }
@@ -99,27 +75,16 @@ export class CreateTicket extends Component {
             label="Description"
             component={this.renderField}
           />
-          <Field
-            {...field}
-            name="prority_level"
-            label="Priority"
-            component="select"
-            placeholder="Priority"
-          >
-            <option value="">Select priority level</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </Field>
-          <br />
+          <CreateTicketDropdown field={field} />
+
           <div style={{ paddingTop: 10 }}>
-            <Button
-              color="blue"
-              loading={isLoading}
+            <SubmitButton
+              pristine={pristine}
+              valid={valid}
+              isLoading={isLoading}
               onClick={() => this.setState({ isLoading: true })}
-            >
-              Submit
-            </Button>
+              buttonText="Submit"
+            />
           </div>
         </Form>
       </Container>
@@ -158,5 +123,5 @@ export default reduxForm({ validate, form: "CreateTicketForm" })(
   connect(
     mapStateToProps,
     { createTicket }
-  )(withRouter(CreateTicket))
+  )(withRouter(CreateTicketContainer))
 );
