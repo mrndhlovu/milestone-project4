@@ -63,7 +63,7 @@ export const createTicket = data => {
     dispatch(makeRequest(CREATE_TICKET));
     requestCreateTicket(data).then(
       response => {
-        dispatch(requestSuccess(RECEIVE_TICKET, response));
+        dispatch(requestSuccess(RECEIVE_TICKET, response.data));
       },
       error => {
         dispatch(errorsAlert(CREATE_TICKET_ERROR, error));

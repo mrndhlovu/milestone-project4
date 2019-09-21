@@ -18,7 +18,7 @@ export const Tickets = ({ ticketsList }) => {
       subject,
       id,
       created_at,
-      slug,
+      tag,
       views,
       votes,
       username
@@ -54,7 +54,7 @@ export const Tickets = ({ ticketsList }) => {
         </Feed>
 
         <Label.Group color="teal" size="tiny">
-          <Label as="a">{slug}</Label>
+          <Label as="a">{tag}</Label>
         </Label.Group>
         <Divider />
       </Fragment>

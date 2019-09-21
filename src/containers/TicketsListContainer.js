@@ -1,47 +1,33 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
-import { Container, Header, List, Segment } from "semantic-ui-react";
-
 import { fetchTicketsList } from "../actions/TicketActions";
 import HeadingImage from "../components/home/HeadingImage";
 import { getTicketList } from "../selectors/appSelectors";
 import Tickets from "../components/tickets/Tickets";
 import { getObjectLength } from "../utils/appUtils";
+import TicketListWrapper from "../components/tickets/TicketListWrapper";
+import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 export class TicketsListContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchTicketsList();
   }
 
   render() {
     const { ticketsList } = this.props;
-
     const ticketCount = getObjectLength(ticketsList);
 
     return (
       <Fragment>
         <HeadingImage />
-        <Container>
-          <Header
-            content="Tickets List"
-            subheader={`Ticket count:  ${ticketCount}`}
-            as="h4"
-            style={{ paddingTop: 20 }}
-          />
-          <Segment attached>
-            <Container>
-              <List divided relaxed>
-                <Tickets ticketsList={ticketsList} />
-              </List>
-            </Container>
-          </Segment>
-        </Container>
+        {ticketsList.isLoading ? (
+          <UILoadingSpinner />
+        ) : (
+          <TicketListWrapper ticketCount={ticketCount}>
+            <Tickets ticketsList={ticketsList.data} />
+          </TicketListWrapper>
+        )}
       </Fragment>
     );
   }
@@ -49,8 +35,7 @@ export class TicketsListContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    ticketsList: getTicketList(state).data,
-    isLoading: state.tickets
+    ticketsList: getTicketList(state)
   };
 };
 
