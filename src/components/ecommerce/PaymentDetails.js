@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import { CardElement } from "react-stripe-elements";
 
 import { Form, Button, Card, Segment } from "semantic-ui-react";
 
 import { requestPayment, addToCart } from "../../actions/CheckoutActions";
+import { getCheckout } from "../../selectors/appSelectors";
 
 export class PaymentDetails extends Component {
   constructor(props) {
@@ -27,7 +29,16 @@ export class PaymentDetails extends Component {
     this.props.addToCart();
   }
 
+  componentDidUpdate(prevProps) {
+    const { checkout } = this.props;
+    if (prevProps.checkout !== checkout) {
+      this.setState({ isLoading: false });
+      this.props.history.push("/user-profile");
+    }
+  }
+
   handlePayNow() {
+    this.setState({ isLoading: true });
     const { payNowClick, requestPayment } = this.props;
 
     payNowClick();
@@ -38,15 +49,17 @@ export class PaymentDetails extends Component {
   }
 
   render() {
-    const { isLoading } = this.state;
-
+    const { isLoading, isDisabled } = this.state;
+    console.log(this.props);
     return (
       <Card fluid>
         <Card.Content header="Payment" />
         <Card.Content>
           <Form.Group widths="equal">
             <Segment>
-              <CardElement />
+              <CardElement
+                onFocus={() => this.setState({ isDisabled: false })}
+              />
             </Segment>
           </Form.Group>
         </Card.Content>
@@ -56,6 +69,7 @@ export class PaymentDetails extends Component {
             fluid
             onClick={() => this.handlePayNow()}
             loading={isLoading}
+            disabled={isDisabled}
           >
             PAY NOW
           </Button>
@@ -66,10 +80,12 @@ export class PaymentDetails extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    checkout: getCheckout(state)
+  };
 };
 
 export default connect(
   mapStateToProps,
   { requestPayment, addToCart }
-)(PaymentDetails);
+)(withRouter(PaymentDetails));
