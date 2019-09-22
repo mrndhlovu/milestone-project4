@@ -53,7 +53,7 @@ const DashboardCards = ({ ticketList }) => {
         <DashboardCardWrapper header="Todo" color="grey">
           <FilterTickets value="todo" ticketList={ticketList} />
         </DashboardCardWrapper>
-        <DashboardCardWrapper header="In Progress" color="orange">
+        <DashboardCardWrapper header="In Progress" color="grey">
           <FilterTickets value="doing" ticketList={ticketList} />
         </DashboardCardWrapper>
         <DashboardCardWrapper header="Completed" color="green">

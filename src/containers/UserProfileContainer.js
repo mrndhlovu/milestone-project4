@@ -50,19 +50,14 @@ export class UserProfileContainer extends Component {
 
     return (
       <StyledContainerWrapper>
-        <Grid columns="equal">
-          <Grid.Column />
-          <Grid.Column width={8}>
-            <Segment>
-              <UserProfileCard
-                user={user}
-                profile={profile}
-                handleCancelSubscription={this.handleCancelSubscription}
-              />
-            </Segment>
-          </Grid.Column>
-          <Grid.Column />
-        </Grid>
+        <Segment>
+          <UserProfileCard
+            user={user}
+            profile={profile}
+            handleCancelSubscription={this.handleCancelSubscription}
+          />
+        </Segment>
+
         <Confirm
           open={showCancelSubscription}
           cancelButton="Never mind"
@@ -70,7 +65,7 @@ export class UserProfileContainer extends Component {
           content="Are sure you want to cancel your subscription"
           onCancel={() => this.setState({ showCancelSubscription: false })}
           onConfirm={this.handleConfirm}
-          color="orange"
+          color="grey"
         />
       </StyledContainerWrapper>
     );

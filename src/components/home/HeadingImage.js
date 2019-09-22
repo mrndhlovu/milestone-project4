@@ -44,7 +44,13 @@ export const HomepageHeading = ({ mobile }) => {
             marginTop: mobile ? "0.5em" : "1.5em"
           }}
         />
-        <Button primary size="large" as={NavLink} to={headerButtonUrl}>
+        <Button
+          primary
+          color="linkedin"
+          size="large"
+          as={NavLink}
+          to={headerButtonUrl}
+        >
           {headerButtonText}
           <Icon name="right arrow" />
         </Button>

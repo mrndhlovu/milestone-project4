@@ -42,7 +42,7 @@ export const CartItem = ({
   return (
     <List.Item>
       <List.Content>
-        <Accordion fluid styled color="orange">
+        <Accordion fluid styled color="grey">
           <Accordion.Title active={true} onClick={() => handleClick()}>
             <List.Content floated="right" as="a" style={styles}>
               <Icon

@@ -65,7 +65,7 @@ export class PaymentDetails extends Component {
         </Card.Content>
         <Card.Content extra>
           <Button
-            color="orange"
+            color="grey"
             fluid
             onClick={() => this.handlePayNow()}
             loading={isLoading}

@@ -19,7 +19,6 @@ const MobileViewContainer = ({ children }) => {
       maxWidth={Responsive.onlyMobile.maxWidth}
     >
       <MobileSideBarContainer />
-
       {children}
     </Responsive>
   );

@@ -34,7 +34,6 @@ export class HomeContainer extends Component {
     this.props.logOut();
   }
   render() {
-    console.log(this.props.user);
     return (
       <Fragment>
         <HeadingImage />
@@ -64,7 +63,7 @@ export class HomeContainer extends Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column textAlign="center">
-                <Button size="medium" color="orange" as={NavLink} to="/pricing">
+                <Button size="medium" color="grey" as={NavLink} to="/pricing">
                   <StyledHeaderSpan>Explore Pro Service</StyledHeaderSpan>
                 </Button>
               </Grid.Column>
@@ -113,7 +112,7 @@ export class HomeContainer extends Component {
               To keep the business run and the lights on, you can make a kind
               contribution.
             </p>
-            <Button as={NavLink} to="/checkout" color="orange" size="medium">
+            <Button as={NavLink} to="/checkout" color="grey" size="medium">
               Make a Donation
             </Button>
           </Container>

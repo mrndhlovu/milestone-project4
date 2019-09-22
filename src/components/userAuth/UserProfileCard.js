@@ -31,7 +31,7 @@ const UserProfileCard = ({ user, profile, handleCancelSubscription }) => {
         icon="globe"
         content="Cancel Subscription"
         floated="right"
-        color="orange"
+        color="grey"
         as="a"
         onClick={() => handleCancelSubscription()}
       />

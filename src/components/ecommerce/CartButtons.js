@@ -8,7 +8,7 @@ export const CartButtons = ({ handleUpdate }) => {
     <Card.Content extra>
       <Button
         floated="right"
-        color="orange"
+        color="grey"
         as={NavLink}
         to="/checkout"
         size="tiny"
@@ -17,7 +17,7 @@ export const CartButtons = ({ handleUpdate }) => {
       </Button>
       <Button
         floated="right"
-        color="orange"
+        color="grey"
         size="tiny"
         onClick={() => handleUpdate()}
       >

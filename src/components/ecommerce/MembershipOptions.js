@@ -22,7 +22,7 @@ const MembershipOptions = ({
     const { price, id, slug } = membership;
     const isNotProMember = slug !== "pro";
     const buttonText = isNotProMember ? buttonTextFree : buttonTextPro;
-    const buttonColor = isNotProMember ? "blue" : "orange";
+    const buttonColor = isNotProMember ? "blue" : "grey";
     const header = `Unicorn ${slug}`;
 
     return (
@@ -30,7 +30,7 @@ const MembershipOptions = ({
         <Header
           as="h2"
           attached="top"
-          color={isNotProMember ? "blue" : "orange"}
+          color={isNotProMember ? "blue" : "grey"}
           textAlign="center"
           content={header.toUpperCase()}
           subheader={

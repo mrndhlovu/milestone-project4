@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React from "react";
 
 import { Responsive, Segment, Visibility } from "semantic-ui-react";
 
@@ -23,7 +23,6 @@ const DesktopViewContainer = ({ children, showFixedMenu, hideFixedMenu }) => {
           <DesktopNavContainer />
         </Segment>
       </Visibility>
-
       {children}
     </Responsive>
   );

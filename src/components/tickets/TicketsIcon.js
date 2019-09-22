@@ -17,7 +17,7 @@ const TicketsIcon = ({ votes, views, status }) => {
       <Header
         as="h5"
         color={
-          status === "doing" ? "orange" : status === "done" ? "green" : "black"
+          status === "doing" ? "grey" : status === "done" ? "green" : "black"
         }
       >
         {status.toUpperCase()}

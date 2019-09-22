@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -9,6 +9,8 @@ import { getUser, getUserProfile } from "../selectors/appSelectors";
 import MobileNavigationLinks from "../components/navigation/MobileNavigationLinks";
 import MobileSideBarButtons from "../components/navigation/MobileSideBarButtons";
 import UserLabel from "../components/navigation/UserLabel";
+
+const styles = { paddingLeft: "56%", paddingTop: 10 };
 
 export class MobileSideBarContainer extends Component {
   constructor(props) {
@@ -34,14 +36,14 @@ export class MobileSideBarContainer extends Component {
 
   handleLogoutClick() {
     this.props.logOut();
-    window.location.reload();
   }
 
   render() {
     const { sidebarOpened } = this.state;
     const {
       children,
-      user: { isAuthenticated }
+      user: { isAuthenticated },
+      userProfile: { username, current_membership }
     } = this.props;
 
     return (
@@ -73,10 +75,14 @@ export class MobileSideBarContainer extends Component {
                 <Menu.Item onClick={this.handleToggle}>
                   <Icon name="sidebar" />
                 </Menu.Item>
-                {/* <UserLabel
-                  username={username}
-                  current_membership={current_membership}
-                /> */}
+                {isAuthenticated && (
+                  <div style={styles}>
+                    <UserLabel
+                      username={username}
+                      current_membership={current_membership}
+                    />
+                  </div>
+                )}
               </Menu>
             </Container>
           </Segment>
@@ -89,8 +95,6 @@ export class MobileSideBarContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
-
   return {
     user: getUser(state),
     userProfile: getUserProfile(state)
