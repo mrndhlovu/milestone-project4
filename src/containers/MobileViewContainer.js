@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import MobileSideBar from "../components/navigation/MobileSideBar";
+import MobileSideBarContainer from "./MobileSideBarContainer";
 
 import { Responsive, Sidebar } from "semantic-ui-react";
 
@@ -19,7 +19,7 @@ class MobileViewContainer extends Component {
         getWidth={getWidth}
         maxWidth={Responsive.onlyMobile.maxWidth}
       >
-        <MobileSideBar {...this.props} />
+        <MobileSideBarContainer {...this.props} />
       </Responsive>
     );
   }

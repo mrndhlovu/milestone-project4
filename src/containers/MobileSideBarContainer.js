@@ -5,8 +5,9 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
-import { NAVIGATION_LINKS } from "../../constants/constants";
-import { logOut } from "../../actions/AuthActions";
+import { NAVIGATION_LINKS } from "../constants/constants";
+import { logOut } from "../actions/AuthActions";
+import { getUser } from "../selectors/appSelectors";
 
 const StyledSpan = styled.span`
   margin: 13px 0 0 auto;
@@ -53,9 +54,9 @@ export class MobileSideBar extends Component {
   }
 
   renderAuthButtons() {
-    const { sessionToken } = this.props.userAuth;
+    const { isAuthenticated } = this.props.user;
 
-    return sessionToken ? (
+    return isAuthenticated ? (
       <Menu.Item onClick={this.handleLogoutClick}>Log out</Menu.Item>
     ) : (
       <Fragment>
@@ -131,7 +132,7 @@ export class MobileSideBar extends Component {
 }
 
 const mapStateToProps = state => {
-  return { userAuth: state.auth, user: state.user.user };
+  return { user: getUser(state) };
 };
 
 export default connect(

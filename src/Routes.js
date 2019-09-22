@@ -1,20 +1,20 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-import Home from "./components/home/Home";
-import MembershipContainer from "./containers/MembershipsContainer";
-import TicketsListContainer from "./containers/TicketsListContainer";
-import TicketDetailContainer from "./containers/TicketDetailContainer";
-import CreateTicketContainer from "./containers/CreateTicketContainer";
-import EditTicket from "./components/tickets/EditTicket";
+import ArticleDetail from "./components/blog/ArticleDetail";
+import ArticleList from "./components/blog/ArticleList";
 import AuthRouteCheck from "./utils/AuthRouteCheck";
-import LoginContainer from "./containers/LoginContainer";
-import SignupContainer from "./containers/SignupContainer";
-import DashboardContainer from "./containers/DashboardContainer";
 import CartContainer from "./containers/CartContainer";
 import CheckoutForm from "./components/ecommerce/CheckoutForm";
-import ArticleList from "./components/blog/ArticleList";
-import ArticleDetail from "./components/blog/ArticleDetail";
+import CreateTicketContainer from "./containers/CreateTicketContainer";
+import DashboardContainer from "./containers/DashboardContainer";
+import EditTicket from "./components/tickets/EditTicket";
+import Home from "./components/home/Home";
+import LoginContainer from "./containers/LoginContainer";
+import MembershipContainer from "./containers/MembershipsContainer";
+import SignupContainer from "./containers/SignupContainer";
+import TicketDetailContainer from "./containers/TicketDetailContainer";
+import TicketsListContainer from "./containers/TicketsListContainer";
 import UserProfileContainer from "./containers/UserProfileContainer";
 
 const BaseRouter = () => {
