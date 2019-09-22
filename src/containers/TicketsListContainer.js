@@ -10,6 +10,7 @@ import Tickets from "../components/tickets/Tickets";
 import { getObjectLength } from "../utils/appUtils";
 import TicketListWrapper from "../components/tickets/TicketListWrapper";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
+import GridLayout from "./GridLayout";
 
 export class TicketsListContainer extends Component {
   componentWillMount() {
@@ -23,21 +24,15 @@ export class TicketsListContainer extends Component {
     return (
       <Fragment>
         <HeadingImage />
-        {ticketsList.isLoading ? (
-          <UILoadingSpinner />
-        ) : (
-          <Grid celled="internally">
-            <Grid.Row>
-              <Grid.Column width={2} />
-              <Grid.Column width={12}>
-                <TicketListWrapper ticketCount={ticketCount}>
-                  <Tickets ticketsList={ticketsList.data} />
-                </TicketListWrapper>
-              </Grid.Column>
-              <Grid.Column width={2} />
-            </Grid.Row>
-          </Grid>
-        )}
+
+        <GridLayout>
+          <TicketListWrapper
+            ticketCount={ticketCount}
+            isLoading={ticketsList.isLoading}
+          >
+            <Tickets ticketsList={ticketsList.data} />
+          </TicketListWrapper>
+        </GridLayout>
       </Fragment>
     );
   }

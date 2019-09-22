@@ -7,8 +7,8 @@ const HEADER_TEXT = {
     headerButtonText: "Get Started",
     subHeading: "Head start on coding issues and save hours!"
   },
-  products: {
-    headerText: "Products",
+  dashboard: {
+    headerText: "Dashboard",
     headerButtonUrl: "/pricing",
     headerButtonText: "See what suits you!",
     subHeading: "How it will work for you?!"

@@ -4,7 +4,7 @@ import { Grid } from "semantic-ui-react";
 
 const GridLayout = ({ children }) => {
   return (
-    <Grid celled="internally" style={{ marginTop: 40 }}>
+    <Grid columns={3} style={{ marginTop: 40 }}>
       <Grid.Row>
         <Grid.Column width={2} />
         <Grid.Column width={12}>{children}</Grid.Column>

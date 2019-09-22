@@ -2,7 +2,7 @@ import React from "react";
 
 import { Container, Header, List, Segment } from "semantic-ui-react";
 
-const TicketListWrapper = ({ children, ticketCount }) => {
+const TicketListWrapper = ({ children, ticketCount, isLoading }) => {
   return (
     <Container>
       <Header
@@ -11,12 +11,10 @@ const TicketListWrapper = ({ children, ticketCount }) => {
         as="h3"
         style={{ paddingTop: 20 }}
       />
-      <Segment attached>
-        <Container>
-          <List divided relaxed>
-            {children}
-          </List>
-        </Container>
+      <Segment padded loading={isLoading} size="tiny">
+        <List divided relaxed>
+          {children}
+        </List>
       </Segment>
     </Container>
   );
