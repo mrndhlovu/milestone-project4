@@ -1,13 +1,6 @@
 import React from "react";
 
-import styled from "styled-components";
-
-import { Card, Statistic, Icon, Header } from "semantic-ui-react";
-
-const StyledSpan = styled.span`
-  padding-left: 0.3rem !important;
-  padding-top: 0.8rem !important;
-`;
+import { Statistic, Icon, Header } from "semantic-ui-react";
 
 const TicketDetailStats = ({
   handleVoteClick,

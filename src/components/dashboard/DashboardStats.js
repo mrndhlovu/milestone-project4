@@ -3,22 +3,33 @@ import React from "react";
 import { Statistic } from "semantic-ui-react";
 import DashboardCardWrapper from "../sharedComponents/DashboardCardWrapper";
 
-const DashboardStats = ({}) => {
+const StatField = ({ label, value }) => {
+  return (
+    <Statistic>
+      <Statistic.Value>{value}</Statistic.Value>
+      <Statistic.Label>{label}</Statistic.Label>
+    </Statistic>
+  );
+};
+
+const DashboardStats = ({ ticketList }) => {
+  const getTotal = value => {
+    let total = [];
+    Object.keys(ticketList).forEach(index => {
+      const { status } = ticketList[index];
+
+      status === value && total.push(ticketList[index]);
+      ticketList[index][value] && total.push(ticketList[index]);
+    });
+    return total.length;
+  };
+
   return (
     <DashboardCardWrapper attached header="Current">
       <Statistic.Group>
-        <Statistic>
-          <Statistic.Value>22</Statistic.Value>
-          <Statistic.Label>Bugs</Statistic.Label>
-        </Statistic>
-        <Statistic>
-          <Statistic.Value>31,200</Statistic.Value>
-          <Statistic.Label>Features</Statistic.Label>
-        </Statistic>
-        <Statistic>
-          <Statistic.Value>2662</Statistic.Value>
-          <Statistic.Label>Completed</Statistic.Label>
-        </Statistic>
+        <StatField label="Bugs" value={getTotal("is_bug")} />
+        <StatField label="Features" value={getTotal("is_feature")} />
+        <StatField label="Completed" value={getTotal("done")} />
       </Statistic.Group>
     </DashboardCardWrapper>
   );

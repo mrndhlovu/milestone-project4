@@ -6,6 +6,7 @@ import GridLayout from "./GridLayout";
 import { getTicketList } from "../selectors/appSelectors";
 import { fetchTicketsList } from "../actions/TicketActions";
 import DashboardCards from "../components/dashboard/DashboardCards";
+import StyledMessage from "../components/sharedComponents/StyledMessage";
 
 export class DashboardContainer extends Component {
   componentWillMount() {
@@ -19,7 +20,15 @@ export class DashboardContainer extends Component {
         <Fragment>
           <HeadingImage />
           <GridLayout>
-            <DashboardCards ticketList={tickets.data} />
+            {tickets.data.length > 0 ? (
+              <DashboardCards ticketList={tickets.data} />
+            ) : (
+              <StyledMessage
+                message="No tickets at this time."
+                redirect="/create-ticket"
+                linkText="Create a ticket"
+              />
+            )}
           </GridLayout>
         </Fragment>
       )

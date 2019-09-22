@@ -1,15 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
-import { Grid } from "semantic-ui-react";
-
 import { fetchTicketsList } from "../actions/TicketActions";
 import HeadingImage from "../components/home/HeadingImage";
 import { getTicketList } from "../selectors/appSelectors";
 import Tickets from "../components/tickets/Tickets";
 import { getObjectLength } from "../utils/appUtils";
 import TicketListWrapper from "../components/tickets/TicketListWrapper";
-import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
+import StyledMessage from "../components/sharedComponents/StyledMessage";
+
 import GridLayout from "./GridLayout";
 
 export class TicketsListContainer extends Component {
@@ -30,7 +29,15 @@ export class TicketsListContainer extends Component {
             ticketCount={ticketCount}
             isLoading={ticketsList.isLoading}
           >
-            <Tickets ticketsList={ticketsList.data} />
+            {ticketsList.data.length > 0 ? (
+              <Tickets ticketsList={ticketsList.data} />
+            ) : (
+              <StyledMessage
+                message="No tickets at this time."
+                redirect="/create-ticket"
+                linkText="Create a ticket"
+              />
+            )}
           </TicketListWrapper>
         </GridLayout>
       </Fragment>

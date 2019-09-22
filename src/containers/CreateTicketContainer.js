@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter, Redirect } from "react-router-dom";
 
-import { Form, Message, Container } from "semantic-ui-react";
+import { Form, Message } from "semantic-ui-react";
 
 import { createTicket } from "../actions/TicketActions";
 import { getErrors, getUser, getTicket } from "../selectors/appSelectors";
