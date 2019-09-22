@@ -11,32 +11,23 @@ const getWidth = () => {
   return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
 };
 
-class DesktopViewContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const DesktopViewContainer = ({ children, showFixedMenu, hideFixedMenu }) => {
+  return (
+    <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+      <Visibility
+        once={false}
+        onBottomPassed={showFixedMenu}
+        onBottomPassedReverse={hideFixedMenu}
+      >
+        <Segment textAlign="center" inverted vertical>
+          <DesktopNavContainer />
+        </Segment>
+      </Visibility>
 
-  render() {
-    const { children } = this.props;
-
-    return (
-      <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
-        <Visibility
-          once={false}
-          onBottomPassed={this.showFixedMenu}
-          onBottomPassedReverse={this.hideFixedMenu}
-        >
-          <Segment textAlign="center" inverted vertical>
-            <DesktopNavContainer />
-          </Segment>
-        </Visibility>
-
-        {children}
-      </Responsive>
-    );
-  }
-}
+      {children}
+    </Responsive>
+  );
+};
 
 DesktopViewContainer.propTypes = {
   children: PropTypes.node

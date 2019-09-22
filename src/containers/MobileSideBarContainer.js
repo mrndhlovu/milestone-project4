@@ -1,20 +1,16 @@
 import React, { Component, Fragment } from "react";
-import { Link, withRouter, NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-import styled from "styled-components";
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
-import { NAVIGATION_LINKS } from "../constants/constants";
 import { logOut } from "../actions/AuthActions";
-import { getUser } from "../selectors/appSelectors";
+import { getUser, getUserProfile } from "../selectors/appSelectors";
+import MobileNavigationLinks from "../components/navigation/MobileNavigationLinks";
+import MobileSideBarButtons from "../components/navigation/MobileSideBarButtons";
+import UserLabel from "../components/navigation/UserLabel";
 
-const StyledSpan = styled.span`
-  margin: 13px 0 0 auto;
-  color: grey;
-`;
-
-export class MobileSideBar extends Component {
+export class MobileSideBarContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +21,6 @@ export class MobileSideBar extends Component {
 
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
     this.handleSidebarHide = this.handleSidebarHide.bind(this);
-    this.renderUserLabel = this.renderUserLabel.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
   }
 
@@ -42,55 +37,12 @@ export class MobileSideBar extends Component {
     window.location.reload();
   }
 
-  renderUserLabel() {
-    const { username } = this.props.user;
-
-    return username ? (
-      <StyledSpan>
-        <Icon name="user" />
-        {username}
-      </StyledSpan>
-    ) : null;
-  }
-
-  renderAuthButtons() {
-    const { isAuthenticated } = this.props.user;
-
-    return isAuthenticated ? (
-      <Menu.Item onClick={this.handleLogoutClick}>Log out</Menu.Item>
-    ) : (
-      <Fragment>
-        <Menu.Item as={NavLink} to="/login">
-          Log in
-        </Menu.Item>
-        <Menu.Item as={NavLink} to="/pricing">
-          Sign Up
-        </Menu.Item>
-      </Fragment>
-    );
-  }
-
-  renderNavigationLinks() {
-    return Object.keys(NAVIGATION_LINKS).map(index => {
-      const { header, key } = NAVIGATION_LINKS[index];
-
-      return (
-        <Menu.Item
-          key={index}
-          onClick={this.handleSidebarHide}
-          as={Link}
-          name={key}
-          to={key === "home" ? "" : `/${key}`}
-        >
-          {header}
-        </Menu.Item>
-      );
-    });
-  }
-
   render() {
     const { sidebarOpened } = this.state;
-    const { children } = this.props;
+    const {
+      children,
+      user: { isAuthenticated }
+    } = this.props;
 
     return (
       <div>
@@ -102,8 +54,11 @@ export class MobileSideBar extends Component {
           vertical
           visible={sidebarOpened}
         >
-          {this.renderNavigationLinks()}
-          {this.renderAuthButtons()}
+          <MobileNavigationLinks handleSidebarHide={this.handleSidebarHide} />
+          <MobileSideBarButtons
+            isAuthenticated={isAuthenticated}
+            handleLogoutClick={this.handleLogoutClick}
+          />
         </Sidebar>
 
         <Sidebar.Pusher dimmed={sidebarOpened}>
@@ -118,8 +73,10 @@ export class MobileSideBar extends Component {
                 <Menu.Item onClick={this.handleToggle}>
                   <Icon name="sidebar" />
                 </Menu.Item>
-                {this.renderUserLabel()}
-                <Menu.Item position="right">{this.renderNavButtons}</Menu.Item>
+                {/* <UserLabel
+                  username={username}
+                  current_membership={current_membership}
+                /> */}
               </Menu>
             </Container>
           </Segment>
@@ -132,10 +89,15 @@ export class MobileSideBar extends Component {
 }
 
 const mapStateToProps = state => {
-  return { user: getUser(state) };
+  console.log(state);
+
+  return {
+    user: getUser(state),
+    userProfile: getUserProfile(state)
+  };
 };
 
 export default connect(
   mapStateToProps,
   { logOut }
-)(withRouter(MobileSideBar));
+)(withRouter(MobileSideBarContainer));

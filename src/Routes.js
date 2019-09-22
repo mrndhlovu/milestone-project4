@@ -1,6 +1,6 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
 
+import { Route, Switch } from "react-router-dom";
 import ArticleDetail from "./components/blog/ArticleDetail";
 import ArticleList from "./components/blog/ArticleList";
 import AuthRouteCheck from "./utils/AuthRouteCheck";
@@ -9,7 +9,7 @@ import CheckoutForm from "./components/ecommerce/CheckoutForm";
 import CreateTicketContainer from "./containers/CreateTicketContainer";
 import DashboardContainer from "./containers/DashboardContainer";
 import EditTicket from "./components/tickets/EditTicket";
-import Home from "./components/home/Home";
+import HomeContainer from "./containers/HomeContainer";
 import LoginContainer from "./containers/LoginContainer";
 import MembershipContainer from "./containers/MembershipsContainer";
 import SignupContainer from "./containers/SignupContainer";
@@ -20,7 +20,7 @@ import UserProfileContainer from "./containers/UserProfileContainer";
 const BaseRouter = () => {
   return (
     <Switch>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/" component={HomeContainer} />
       <Route path="/login" component={LoginContainer} />
       <Route path="/signup" component={SignupContainer} />
       <Route path="/tickets" component={TicketsListContainer} />

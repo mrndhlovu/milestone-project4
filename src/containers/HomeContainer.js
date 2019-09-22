@@ -12,17 +12,18 @@ import {
   Segment
 } from "semantic-ui-react";
 
-import { logOut } from "../../actions/AuthActions";
+import { logOut } from "../actions/AuthActions";
 
-import HeadingImage from "./HeadingImage";
-import image_1 from "../../images/image_1.jpg";
-import image_2 from "../../images/image_2.jpg";
+import HeadingImage from "../components/home/HeadingImage";
+import image_1 from "../images/image_1.jpg";
+import image_2 from "../images/image_2.jpg";
+import { getUser } from "../selectors/appSelectors";
 
 const StyledHeaderSpan = styled.span`
   text-transform: uppercase;
 `;
 
-export class Home extends Component {
+export class HomeContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -33,6 +34,7 @@ export class Home extends Component {
     this.props.logOut();
   }
   render() {
+    console.log(this.props.user);
     return (
       <Fragment>
         <HeadingImage />
@@ -121,7 +123,13 @@ export class Home extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: getUser(state)
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   { logOut }
-)(Home);
+)(HomeContainer);
