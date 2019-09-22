@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 
 import HeadingImage from "../components/home/HeadingImage";
 import { getMemberships, getUser } from "../selectors/appSelectors";
-import { StyledContainerWrapper } from "../constants/constants";
 
 import { List, Icon } from "semantic-ui-react";
 
 import { fetchMembershipsList } from "../actions/MembershipActions";
 import { addToCart } from "../actions/CheckoutActions";
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
-import { getCurrentMembership } from "../utils/appUtils";
+import { getCurrentMembership, isItemInCart } from "../utils/appUtils";
 import { getRedirectParam } from "../utils/urls";
+import GridLayout from "./GridLayout";
 
 export class MembershipContainer extends Component {
   constructor(props) {
@@ -59,7 +59,10 @@ export class MembershipContainer extends Component {
     } else {
       this.setState({
         redirectParam: isAuthenticated ? redirectParam : "/signup",
-        buttonTextFree: "Proceed to signup",
+        buttonTextFree:
+          getCurrentMembership() !== "pro"
+            ? "Proceed to signup"
+            : "See your profile",
         buttonTextPro: "Add to cart"
       });
 
@@ -81,7 +84,9 @@ export class MembershipContainer extends Component {
       });
     } else {
       this.setState({
-        buttonTextFree: "Down-grade to Unicorn Free",
+        buttonTextFree: isItemInCart()
+          ? "Item in"
+          : "Down-grade to Unicorn Free",
         buttonTextPro: "Your Current Membership"
       });
     }
@@ -90,7 +95,8 @@ export class MembershipContainer extends Component {
   render() {
     const {
       memberships,
-      authUser: { isAuthenticated }
+      authUser: { isAuthenticated },
+      history
     } = this.props;
     const {
       buttonTextFree,
@@ -102,7 +108,7 @@ export class MembershipContainer extends Component {
     return (
       <Fragment>
         <HeadingImage />
-        <StyledContainerWrapper>
+        <GridLayout>
           <MembershipOptions
             isAuthenticated={isAuthenticated}
             memberships={memberships}
@@ -112,8 +118,9 @@ export class MembershipContainer extends Component {
             buttonTextPro={buttonTextPro}
             buttonDisabled={buttonDisabled}
             redirectParam={redirectParam}
+            history={history}
           />
-        </StyledContainerWrapper>
+        </GridLayout>
       </Fragment>
     );
   }

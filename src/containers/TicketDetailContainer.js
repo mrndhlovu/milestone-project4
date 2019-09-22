@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import {
@@ -7,7 +7,7 @@ import {
   deleteTicket
 } from "../actions/TicketActions";
 
-import TicketComments from "../components/tickets/TicketComments";
+import TicketComments from "./TicketCommentsContainer";
 import {
   getVotes,
   getMembershipProfile,
@@ -20,8 +20,9 @@ import StyledMessage from "../components/sharedComponents/StyledMessage";
 import EditButtons from "../components/tickets/EditButtons";
 import TicketDetailStats from "../components/tickets/TicketDetailStats";
 
-import { Container, Header, Segment } from "semantic-ui-react";
+import { Header, Segment } from "semantic-ui-react";
 import TicketDetail from "../components/tickets/TicketDetail";
+import GridLayout from "./GridLayout";
 
 export class TicketDetailContainer extends Component {
   constructor(props) {
@@ -31,19 +32,19 @@ export class TicketDetailContainer extends Component {
     this.handleTicketDelete = this.handleTicketDelete.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      vote,
-      match: {
-        params: { id }
-      }
-    } = this.props;
+  // componentDidUpdate(prevProps) {
+  //   const {
+  //     vote,
+  //     match: {
+  //       // params: { id }
+  //     }
+  //   } = this.props;
 
-    if (prevProps.vote !== vote) {
-      const { updated } = vote.data;
-      console.log("updated");
-    }
-  }
+  //   if (prevProps.vote !== vote) {
+  //     // const { updated } = vote.data;
+  //     console.log("updated");
+  //   }
+  // }
 
   componentWillMount() {
     const { id } = this.props.match.params;
@@ -58,7 +59,7 @@ export class TicketDetailContainer extends Component {
   handleTicketDelete() {
     const { id } = this.props.match.params;
     this.props.deleteTicket(id);
-    setTimeout(this.props.history.push(`/tickets/`), 1000);
+    setTimeout(this.props.history.push(`/tickets`), 1000);
   }
 
   handleVoteClick(ticketId) {
@@ -85,10 +86,10 @@ export class TicketDetailContainer extends Component {
     } = this.props;
 
     return (
-      <Container style={{ paddingTop: 20 }}>
+      <GridLayout>
         {dataReceived && is_pro_member && (
           <EditButtons
-            onDelete={this.handleTicketDelete}
+            handleTicketDelete={this.handleTicketDelete}
             ticketId={id}
             owner={owner}
           />
@@ -129,7 +130,7 @@ export class TicketDetailContainer extends Component {
             />
           )}
         </Segment>
-      </Container>
+      </GridLayout>
     );
   }
 }
