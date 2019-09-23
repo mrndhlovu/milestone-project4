@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { Confirm, Grid, Segment } from "semantic-ui-react";
+import { Confirm, Segment } from "semantic-ui-react";
 
 import { StyledContainerWrapper } from "../constants/constants";
 import { cancelSubscription } from "../actions/MembershipActions";
