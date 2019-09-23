@@ -89,9 +89,9 @@ export const authState = () => {
     const sessionLife = new Date(SESSION_LIFE);
 
     if (sessionLife <= new Date()) {
-      dispatch(makeRequest(USER_AUTH_LOGOUT));
-      dispatch(checkSessionTime(sessionLife));
+      destroyLocalStorage();
     } else {
+      dispatch(checkSessionTime(sessionLife));
       dispatch(fetchUser());
       dispatch(fetchUserProfile());
 
