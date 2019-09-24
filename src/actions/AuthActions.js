@@ -89,7 +89,7 @@ export const authState = () => {
     const sessionLife = new Date(SESSION_LIFE);
 
     if (sessionLife <= new Date()) {
-      destroyLocalStorage();
+      destroyLocalStorage(["sessionToken", "sessionLife", "customer"]);
     } else {
       dispatch(checkSessionTime(sessionLife));
       dispatch(fetchUser());
@@ -118,7 +118,6 @@ export const login = body => {
         refresh();
       },
       error => {
-        console.log(error.response.data);
         dispatch(createMessage({ errorMsg: error.response.data }));
         dispatch(dataRequestFail(USER_AUTH_FAIL, error));
       }
@@ -133,7 +132,12 @@ export const logOut = () => {
     ? dispatch => {
         dispatch(makeRequest(USER_AUTH_LOGOUT));
         requestLogout(SESSION_TOKEN).then(response => {
-          destroyLocalStorage();
+          destroyLocalStorage([
+            "sessionToken",
+            "sessionLife",
+            "currentMembership",
+            "selectedMembership"
+          ]);
           dispatch(
             createMessage({
               successMsg: "You have successfully logged out!"
@@ -184,6 +188,12 @@ export const fetchUser = () => {
       error => {
         dispatch(createMessage({ errorMsg: error.response.data }));
         dispatch(dataRequestFail(FETCH_USER_ERROR, error));
+        destroyLocalStorage([
+          "sessionToken",
+          "sessionLife",
+          "currentMembership",
+          "selectedMembership"
+        ]);
       }
     );
   };
