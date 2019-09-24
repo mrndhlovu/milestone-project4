@@ -1,9 +1,11 @@
 import { USER_PROFILE } from "../constants/constants";
 
+const cart = JSON.parse(localStorage.getItem("cart"));
+
 export const getSelectedMemberShip = () =>
   localStorage.getItem("selectedMembership");
 
-export const getUser = () => JSON.parse(localStorage.getItem("client"));
+export const getUser = () => JSON.parse(localStorage.getItem("customer"));
 
 export const isTicketOwner = id => {
   if (getUser()) {
@@ -26,7 +28,11 @@ export const isAuthenticated = () => {
   return getUser() && getUser().currentMembership && getUser().userId && token;
 };
 
-export const destroyLocalStorage = () => window.localStorage.clear();
+export const destroyLocalStorage = keys => {
+  keys.forEach(key => {
+    localStorage.removeItem(key);
+  });
+};
 
 export const createUserProfile = (
   username,
@@ -42,7 +48,7 @@ export const createUserProfile = (
     currentMembership
   });
   localStorage.setItem("currentMembership", currentMembership);
-  localStorage.setItem("client", profile);
+  localStorage.setItem("customer", profile);
 };
 
 export const refresh = () => window.location.reload();
@@ -108,13 +114,44 @@ export const slugify = text => {
 };
 
 export const getObjectLength = object => {
-  return object !== "" ? Object.keys(object).length : 0;
+  return object !== "" && Object.keys(object).length;
 };
 
-export const isItemInCart = () => {
-  const cart = JSON.parse(localStorage.getItem("cart"));
-  if (cart && cart.membership) {
+export const itemInCart = () => {
+  if (cart && cart.membershipType) {
     return true;
   }
   return false;
+};
+
+export const hasMembership = query => {
+  const membership = localStorage.getItem("currentMembership");
+  if (membership === query) return true;
+  return false;
+};
+
+export const hasSelectedMembership = query => {
+  if (cart && cart.membershipType === query) {
+    return true;
+  }
+  return false;
+};
+
+export const getMembershipButtonText = () => {
+  if (hasMembership("free")) {
+    return {
+      free: hasMembership("free") ? "Your current membership" : "Add to cart",
+      pro: hasSelectedMembership("pro") ? "item in your cart" : "Add to cart"
+    };
+  } else if (hasMembership("pro")) {
+    return {
+      free: "Downgrade to unicorn-free",
+      pro: "item in your cart"
+    };
+  } else {
+    return {
+      free: hasSelectedMembership("free") ? "item in your cart" : "Add to cart",
+      pro: hasSelectedMembership("pro") ? "item in your cart" : "Add to cart"
+    };
+  }
 };
