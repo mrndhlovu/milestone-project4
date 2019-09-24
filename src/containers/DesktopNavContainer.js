@@ -59,8 +59,9 @@ export class DesktopNavContainer extends Component {
 
   componentDidMount() {
     const cart = getCartItems();
+    const { isAuthenticated } = this.props.user;
 
-    if (cart !== null) {
+    if (cart !== null && isAuthenticated) {
       this.props.getPendingOrder();
     }
   }
