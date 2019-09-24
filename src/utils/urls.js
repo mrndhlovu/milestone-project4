@@ -1,4 +1,5 @@
 import { SESSION_TOKEN } from "../constants/localStorageConstants";
+import { hasSelectedMembership } from "../utils/appUtils";
 
 export const getRootUrl =
   process.env.NODE_ENV === "production"
@@ -29,10 +30,10 @@ export const getPageId = () => {
   return location === "" ? "home" : location;
 };
 
-export const getRedirectParam = membership => {
+export const getRedirectParam = membershipType => {
   let location = getPageId();
 
-  if (location === "pricing" && membership !== "pro") {
+  if (location === "pricing" && !hasSelectedMembership(membershipType)) {
     return "/signup";
   } else {
     return "/cart";
