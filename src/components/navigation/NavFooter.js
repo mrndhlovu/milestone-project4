@@ -47,8 +47,8 @@ export class navFooter extends Component {
                   <List.Item as={NavLink} to="/tickets">
                     Tickets
                   </List.Item>
-                  <List.Item as={NavLink} to="/products">
-                    Products
+                  <List.Item as={NavLink} to="/dashboard">
+                    Dashboard
                   </List.Item>
                 </List>
               </Grid.Column>
