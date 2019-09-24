@@ -39,6 +39,8 @@ import {
   requestSuccess
 } from "./index";
 
+import { destroyLocalStorage } from "../utils/appUtils";
+
 export const addToCart = () => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_ADD_TO_CART));
@@ -81,9 +83,7 @@ export const updateTranscation = () => {
       response => {
         dispatch(requestSuccess(TRANSCATION_UPDATED, response.data));
         dispatch(createMessage({ successMsg: response.data.message }));
-        localStorage.removeItem("subscriptionId");
-        localStorage.removeItem("stripeToken");
-        localStorage.removeItem("cart");
+        destroyLocalStorage(["subscriptionId", "stripeToken", "cart"]);
       },
       error => {
         dispatch(createMessage({ errorMsg: error.message }));
@@ -131,7 +131,7 @@ export const deleteFromCart = () => {
       response => {
         dispatch(requestSuccess(DELETED_FROM_CART, response.data));
         dispatch(createMessage({ successMsg: response.data.message }));
-        localStorage.removeItem("cart");
+        destroyLocalStorage(["cart"]);
       },
       error => {
         dispatch(createMessage({ successMsg: error.message }));
