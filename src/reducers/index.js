@@ -31,7 +31,7 @@ export default combineReducers({
   ticket: createTicketReducer,
   ticketDetail: ticketDetaiReducer,
   tickets: ticketsReducer,
-  ticketUpdate: editTicketReducer,
+  editTicket: editTicketReducer,
   user: userReducer,
   userProfile: userProfileReducer,
   vote: ticketVoteReducer

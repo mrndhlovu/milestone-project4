@@ -8,7 +8,7 @@ export const getMessage = state => state.messages;
 
 export const getTicketDetail = state => state.ticketDetail;
 
-export const getTicketUpdate = state => state.ticketUpdate;
+export const getTicketUpdate = state => state.editTicket;
 
 export const getTicketList = state => state.tickets;
 
