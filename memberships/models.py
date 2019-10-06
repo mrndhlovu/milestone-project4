@@ -3,9 +3,8 @@ from django.conf import settings
 from django.db.models.signals import post_save
 import stripe
 from datetime import datetime
+from django.contrib.contenttypes.models import ContentType
 
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 User = settings.AUTH_USER_MODEL
 
@@ -41,9 +40,6 @@ class UserMembership(models.Model):
     def get_selected_membership(self):
         return self.membership
 
-    def get_membership_total(self):
-        return self.sum([membership.Membership.price for member in self.membership.all()])
-
 
 def post_save_create_user_membership(sender, instance, created, *args, **kwargs):
     if created:
@@ -70,7 +66,7 @@ class Subscription(models.Model):
     user_membership = models.ForeignKey(
         UserMembership, on_delete=models.CASCADE)
     stripe_subscription_id = models.CharField(max_length=40)
-    is_active = models.BooleanField(default=-True)
+    is_active = models.BooleanField(default=False, null=True)
     date_added = models.DateTimeField(auto_now=True, null=True)
     date_subscribed = models.DateTimeField(auto_now=True, null=True)
 
