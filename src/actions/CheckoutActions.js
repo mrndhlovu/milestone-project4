@@ -1,35 +1,26 @@
 import {
-  SUBMITTING_PAYMENT,
-  PAYMENT_SUCCESS,
-  PAYMENT_FAIL,
+  ADD_T0_CART_ERROR,
+  CHECKOUT_ERROR,
+  DELETED_FROM_CART_ERROR,
+  DELETED_FROM_CART,
+  PENDING_ORDER_ERROR,
+  RECEIVE_ADD_T0_CART,
+  RECEIVE_CHECKOUT,
+  RECEIVE_PENDING_ORDER,
+  REQUEST_ADD_TO_CART,
+  REQUEST_CHECKOUT,
+  REQUEST_PENDING_ORDER,
   TRANSCATION_UPDATE_FAIL,
   TRANSCATION_UPDATED,
-  UPDATE_TRANSCATION,
-  RECEIVE_PENDING_ORDER,
-  REQUEST_PENDING_ORDER,
-  DELETED_FROM_CART,
-  DELETE_FROM_CART,
-  RECEIVE_CHECKOUT,
-  REQUEST_CHECKOUT,
-  RECEIVE_ADD_T0_CART,
-  REQUEST_ADD_TO_CART,
-  REQUEST_ORDER_DETAIL,
-  RECEIVE_ORDER_DETAIL,
-  ADD_T0_CART_ERROR,
-  ORDER_DETAIL_ERROR,
-  PENDING_ORDER_ERROR,
-  CHECKOUT_ERROR,
-  DELETED_FROM_CART_ERROR
+  UPDATE_TRANSCATION
 } from "./ActionTypes";
 
 import {
-  requestMembershipPayment,
-  addMembershipToCart,
   requestTransactionUpdate,
-  requestCheckout,
+  requestAddItemToCart,
   requestPendingOrder,
-  deleteMembershipFromCart,
-  requestOrderItemDetail
+  requestRemoveItemFromCart,
+  requestItemPayment
 } from "../apis/apiRequests";
 
 import {
@@ -39,38 +30,67 @@ import {
   requestSuccess
 } from "./index";
 
-import { destroyLocalStorage } from "../utils/appUtils";
-
-export const addToCart = () => {
+export const addItemToCart = (id, productType) => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_ADD_TO_CART));
-    addMembershipToCart().then(
+    requestAddItemToCart(id, productType).then(
       response => {
+        localStorage.setItem("subscriptionId", response.data.subscription_id);
+
         dispatch(requestSuccess(RECEIVE_ADD_T0_CART, response.data));
         dispatch(createMessage({ successMsg: response.data.message }));
+        dispatch(fetchPendingOrder());
       },
       error => {
-        dispatch(dataRequestFail(ADD_T0_CART_ERROR, error.data));
-        dispatch(createMessage({ errorMsg: "Payment failed" }));
+        dispatch(createMessage({ errorMsg: error.message }));
+        dispatch(dataRequestFail(ADD_T0_CART_ERROR, error));
       }
     );
   };
 };
 
-export const requestPayment = () => {
+export const fetchPendingOrder = () => {
   return dispatch => {
-    dispatch(makeRequest(SUBMITTING_PAYMENT));
-    requestMembershipPayment().then(
+    dispatch(makeRequest(REQUEST_PENDING_ORDER));
+    requestPendingOrder().then(
       response => {
-        dispatch(requestSuccess(PAYMENT_SUCCESS, response.data));
-        localStorage.setItem("subscriptionId", response.data.subscription_id);
-        setTimeout(function() {
-          dispatch(updateTranscation());
-        }, 500);
+        dispatch(requestSuccess(RECEIVE_PENDING_ORDER, response.data));
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: "No cart found" }));
+        dispatch(dataRequestFail(PENDING_ORDER_ERROR, error.message));
+      }
+    );
+  };
+};
+
+export const removeItemFromCart = (id, productType) => {
+  return dispatch => {
+    dispatch(makeRequest(DELETED_FROM_CART));
+    requestRemoveItemFromCart(id, productType).then(
+      response => {
+        dispatch(requestSuccess(DELETED_FROM_CART, response.data));
+        dispatch(fetchPendingOrder());
       },
       error => {
         dispatch(createMessage({ errorMsg: error.message }));
-        dispatch(dataRequestFail(PAYMENT_FAIL, error));
+        dispatch(dataRequestFail(DELETED_FROM_CART_ERROR, error));
+      }
+    );
+  };
+};
+
+export const makePayment = () => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_CHECKOUT));
+    requestItemPayment().then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_CHECKOUT, response.data));
+        dispatch(fetchPendingOrder());
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: error.message }));
+        dispatch(dataRequestFail(CHECKOUT_ERROR, error));
       }
     );
   };
@@ -83,74 +103,10 @@ export const updateTranscation = () => {
       response => {
         dispatch(requestSuccess(TRANSCATION_UPDATED, response.data));
         dispatch(createMessage({ successMsg: response.data.message }));
-        destroyLocalStorage(["subscriptionId", "stripeToken", "cart"]);
       },
       error => {
         dispatch(createMessage({ errorMsg: error.message }));
         dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
-      }
-    );
-  };
-};
-
-export const getPendingOrder = () => {
-  return dispatch => {
-    dispatch(makeRequest(REQUEST_PENDING_ORDER));
-    requestPendingOrder().then(
-      response => {
-        dispatch(requestSuccess(RECEIVE_PENDING_ORDER, response.data));
-      },
-      error => {
-        dispatch(createMessage({ errorMsg: error.message }));
-        dispatch(dataRequestFail(PENDING_ORDER_ERROR, error));
-      }
-    );
-  };
-};
-
-export const getCheckout = () => {
-  return dispatch => {
-    dispatch(makeRequest(REQUEST_CHECKOUT));
-    requestCheckout().then(
-      response => {
-        dispatch(requestSuccess(RECEIVE_CHECKOUT, response.data));
-        dispatch(createMessage({ successMsg: response.data.message }));
-      },
-      error => {
-        dispatch(createMessage({ errorMsg: error.message }));
-        dispatch(dataRequestFail(CHECKOUT_ERROR, error));
-      }
-    );
-  };
-};
-
-export const deleteFromCart = () => {
-  return dispatch => {
-    dispatch(makeRequest(DELETE_FROM_CART));
-    deleteMembershipFromCart().then(
-      response => {
-        dispatch(requestSuccess(DELETED_FROM_CART, response.data));
-        dispatch(createMessage({ successMsg: response.data.message }));
-        destroyLocalStorage(["cart"]);
-      },
-      error => {
-        dispatch(createMessage({ successMsg: error.message }));
-        dispatch(dataRequestFail(DELETED_FROM_CART_ERROR, error));
-      }
-    );
-  };
-};
-
-export const getOrderDetail = id => {
-  return dispatch => {
-    dispatch(makeRequest(REQUEST_ORDER_DETAIL));
-    requestOrderItemDetail(id).then(
-      response => {
-        dispatch(requestSuccess(RECEIVE_ORDER_DETAIL, response.data));
-      },
-      error => {
-        dispatch(createMessage({ successMsg: error.message }));
-        dispatch(dataRequestFail(ORDER_DETAIL_ERROR, error));
       }
     );
   };
