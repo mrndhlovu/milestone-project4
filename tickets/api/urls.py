@@ -2,6 +2,7 @@ from rest_framework.routers import DefaultRouter
 from .views import TicketListView, TicketVoteToggleAPIView, TicketDetailView, CreateTicketView, TicketUpdateView, TicketDeleteView
 from django.urls import path, re_path
 
+app_name = 'tickets'
 
 urlpatterns = [
     path('', TicketListView.as_view()),
