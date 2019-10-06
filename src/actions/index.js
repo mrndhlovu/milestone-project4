@@ -1,15 +1,15 @@
 import { CREATE_MESSAGE, HAS_ERROR } from "./ActionTypes";
 
-const getFetchErrors = error => ({
-  errorAlert: error.response.data,
-  status: error.response.status
-});
-
 export const makeRequest = type => ({ type });
 
 export const requestSuccess = (type, payload) => ({ type, payload });
 
 export const dataRequestFail = (type, error) => ({ type, error });
+
+const getFetchErrors = error => ({
+  errorAlert: error.response.data,
+  status: error.response.status
+});
 
 export const createMessage = message => ({
   type: CREATE_MESSAGE,
