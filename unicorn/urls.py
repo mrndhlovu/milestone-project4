@@ -9,8 +9,7 @@ urlpatterns = [
     path('accounts/', include('accounts.api.urls')),
     path('memberships/', include('memberships.api.urls')),
     path('comments/', include('comments.api.urls')),
-
-    # path('products/', include('products.api.urls')),
+    path('cart/', include('cart.api.urls')),
     # path('api-auth/', include('rest_framework.urls')),
     # path('rest-auth/', include('rest_au  sth.urls')),
     # path('rest-auth/registration/', include('rest_auth.registration.urls')),
