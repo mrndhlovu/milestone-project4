@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
 
 import { logOut } from "../actions/AuthActions";
-import { getPendingOrder } from "../actions/CheckoutActions";
-import { getCartItems } from "../utils/appCheckoutUtils";
+import { fetchPendingOrder } from "../actions/CheckoutActions";
+
 import {
   getUser,
-  getCheckout,
-  getUserProfile
+  getUserProfile,
+  getCartPendingOrder
 } from "../selectors/appSelectors";
 import NavigationButtons from "../components/navigation/NavigationButtons";
 import NavigationLinks from "../components/navigation/NavigationLinks";
@@ -40,6 +40,12 @@ export class DesktopNavContainer extends Component {
     this.showActiveLink = this.showActiveLink.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.user.isAuthenticated !== this.props.user.isAuthenticated) {
+      this.props.fetchPendingOrder();
+    }
+  }
+
   hideFixedMenu() {
     this.setState({ fixed: false });
   }
@@ -55,15 +61,6 @@ export class DesktopNavContainer extends Component {
 
   handleLogoutClick() {
     this.props.logOut();
-  }
-
-  componentDidMount() {
-    const cart = getCartItems();
-    const { isAuthenticated } = this.props.user;
-
-    if (cart !== null && isAuthenticated) {
-      this.props.getPendingOrder();
-    }
   }
 
   showActiveLink(name) {
@@ -82,7 +79,7 @@ export class DesktopNavContainer extends Component {
     const {
       user: { isAuthenticated },
       userProfile: { username, current_membership },
-      checkOut: { data }
+      pendingOrder
     } = this.props;
 
     return (
@@ -100,7 +97,9 @@ export class DesktopNavContainer extends Component {
               showActiveLink={this.showActiveLink}
             />
             <Menu.Item position="right">
-              <Cart data={data} />
+              {isAuthenticated && pendingOrder.data.orders && (
+                <Cart pendingOrders={pendingOrder.data} />
+              )}
               {username && (
                 <UserLabel
                   username={username}
@@ -124,11 +123,11 @@ const mapStateToProps = state => {
   return {
     user: getUser(state),
     userProfile: getUserProfile(state),
-    checkOut: getCheckout(state)
+    pendingOrder: getCartPendingOrder(state)
   };
 };
 
 export default connect(
   mapStateToProps,
-  { logOut, getPendingOrder }
+  { logOut, fetchPendingOrder }
 )(withRouter(DesktopNavContainer));
