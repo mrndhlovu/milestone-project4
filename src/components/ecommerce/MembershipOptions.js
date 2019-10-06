@@ -5,24 +5,23 @@ import {
   UNICORN_FREE_SERVICES,
   UNICORN_PRO_SERVICES
 } from "../../constants/constants";
-import { getCurrentMembership } from "../../utils/appUtils";
+import { hasMembership } from "../../utils/appUtils";
 import { Button, Header, List, Segment } from "semantic-ui-react";
 
 const MembershipOptions = ({
   memberships,
-  membershipChoice,
+  getMembershipChoice,
   handleAddToCart,
   buttonTextPro,
   buttonTextFree,
-  buttonDisabled,
   redirectParam,
   history
 }) => {
-  return memberships.map(membership => {
-    const { price, id, slug } = membership;
+  return Object.keys(memberships).map(key => {
+    const { price, id, slug } = memberships[key];
     const isNotProMember = slug !== "pro";
     const buttonText = isNotProMember ? buttonTextFree : buttonTextPro;
-    const buttonColor = isNotProMember ? "blue" : "grey";
+    const buttonColor = isNotProMember ? "blue" : "orange";
     const header = `Unicorn ${slug}`;
 
     return (
@@ -30,7 +29,7 @@ const MembershipOptions = ({
         <Header
           as="h2"
           attached="top"
-          color={isNotProMember ? "blue" : "grey"}
+          color={isNotProMember ? "blue" : "orange"}
           textAlign="center"
           content={header.toUpperCase()}
           subheader={
@@ -44,28 +43,24 @@ const MembershipOptions = ({
           <Segment>
             <List>
               {isNotProMember
-                ? membershipChoice(UNICORN_FREE_SERVICES)
-                : membershipChoice(UNICORN_PRO_SERVICES)}
+                ? getMembershipChoice(UNICORN_FREE_SERVICES)
+                : getMembershipChoice(UNICORN_PRO_SERVICES)}
             </List>
           </Segment>
         </div>
         <Button
           attached="bottom"
-          disabled={slug === getCurrentMembership() && buttonDisabled}
+          disabled={hasMembership(slug)}
           content={buttonText.toUpperCase()}
           color={buttonColor}
           onClick={
             redirectParam
               ? () => {
-                  setTimeout(() => {
-                    history.push(
-                      getCurrentMembership() === "pro"
-                        ? "/user-profile"
-                        : redirectParam
-                    );
-                  }, 500);
+                  history.push(
+                    hasMembership("pro") ? "/user-profile" : redirectParam
+                  );
                 }
-              : () => handleAddToCart(slug, id)
+              : () => handleAddToCart(id, "membership")
           }
         />
       </Segment>
