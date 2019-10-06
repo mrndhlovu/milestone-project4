@@ -6,11 +6,15 @@ import {
 
 const cart = JSON.parse(localStorage.getItem("cart"));
 
-export const getCartItems = () =>
-  cart && cart.membership ? cart.membership : null;
+export const getCartItems = () => {
+  // const { membershipOrder, ticketOrders } = cart;
+  // let cartCount = Object.keys(membershipOrder.id).length + ticketOrders.length;
+
+  return false;
+};
 
 export const getMembershipId = () => {
-  const id = cart ? cart.order.membershipId : 1;
+  const id = cart ? cart.membershipOrder.id : 1;
   return id;
 };
 
