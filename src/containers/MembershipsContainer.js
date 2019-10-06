@@ -1,17 +1,16 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
-import HeadingImage from "../components/home/HeadingImage";
-import { getMemberships, getUser } from "../selectors/appSelectors";
-
 import { List, Icon } from "semantic-ui-react";
 
+import { addItemToCart } from "../actions/CheckoutActions";
 import { fetchMembershipsList } from "../actions/MembershipActions";
-import { addToCart } from "../actions/CheckoutActions";
-import MembershipOptions from "../components/ecommerce/MembershipOptions";
-import { getCurrentMembership, isItemInCart } from "../utils/appUtils";
+import { getCurrentMembership, itemInCart } from "../utils/appUtils";
+import { getMemberships, getUser } from "../selectors/appSelectors";
 import { getRedirectParam } from "../utils/urls";
 import GridLayout from "./GridLayout";
+import HeadingImage from "../components/home/HeadingImage";
+import MembershipOptions from "../components/ecommerce/MembershipOptions";
 
 export class MembershipContainer extends Component {
   constructor(props) {
@@ -38,24 +37,18 @@ export class MembershipContainer extends Component {
     });
   }
 
-  handleAddToCart(membership, id) {
+  handleAddToCart(id, productId) {
     const { isAuthenticated } = this.props.authUser;
-    localStorage.setItem("selectedMembership", `${membership}`);
-    const redirectParam = getRedirectParam(membership);
+    this.props.addItemToCart(id, productId);
 
-    const cartData = { membership, order: { membershipId: id } };
+    const redirectParam = getRedirectParam(productId);
 
-    if (redirectParam === "/cart") {
+    if (redirectParam === "/checkout" && isAuthenticated) {
       this.setState({
         redirectParam: isAuthenticated ? redirectParam : "/signup",
         buttonTextPro: "Proceed to checkout",
         buttonTextFree: "Add to cart"
       });
-      localStorage.setItem("cart", JSON.stringify(cartData));
-
-      if (isAuthenticated) {
-        this.props.addToCart();
-      }
     } else {
       this.setState({
         redirectParam: isAuthenticated ? redirectParam : "/signup",
@@ -65,8 +58,6 @@ export class MembershipContainer extends Component {
             : "See your profile",
         buttonTextPro: "Add to cart"
       });
-
-      localStorage.setItem("cart", JSON.stringify(cartData));
     }
   }
 
@@ -84,9 +75,7 @@ export class MembershipContainer extends Component {
       });
     } else {
       this.setState({
-        buttonTextFree: isItemInCart()
-          ? "Item in"
-          : "Down-grade to Unicorn Free",
+        buttonTextFree: itemInCart() ? "Item in" : "Down-grade to Unicorn Free",
         buttonTextPro: "Your Current Membership"
       });
     }
@@ -112,7 +101,7 @@ export class MembershipContainer extends Component {
           <MembershipOptions
             isAuthenticated={isAuthenticated}
             memberships={memberships}
-            membershipChoice={this.renderServicesList}
+            getMembershipChoice={this.renderServicesList}
             handleAddToCart={this.handleAddToCart}
             buttonTextFree={buttonTextFree}
             buttonTextPro={buttonTextPro}
@@ -135,5 +124,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchMembershipsList, addToCart }
+  { fetchMembershipsList, addItemToCart }
 )(MembershipContainer);
