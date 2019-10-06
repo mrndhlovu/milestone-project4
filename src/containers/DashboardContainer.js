@@ -9,7 +9,7 @@ import DashboardCards from "../components/dashboard/DashboardCards";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 
 export class DashboardContainer extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchTicketsList();
   }
 
