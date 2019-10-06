@@ -58,7 +58,7 @@ export const capitalizeFirstLetter = string =>
 
 export const getTransactionUpdate = () => {
   const subscriptionId = localStorage.getItem("subscriptionId");
-  const selectedMembership = localStorage.getItem("selectedMembership");
+  const selectedMembership = getSelectedMemberShip();
 
   return {
     subscription_id: `${subscriptionId}`,
@@ -76,7 +76,7 @@ export const getCurrentMembership = () => {
 
 export const getChoosenMembership = () => {
   const token = localStorage.getItem("stripeToken");
-  const selectedMembership = localStorage.getItem("selectedMembership");
+  const selectedMembership = getSelectedMemberShip();
 
   return {
     membership_type: `${selectedMembership}`,
@@ -86,8 +86,18 @@ export const getChoosenMembership = () => {
 
 export const getMembershipType = () => {
   return {
-    membership_type: `${"pro"}`
+    membership_type: getSelectedMemberShip()
   };
+};
+
+export const getTicketInCart = () => {
+  const { ticketOrders } = cart;
+  let order = [];
+  ticketOrders.forEach(ticket => {
+    order.push(ticket);
+  });
+
+  return order;
 };
 
 export const getFormatedDate = rawDate => {
@@ -118,7 +128,9 @@ export const getObjectLength = object => {
 };
 
 export const itemInCart = () => {
-  if (cart && cart.membershipType) {
+  const { membershipOrder } = cart;
+
+  if (membershipOrder !== {}) {
     return true;
   }
   return false;
@@ -131,7 +143,8 @@ export const hasMembership = query => {
 };
 
 export const hasSelectedMembership = query => {
-  if (cart && cart.membershipType === query) {
+  const { membershipOrder } = cart;
+  if (membershipOrder !== {} && membershipOrder.membership === query) {
     return true;
   }
   return false;
@@ -154,4 +167,34 @@ export const getMembershipButtonText = () => {
       pro: hasSelectedMembership("pro") ? "item in your cart" : "Add to cart"
     };
   }
+};
+
+export const addOrderToStorage = (value, option) => {
+  const cart = JSON.parse(localStorage.getItem("cart"));
+
+  if (option) {
+    const { ticketOrders } = cart;
+
+    ticketOrders.push({ ticketId: value });
+    const storageUpdate = { ticketOrders, ...cart };
+
+    localStorage.setItem("cart", JSON.stringify(storageUpdate));
+  } else {
+    const membership = { membership: value.membership, id: value.id };
+    const storageUpdate = { ...cart, membershipOrder: membership };
+    localStorage.setItem("cart", JSON.stringify(storageUpdate));
+  }
+};
+
+export const createLocalStorageCart = () => {
+  const orders = JSON.stringify({
+    membershipOrder: {},
+    ticketOrders: []
+  });
+
+  if (cart === null) {
+    return localStorage.setItem("cart", orders);
+  }
+
+  return;
 };
