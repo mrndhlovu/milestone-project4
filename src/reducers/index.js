@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import authReducer from "./authReducer";
 import checkOutReducer from "./checkOutReducer";
-import checkoutOrderDetailReducer from "./checkoutOrderDetailReducer";
+
 import commentsReducer from "./commentsReducer";
 import createTicketReducer from "./createTicketReducer";
 import editTicketReducer from "./editTicketReducer";
@@ -16,22 +16,24 @@ import userProfileReducer from "./userProfileReducer";
 import userReducer from "./userReducer";
 import addRemoveCartItemReducer from "./addRemoveCartItemReducer";
 import pendingOrderReducer from "./pendingOrderReducer";
+import ticketCheckoutReducer from "./ticketCheckoutReducer";
 
 export default combineReducers({
   auth: authReducer,
   cartAddOrRemove: addRemoveCartItemReducer,
-  checkOut: checkOutReducer,
-  checkoutDetail: checkoutOrderDetailReducer,
+  checkout: checkOutReducer,
+
   comments: commentsReducer,
+  editTicket: editTicketReducer,
   errorAlert: errorsReducer,
   form: formReducer,
   memberships: membershipsReducer,
   messages: messagesReducer,
   pending: pendingOrderReducer,
   ticket: createTicketReducer,
+  ticketCheckout: ticketCheckoutReducer,
   ticketDetail: ticketDetaiReducer,
   tickets: ticketsReducer,
-  editTicket: editTicketReducer,
   user: userReducer,
   userProfile: userProfileReducer,
   vote: ticketVoteReducer
