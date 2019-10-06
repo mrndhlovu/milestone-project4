@@ -6,6 +6,12 @@ export const getRootUrl =
     ? "https://the-unicorn-attractor.herokuapp.com"
     : process.env.REACT_APP_DEV_API_URL;
 
+export const TICKETS_EP = `${getRootUrl}/tickets/`;
+export const COMMENTS_EP = `${getRootUrl}/comments/`;
+export const MEMBERSHIP_EP = `${getRootUrl}/memberships/`;
+export const AUTH_EP = `${getRootUrl}/accounts/api/auth/`;
+export const CHECKOUT_EP = `${getRootUrl}/cart`;
+
 export const authQueryParams = {
   headers: {
     Authorization: `Token ${SESSION_TOKEN}`,
@@ -25,6 +31,12 @@ export const queryParams = {
   }
 };
 
+export const getCheckoutBody = (product_id, product) => ({
+  product_id,
+  product,
+  stripeToken: localStorage.getItem("stripeToken")
+});
+
 export const getPageId = () => {
   const location = window.location.pathname.slice(1);
   return location === "" ? "home" : location;
@@ -36,6 +48,6 @@ export const getRedirectParam = membershipType => {
   if (location === "pricing" && !hasSelectedMembership(membershipType)) {
     return "/signup";
   } else {
-    return "/cart";
+    return "/checkout";
   }
 };
