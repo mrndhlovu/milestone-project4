@@ -1,4 +1,4 @@
-from .api import SignupAPI, LoginAPI, UserAPI, UserProfileListView, UserProfileDetailAPI
+from .views import SignupAPI, LoginAPI, UserAPI, UserProfileListView, UserProfileDetailAPI
 from knox import views as knox_views
 from django.urls import path, include
 

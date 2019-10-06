@@ -3,9 +3,15 @@ from django.contrib.auth.base_user import (AbstractBaseUser, BaseUserManager)
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import pre_save, post_save
+from django.shortcuts import get_list_or_404, get_object_or_404
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
-from memberships.models import Membership
+from memberships.models import Membership, UserMembership
+from tickets.models import Ticket
+import stripe
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class UserManager(BaseUserManager):
@@ -75,20 +81,30 @@ class UserProfile(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True)
     occupation = models.CharField(max_length=30, blank=True)
-    current_membership = models.ManyToManyField(Membership, blank=True)
-
-    # Product = models.ManyToManyField(Product)
+    active_membership = models.ManyToManyField(Membership, blank=True)
+    paid_tickets = models.ManyToManyField(Ticket, blank=True)
+    stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
 
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def post_save_create_user_profile(sender, instance, created, *args, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
+        UserProfile.objects.get_or_create(user=instance)
+
+        user_profile, created = UserProfile.objects.get_or_create(
+            user=instance)
+        user_membership, created = UserMembership.objects.get_or_create(
+            user=instance)
+
+        if user_profile.stripe_customer_id is None or user_profile.stripe_customer_id == '':
+            new_customer_key = stripe.Customer.retrieve(
+                user_membership.stripe_customer_id)
+
+            user_profile.stripe_customer_id = new_customer_key["id"]
+
+            user_profile.save()
 
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.userprofile.save()
+post_save.connect(post_save_create_user_profile, sender=User)
