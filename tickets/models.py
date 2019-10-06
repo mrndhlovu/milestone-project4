@@ -30,7 +30,7 @@ class Ticket(models.Model):
     description = models.TextField()
     tag = models.SlugField(blank=True)
     owner = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True)
+        User, on_delete=models.SET_NULL, null=True, blank=True, default=1)
     status = models.CharField(
         max_length=6, choices=STATUS, default='todo')
     votes = models.ManyToManyField(
@@ -38,6 +38,8 @@ class Ticket(models.Model):
     views = models.IntegerField(default=0)
     is_bug = models.BooleanField(default=False)
     is_feature = models.BooleanField(default=False)
+    is_private = models.BooleanField(default=False)
+    price = models.IntegerField(default=5, null=True)
 
     def __str__(self):
         return self.title
