@@ -1,26 +1,40 @@
 import React from "react";
-import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-import { Menu, Icon, Label } from "semantic-ui-react";
-import { getCartItems } from "../../utils/appCheckoutUtils";
-import { getObjectLength } from "../../utils/appUtils";
+import { Menu, Icon, Header, Dropdown } from "semantic-ui-react";
 
-const StyledCartSpan = styled.span``;
+export const Cart = ({ pendingOrders }) => {
+  const { orders, count } = pendingOrders;
 
-export const Cart = ({ data }) => {
-  const itemCount = getObjectLength(data) + 1;
+  const renderOrderItems = orderItems => {
+    return Object.keys(orderItems).map((key, index) => {
+      const { ticket, membership } = orderItems[key];
+      const name = orderItems[key].ticket ? ticket : `Unicorn ${membership}`;
+
+      return <Dropdown.Item key={index}>{name.toUpperCase()}</Dropdown.Item>;
+    });
+  };
+
   return (
-    getCartItems() && (
-      <Menu.Item>
-        <StyledCartSpan>
-          <Label as={NavLink} to="/cart" color="black">
-            <Icon name="cart" />
-            {itemCount}
-          </Label>
-        </StyledCartSpan>
-      </Menu.Item>
-    )
+    <Menu.Menu position="right" style={{ paddingRight: 10 }}>
+      <Icon name="cart" color="orange" />
+      <span style={{ paddingRight: 5 }}>{count}</span>
+      <Dropdown text="Cart" pointing>
+        <Dropdown.Menu>
+          {renderOrderItems(orders)}s
+          <Dropdown.Divider />
+          <Dropdown.Header>
+            <Header
+              content="Checkout"
+              icon="shopping basket"
+              size="tiny"
+              as={NavLink}
+              to="/checkout"
+            />
+          </Dropdown.Header>
+        </Dropdown.Menu>
+      </Dropdown>
+    </Menu.Menu>
   );
 };
 
