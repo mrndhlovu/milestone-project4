@@ -24,7 +24,6 @@ import {
 import {
   makeRequest,
   createMessage,
-  hasError,
   dataRequestFail,
   requestSuccess
 } from "./index";
@@ -32,7 +31,8 @@ import {
 import {
   destroyLocalStorage,
   createUserProfile,
-  refresh
+  refresh,
+  createLocalStorageCart
 } from "../utils/appUtils";
 
 import {
@@ -84,6 +84,7 @@ export const startAuth = () => {
 // Check auth state, if there is no token, log user out else create a 30 min session
 // count down if auth state is not reset in 30min dispatch logout, if reset create a new 30min session
 export const authState = () => {
+  createLocalStorageCart();
   return dispatch => {
     // session will last for 30mins if the app is not in use
     const sessionLife = new Date(SESSION_LIFE);
@@ -118,7 +119,7 @@ export const login = body => {
         refresh();
       },
       error => {
-        dispatch(createMessage({ errorMsg: error.response.data }));
+        dispatch(createMessage({ errorMsg: error.response }));
         dispatch(dataRequestFail(USER_AUTH_FAIL, error));
       }
     );
@@ -126,7 +127,6 @@ export const login = body => {
 };
 
 // Check if there a session token to use for logout, if there is proceed if logout is successful on the server the delete localstorage
-
 export const logOut = () => {
   return SESSION_TOKEN
     ? dispatch => {
@@ -163,9 +163,8 @@ export const signup = data => {
         dispatch(
           createMessage({ successMsg: "You have successfully signed up!" })
         );
-        dispatch(hasError(USER_AUTH_SUCCESS, sessionToken));
+        dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
-        refresh();
       },
       error => {
         dispatch(createMessage({ errorMsg: error.response.data }));
