@@ -46,7 +46,7 @@ export class TicketDetailContainer extends Component {
   //   }
   // }
 
-  componentWillMount() {
+  componentDidMount() {
     const { id } = this.props.match.params;
     this.props.requestTicketsDetail(id);
   }
