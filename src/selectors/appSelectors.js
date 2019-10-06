@@ -27,3 +27,7 @@ export const getCheckout = state => state.checkOut;
 export const getCheckoutDetail = state => state.checkoutDetail;
 
 export const getCartAddOrRemove = state => state.cartAddOrRemove;
+
+export const getCartPendingOrder = state => state.pending;
+
+export const getTicketCheckout = state => state.ticketCheckout;
