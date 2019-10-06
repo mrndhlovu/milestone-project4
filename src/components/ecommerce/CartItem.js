@@ -1,95 +1,31 @@
-import React from "react";
+import React, { Fragment } from "react";
 
-import styled from "styled-components";
+import { List, Segment } from "semantic-ui-react";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-import { getNetPrice, getTotal } from "../../utils/appCheckoutUtils";
+export const CartItem = ({ cartItems, showDeleteButton, removeFromCart }) => {
+  const { data } = cartItems;
 
-import {
-  List,
-  Container,
-  Divider,
-  Header,
-  Accordion,
-  Icon,
-  Segment
-} from "semantic-ui-react";
+  return data.ticket_orders ? (
+    Object.keys(data.ticket_orders).map((item, index) => {
+      const { ticket } = data.ticket_orders[item];
 
-const SytledContainer = styled(Container)`
-  padding: 2rem 2rem;
-`;
-
-const styles = { paddingTop: 0, fontSize: 11, color: "#f2711c" };
-
-export const CartItem = ({
-  data: { price },
-  header,
-  description,
-  handleClick,
-  isOpen,
-  showDeleteButton,
-  cancelTranscation
-}) => {
-  const renderDescription = () => {
-    return Object.keys(description).map((element, index) => {
       return (
-        <List as="ul" key={index}>
-          <List.Item as="li">{description[element]}</List.Item>
-        </List>
+        <Fragment key={index}>
+          <Segment>
+            <List divided verticalAlign="middle">
+              <List.Item>
+                <List.Content floated="right"></List.Content>
+
+                <List.Content>{ticket.toUpperCase()}</List.Content>
+              </List.Item>
+            </List>
+          </Segment>
+        </Fragment>
       );
-    });
-  };
-
-  return (
-    <List.Item>
-      <List.Content>
-        <Accordion fluid styled color="grey">
-          <Accordion.Title active={true} onClick={() => handleClick()}>
-            <List.Content floated="right" as="a" style={styles}>
-              <Icon
-                name={!isOpen ? "minus" : "add"}
-                size="small"
-                floated="right"
-              />
-              <span>{!isOpen ? "Hide" : "Show"} Details</span>
-            </List.Content>
-            <span>{header}</span>
-          </Accordion.Title>
-          <Accordion.Content active={!isOpen}>
-            <SytledContainer>
-              <List.Description>{renderDescription()}</List.Description>
-            </SytledContainer>
-
-            <List.Item>
-              {showDeleteButton && (
-                <List.Content floated="right" as="a">
-                  <Icon name="cancel" onClick={cancelTranscation()} />
-                </List.Content>
-              )}
-
-              {showDeleteButton && (
-                <List.Content>Cancel transcation</List.Content>
-              )}
-              <Divider />
-              <List.Content floated="right">
-                <List.Header>€ {getNetPrice(price)}</List.Header>
-              </List.Content>
-
-              <List.Content>Net Price</List.Content>
-              <Divider />
-              <List.Content floated="right">
-                <List.Header>€ {getTotal(price)}</List.Header>
-              </List.Content>
-              <List.Content>Vat(9%)</List.Content>
-            </List.Item>
-          </Accordion.Content>
-        </Accordion>
-      </List.Content>
-      <List floated="right" horizontal>
-        <Segment>
-          <Header as="h5">Total: € {price}</Header>
-        </Segment>
-      </List>
-    </List.Item>
+    })
+  ) : (
+    <UILoadingSpinner />
   );
 };
 
