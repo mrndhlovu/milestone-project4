@@ -4,8 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import ArticleDetail from "./components/blog/ArticleDetail";
 import ArticleList from "./components/blog/ArticleList";
 import AuthRouteCheck from "./utils/AuthRouteCheck";
-import CartContainer from "./containers/CartContainer";
-import CheckoutForm from "./components/ecommerce/CheckoutForm";
+import CheckoutContainer from "./containers/CheckoutContainer";
 import CreateTicketContainer from "./containers/CreateTicketContainer";
 import DashboardContainer from "./containers/DashboardContainer";
 import EditTicketContainer from "./containers/EditTicketContainer";
@@ -28,13 +27,12 @@ const BaseRouter = () => {
       <Route path="/pricing" component={MembershipContainer} />
       <Route path="/dashboard" component={DashboardContainer} />
       <Route path="/user-profile" component={UserProfileContainer} />
-      <Route path="/cart" component={CartContainer} />
-      <Route path="/checkout" component={CheckoutForm} />
 
+      <AuthRouteCheck path="/checkout" component={CheckoutContainer} />
       <AuthRouteCheck path="/blog-article-list" component={ArticleList} />
       <AuthRouteCheck path="/blog-article/:id" component={ArticleDetail} />
       <AuthRouteCheck path="/create-ticket" component={CreateTicketContainer} />
-      <Route path="/edit-ticket/:id" component={EditTicketContainer} />
+      <AuthRouteCheck path="/edit-ticket/:id" component={EditTicketContainer} />
     </Switch>
   );
 };
