@@ -10,7 +10,7 @@ const initialState = {
 const withMessage = (state, action) => {
   const { payload } = action;
 
-  return payload
+  return payload.successMsg
     ? checkObjectUpdate(state, {
         successMsg: payload
       })
