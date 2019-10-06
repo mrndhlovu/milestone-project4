@@ -37,6 +37,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'memberships',
+    'cart',
 
     'tickets',
     'comments',
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'knox'
-
 ]
 
 SITE_ID = 1
