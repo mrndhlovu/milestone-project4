@@ -2,8 +2,9 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
 import { fetchTicketsList } from "../actions/TicketActions";
+import { addItemToCart, fetchPendingOrder } from "../actions/CheckoutActions";
 import HeadingImage from "../components/home/HeadingImage";
-import { getTicketList } from "../selectors/appSelectors";
+import { getTicketList, getCartAddOrRemove } from "../selectors/appSelectors";
 import Tickets from "../components/tickets/Tickets";
 import { getObjectLength } from "../utils/appUtils";
 import TicketListWrapper from "../components/tickets/TicketListWrapper";
@@ -12,8 +13,17 @@ import StyledMessage from "../components/sharedComponents/StyledMessage";
 import GridLayout from "./GridLayout";
 
 export class TicketsListContainer extends Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+    this.handleAddToCart = this.handleAddToCart.bind(this);
+  }
+
+  componentDidMount() {
     this.props.fetchTicketsList();
+  }
+
+  handleAddToCart(id) {
+    this.props.addItemToCart(id, "ticket");
   }
 
   render() {
@@ -30,7 +40,10 @@ export class TicketsListContainer extends Component {
             isLoading={ticketsList.isLoading}
           >
             {ticketsList.data.length > 0 ? (
-              <Tickets ticketsList={ticketsList.data} />
+              <Tickets
+                ticketsList={ticketsList.data}
+                handleAddToCart={this.handleAddToCart}
+              />
             ) : (
               <StyledMessage
                 message="No tickets at this time."
@@ -47,11 +60,12 @@ export class TicketsListContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    ticketsList: getTicketList(state)
+    ticketsList: getTicketList(state),
+    ticketsCart: getCartAddOrRemove(state)
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchTicketsList }
+  { fetchTicketsList, addItemToCart, fetchPendingOrder }
 )(TicketsListContainer);
