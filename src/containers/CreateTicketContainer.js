@@ -6,8 +6,13 @@ import { withRouter, Redirect } from "react-router-dom";
 import { Form, Message } from "semantic-ui-react";
 
 import { createTicket } from "../actions/TicketActions";
-import { getErrors, getUser, getTicket } from "../selectors/appSelectors";
-import { hasProMembership, slugify } from "../utils/appUtils";
+import {
+  getErrors,
+  getUser,
+  getTicket,
+  getMembershipProfile
+} from "../selectors/appSelectors";
+import { slugify } from "../utils/appUtils";
 import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
 import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
@@ -20,16 +25,18 @@ export class CreateTicketContainer extends Component {
     this.state = {
       isLoading: false,
       isFeature: false,
-      isBug: true
+      isBug: true,
+      isProMemeber: false
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidUpdate(prevProps) {
-    const { ticket } = this.props;
+    const { ticket, user } = this.props;
 
     if (prevProps.ticket !== ticket) {
+      this.setState({ isProMemeber: user.is_pro_member });
       ticket.data.id !== undefined &&
         this.props.history.push(`/ticket/${ticket.data.id}`);
     }
@@ -59,9 +66,9 @@ export class CreateTicketContainer extends Component {
 
   render() {
     const { handleSubmit, field, errorAlert, valid, pristine } = this.props;
-    const { isLoading, isBug, isFeature, value } = this.state;
+    const { isLoading, isBug, isFeature, value, isProMemeber } = this.state;
 
-    if (!hasProMembership()) {
+    if (isProMemeber) {
       return <Redirect to="/login" />;
     }
 
@@ -117,8 +124,9 @@ export class CreateTicketContainer extends Component {
 const mapStateToProps = state => {
   return {
     errorAlert: getErrors(state),
-    authState: getUser(state),
-    ticket: getTicket(state)
+    auth: getUser(state),
+    ticket: getTicket(state),
+    user: getMembershipProfile(state)
   };
 };
 
