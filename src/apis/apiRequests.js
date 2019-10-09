@@ -13,11 +13,7 @@ import {
 
 import { SESSION_TOKEN } from "../constants/localStorageConstants";
 
-import {
-  getMembershipType,
-  getTransactionUpdate,
-  getChoosenMembership
-} from "../utils/appUtils";
+import { getTransactionUpdate } from "../utils/appUtils";
 
 export async function requestTicketsList() {
   return axios.get(`${TICKETS_EP}`);
@@ -53,14 +49,6 @@ export async function requestCancelSubsricption() {
 
 export async function requestUser() {
   return axios.get(`${AUTH_EP}user`, authQueryParams);
-}
-
-export async function requestUserProfile() {
-  return axios.get(`${AUTH_EP}profile/`, authQueryParams);
-}
-
-export async function requestUserProfileDetail(id) {
-  return axios.get(`${AUTH_EP}profile/${id}/`, authQueryParams);
 }
 
 export async function requestSignup(body) {
