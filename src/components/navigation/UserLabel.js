@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 const StyledSpan = styled.span`
-  color: #b3daf7 !important;
+  color: #d4d4d5 !important;
   padding-right: 0.5rem;
 `;
 
@@ -15,7 +15,7 @@ export const UserLabel = ({ username, current_membership }) => {
     <Fragment>
       <StyledSpan as={Link} to="/user-profile">
         <Icon name="user" size="small" />
-        {username}
+        {username.toUpperCase()} | {current_membership.toUpperCase()}
       </StyledSpan>
     </Fragment>
   );
