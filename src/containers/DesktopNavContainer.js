@@ -78,7 +78,7 @@ export class DesktopNavContainer extends Component {
     const { fixed, isActive } = this.state;
     const {
       user: { isAuthenticated },
-      userProfile: { username, current_membership },
+      userProfile: { data },
       pendingOrder
     } = this.props;
 
@@ -97,13 +97,13 @@ export class DesktopNavContainer extends Component {
               showActiveLink={this.showActiveLink}
             />
             <Menu.Item position="right">
-              {isAuthenticated && pendingOrder.data.orders && (
+              {pendingOrder.data.count > 0 && (
                 <Cart pendingOrders={pendingOrder.data} />
               )}
-              {username && (
+              {data.username && (
                 <UserLabel
-                  username={username}
-                  current_membership={current_membership}
+                  username={data.username}
+                  current_membership={data.current_membership}
                 />
               )}
               <NavigationButtons
