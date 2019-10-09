@@ -1,6 +1,6 @@
 export const getUser = state => state.auth;
 
-export const getUserProfile = state => state.user.data;
+export const getUserProfile = state => state.user;
 
 export const getErrors = state => state.errorAlert;
 
@@ -22,7 +22,7 @@ export const getMemberships = state => state.memberships.data;
 
 export const getMembershipProfile = state => state.userProfile.data;
 
-export const getCheckout = state => state.checkOut;
+export const getCheckout = state => state.checkout;
 
 export const getCheckoutDetail = state => state.checkoutDetail;
 
