@@ -1,7 +1,7 @@
 from .serializers import CartSerializer, CartItemSerializer
 from memberships.models import Membership, Subscription, UserMembership
 from accounts.models import UserProfile
-from tickets.models import Ticket
+from tickets.models import Ticket, TicketSolution
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import permissions, authentication, generics
@@ -93,6 +93,20 @@ def updated_user_membership(request, data):
         return context
     except:
         return None
+
+
+def get_ticket(item):
+    ticket = get_object_or_404(Ticket, id=item.product_object_id)
+    if item.product_content_type.name == 'ticket':
+        return ticket
+    return None
+
+
+def get_membership(item):
+    membership = get_object_or_404(Membership, id=item.product_object_id)
+    if item.product_content_type.name == 'membership':
+        return membership
+    return None
 
 
 def get_subscription_id(request, data):
@@ -318,10 +332,24 @@ class PaymentAPIView(APIView):
                 paid_cart.delete()
 
                 user_profile = UserProfile.objects.get(user=request.user)
-                user_profile.active_membership.add(
-                    get_user_membership(request).membership)
+                if user_profile is not None:
+                    for item in items:
 
-                user_profile.save()
+                        if item.product_content_type.name == 'membership':
+                            membership = get_membership(item)
+                            user_profile.active_membership.add(membership)
+                            user_profile.save()
+
+                        if item.product_content_type.name == 'ticket':
+                            ticket = get_ticket(item)
+                            user_profile.paid_tickets.add(ticket)
+                            user_profile.save()
+
+                            ticket_solution, created = TicketSolution.objects.get_or_create(
+                                ticket=ticket)
+                            ticket_solution.paid_client.add(request.user)
+                            ticket_solution.status = 'doing'
+                            ticket_solution.save()
 
                 context = {
                     'message': "Payment was successful!"
