@@ -76,3 +76,19 @@ class Ticket(models.Model):
     @property
     def snippet(self):
         return self.description[:100] + '...'
+
+
+class TicketSolution(models.Model):
+    STATUS = (
+        ('doing', 'Doing'),
+        ('done', 'Done'),
+    )
+    ticket = models.ForeignKey(
+        Ticket, on_delete=models.CASCADE, null=True, blank=True)
+    solution = models.TextField()
+    paid_client = models.ManyToManyField(User)
+    status = models.CharField(
+        max_length=6, choices=STATUS, default='doing')
+
+    def __str__(self):
+        return self.ticket.title

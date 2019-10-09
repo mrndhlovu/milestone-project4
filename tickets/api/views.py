@@ -3,12 +3,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import permissions, authentication, generics
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, GenericAPIView
 from rest_framework.views import APIView
-from tickets.models import Ticket
+from tickets.models import Ticket, TicketSolution
 from comments.models import Comment
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+import json
+from accounts.models import UserProfile
 
 
 def get_ticket_owner(request):
@@ -116,3 +118,37 @@ class TicketDeleteView(DestroyAPIView):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
+
+
+def check_paid_tickets(request, ticket):
+
+    try:
+        if ticket.paid_client.get(id=request.user.id) is not None and ticket.status == 'done':
+            return True
+        else:
+            return False
+    except:
+        return False
+
+
+class TicketSolutionAPIView(GenericAPIView):
+    serializer_class = TicketSerializer
+    permissions._classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        request_data = json.loads(request.body.decode('utf-8'))
+
+        ticket = TicketSolution.objects.filter(
+            ticket=request_data['ticket_id'])
+        show_solution = False
+
+        if ticket.exists():
+            paid_ticket = ticket[0]
+
+            show_solution = check_paid_tickets(request, paid_ticket)
+
+        context = {
+            'show_solution': show_solution,
+        }
+
+        return Response(context, status=200)
