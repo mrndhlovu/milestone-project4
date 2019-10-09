@@ -5,24 +5,6 @@ from accounts.models import UserProfile, CustomUser, User
 from django.db import models
 
 
-# from memberships.api.serializers import MembershipSerializer
-
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-
-        rep['current_membership'] = self.context['current_membership']
-        rep['membership_profile'] = self.context['membership_profile']
-
-        return rep
-
-
-# Serializer for user
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -54,8 +36,6 @@ class SignupSerializer(serializers.ModelSerializer):
         rep['current_membership'] = self.context['current_membership']
 
         return rep
-
-# Serializer for user login
 
 
 class LoginSerializer(serializers.Serializer):
