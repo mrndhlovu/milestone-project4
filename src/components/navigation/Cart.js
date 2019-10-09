@@ -17,11 +17,13 @@ export const Cart = ({ pendingOrders }) => {
 
   return (
     <Menu.Menu position="right" style={{ paddingRight: 10 }}>
-      <Icon name="cart" color="orange" />
-      <span style={{ paddingRight: 5 }}>{count}</span>
+      <NavLink to="/checkout">
+        <Icon name="cart" color="orange" />
+      </NavLink>
+      <span style={{ paddingRight: 10 }}>{count}</span>
       <Dropdown text="Cart" pointing>
         <Dropdown.Menu>
-          {renderOrderItems(orders)}s
+          {renderOrderItems(orders)}
           <Dropdown.Divider />
           <Dropdown.Header>
             <Header
