@@ -16,7 +16,7 @@ import UserProfileCard from "../components/userAuth/UserProfileCard";
 export class UserProfileContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { showCancelSubscription: false };
+    this.state = { showCancelSubscription: false, userData: "" };
 
     this.handleConfirm = this.handleConfirm.bind(this);
     this.handleCancelSubscription = this.handleCancelSubscription.bind(this);
@@ -27,9 +27,11 @@ export class UserProfileContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { profile } = this.props;
-    if (prevProps.profile !== profile) {
-      // profile.user_subscription && window.location.reload();
+    const { user } = this.props;
+    if (prevProps.user !== user) {
+      if (user.data.username) {
+        this.forceUpdate();
+      }
     }
   }
 
@@ -51,11 +53,13 @@ export class UserProfileContainer extends Component {
     return (
       <StyledContainerWrapper>
         <Segment>
-          <UserProfileCard
-            user={user}
-            profile={profile}
-            handleCancelSubscription={this.handleCancelSubscription}
-          />
+          {user.dataReceived && user.data.username && (
+            <UserProfileCard
+              user={user.data}
+              profile={profile}
+              handleCancelSubscription={this.handleCancelSubscription}
+            />
+          )}
         </Segment>
 
         <Confirm
