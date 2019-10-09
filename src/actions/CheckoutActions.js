@@ -29,13 +29,17 @@ import {
   dataRequestFail,
   requestSuccess
 } from "./index";
+import { destroyLocalStorage } from "../utils/appUtils";
 
 export const addItemToCart = (id, productType) => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_ADD_TO_CART));
     requestAddItemToCart(id, productType).then(
       response => {
-        localStorage.setItem("subscriptionId", response.data.subscription_id);
+        const subscriptionId = response.data.subscription_id || undefined;
+        if (subscriptionId) {
+          localStorage.setItem("subscriptionId", subscriptionId);
+        }
 
         dispatch(requestSuccess(RECEIVE_ADD_T0_CART, response.data));
         dispatch(createMessage({ successMsg: response.data.message }));
@@ -87,6 +91,8 @@ export const makePayment = () => {
       response => {
         dispatch(requestSuccess(RECEIVE_CHECKOUT, response.data));
         dispatch(fetchPendingOrder());
+        dispatch(createMessage({ successMsg: response.data.message }));
+        destroyLocalStorage(["subscriptionId", "stripeToken"]);
       },
       error => {
         dispatch(createMessage({ errorMsg: error.message }));
