@@ -34,12 +34,16 @@ export class PaymentContainer extends Component {
   componentDidUpdate(prevProps) {
     const { checkout } = this.props;
     if (prevProps.checkout !== checkout) {
-      this.setState({ isLoading: false });
-      this.props.history.push("/user-profile");
+      if (checkout.dataReceived) {
+        this.setState({ isLoading: false });
+        setTimeout(() => {
+          this.props.history.push("/user-profile");
+        }, 1000);
+      }
     }
   }
 
-  handlePayNow(option) {
+  handlePayNow() {
     this.setState({ isLoading: true });
     const { clickedSubmit, makePayment } = this.props;
     clickedSubmit();
@@ -69,7 +73,7 @@ export class PaymentContainer extends Component {
             color="orange"
             fluid
             onClick={() => this.handlePayNow()}
-            // loading={isLoading}
+            loading={isLoading}
             disabled={isDisabled}
           >
             PAY NOW
