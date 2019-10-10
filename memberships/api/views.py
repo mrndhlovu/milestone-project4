@@ -95,13 +95,22 @@ class CancelSubscriptionAPIView(ListAPIView):
         return JsonResponse(context, status=200, safe=False)
 
 
-class SubscribedUserAPIView(RetrieveAPIView):
+class UserSubscriptionAPIView(RetrieveAPIView):
     permissions._classes = [permissions.AllowAny]
     serializer_class = SubscribedUserProfileSerializer
     queryset = Subscription.objects.all()
 
     def post(self, request, **kwargs):
         instance = get_object_or_404(UserMembership, user=request.user)
+        profile_ = {
+            'next_billing': None,
+            'created_at': None,
+            'user_membership': str(instance.user),
+            'subscription_profile_id': None,
+            'is_pro_member': False,
+            'stripe_subscription_id': None,
+            'user_subscription': str(instance.membership)
+        }
         try:
             if instance.is_pro_member:
                 try:
@@ -128,26 +137,10 @@ class SubscribedUserAPIView(RetrieveAPIView):
 
                         return JsonResponse(context, status=200, safe=False)
                 except:
-                    context = {
-                        'next_billing': None,
-                        'created_at': None,
-                        'user_membership': str(instance.user),
-                        'subscription_profile_id': None,
-                        'is_pro_member': instance.is_pro_member,
-                        'stripe_subscription_id': None,
-                        'user_subscription': str(instance.membership)
-                    }
+                    context = profile_
                     return JsonResponse(context, status=200, safe=False)
             else:
-                context = {
-                    'next_billing': None,
-                    'created_at': None,
-                    'user_membership': str(instance.user),
-                    'subscription_profile_id': None,
-                    'is_pro_member': instance.is_pro_member,
-                    'stripe_subscription_id': None,
-                    'user_subscription': str(instance.membership)
-                }
+                context = profile_
                 return JsonResponse(context, status=200, safe=False)
 
         except:

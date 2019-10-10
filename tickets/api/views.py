@@ -121,14 +121,24 @@ class TicketDeleteView(DestroyAPIView):
 
 
 def check_paid_tickets(request, ticket):
-
+    ticket = TicketSolution.objects.get(id=ticket.id)
+    paid_clients = ticket.paid_client
     try:
-        if ticket.paid_client.get(id=request.user.id) is not None and ticket.status == 'done':
+        paid_customer = paid_clients.get(id=request.user.id)
+        if paid_customer is not None and ticket.status == 'done':
             return True
-        else:
-            return False
     except:
         return False
+
+
+def get_paid_ticket(request, request_data):
+    try:
+        ticket = TicketSolution.objects.filter(
+            parent_ticket_id=request_data['ticket_id'])
+        if ticket.exists():
+            return ticket[0]
+    except:
+        return None
 
 
 class TicketSolutionAPIView(GenericAPIView):
@@ -137,18 +147,28 @@ class TicketSolutionAPIView(GenericAPIView):
 
     def post(self, request):
         request_data = json.loads(request.body.decode('utf-8'))
+        try:
+            ticket = get_paid_ticket(request, request_data)
+            show_solution = check_paid_tickets(request, ticket)
 
-        ticket = TicketSolution.objects.filter(
-            ticket=request_data['ticket_id'])
-        show_solution = False
+            if ticket is not None and show_solution is True:
+                solution = ticket.solution
+                context = {
+                    'show': show_solution,
+                    'solution': solution
+                }
+                return Response(context, status=200)
 
-        if ticket.exists():
-            paid_ticket = ticket[0]
+            else:
+                solution = check_paid_tickets(request, ticket)
 
-            show_solution = check_paid_tickets(request, paid_ticket)
-
-        context = {
-            'show_solution': show_solution,
-        }
-
-        return Response(context, status=200)
+                context = {
+                    'show': True,
+                    'solution': 'Work still in progress...'
+                }
+                return Response(context, status=200)
+        except:
+            context = {
+                'message': 'Ticket has no payments yet',
+            }
+            return Response(context, status=400)

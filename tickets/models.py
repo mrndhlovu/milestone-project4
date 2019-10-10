@@ -83,7 +83,7 @@ class TicketSolution(models.Model):
         ('doing', 'Doing'),
         ('done', 'Done'),
     )
-    ticket = models.ForeignKey(
+    parent_ticket = models.ForeignKey(
         Ticket, on_delete=models.CASCADE, null=True, blank=True)
     solution = models.TextField()
     paid_client = models.ManyToManyField(User)
@@ -91,4 +91,4 @@ class TicketSolution(models.Model):
         max_length=6, choices=STATUS, default='doing')
 
     def __str__(self):
-        return self.ticket.title
+        return self.parent_ticket.title

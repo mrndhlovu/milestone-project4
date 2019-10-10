@@ -22,7 +22,10 @@ import {
   DELETE_TICKET_ERROR,
   TICKET_VOTE_ERROR,
   REPLY_ERROR,
-  CREATE_COMMENT_ERROR
+  CREATE_COMMENT_ERROR,
+  RECEIVE_TICKET_SOLUTION,
+  TICKET_SOLUTION_ERROR,
+  REQUEST_TICKET_SOLUTION
 } from "./ActionTypes";
 
 import {
@@ -33,7 +36,8 @@ import {
   requestCreateComment,
   requestTicketUpdate,
   requestTicketDelete,
-  requestCreateReply
+  requestCreateReply,
+  requestTicketSolution
 } from "../apis/apiRequests";
 
 import {
@@ -153,6 +157,20 @@ export const createReply = id => {
       },
       error => {
         dispatch(errorsAlert(REPLY_ERROR, error));
+      }
+    );
+  };
+};
+
+export const fetchTicketSolution = id => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_TICKET_SOLUTION));
+    requestTicketSolution(id).then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_TICKET_SOLUTION, response.data));
+      },
+      error => {
+        dispatch(errorsAlert(TICKET_SOLUTION_ERROR, error));
       }
     );
   };

@@ -15,6 +15,7 @@ import userProfileReducer from "./userProfileReducer";
 import userReducer from "./userReducer";
 import addRemoveCartItemReducer from "./addRemoveCartItemReducer";
 import pendingOrderReducer from "./pendingOrderReducer";
+import ticketSolutionReducer from "./ticketSolutionReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -32,5 +33,6 @@ export default combineReducers({
   tickets: ticketsReducer,
   user: userReducer,
   userProfile: userProfileReducer,
-  vote: ticketVoteReducer
+  vote: ticketVoteReducer,
+  ticketSolution: ticketSolutionReducer
 });

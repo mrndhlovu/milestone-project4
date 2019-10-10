@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { Confirm, Segment } from "semantic-ui-react";
+import { Confirm, Segment, Container } from "semantic-ui-react";
 
-import { StyledContainerWrapper } from "../constants/constants";
 import { cancelSubscription } from "../actions/MembershipActions";
 import { fetchUserProfile } from "../actions/AuthActions";
 
@@ -30,6 +29,7 @@ export class UserProfileContainer extends Component {
     const { user } = this.props;
     if (prevProps.user !== user) {
       if (user.data.username) {
+        this.props.fetchUserProfile();
         this.forceUpdate();
       }
     }
@@ -51,7 +51,7 @@ export class UserProfileContainer extends Component {
     const { showCancelSubscription } = this.state;
 
     return (
-      <StyledContainerWrapper>
+      <Container style={{ paddingTop: 20 }}>
         <Segment>
           {user.dataReceived && user.data.username && (
             <UserProfileCard
@@ -69,9 +69,10 @@ export class UserProfileContainer extends Component {
           content="Are sure you want to cancel your subscription"
           onCancel={() => this.setState({ showCancelSubscription: false })}
           onConfirm={this.handleConfirm}
+          size="tiny"
           color="grey"
         />
-      </StyledContainerWrapper>
+      </Container>
     );
   }
 }

@@ -4,52 +4,76 @@ import { connect } from "react-redux";
 import {
   requestTicketsDetail,
   updatedTicketVote,
-  deleteTicket
+  deleteTicket,
+  fetchTicketSolution
 } from "../actions/TicketActions";
 
-import TicketComments from "./TicketCommentsContainer";
+import { Header, Segment } from "semantic-ui-react";
+
 import {
   getVotes,
   getMembershipProfile,
   getTicketDetail,
-  getTicketUpdate
+  getTicketUpdate,
+  getSolution,
+  getUser
 } from "../selectors/appSelectors";
 
 import { getFormatedDate } from "../utils/appUtils";
-import StyledMessage from "../components/sharedComponents/StyledMessage";
 import EditButtons from "../components/tickets/EditButtons";
-import TicketDetailStats from "../components/tickets/TicketDetailStats";
-
-import { Header, Segment } from "semantic-ui-react";
-import TicketDetail from "../components/tickets/TicketDetail";
 import GridLayout from "./GridLayout";
+import StyledMessage from "../components/sharedComponents/StyledMessage";
+import TicketComments from "./TicketCommentsContainer";
+import TicketDetail from "../components/tickets/TicketDetail";
+import TicketDetailStats from "../components/tickets/TicketDetailStats";
+import TicketSolution from "../components/tickets/TicketSolution";
 
 export class TicketDetailContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      activeIndex: 0,
+      index: 0
+    };
     this.handleVoteClick = this.handleVoteClick.bind(this);
     this.handleTicketDelete = this.handleTicketDelete.bind(this);
+    this.handleAccordionClick = this.handleAccordionClick.bind(this);
   }
-
-  // componentDidUpdate(prevProps) {
-  //   const {
-  //     vote,
-  //     match: {
-  //       // params: { id }
-  //     }
-  //   } = this.props;
-
-  //   if (prevProps.vote !== vote) {
-  //     // const { updated } = vote.data;
-  //     console.log("updated");
-  //   }
-  // }
 
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.requestTicketsDetail(id);
   }
+
+  componentDidUpdate(prevProps) {
+    const { id } = this.props.match.params;
+    const { ticket, user } = this.props;
+
+    if (prevProps.ticket.dataReceived !== ticket.dataReceived) {
+      if (user.isAuthenticated) {
+        this.props.fetchTicketSolution(id);
+      }
+    }
+
+    // const {
+    //   vote,
+    //   match: {
+    //     // params: { id }
+    //   }
+    // } = this.props;
+
+    // if (prevProps.vote !== vote) {
+    //   // const { updated } = vote.data;
+    //   console.log("updated");
+    // }
+  }
+
+  handleAccordionClick = (e, titleProps) => {
+    const { activeIndex, index } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+
+    this.setState({ activeIndex: newIndex });
+  };
 
   updateVoteCount() {
     const { votes } = this.props.ticket.ticket;
@@ -82,8 +106,11 @@ export class TicketDetailContainer extends Component {
           owner
         }
       },
-      user: { is_pro_member }
+      userProfile: { is_pro_member },
+      solution,
+      user
     } = this.props;
+    const { activeIndex, index } = this.state;
 
     return (
       <GridLayout>
@@ -109,6 +136,14 @@ export class TicketDetailContainer extends Component {
           views={views}
           id={id}
           isLoading={isLoading}
+        />
+
+        <TicketSolution
+          handleAccordionClick={this.handleAccordionClick}
+          activeIndex={activeIndex}
+          index={index}
+          solution={solution.data}
+          isAuthenticated={user.isAuthenticated}
         />
 
         <TicketDetailStats
@@ -139,12 +174,14 @@ const mapStateToProps = state => {
   return {
     ticket: getTicketDetail(state),
     ticketDelete: getTicketUpdate(state),
-    user: getMembershipProfile(state),
-    vote: getVotes(state)
+    userProfile: getMembershipProfile(state),
+    vote: getVotes(state),
+    solution: getSolution(state),
+    user: getUser(state)
   };
 };
 
 export default connect(
   mapStateToProps,
-  { requestTicketsDetail, updatedTicketVote, deleteTicket }
+  { requestTicketsDetail, updatedTicketVote, deleteTicket, fetchTicketSolution }
 )(TicketDetailContainer);

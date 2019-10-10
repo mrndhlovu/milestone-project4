@@ -77,6 +77,7 @@ export class CreateTicketContainer extends Component {
         <Message
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
+          attached
         />
         {errorAlert.status !== "" ? (
           <Message
@@ -90,6 +91,12 @@ export class CreateTicketContainer extends Component {
           className="attached fluid segment"
           onSubmit={handleSubmit(this.handleSubmitClick)}
         >
+          <CreateTicketRadioButtons
+            value={value}
+            handleChange={this.handleChange}
+            isBug={isBug}
+            isFeature={isFeature}
+          />
           <Field name="title" label="Title" component={this.renderField} />
           <Field name="subject" label="Subject" component={this.renderField} />
           <Field
@@ -98,14 +105,6 @@ export class CreateTicketContainer extends Component {
             component={this.renderField}
           />
           <CreateTicketDropdown field={field} />
-
-          <CreateTicketRadioButtons
-            value={value}
-            handleChange={this.handleChange}
-            isBug={isBug}
-            isFeature={isFeature}
-          />
-
           <div style={{ paddingTop: 10 }}>
             <SubmitButton
               pristine={pristine}

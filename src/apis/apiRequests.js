@@ -67,6 +67,14 @@ export async function requestCreateTicket(body) {
   return axios.post(`${TICKETS_EP}api/create/`, body, authQueryParams);
 }
 
+export async function requestTicketSolution(id) {
+  return axios.post(
+    `${TICKETS_EP}api/paid-tickets/`,
+    { ticket_id: id },
+    authQueryParams
+  );
+}
+
 export async function fetchTicketDetail(id) {
   return axios.get(`${TICKETS_EP}${id}/`);
 }

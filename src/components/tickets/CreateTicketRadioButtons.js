@@ -1,17 +1,13 @@
-import React from "react";
+import React, { Fragment } from "react";
 
-import { Form, Radio } from "semantic-ui-react";
-
-const styles = {
-  paddingTop: 20,
-  paddingLeft: 15,
-  paddingBottom: 10
-};
+import { Form, Radio, Header } from "semantic-ui-react";
 
 const CreateTicketRadioButtons = ({ handleChange, isBug, isFeature }) => {
   return (
-    <div style={styles}>
-      <Form.Field>Selected ticket type</Form.Field>
+    <Fragment style={{ paddingBottom: 10 }}>
+      <Form.Field>
+        <Header as="h4">Selected ticket type</Header>
+      </Form.Field>
       <Form.Field>
         <Radio
           label="Bug"
@@ -30,7 +26,7 @@ const CreateTicketRadioButtons = ({ handleChange, isBug, isFeature }) => {
           onChange={() => handleChange()}
         />
       </Form.Field>
-    </div>
+    </Fragment>
   );
 };
 

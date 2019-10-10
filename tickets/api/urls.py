@@ -11,5 +11,5 @@ urlpatterns = [
     path('delete/<pk>/', TicketDeleteView.as_view()),
     path('api/create/', CreateTicketView.as_view()),
     path('api/<id>/vote/', TicketVoteToggleAPIView.as_view()),
-    path('paid-tickets', TicketSolutionAPIView.as_view()),
+    path('api/paid-tickets/', TicketSolutionAPIView.as_view()),
 ]

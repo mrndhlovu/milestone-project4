@@ -346,7 +346,7 @@ class PaymentAPIView(APIView):
                             user_profile.save()
 
                             ticket_solution, created = TicketSolution.objects.get_or_create(
-                                ticket=ticket)
+                                parent_ticket_id=ticket.id)
                             ticket_solution.paid_client.add(request.user)
                             ticket_solution.status = 'doing'
                             ticket_solution.save()
@@ -355,7 +355,6 @@ class PaymentAPIView(APIView):
                     'message': "Payment was successful!"
                 }
                 return Response(context, status=status.HTTP_200_OK)
-
             else:
                 context = {
                     'message': "Error saving your subscription successful!"

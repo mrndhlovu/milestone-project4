@@ -23,10 +23,10 @@ class CommentManager(models.Manager):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    comment = models.TextField(max_length=200)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    comment = models.TextField(max_length=200)
     timestamp = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.CASCADE, related_name='parent_comment')
