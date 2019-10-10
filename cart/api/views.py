@@ -399,3 +399,16 @@ class PaymentAPIView(APIView):
                 'message': "Something went wrong. You were not charged. Please try again."
             }
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DonationAPIView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        request_data = json.loads(request.body.decode('utf-8'))
+        token = request_data['stripeToken']
+
+        context = {
+            'message': request_data
+        }
+
+        return Response(context, status=status.HTTP_200_OK)
