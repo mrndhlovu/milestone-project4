@@ -6,10 +6,10 @@ import {
   UNICORN_PRO_SERVICES
 } from "../../constants/constants";
 import { hasMembership } from "../../utils/appUtils";
-import { Button, Header, List, Segment, Grid, Card } from "semantic-ui-react";
+import { Button, Header, List, Grid, Card } from "semantic-ui-react";
 
-const proCard = { marginRight: 50, marginLeft: 30 };
-const freeCard = { marginLeft: 50, marginRight: 30 };
+const proCard = { marginRight: 50, marginLeft: 10 };
+const freeCard = { marginLeft: 50, marginRight: 10 };
 
 const MembershipOptions = ({
   memberships,
@@ -46,13 +46,11 @@ const MembershipOptions = ({
                   : `$ ${price} Per User / month`
               }
             />
-
             <List style={{ paddingLeft: 20 }}>
               {isNotProMember
                 ? getMembershipChoice(UNICORN_FREE_SERVICES)
                 : getMembershipChoice(UNICORN_PRO_SERVICES)}
             </List>
-
             <Button
               attached="bottom"
               disabled={hasMembership(slug)}
