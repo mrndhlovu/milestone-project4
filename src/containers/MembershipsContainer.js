@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
-import { List, Icon } from "semantic-ui-react";
+import { List, Icon, Grid } from "semantic-ui-react";
 
 import { addItemToCart } from "../actions/CheckoutActions";
 import { fetchMembershipsList } from "../actions/MembershipActions";
 import { getCurrentMembership, itemInCart } from "../utils/appUtils";
 import { getMemberships, getUser } from "../selectors/appSelectors";
 import { getRedirectParam } from "../utils/urls";
-import GridLayout from "./GridLayout";
+
 import HeadingImage from "../components/home/HeadingImage";
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
 
@@ -97,19 +97,18 @@ export class MembershipContainer extends Component {
     return (
       <Fragment>
         <HeadingImage />
-        <GridLayout>
-          <MembershipOptions
-            isAuthenticated={isAuthenticated}
-            memberships={memberships}
-            getMembershipChoice={this.renderServicesList}
-            handleAddToCart={this.handleAddToCart}
-            buttonTextFree={buttonTextFree}
-            buttonTextPro={buttonTextPro}
-            buttonDisabled={buttonDisabled}
-            redirectParam={redirectParam}
-            history={history}
-          />
-        </GridLayout>
+
+        <MembershipOptions
+          isAuthenticated={isAuthenticated}
+          memberships={memberships}
+          getMembershipChoice={this.renderServicesList}
+          handleAddToCart={this.handleAddToCart}
+          buttonTextFree={buttonTextFree}
+          buttonTextPro={buttonTextPro}
+          buttonDisabled={buttonDisabled}
+          redirectParam={redirectParam}
+          history={history}
+        />
       </Fragment>
     );
   }
