@@ -97,7 +97,6 @@ export class MembershipContainer extends Component {
     return (
       <Fragment>
         <HeadingImage />
-
         <MembershipOptions
           isAuthenticated={isAuthenticated}
           memberships={memberships}

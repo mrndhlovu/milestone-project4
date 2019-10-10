@@ -42,8 +42,8 @@ const MembershipOptions = ({
               content={header.toUpperCase()}
               subheader={
                 isNotProMember
-                  ? `$ ${price} Per / month`
-                  : `$ ${price} Per User / month`
+                  ? `€ ${price} Per / month`
+                  : `€ ${price} Per User / month`
               }
             />
             <List style={{ paddingLeft: 20 }}>
