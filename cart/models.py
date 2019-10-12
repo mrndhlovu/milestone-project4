@@ -59,7 +59,7 @@ class CartItem(models.Model):
 class CartPayment(models.Model):
     stripe_charge_id = models.CharField(max_length=50)
     user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True)
+        User, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -70,7 +70,7 @@ class CartPayment(models.Model):
 class Donation(models.Model):
     stripe_charge_id = models.CharField(max_length=50)
     user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True)
+        User, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
