@@ -16,8 +16,7 @@ import FormHeader from "../components/sharedComponents/FormHeader";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 
-// private routes which need require push('/') to avoid loading the modal reloading
-const privateRoutes = ["/create-ticket", "/shopping-cart"];
+const privateRoutes = ["/create-ticket", "/checkout", "cart"];
 
 const StyleContainer = styled(Container)`
   padding: 10vh 0;
@@ -49,18 +48,6 @@ class LoginContainer extends Component {
     this.props.login(data);
   }
 
-  showErrorMessage() {
-    const { errorAlert } = this.props.error;
-
-    return Object.keys(errorAlert).map((error, index) => {
-      const message = `${error.toUpperCase()}: ${errorAlert[error]}`;
-
-      return <p key={index}>{message}</p>;
-    });
-  }
-
-  // wait for updates then render components accorhing to new state
-
   renderField(field) {
     const {
       meta: { touched, error }
@@ -74,8 +61,10 @@ class LoginContainer extends Component {
       auth: { isAuthenticated, hasError },
       valid,
       pristine,
-      handleSubmit
+      handleSubmit,
+      alert
     } = this.props;
+
     const { isLoading } = this.state;
 
     if (isAuthenticated) {
@@ -85,10 +74,13 @@ class LoginContainer extends Component {
     return (
       <StyleContainer>
         <FormHeader header="Login" />
-        {hasError && <ErrorMessage showErrorMessage={this.showErrorMessage} />}
-        <Form size="large" onSubmit={handleSubmit(this.handleLoginClick)}>
-          <Grid textAlign="center" verticalAlign="middle">
-            <Grid.Column style={{ maxWidth: 500 }}>
+
+        <Grid textAlign="center" verticalAlign="middle">
+          <Grid.Column style={{ maxWidth: 500 }}>
+            {alert && alert.hasError && (
+              <ErrorMessage message={alert.alertMsg.login} />
+            )}
+            <Form size="large" onSubmit={handleSubmit(this.handleLoginClick)}>
               <Segment stacked>
                 <Field
                   name="username"
@@ -103,7 +95,6 @@ class LoginContainer extends Component {
                   component={this.renderField}
                 />
                 <br />
-
                 <SubmitButton
                   isLoading={isLoading}
                   buttonText="Login"
@@ -118,9 +109,9 @@ class LoginContainer extends Component {
                   linkText="Sign up"
                 />
               </Segment>
-            </Grid.Column>
-          </Grid>
-        </Form>
+            </Form>
+          </Grid.Column>
+        </Grid>
       </StyleContainer>
     );
   }
@@ -129,11 +120,10 @@ class LoginContainer extends Component {
 const mapStateToProps = state => {
   return {
     auth: getUser(state),
-    error: getErrors(state).alertMsg
+    alert: getErrors(state)
   };
 };
 
-// Handle redux form errors
 function validate(values) {
   const formErrors = {};
   if (!values.username) {

@@ -47,7 +47,7 @@ export const Tickets = ({ ticketsList, handleAddToCart }) => {
         </Button>
         <Label.Group size="tiny">
           <Label>{tag}</Label>
-          <Label>${price}</Label>
+          <Label>€{price}</Label>
         </Label.Group>
 
         <Divider />

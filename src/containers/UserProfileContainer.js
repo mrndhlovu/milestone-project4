@@ -21,16 +21,11 @@ export class UserProfileContainer extends Component {
     this.handleCancelSubscription = this.handleCancelSubscription.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchUserProfile();
-  }
-
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (prevProps.user !== user) {
       if (user.data.username) {
-        this.props.fetchUserProfile();
-        this.forceUpdate();
+        console.log("updated", user);
       }
     }
   }
@@ -47,7 +42,7 @@ export class UserProfileContainer extends Component {
   }
 
   render() {
-    const { user, profile } = this.props;
+    const { user } = this.props;
     const { showCancelSubscription } = this.state;
 
     return (
@@ -56,7 +51,6 @@ export class UserProfileContainer extends Component {
           {user.dataReceived && user.data.username && (
             <UserProfileCard
               user={user.data}
-              profile={profile}
               handleCancelSubscription={this.handleCancelSubscription}
             />
           )}
@@ -79,12 +73,11 @@ export class UserProfileContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    profile: getMembershipProfile(state),
     user: getUserProfile(state)
   };
 };
 
 export default connect(
   mapStateToProps,
-  { cancelSubscription, fetchUserProfile }
+  { cancelSubscription }
 )(UserProfileContainer);

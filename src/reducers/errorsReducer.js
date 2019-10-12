@@ -1,23 +1,17 @@
-import { HAS_ERROR } from "../actions/ActionTypes";
+import { USER_AUTH_FAIL } from "../actions/ActionTypes";
 
-import { checkObjectUpdate } from "../utils/checkObjectUpdate";
+import { hasError } from "../utils/appReducersUtil";
 
 const INITIAL_STATE = {
-  alertMsg: {},
-  status: ""
-};
-
-const withErrorAlert = (state, action) => {
-  return checkObjectUpdate(state, {
-    alertMsg: action.payload,
-    status: action.payload.status
-  });
+  alertMsg: {}
 };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case HAS_ERROR:
-      return withErrorAlert(state, action);
+    case USER_AUTH_FAIL:
+      const message = { ...hasError(state, action), alertMsg: action.payload };
+      console.log(message);
+      return message;
     default:
       return state;
   }

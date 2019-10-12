@@ -41,7 +41,8 @@ export class DesktopNavContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.user.isAuthenticated !== this.props.user.isAuthenticated) {
+    const { user } = this.props;
+    if (prevProps.user.isAuthenticated !== user.isAuthenticated) {
       this.props.fetchPendingOrder();
     }
   }
@@ -79,7 +80,8 @@ export class DesktopNavContainer extends Component {
     const {
       user: { isAuthenticated },
       userProfile: { data },
-      pendingOrder
+      pendingOrder,
+      user
     } = this.props;
 
     return (

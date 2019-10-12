@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
-import { List, Icon, Grid } from "semantic-ui-react";
-
 import { addItemToCart } from "../actions/CheckoutActions";
 import { fetchMembershipsList } from "../actions/MembershipActions";
-import { getCurrentMembership, itemInCart } from "../utils/appUtils";
-import { getMemberships, getUser } from "../selectors/appSelectors";
-import { getRedirectParam } from "../utils/urls";
-
+import {
+  getMemberships,
+  getUser,
+  getMembershipProfile,
+  getCartPendingOrder
+} from "../selectors/appSelectors";
 import HeadingImage from "../components/home/HeadingImage";
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
 
@@ -16,75 +16,48 @@ export class MembershipContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buttonTextFree: "",
-      buttonTextPro: "",
+      buttonTextFree: "Free Signup",
+      buttonTextPro: "Add to cart",
       buttonDisabled: true,
       redirectParam: ""
     };
     this.handleAddToCart = this.handleAddToCart.bind(this);
   }
 
-  renderServicesList(services) {
-    return services.map((service, index) => {
-      return (
-        <List.Item as="a" key={index}>
-          <Icon name="check" />
-          <List.Content>
-            <List.Description>{service}</List.Description>
-          </List.Content>
-        </List.Item>
-      );
-    });
-  }
-
-  handleAddToCart(id, productId) {
-    const { isAuthenticated } = this.props.authUser;
-    this.props.addItemToCart(id, productId);
-
-    const redirectParam = getRedirectParam(productId);
-
-    if (redirectParam === "/checkout" && isAuthenticated) {
-      this.setState({
-        redirectParam: isAuthenticated ? redirectParam : "/signup",
-        buttonTextPro: "Proceed to checkout",
-        buttonTextFree: "Add to cart"
-      });
-    } else {
-      this.setState({
-        redirectParam: isAuthenticated ? redirectParam : "/signup",
-        buttonTextFree:
-          getCurrentMembership() !== "pro"
-            ? "Proceed to signup"
-            : "See your profile",
-        buttonTextPro: "Add to cart"
-      });
-    }
-  }
-
   componentDidMount() {
     this.props.fetchMembershipsList();
-    if (getCurrentMembership() === "guest" || undefined) {
-      this.setState({
-        buttonTextFree: "Add to Cart",
-        buttonTextPro: "Add to Cart"
-      });
-    } else if (getCurrentMembership() === "free") {
-      this.setState({
-        buttonTextFree: "Your Current Membership",
-        buttonTextPro: "Upgrade to Unicorn Pro"
-      });
-    } else {
-      this.setState({
-        buttonTextFree: itemInCart() ? "Item in" : "Down-grade to Unicorn Free",
-        buttonTextPro: "Your Current Membership"
-      });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { cart } = this.props;
+
+    if (prevProps.cart.data !== cart.data) {
+      if (cart.data && Object.keys(cart.data.orders).length > 0) {
+        const { orders } = cart.data;
+        Object.keys(orders).map(order => {
+          const cartItems = orders[order];
+          if (cartItems.membership == "pro") {
+            return this.setState({ buttonTextPro: "Item in your cart" });
+          }
+        });
+      }
     }
+  }
+
+  handleAddToCart(id) {
+    const { isAuthenticated } = this.props.auth;
+
+    if (isAuthenticated) {
+      this.setState({});
+      return this.props.addItemToCart(id, "membership");
+    }
+    this.setState({ buttonTextPro: "Lets signup first" });
   }
 
   render() {
     const {
       memberships,
-      authUser: { isAuthenticated },
+      auth: { isAuthenticated },
       history
     } = this.props;
     const {
@@ -115,8 +88,10 @@ export class MembershipContainer extends Component {
 
 const mapStateToProps = state => {
   return {
+    auth: getUser(state),
     memberships: getMemberships(state),
-    authUser: getUser(state)
+    cart: getCartPendingOrder(state),
+    userMembership: getMembershipProfile(state)
   };
 };
 

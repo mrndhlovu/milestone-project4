@@ -56,16 +56,6 @@ export const refresh = () => window.location.reload();
 export const capitalizeFirstLetter = string =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
-export const getTransactionUpdate = () => {
-  const subscriptionId = localStorage.getItem("subscriptionId");
-  const selectedMembership = getSelectedMemberShip();
-
-  return {
-    subscription_id: `${subscriptionId}`,
-    membership_type: `${selectedMembership}`
-  };
-};
-
 export const getCurrentMembership = () => {
   const membership = localStorage.getItem("currentMembership");
 
@@ -105,9 +95,9 @@ export const getFormatedDate = rawDate => {
 
   return (
     date.getFullYear() +
-    "-" +
+    "/" +
     ("0" + (date.getMonth() + 1)).slice(-2) +
-    "-" +
+    "/" +
     ("0" + date.getDate()).slice(-2) +
     " " +
     ("0" + date.getHours()).slice(-2) +
@@ -187,14 +177,12 @@ export const addOrderToStorage = (value, option) => {
 };
 
 export const createLocalStorageCart = () => {
-  const orders = JSON.stringify({
-    membershipOrder: {},
-    ticketOrders: []
-  });
-
-  if (cart === null) {
-    return localStorage.setItem("cart", orders);
-  }
-
-  return;
+  // const orders = JSON.stringify({
+  //   membershipOrder: {},
+  //   ticketOrders: []
+  // });
+  // if (cart === null) {
+  //   return localStorage.setItem("cart", orders);
+  // }
+  // return;
 };
