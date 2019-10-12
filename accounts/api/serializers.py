@@ -42,19 +42,12 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
 
+    class Meta:
+        model = CustomUser
+
     def validate(self, data):
         user = authenticate(**data)
         if user and user.is_active:
             return user
-        raise serializers.ValidationError("Incorrect Credentials")
-
-    class Meta:
-        model = CustomUser
-        exclude = ('password',)
-
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-
-        rep['current_membership'] = self.context['current_membership']
-
-        return rep
+        raise serializers.ValidationError(
+            {"login": "Incorrect Credentials"})
