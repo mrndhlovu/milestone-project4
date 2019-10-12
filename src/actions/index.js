@@ -4,7 +4,7 @@ export const makeRequest = type => ({ type });
 
 export const requestSuccess = (type, payload) => ({ type, payload });
 
-export const dataRequestFail = (type, error) => ({ type, error });
+export const dataRequestFail = (type, payload) => ({ type, payload });
 
 const getFetchErrors = error => ({
   errorAlert: error.response.data,

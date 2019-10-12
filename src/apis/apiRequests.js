@@ -13,8 +13,6 @@ import {
 
 import { SESSION_TOKEN } from "../constants/localStorageConstants";
 
-import { getTransactionUpdate } from "../utils/appUtils";
-
 export async function requestTicketsList() {
   return axios.get(`${TICKETS_EP}`);
 }
@@ -33,10 +31,6 @@ export async function requestTicketVoteUpdate(id) {
 
 export async function requestMembershipsList() {
   return axios.get(`${MEMBERSHIP_EP}`);
-}
-
-export async function requestUserMembershipsProfile() {
-  return axios.post(`${MEMBERSHIP_EP}member-profile/`, null, authQueryParams);
 }
 
 export async function requestCancelSubsricption() {
@@ -113,22 +107,14 @@ export const requestRemoveItemFromCart = (id, productType) => {
 };
 
 export const requestItemPayment = () => {
-  const subscriptionId = localStorage.getItem("subscriptionId");
   let body = { stripeToken: localStorage.getItem("stripeToken") };
-
-  if (subscriptionId !== "null") {
-    body = { ...body, subscriptionId };
-  }
-
   return axios.post(`${CHECKOUT_EP}/checkout/`, body, authQueryParams);
 };
 
 export async function requestTransactionUpdate() {
-  params.headers["Authorization"] = `Token ${SESSION_TOKEN}`;
-
   return axios.post(
     `${CHECKOUT_EP}/update-transaction/`,
-    getTransactionUpdate(),
-    params
+    { stripeToken: localStorage.getItem("stripeToken") },
+    authQueryParams
   );
 }

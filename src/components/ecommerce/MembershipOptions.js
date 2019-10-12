@@ -1,23 +1,23 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 
+import { Button, Header, Grid, Card } from "semantic-ui-react";
+
 import {
   UNICORN_FREE_SERVICES,
   UNICORN_PRO_SERVICES
 } from "../../constants/constants";
 import { hasMembership } from "../../utils/appUtils";
-import { Button, Header, List, Grid, Card } from "semantic-ui-react";
+import MembershipServiceList from "../../containers/MembershipServiceList";
 
 const proCard = { marginRight: 50, marginLeft: 10 };
 const freeCard = { marginLeft: 50, marginRight: 10 };
 
 const MembershipOptions = ({
   memberships,
-  getMembershipChoice,
   handleAddToCart,
   buttonTextPro,
   buttonTextFree,
-  redirectParam,
   history
 }) => {
   const renderOptions = () => {
@@ -46,24 +46,22 @@ const MembershipOptions = ({
                   : `€ ${price} Per User / month`
               }
             />
-            <List style={{ paddingLeft: 20 }}>
-              {isNotProMember
-                ? getMembershipChoice(UNICORN_FREE_SERVICES)
-                : getMembershipChoice(UNICORN_PRO_SERVICES)}
-            </List>
+
+            {isNotProMember ? (
+              <MembershipServiceList services={UNICORN_FREE_SERVICES} />
+            ) : (
+              <MembershipServiceList services={UNICORN_PRO_SERVICES} />
+            )}
+
             <Button
               attached="bottom"
               disabled={hasMembership(slug)}
               content={buttonText.toUpperCase()}
               color={buttonColor}
               onClick={
-                redirectParam
-                  ? () => {
-                      history.push(
-                        hasMembership("pro") ? "/user-profile" : redirectParam
-                      );
-                    }
-                  : () => handleAddToCart(id, "membership")
+                isNotProMember
+                  ? () => history.push("/signup")
+                  : () => handleAddToCart(id)
               }
             />
           </Card>

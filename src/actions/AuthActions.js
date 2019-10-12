@@ -7,18 +7,14 @@ import {
   RECEIVED_USER,
   REQUEST_SIGNUP,
   REQUEST_LOGIN,
-  FETCH_MEMBER_PROFILE,
-  RECEIVE_MEMBER_PROFILE,
-  FETCH_USER_ERROR,
-  MEMBER_PROFILE_ERROR
+  FETCH_USER_ERROR
 } from "./ActionTypes";
 
 import {
   requestLogin,
   requestSignup,
   requestLogout,
-  requestUser,
-  requestUserMembershipsProfile
+  requestUser
 } from "../apis/apiRequests";
 
 import {
@@ -28,12 +24,7 @@ import {
   requestSuccess
 } from "./index";
 
-import {
-  destroyLocalStorage,
-  createUserProfile,
-  refresh,
-  createLocalStorageCart
-} from "../utils/appUtils";
+import { destroyLocalStorage, createUserProfile } from "../utils/appUtils";
 
 import {
   SESSION_TOKEN,
@@ -84,7 +75,6 @@ export const startAuth = () => {
 // Check auth state, if there is no token, log user out else create a 30 min session
 // count down if auth state is not reset in 30min dispatch logout, if reset create a new 30min session
 export const authState = () => {
-  createLocalStorageCart();
   return dispatch => {
     // session will last for 30mins if the app is not in use
     const sessionLife = new Date(SESSION_LIFE);
@@ -94,7 +84,6 @@ export const authState = () => {
     } else {
       dispatch(checkSessionTime(sessionLife));
       dispatch(fetchUser());
-      dispatch(fetchUserProfile());
 
       dispatch(requestSuccess(USER_AUTH_SUCCESS, SESSION_TOKEN));
 
@@ -115,12 +104,16 @@ export const login = body => {
         const sessionLife = new Date(new Date().getTime() + 1800 * 1000);
         dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
-        dispatch(createMessage({ successMsg: "You are logged in!" }));
-        refresh();
+        dispatch(createMessage({ successMsg: response.data.message }));
+        window.location.reload();
       },
       error => {
-        dispatch(createMessage({ errorMsg: error.response }));
-        dispatch(dataRequestFail(USER_AUTH_FAIL, error));
+        dispatch(dataRequestFail(USER_AUTH_FAIL, error.response.data));
+        destroyLocalStorage([
+          "sessionToken",
+          "sessionLife",
+          "currentMembership"
+        ]);
       }
     );
   };
@@ -139,11 +132,9 @@ export const logOut = () => {
             "selectedMembership"
           ]);
           dispatch(
-            createMessage({
-              successMsg: "You have successfully logged out!"
-            })
+            createMessage({ successMsg: "You have successfully logged out!" })
           );
-          refresh();
+          window.location.reload();
         });
       }
     : dispatch => {
@@ -187,27 +178,6 @@ export const fetchUser = () => {
       error => {
         dispatch(createMessage({ errorMsg: error.response.data }));
         dispatch(dataRequestFail(FETCH_USER_ERROR, error));
-        destroyLocalStorage([
-          "sessionToken",
-          "sessionLife",
-          "currentMembership",
-          "selectedMembership"
-        ]);
-      }
-    );
-  };
-};
-
-export const fetchUserProfile = sessionToken => {
-  return dispatch => {
-    dispatch(makeRequest(FETCH_MEMBER_PROFILE));
-    requestUserMembershipsProfile(sessionToken).then(
-      response => {
-        dispatch(requestSuccess(RECEIVE_MEMBER_PROFILE, response.data));
-      },
-      error => {
-        dispatch(createMessage({ errorMsg: error.response.data }));
-        dispatch(dataRequestFail(MEMBER_PROFILE_ERROR, error));
       }
     );
   };
