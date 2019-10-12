@@ -26,8 +26,8 @@ class Ticket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=120)
-    subject = models.CharField(max_length=120)
     description = models.TextField()
+    subject = models.CharField(max_length=120)
     tag = models.SlugField(blank=True)
     owner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, default=1)
@@ -35,11 +35,11 @@ class Ticket(models.Model):
         max_length=6, choices=STATUS, default='todo')
     votes = models.ManyToManyField(
         User, blank=True, related_name='ticket_votes')
-    views = models.IntegerField(default=0)
     is_bug = models.BooleanField(default=False)
     is_feature = models.BooleanField(default=False)
-    is_private = models.BooleanField(default=False)
+    has_solution = models.BooleanField(default=False)
     price = models.IntegerField(default=5, null=True)
+    views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title

@@ -92,7 +92,7 @@ export const makePayment = () => {
         dispatch(requestSuccess(RECEIVE_CHECKOUT, response.data));
         dispatch(fetchPendingOrder());
         dispatch(createMessage({ successMsg: response.data.message }));
-        dispatch(updateTranscation());
+        destroyLocalStorage(["subscriptionId", "stripeToken"]);
       },
       error => {
         dispatch(createMessage({ errorMsg: error.message }));
@@ -105,12 +105,10 @@ export const makePayment = () => {
 export const updateTranscation = () => {
   return dispatch => {
     dispatch(makeRequest(UPDATE_TRANSCATION));
-    dispatch(createMessage({ successMsg: "Updating you transcation" }));
     requestTransactionUpdate().then(
       response => {
         dispatch(requestSuccess(TRANSCATION_UPDATED, response.data));
         dispatch(createMessage({ successMsg: response.data.message }));
-        // destroyLocalStorage(["subscriptionId", "stripeToken"]);
       },
       error => {
         dispatch(createMessage({ errorMsg: error.message }));
