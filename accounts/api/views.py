@@ -11,6 +11,16 @@ from rest_framework.response import Response
 from tickets.models import Ticket
 
 
+def get_member_profile(request):
+    user_membership_qs = UserMembership.objects.filter(
+        user=get_user_membership(request).id)
+
+    if user_membership_qs.exists():
+        user_subscription = user_membership_qs.values()
+        return user_subscription[0]
+    return None
+
+
 def get_user_membership(request):
     user_membership_qs = UserMembership.objects.filter(user=request.user)
 
@@ -20,12 +30,28 @@ def get_user_membership(request):
 
 
 def get_user_subscription(request):
-    user_subscription_qs = Subscription.objects.filter(
-        user_membership=get_user_membership(request))
-    if user_subscription_qs.exists():
-        user_subscription = user_subscription_qs.first()
+    subscription = Subscription.objects.filter(
+        user_membership_id=request.user.id)
+
+    if subscription.exists():
+        user_subscription = get_object_or_404(
+            Subscription, user_membership_id=request.user.id)
         return user_subscription
     return None
+
+
+def update_profile(request):
+    user = UserProfile.objects.filter(user=request)
+    free_membership = Membership.objects.get(membership_type='free')
+
+    if user.exists():
+        user_profile = user.first()
+        user_profile.active_membership.add(free_membership)
+        user_profile.save()
+
+        return True
+    else:
+        return False
 
 
 class SignupAPI(GenericAPIView):
@@ -35,19 +61,30 @@ class SignupAPI(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        context = {
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
-        }
 
-        return Response(context, status=200)
+        user_profile = update_profile(user)
+        if user_profile is True:
+
+            context = {
+                "user": UserSerializer(user, context=self.get_serializer_context()).data,
+                "token": AuthToken.objects.create(user)[1]
+            }
+            return Response(context, status=200)
+
+        else:
+            context = {"message": 'Error sign in up please try again!'}
+
+            return Response(context, status=400)
 
     def get_serializer_context(self, *args, **kwargs):
         context = super().get_serializer_context(**kwargs)
 
         if self.request.method == 'GET':
             current_membership = get_user_membership(self.request)
-            context['current_membership'] = str(current_membership.membership)
+            membership = {
+                'membership': current_membership,
+            }
+            context['current_membership'] = membership
         else:
             context['current_membership'] = None
 
@@ -62,22 +99,11 @@ class LoginAPI(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
         context = {
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            'message': 'Login successful',
+            "user": LoginSerializer(user, context=self.get_serializer_context()).data['username'],
             "token": AuthToken.objects.create(user)[1]
         }
-
         return Response(context, status=200)
-
-    def get_serializer_context(self, *args, **kwargs):
-        context = super().get_serializer_context(**kwargs)
-
-        if self.request.method == 'GET':
-            current_membership = get_user_membership(self.request)
-            context['current_membership'] = str(current_membership.membership)
-        else:
-            context['current_membership'] = str(None)
-
-        return context
 
 
 class UserAPI(RetrieveAPIView):
@@ -91,11 +117,21 @@ class UserAPI(RetrieveAPIView):
 
         context = super().get_serializer_context(**kwargs)
 
-        print(context.items())
-
         if self.request.method == 'GET':
-            current_membership = get_user_membership(self.request)
-            context['current_membership'] = str(current_membership.membership)
+            current_membership = get_member_profile(self.request)
+            membership_type = get_user_membership(self.request).membership
+
+            if current_membership is not None:
+                current_membership['type'] = str(membership_type)
+
+                if get_user_subscription(self.request) is not None:
+                    subscription = get_user_subscription(self.request)
+                    current_membership['next_billing_date'] = subscription.get_next_billing_date
+                    current_membership['date_subscribed'] = subscription.date_subscribed
+            membership = {
+                'membership': current_membership,
+            }
+            context['current_membership'] = membership
 
         else:
             context['current_membership'] = None
