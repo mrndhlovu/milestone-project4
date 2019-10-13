@@ -1,28 +1,16 @@
-import React from "react";
-import { Header, Icon } from "semantic-ui-react";
+import React, { Fragment } from "react";
+import { Icon } from "semantic-ui-react";
 
 const TicketsIcon = ({ votes, views, status }) => {
   return (
-    <div floated="right">
-      <Header as="h5">
-        <Icon name="thumbs up outline" color="black" />
-        {votes > 0 ? votes : 0}
-      </Header>
-      <hr />
-      <Header as="h5">
-        <Icon name="eye" color="black" />
-        {views > 0 ? views : 0}
-      </Header>
-      <hr />
-      <Header
-        as="h5"
-        color={
-          status === "doing" ? "grey" : status === "done" ? "green" : "black"
-        }
-      >
-        {status.toUpperCase()}
-      </Header>
-    </div>
+    <Fragment>
+      <Icon name="thumbs up outline" color="black" size="large" />
+      <span style={{ paddingRight: 10 }}>{votes > 0 ? votes : 0}</span>
+
+      <Icon name="eye" color="black" size="large" />
+      <span style={{ paddingRight: 10 }}>{views > 0 ? views : 0}</span>
+      {status.toUpperCase()}
+    </Fragment>
   );
 };
 

@@ -1,59 +1,79 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import { Button, Grid, Card, Label, Segment } from "semantic-ui-react";
 
-import { Label, Feed, Divider, Button } from "semantic-ui-react";
-
-import TicketsHeader from "./TicketsHeader";
 import TicketsIcons from "./TicketsIcon";
+import { getFormatedDate } from "../../utils/appUtils";
 
-export const Tickets = ({ ticketsList, handleAddToCart }) => {
-  return ticketsList.map(ticket => {
-    const {
-      title,
-      id,
-      created_at,
-      tag,
-      views,
-      votes,
-      username,
-      status,
-      short_desc,
-      price
-    } = ticket;
+export const Tickets = ({
+  ticketsList,
+  handleAddToCart,
+  handleVote,
+  isAuthenticated
+}) => {
+  const renderList = () => {
+    return Object.keys(ticketsList).map(key => {
+      const {
+        title,
+        id,
+        created_at,
+        views,
+        votes,
+        username,
+        status,
+        short_desc,
+        price,
+        is_bug
+      } = ticketsList[key];
 
-    return (
-      <Fragment key={id}>
-        <Feed>
-          <Feed.Event>
-            <Feed.Content>
-              <TicketsHeader
-                title={title}
-                created_at={created_at}
-                username={username}
-                id={id}
-              />
+      return (
+        <Grid.Column key={id}>
+          <Card.Group>
+            <Segment stacked>
+              <Label as="a" color={is_bug ? "teal" : "orange"} ribbon="right">
+                {is_bug
+                  ? `${5 - votes} Votes to Fixing`
+                  : `Fix Now Price € ${price}`}
+              </Label>
+              <Card fluid>
+                <Card.Content>
+                  <Card.Header as={Link} to={`ticket/${id}`}>
+                    {title.toUpperCase()}
+                  </Card.Header>
+                  <Card.Meta>
+                    <span className="date">
+                      {username} | {getFormatedDate(created_at)}
+                    </span>
+                  </Card.Meta>
+                </Card.Content>
+                <Card.Content description={short_desc} />
+                <Card.Content extra>
+                  <TicketsIcons votes={votes} status={status} views={views} />
+                </Card.Content>
+                <Button
+                  disabled={!isAuthenticated}
+                  floated="right"
+                  size="tiny"
+                  color="orange"
+                  onClick={
+                    is_bug ? () => handleVote(id) : () => handleAddToCart(id)
+                  }
+                >
+                  {is_bug ? "Vote" : "Add to Cart"}
+                </Button>
+              </Card>
+            </Segment>
+          </Card.Group>
+        </Grid.Column>
+      );
+    });
+  };
 
-              <Feed>{short_desc}</Feed>
-            </Feed.Content>
-            <TicketsIcons votes={votes} status={status} views={views} />
-          </Feed.Event>
-        </Feed>
-        <Button
-          floated="right"
-          size="tiny"
-          color="orange"
-          onClick={() => handleAddToCart(id)}
-        >
-          Add to Cart
-        </Button>
-        <Label.Group size="tiny">
-          <Label>{tag}</Label>
-          <Label>€{price}</Label>
-        </Label.Group>
-
-        <Divider />
-      </Fragment>
-    );
-  });
+  return (
+    <Grid columns={3}>
+      <Grid.Row>{renderList()}</Grid.Row>
+    </Grid>
+  );
 };
 
 export default Tickets;
