@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { Card, Container } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 
 import OrderSummary from "../components/ecommerce/OrderSummary";
 import {
@@ -25,16 +25,14 @@ export class OrderSummaryContainer extends Component {
     const { pendingOrders, history } = this.props;
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
     return (
-      <Container>
-        <Card fluid>
-          <Card.Content header={`Your have ${count} items in your cart`} />
-          <OrderSummary
-            pendingOrders={pendingOrders.data}
-            handleRemoveClick={this.handleRemoveClick}
-            history={history}
-          />
-        </Card>
-      </Container>
+      <Card fluid>
+        <OrderSummary
+          pendingOrders={pendingOrders.data}
+          handleRemoveClick={this.handleRemoveClick}
+          history={history}
+          count={count}
+        />
+      </Card>
     );
   }
 }
