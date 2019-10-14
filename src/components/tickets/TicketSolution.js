@@ -10,6 +10,7 @@ const TicketSolution = ({
   solution,
   isAuthenticated
 }) => {
+  console.log(solution.show);
   return (
     <Accordion styled fluid>
       <Accordion.Title
@@ -18,7 +19,7 @@ const TicketSolution = ({
         onClick={() => handleAccordionClick()}
       >
         <Icon name="dropdown" />
-        Solution
+        {solution.show ? "Paid Ticket Solution" : "Solution"}
       </Accordion.Title>
 
       <Accordion.Content active={activeIndex === 0}>
