@@ -171,6 +171,7 @@ export const fetchTicketSolution = id => {
       },
       error => {
         dispatch(errorsAlert(TICKET_SOLUTION_ERROR, error));
+        dispatch(createMessage({ errorMsg: error.response.data.message }));
       }
     );
   };
