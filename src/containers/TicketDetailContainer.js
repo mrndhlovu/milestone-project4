@@ -8,20 +8,17 @@ import {
   fetchTicketSolution
 } from "../actions/TicketActions";
 
-import { Header, Segment } from "semantic-ui-react";
+import { Segment, Container } from "semantic-ui-react";
 
 import {
   getVotes,
-  getMembershipProfile,
   getTicketDetail,
   getTicketUpdate,
   getSolution,
   getUser
 } from "../selectors/appSelectors";
 
-import { getFormatedDate } from "../utils/appUtils";
 import EditButtons from "../components/tickets/EditButtons";
-import GridLayout from "./GridLayout";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import TicketComments from "./TicketCommentsContainer";
 import TicketDetail from "../components/tickets/TicketDetail";
@@ -32,7 +29,6 @@ export class TicketDetailContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeIndex: 0,
       index: 0
     };
     this.handleVoteClick = this.handleVoteClick.bind(this);
@@ -54,18 +50,6 @@ export class TicketDetailContainer extends Component {
         this.props.fetchTicketSolution(id);
       }
     }
-
-    // const {
-    //   vote,
-    //   match: {
-    //     // params: { id }
-    //   }
-    // } = this.props;
-
-    // if (prevProps.vote !== vote) {
-    //   // const { updated } = vote.data;
-    //   console.log("updated");
-    // }
   }
 
   handleAccordionClick = (e, titleProps) => {
@@ -95,26 +79,19 @@ export class TicketDetailContainer extends Component {
       ticket: {
         isLoading,
         dataReceived,
-        data: {
-          title,
-          created_at,
-          description,
-          votes,
-          views,
-          id,
-          comments,
-          owner
-        }
+        data: { title, description, votes, views, id, comments, owner }
       },
-      userProfile: { is_pro_member },
       solution,
       user
     } = this.props;
     const { activeIndex, index } = this.state;
+    const isProMember =
+      user.data && user.data.current_membership.membership.is_pro_member;
+    console.log(isProMember);
 
     return (
-      <GridLayout>
-        {dataReceived && is_pro_member && (
+      <Container style={{ paddingTop: 50 }}>
+        {dataReceived && isProMember && (
           <EditButtons
             handleTicketDelete={this.handleTicketDelete}
             ticketId={id}
@@ -122,14 +99,8 @@ export class TicketDetailContainer extends Component {
           />
         )}
 
-        <Header
-          as="h3"
-          color="blue"
-          subheader={`Filed: ${getFormatedDate(created_at)}`}
-        />
-
         <TicketDetail
-          is_pro_member={is_pro_member}
+          isProMember={isProMember}
           description={description}
           votes={votes}
           title={title}
@@ -148,14 +119,14 @@ export class TicketDetailContainer extends Component {
 
         <TicketDetailStats
           handleVoteClick={this.handleVoteClick}
-          is_pro_member={is_pro_member}
+          isProMember={isProMember}
           votes={votes}
           views={views}
           id={id}
         />
 
         <Segment>
-          {is_pro_member ? (
+          {isProMember ? (
             <TicketComments comments={comments} ticketId={id} />
           ) : (
             <StyledMessage
@@ -165,7 +136,7 @@ export class TicketDetailContainer extends Component {
             />
           )}
         </Segment>
-      </GridLayout>
+      </Container>
     );
   }
 }
@@ -174,7 +145,6 @@ const mapStateToProps = state => {
   return {
     ticket: getTicketDetail(state),
     ticketDelete: getTicketUpdate(state),
-    userProfile: getMembershipProfile(state),
     vote: getVotes(state),
     solution: getSolution(state),
     user: getUser(state)
