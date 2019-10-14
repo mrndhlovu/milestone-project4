@@ -4,12 +4,8 @@ import { connect } from "react-redux";
 import { Confirm, Segment, Container } from "semantic-ui-react";
 
 import { cancelSubscription } from "../actions/MembershipActions";
-import { fetchUserProfile } from "../actions/AuthActions";
 
-import {
-  getUserProfile,
-  getMembershipProfile
-} from "../selectors/appSelectors";
+import { getUserProfile } from "../selectors/appSelectors";
 import UserProfileCard from "../components/userAuth/UserProfileCard";
 
 export class UserProfileContainer extends Component {
