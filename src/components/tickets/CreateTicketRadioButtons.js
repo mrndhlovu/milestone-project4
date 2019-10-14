@@ -4,7 +4,7 @@ import { Form, Radio, Header } from "semantic-ui-react";
 
 const CreateTicketRadioButtons = ({ handleChange, isBug, isFeature }) => {
   return (
-    <Fragment style={{ paddingBottom: 10 }}>
+    <Fragment>
       <Form.Field>
         <Header as="h4">Selected ticket type</Header>
       </Form.Field>
