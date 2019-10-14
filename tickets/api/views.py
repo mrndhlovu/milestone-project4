@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
 from accounts.models import UserProfile
+import traceback
 
 
 def get_ticket_owner(request):
@@ -121,23 +122,22 @@ class TicketDeleteView(DestroyAPIView):
 
 
 def check_paid_tickets(request, ticket):
-    ticket = TicketSolution.objects.get(id=ticket.id)
-    paid_clients = ticket.paid_client
-    try:
-        paid_customer = paid_clients.get(id=request.user.id)
-        if paid_customer is not None and ticket.status == 'done':
-            return True
-    except:
-        return False
+    solution = TicketSolution.objects.get(id=ticket.id)
+
+    paid_clients = solution.paid_client.all()
+
+    if paid_clients.get(id=request.user.id) is not None and ticket.status == 'done':
+        return True
+    else:
+        return None
 
 
 def get_paid_ticket(request, request_data):
-    try:
-        ticket = TicketSolution.objects.filter(
-            parent_ticket_id=request_data['ticket_id'])
-        if ticket.exists():
-            return ticket[0]
-    except:
+    ticket = TicketSolution.objects.filter(
+        parent_ticket_id=request_data['ticket_id'])
+    if ticket.exists():
+        return ticket[0]
+    else:
         return None
 
 
@@ -148,27 +148,42 @@ class TicketSolutionAPIView(GenericAPIView):
     def post(self, request):
         request_data = json.loads(request.body.decode('utf-8'))
         try:
+
             ticket = get_paid_ticket(request, request_data)
-            show_solution = check_paid_tickets(request, ticket)
 
-            if ticket is not None and show_solution is True:
-                solution = ticket.solution
-                context = {
-                    'show': show_solution,
-                    'solution': solution
-                }
-                return Response(context, status=200)
+            if ticket is not None:
+                show_solution = check_paid_tickets(request, ticket)
 
+                if ticket is not None:
+                    solution = ticket.solution
+                    if show_solution is True:
+                        context = {
+                            'show': show_solution,
+                            'solution': solution
+                        }
+                        return Response(context, status=200)
+                    else:
+                        context = {
+                            'show': True,
+                            'solution': "Work still in progress please check again later!"
+                        }
+                        return Response(context, status=200)
+                else:
+                    solution = check_paid_tickets(request, ticket)
+
+                    context = {
+                        'show': False,
+                    }
+                    return Response(context, status=200)
             else:
-                solution = check_paid_tickets(request, ticket)
-
                 context = {
-                    'show': True,
-                    'solution': 'Work still in progress...'
+                    'message': 'Ticket solution requires payment',
                 }
-                return Response(context, status=200)
-        except:
+                return Response(context, status=400)
+
+        except Exception:
+
             context = {
-                'message': 'Ticket has no payments yet',
+                'message': 'Ticket solution requires payment',
             }
             return Response(context, status=400)
