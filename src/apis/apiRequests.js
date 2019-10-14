@@ -4,14 +4,11 @@ import {
   authQueryParams,
   COMMENTS_EP,
   MEMBERSHIP_EP,
-  params,
   queryParams,
   TICKETS_EP,
   CHECKOUT_EP,
   getCheckoutBody
 } from "../utils/urls";
-
-import { SESSION_TOKEN } from "../constants/localStorageConstants";
 
 export async function requestTicketsList() {
   return axios.get(`${TICKETS_EP}`);
