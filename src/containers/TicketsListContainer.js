@@ -26,7 +26,6 @@ export class TicketsListContainer extends Component {
 
   componentDidMount() {
     const { ticketsList } = this.props;
-    console.log(ticketsList);
     this.props.fetchTicketsList();
     if (ticketsList.dataReceived) {
       this.setState({ tickets: ticketsList.data });
@@ -51,12 +50,10 @@ export class TicketsListContainer extends Component {
     const { ticketsList, user } = this.props;
     const { tickets } = this.state;
     const ticketCount = getObjectLength(tickets);
-    console.log(user);
 
     return (
       <Fragment>
         <HeadingImage />
-
         <GridLayout>
           <TicketListWrapper
             ticketCount={ticketCount}
@@ -67,7 +64,7 @@ export class TicketsListContainer extends Component {
                 ticketsList={tickets}
                 handleAddToCart={this.handleAddToCart}
                 handleVote={this.props.updatedTicketVote}
-                isAuthenticated={user.isAuthenticated}
+                user={user}
               />
             ) : (
               <StyledMessage
