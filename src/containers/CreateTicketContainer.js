@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter, Redirect } from "react-router-dom";
 
-import { Form, Message } from "semantic-ui-react";
+import { Form, Message, Container } from "semantic-ui-react";
 
 import { createTicket } from "../actions/TicketActions";
 import {
   getErrors,
   getUser,
   getTicket,
-  getMembershipProfile
+  getUserProfile
 } from "../selectors/appSelectors";
 import { slugify } from "../utils/appUtils";
 import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
@@ -26,7 +26,7 @@ export class CreateTicketContainer extends Component {
       isLoading: false,
       isFeature: false,
       isBug: true,
-      isProMemeber: false
+      isProMember: false
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -36,9 +36,15 @@ export class CreateTicketContainer extends Component {
     const { ticket, user } = this.props;
 
     if (prevProps.ticket !== ticket) {
-      this.setState({ isProMemeber: user.is_pro_member });
       ticket.data.id !== undefined &&
         this.props.history.push(`/ticket/${ticket.data.id}`);
+    }
+
+    if (prevProps.user !== user) {
+      if (user.data && user.dataReceived) {
+        const { is_pro_member } = user.data.current_membership.membership;
+        this.setState({ isProMember: is_pro_member });
+      }
     }
   }
 
@@ -66,14 +72,14 @@ export class CreateTicketContainer extends Component {
 
   render() {
     const { handleSubmit, field, errorAlert, valid, pristine } = this.props;
-    const { isLoading, isBug, isFeature, value, isProMemeber } = this.state;
+    const { isLoading, isBug, isFeature, value, isProMember } = this.state;
 
-    if (isProMemeber) {
+    if (!isProMember) {
       return <Redirect to="/login" />;
     }
 
     return (
-      <GridLayout>
+      <Container style={{ paddingTop: 20 }}>
         <Message
           header="Create a Ticket"
           content="Fill out the form below to create a ticket"
@@ -115,7 +121,7 @@ export class CreateTicketContainer extends Component {
             />
           </div>
         </Form>
-      </GridLayout>
+      </Container>
     );
   }
 }
@@ -125,7 +131,7 @@ const mapStateToProps = state => {
     errorAlert: getErrors(state),
     auth: getUser(state),
     ticket: getTicket(state),
-    user: getMembershipProfile(state)
+    user: getUserProfile(state)
   };
 };
 
