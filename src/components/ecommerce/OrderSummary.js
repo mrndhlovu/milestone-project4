@@ -1,9 +1,15 @@
 import React from "react";
 
-import { Card, Table, List, Header } from "semantic-ui-react";
+import { Table, List, Icon, Button, Label } from "semantic-ui-react";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-const OrderSummary = ({ pendingOrders, handleRemoveClick, history }) => {
+const OrderSummary = ({
+  pendingOrders,
+  handleRemoveClick,
+  history,
+  count,
+  total
+}) => {
   const orderItems = pendingOrders.orders ? pendingOrders.orders : {};
 
   const renderItems = () => {
@@ -17,19 +23,27 @@ const OrderSummary = ({ pendingOrders, handleRemoveClick, history }) => {
         <Table.Row key={index}>
           <Table.Cell>
             <List.Header as="a" onClick={() => history.push(`ticket/${id}`)}>
+              <span style={{ fontWeight: 700, color: "black" }}>{id}</span>
+            </List.Header>
+          </Table.Cell>
+          <Table.Cell>
+            <List.Header as="a" onClick={() => history.push(`ticket/${id}`)}>
               <span style={{ fontWeight: 700, color: "black" }}>
                 {name.toUpperCase()}
               </span>
             </List.Header>
           </Table.Cell>
-          <Table.Cell>${price}</Table.Cell>
+
+          <Table.Cell>€ {price}</Table.Cell>
           <Table.Cell>
-            <span style={{ paddingRight: 30 }}>${price}</span>
+            <span>€ {price}</span>
+          </Table.Cell>
+          <Table.Cell textAlign="center">
             <List.Header
               as="a"
               onClick={() => handleRemoveClick(id, productId)}
             >
-              <span style={{ fontSize: 10, color: "grey" }}>Remove</span>
+              <Icon disabled name="delete" size="small" />
             </List.Header>
           </Table.Cell>
         </Table.Row>
@@ -38,22 +52,36 @@ const OrderSummary = ({ pendingOrders, handleRemoveClick, history }) => {
   };
 
   return pendingOrders !== {} ? (
-    <Card.Content>
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Item</Table.HeaderCell>
-            <Table.HeaderCell>Item Price</Table.HeaderCell>
-            <Table.HeaderCell>Total Price</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>{renderItems()}</Table.Body>
-      </Table>
+    <Table stackable>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell colSpan="6">
+            Your have {count} items in your cart
+          </Table.HeaderCell>
+        </Table.Row>
 
-      <Header as="h5" floated="right">
-        <span>Total: $ {pendingOrders.total}</span>
-      </Header>
-    </Card.Content>
+        <Table.Row>
+          <Table.HeaderCell>ID</Table.HeaderCell>
+          <Table.HeaderCell>Item name</Table.HeaderCell>
+          <Table.HeaderCell>Subtotal</Table.HeaderCell>
+          <Table.HeaderCell>Total</Table.HeaderCell>
+          <Table.HeaderCell textAlign="right">Confirm</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>{renderItems()}</Table.Body>
+      <Table.Footer>
+        <Table.Row>
+          <Table.HeaderCell colSpan="6" textAlign="right">
+            <Button as="div" labelPosition="right">
+              <Button color="orange">Total €</Button>
+              <Label as="a" basic pointing="left">
+                {pendingOrders.total}
+              </Label>
+            </Button>
+          </Table.HeaderCell>
+        </Table.Row>
+      </Table.Footer>
+    </Table>
   ) : (
     <UILoadingSpinner />
   );
