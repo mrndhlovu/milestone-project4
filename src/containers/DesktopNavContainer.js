@@ -80,8 +80,7 @@ export class DesktopNavContainer extends Component {
     const {
       user: { isAuthenticated },
       userProfile: { data },
-      pendingOrder,
-      user
+      pendingOrder
     } = this.props;
 
     return (
