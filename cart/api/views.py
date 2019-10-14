@@ -345,7 +345,6 @@ class PaymentAPIView(APIView):
                     pending_order.save()
                     payment.save()
 
-                    updated_user_membership(request, request_data)
                     paid_cart = get_paid_cart(request)
                     paid_cart.delete()
 
@@ -361,6 +360,7 @@ class PaymentAPIView(APIView):
                                 user_profile.active_membership.remove(
                                     free_membership)
                                 user_profile.save()
+                                updated_user_membership(request, request_data)
 
                             if item.product_content_type.name == 'ticket':
                                 ticket = get_ticket(item)
