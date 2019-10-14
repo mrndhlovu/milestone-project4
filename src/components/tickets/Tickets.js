@@ -5,12 +5,10 @@ import { Button, Grid, Card, Label, Segment } from "semantic-ui-react";
 import TicketsIcons from "./TicketsIcon";
 import { getFormatedDate } from "../../utils/appUtils";
 
-export const Tickets = ({
-  ticketsList,
-  handleAddToCart,
-  handleVote,
-  isAuthenticated
-}) => {
+export const Tickets = ({ ticketsList, handleAddToCart, handleVote, user }) => {
+  const isProMember =
+    user.dataReceived && user.current_membership.membership.is_pro_member;
+
   const renderList = () => {
     return Object.keys(ticketsList).map(key => {
       const {
@@ -28,13 +26,18 @@ export const Tickets = ({
 
       return (
         <Grid.Column key={id}>
-          <Card.Group>
-            <Segment stacked>
-              <Label as="a" color={is_bug ? "teal" : "orange"} ribbon="right">
-                {is_bug
-                  ? `${5 - votes} Votes to Fixing`
-                  : `Fix Now Price € ${price}`}
-              </Label>
+          <Segment stacked>
+            <Label
+              style={{ marginTop: 10 }}
+              as="a"
+              color={is_bug ? "teal" : "orange"}
+              ribbon="right"
+            >
+              {is_bug
+                ? `${5 - votes} Votes to Fixing`
+                : `Fix Now Price € ${price}`}
+            </Label>
+            <Card.Group>
               <Card fluid>
                 <Card.Content>
                   <Card.Header as={Link} to={`ticket/${id}`}>
@@ -51,7 +54,7 @@ export const Tickets = ({
                   <TicketsIcons votes={votes} status={status} views={views} />
                 </Card.Content>
                 <Button
-                  disabled={!isAuthenticated}
+                  disabled={!user.isAuthenticated && isProMember}
                   floated="right"
                   size="tiny"
                   color="orange"
@@ -62,8 +65,8 @@ export const Tickets = ({
                   {is_bug ? "Vote" : "Add to Cart"}
                 </Button>
               </Card>
-            </Segment>
-          </Card.Group>
+            </Card.Group>
+          </Segment>
         </Grid.Column>
       );
     });
