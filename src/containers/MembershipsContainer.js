@@ -36,7 +36,7 @@ export class MembershipContainer extends Component {
         const { orders } = cart.data;
         Object.keys(orders).map(order => {
           const cartItems = orders[order];
-          if (cartItems.membership == "pro") {
+          if (cartItems.membership === "pro") {
             return this.setState({ buttonTextPro: "Item in your cart" });
           }
         });
@@ -48,7 +48,6 @@ export class MembershipContainer extends Component {
     const { isAuthenticated } = this.props.auth;
 
     if (isAuthenticated) {
-      this.setState({});
       return this.props.addItemToCart(id, "membership");
     }
     this.setState({ buttonTextPro: "Lets signup first" });
