@@ -170,11 +170,11 @@ class AddToCartAPIView(ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
+
         request_data = json.loads(request.body.decode('utf-8'))
 
         product_id = request_data['product_id']
         product_object = request_data['product']
-        token = request_data['stripeToken']
 
         cart = get_active_cart(request)
         subscription_id = None
@@ -193,7 +193,7 @@ class AddToCartAPIView(ListAPIView):
             product_content_type = ContentType.objects.get_for_model(
                 product)
             pending_orders_qs = CartItem.objects.filter(
-                product_content_type=product_content_type)
+                product_content_type=product_content_type, cart_id=request.user.id)
 
             for item in pending_orders_qs:
                 if item.product_object_id == product.id:
