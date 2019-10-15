@@ -20,6 +20,16 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class SignupSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+        min_length=6,
+        error_messages={
+            "blank": "Password cannot be empty.",
+            "min_length": "Password should be more than 6 charaters long.",
+        },
+    )
+
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password')
