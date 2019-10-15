@@ -159,7 +159,7 @@ export const signup = data => {
       },
       error => {
         dispatch(createMessage({ errorMsg: error.response.data }));
-        dispatch(dataRequestFail(USER_AUTH_FAIL, error));
+        dispatch(dataRequestFail(USER_AUTH_FAIL, error.response.data));
       }
     );
   };

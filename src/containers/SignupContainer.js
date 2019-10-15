@@ -53,16 +53,6 @@ class SignupContainer extends Component {
     isAuthenticated && window.location.reload();
   }
 
-  showErrorMessage() {
-    const { errorAlert } = this.props.error;
-
-    return Object.keys(errorAlert).map((error, index) => {
-      const message = `${error.toUpperCase()}: ${errorAlert[error]}`;
-
-      return <p key={index}>{message}</p>;
-    });
-  }
-
   renderField(field) {
     const {
       meta: { touched, error }
@@ -76,7 +66,8 @@ class SignupContainer extends Component {
       valid,
       pristine,
       handleSubmit,
-      authState: { isAuthenticated, hasError }
+      authState: { isAuthenticated, hasError },
+      authState
     } = this.props;
     const { isLoading } = this.state;
 
@@ -91,9 +82,7 @@ class SignupContainer extends Component {
 
           <Grid textAlign="center">
             <Grid.Column style={{ maxWidth: 500 }}>
-              {hasError && (
-                <ErrorMessage showErrorMessage={this.showErrorMessage} />
-              )}
+              {hasError && <ErrorMessage errors={authState.data} />}
               <Form
                 size="large"
                 onSubmit={handleSubmit(this.handleSignupClick)}
