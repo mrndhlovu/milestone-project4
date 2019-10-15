@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 import { Form, Grid, Segment, Container } from "semantic-ui-react";
 
-import { getUser, getErrors } from "../selectors/appSelectors";
+import { getUser } from "../selectors/appSelectors";
 import { login } from "../actions/AuthActions";
 import FormFooter from "../components/sharedComponents/StyledMessage";
 import FormInput from "../components/sharedComponents/FormInput";
@@ -59,10 +59,10 @@ class LoginContainer extends Component {
   render() {
     const {
       auth: { isAuthenticated, hasError },
+      auth,
       valid,
       pristine,
-      handleSubmit,
-      alert
+      handleSubmit
     } = this.props;
 
     const { isLoading } = this.state;
@@ -77,9 +77,7 @@ class LoginContainer extends Component {
 
         <Grid textAlign="center" verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 500 }}>
-            {alert && alert.hasError && (
-              <ErrorMessage message={alert.alertMsg.login} />
-            )}
+            {hasError && <ErrorMessage errors={auth.data} />}
             <Form size="large" onSubmit={handleSubmit(this.handleLoginClick)}>
               <Segment stacked>
                 <Field
@@ -119,8 +117,7 @@ class LoginContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    auth: getUser(state),
-    alert: getErrors(state)
+    auth: getUser(state)
   };
 };
 
