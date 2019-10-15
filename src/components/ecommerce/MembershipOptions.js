@@ -7,7 +7,7 @@ import {
   UNICORN_FREE_SERVICES,
   UNICORN_PRO_SERVICES
 } from "../../constants/constants";
-import { hasMembership } from "../../utils/appUtils";
+
 import MembershipServiceList from "../../containers/MembershipServiceList";
 
 const proCard = { marginRight: 50, marginLeft: 10 };
@@ -18,36 +18,34 @@ const MembershipOptions = ({
   handleAddToCart,
   buttonTextPro,
   buttonTextFree,
-  history
+  history,
+  isAuthenticated,
+  isProMember
 }) => {
   const renderOptions = () => {
     return Object.keys(memberships).map(key => {
       const { price, id, slug } = memberships[key];
-      const isNotProMember = slug !== "pro";
-      const buttonText = isNotProMember ? buttonTextFree : buttonTextPro;
-      const buttonColor = isNotProMember ? "blue" : "black";
+      const FREE = slug === "free" && !isProMember;
+
+      const buttonText = FREE ? buttonTextFree : buttonTextPro;
+      const buttonColor = FREE ? "blue" : "black";
       const header = `Unicorn ${slug}`;
 
       return (
-        <Grid.Column
-          key={id}
-          style={isNotProMember ? { ...freeCard } : { ...proCard }}
-        >
+        <Grid.Column key={id} style={FREE ? { ...freeCard } : { ...proCard }}>
           <Card fluid style={{ borderRadius: 0 }}>
             <Header
               as="h3"
               attached
-              color={isNotProMember ? "blue" : "black"}
+              color={FREE ? "blue" : "black"}
               textAlign="center"
               content={header.toUpperCase()}
               subheader={
-                isNotProMember
-                  ? `€ ${price} Per / month`
-                  : `€ ${price} Per User / month`
+                FREE ? `€ ${price} Per / month` : `€ ${price} Per User / month`
               }
             />
 
-            {isNotProMember ? (
+            {FREE ? (
               <MembershipServiceList services={UNICORN_FREE_SERVICES} />
             ) : (
               <MembershipServiceList services={UNICORN_PRO_SERVICES} />
@@ -55,13 +53,11 @@ const MembershipOptions = ({
 
             <Button
               attached="bottom"
-              disabled={hasMembership(slug)}
+              disabled={FREE && isAuthenticated}
               content={buttonText.toUpperCase()}
               color={buttonColor}
               onClick={
-                isNotProMember
-                  ? () => history.push("/signup")
-                  : () => handleAddToCart(id)
+                FREE ? () => history.push("/signup") : () => handleAddToCart(id)
               }
             />
           </Card>

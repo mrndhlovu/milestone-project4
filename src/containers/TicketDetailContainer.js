@@ -8,6 +8,8 @@ import {
   fetchTicketSolution
 } from "../actions/TicketActions";
 
+import { addItemToCart } from "../actions/CheckoutActions";
+
 import { Segment, Container } from "semantic-ui-react";
 
 import {
@@ -34,6 +36,7 @@ export class TicketDetailContainer extends Component {
     this.handleVoteClick = this.handleVoteClick.bind(this);
     this.handleTicketDelete = this.handleTicketDelete.bind(this);
     this.handleAccordionClick = this.handleAccordionClick.bind(this);
+    this.handleAddToCart = this.handleAddToCart.bind(this);
   }
 
   componentDidMount() {
@@ -58,6 +61,10 @@ export class TicketDetailContainer extends Component {
 
     this.setState({ activeIndex: newIndex });
   };
+
+  handleAddToCart(id) {
+    this.props.addItemToCart(id, "ticket");
+  }
 
   updateVoteCount() {
     const { votes } = this.props.ticket.ticket;
@@ -115,6 +122,8 @@ export class TicketDetailContainer extends Component {
           index={index}
           solution={solution.data}
           isAuthenticated={user.isAuthenticated}
+          addToCart={this.handleAddToCart}
+          id={id}
         />
 
         <TicketDetailStats
@@ -153,5 +162,11 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { requestTicketsDetail, updatedTicketVote, deleteTicket, fetchTicketSolution }
+  {
+    requestTicketsDetail,
+    updatedTicketVote,
+    deleteTicket,
+    fetchTicketSolution,
+    addItemToCart
+  }
 )(TicketDetailContainer);

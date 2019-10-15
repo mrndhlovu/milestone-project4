@@ -6,8 +6,8 @@ import { fetchMembershipsList } from "../actions/MembershipActions";
 import {
   getMemberships,
   getUser,
-  getMembershipProfile,
-  getCartPendingOrder
+  getCartPendingOrder,
+  getUserProfile
 } from "../selectors/appSelectors";
 import HeadingImage from "../components/home/HeadingImage";
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
@@ -19,7 +19,8 @@ export class MembershipContainer extends Component {
       buttonTextFree: "Free Signup",
       buttonTextPro: "Add to cart",
       buttonDisabled: true,
-      redirectParam: ""
+      redirectParam: "",
+      isProMember: ""
     };
     this.handleAddToCart = this.handleAddToCart.bind(this);
   }
@@ -29,7 +30,7 @@ export class MembershipContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { cart } = this.props;
+    const { cart, user } = this.props;
 
     if (prevProps.cart.data !== cart.data) {
       if (cart.data && Object.keys(cart.data.orders).length > 0) {
@@ -40,6 +41,18 @@ export class MembershipContainer extends Component {
             return this.setState({ buttonTextPro: "Item in your cart" });
           }
         });
+      }
+    }
+
+    if (prevProps.user !== user) {
+      if (user.data && user.data.username) {
+        const isProMember =
+          user.data.current_membership.membership.is_pro_member;
+
+        this.setState({ isProMember });
+        if (!isProMember) {
+          this.setState({ buttonTextFree: "Your current membership" });
+        }
       }
     }
   }
@@ -63,7 +76,8 @@ export class MembershipContainer extends Component {
       buttonTextFree,
       buttonTextPro,
       buttonDisabled,
-      redirectParam
+      redirectParam,
+      isProMember
     } = this.state;
 
     return (
@@ -79,6 +93,7 @@ export class MembershipContainer extends Component {
           buttonDisabled={buttonDisabled}
           redirectParam={redirectParam}
           history={history}
+          isProMember={isProMember}
         />
       </Fragment>
     );
@@ -90,7 +105,7 @@ const mapStateToProps = state => {
     auth: getUser(state),
     memberships: getMemberships(state),
     cart: getCartPendingOrder(state),
-    userMembership: getMembershipProfile(state)
+    user: getUserProfile(state)
   };
 };
 

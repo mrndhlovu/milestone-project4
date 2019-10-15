@@ -1,16 +1,23 @@
 import React from "react";
 
-import { Accordion, Icon } from "semantic-ui-react";
-import StyledMessage from "../sharedComponents/StyledMessage";
+import {
+  Accordion,
+  Icon,
+  Segment,
+  Button,
+  Header,
+  Popup
+} from "semantic-ui-react";
 
 const TicketSolution = ({
   activeIndex,
   index,
   handleAccordionClick,
+  addToCart,
   solution,
+  id,
   isAuthenticated
 }) => {
-  console.log(solution.show);
   return (
     <Accordion styled fluid>
       <Accordion.Title
@@ -26,15 +33,22 @@ const TicketSolution = ({
         {solution.show ? (
           <p style={{ paddingLeft: 10 }}>{solution.solution}</p>
         ) : (
-          <StyledMessage
-            redirect={isAuthenticated ? "" : "/pricing"}
-            linkText={isAuthenticated ? "Add to cart" : "Login"}
-            message={
-              isAuthenticated
-                ? "To see the solution your have to pay 5 Euros"
-                : "To see the solution you have to"
-            }
-          />
+          <Segment clearing>
+            <Header as="h5">Ticket solution requires payment</Header>
+            <Popup
+              content="Login or Signup to add item to cart"
+              trigger={
+                <Button
+                  size="tiny"
+                  color="orange"
+                  onClick={isAuthenticated ? () => addToCart(id) : () => {}}
+                  floated="right"
+                >
+                  Add to Cart
+                </Button>
+              }
+            />
+          </Segment>
         )}
       </Accordion.Content>
     </Accordion>
