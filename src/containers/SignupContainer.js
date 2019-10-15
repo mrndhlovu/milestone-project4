@@ -27,15 +27,7 @@ class SignupContainer extends Component {
       showModal: true,
       loginModal: false,
       isLoading: false,
-      buttonDisabled: true,
-
-      errors: {
-        email: "",
-        password: "",
-        password2: "",
-        username: "",
-        other: ""
-      }
+      buttonDisabled: true
     };
 
     this.handleSignupClick = this.handleSignupClick.bind(this);
@@ -48,7 +40,7 @@ class SignupContainer extends Component {
   }
 
   componentDidUpdate() {
-    const { isAuthenticated } = this.props.authState;
+    const { isAuthenticated } = this.props.auth;
 
     isAuthenticated && window.location.reload();
   }
@@ -66,8 +58,8 @@ class SignupContainer extends Component {
       valid,
       pristine,
       handleSubmit,
-      authState: { isAuthenticated, hasError },
-      authState
+      auth: { isAuthenticated, hasError },
+      auth
     } = this.props;
     const { isLoading } = this.state;
 
@@ -82,7 +74,7 @@ class SignupContainer extends Component {
 
           <Grid textAlign="center">
             <Grid.Column style={{ maxWidth: 500 }}>
-              {hasError && <ErrorMessage errors={authState.data} />}
+              {hasError && <ErrorMessage errors={auth.data} />}
               <Form
                 size="large"
                 onSubmit={handleSubmit(this.handleSignupClick)}
@@ -138,7 +130,7 @@ class SignupContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    authState: getUser(state),
+    auth: getUser(state),
     error: getErrors(state).alertMsg
   };
 };
