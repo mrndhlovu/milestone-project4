@@ -5,6 +5,7 @@ import { Grid, Container, Segment, Message } from "semantic-ui-react";
 import OrderSummaryContainer from "./OrderSummaryContainer";
 
 import PaymentContainer from "./PaymentContainer";
+import BillingInformation from "../components/ecommerce/BillingInformation";
 
 class CheckoutContainer extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class CheckoutContainer extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={9}>
+              <BillingInformation />
               <OrderSummaryContainer />
             </Grid.Column>
             <Grid.Column width={7}>
