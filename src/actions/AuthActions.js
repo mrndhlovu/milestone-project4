@@ -124,18 +124,29 @@ export const logOut = () => {
   return SESSION_TOKEN
     ? dispatch => {
         dispatch(makeRequest(USER_AUTH_LOGOUT));
-        requestLogout(SESSION_TOKEN).then(response => {
-          destroyLocalStorage([
-            "sessionToken",
-            "sessionLife",
-            "currentMembership",
-            "selectedMembership"
-          ]);
-          dispatch(
-            createMessage({ successMsg: "You have successfully logged out!" })
-          );
-          window.location.reload();
-        });
+        requestLogout(SESSION_TOKEN).then(
+          response => {
+            destroyLocalStorage([
+              "sessionToken",
+              "sessionLife",
+              "currentMembership",
+              "selectedMembership"
+            ]);
+            dispatch(
+              createMessage({ successMsg: "You have successfully logged out!" })
+            );
+            window.location.reload();
+          },
+          error => {
+            destroyLocalStorage([
+              "sessionToken",
+              "sessionLife",
+              "currentMembership"
+            ]);
+            dispatch(createMessage({ errorMsg: "Error login out" }));
+            window.location.reload();
+          }
+        );
       }
     : dispatch => {
         return null;

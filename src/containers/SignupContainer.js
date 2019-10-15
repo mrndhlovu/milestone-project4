@@ -97,11 +97,6 @@ class SignupContainer extends Component {
                     label="Password"
                     component={this.renderField}
                   />
-                  <Field
-                    name="password2"
-                    label="Confirm Password"
-                    component={this.renderField}
-                  />
 
                   <br />
 
@@ -143,10 +138,6 @@ function validate(values) {
   }
   if (!values.password) {
     formErrors.password = "Enter a password";
-  }
-
-  if (!values.password2) {
-    formErrors.password2 = "Enter a confirmation email";
   }
   if (!values.email) {
     formErrors.email = "Enter a Email";
