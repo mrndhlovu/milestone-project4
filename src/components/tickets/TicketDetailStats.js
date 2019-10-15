@@ -15,7 +15,9 @@ const TicketDetailStats = ({
         <Header as="h5" style={{ marginBottom: 0 }}>
           {votes > 0 ? votes : 0}
         </Header>
+
         <Icon
+          link
           name="thumbs up"
           color="grey"
           as="i"

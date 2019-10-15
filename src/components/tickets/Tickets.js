@@ -34,7 +34,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, handleVote, user }) => {
               ribbon="right"
             >
               {is_bug
-                ? `${5 - votes} Votes to Fixing`
+                ? `${5 - votes} Bug votes to solution`
                 : `Fix Now Price € ${price}`}
             </Label>
             <Card.Group>
@@ -54,7 +54,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, handleVote, user }) => {
                   <TicketsIcons votes={votes} status={status} views={views} />
                 </Card.Content>
                 <Button
-                  disabled={!user.isAuthenticated && isProMember}
+                  disabled={!isProMember && is_bug}
                   floated="right"
                   size="tiny"
                   color="orange"
@@ -62,7 +62,11 @@ export const Tickets = ({ ticketsList, handleAddToCart, handleVote, user }) => {
                     is_bug ? () => handleVote(id) : () => handleAddToCart(id)
                   }
                 >
-                  {is_bug ? "Vote" : "Add to Cart"}
+                  {!is_bug
+                    ? "Add to cart"
+                    : !isProMember
+                    ? "Upgrade to PRO to Vote"
+                    : "Vote"}
                 </Button>
               </Card>
             </Card.Group>

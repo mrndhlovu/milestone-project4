@@ -22,6 +22,7 @@ export class TicketsListContainer extends Component {
       tickets: ""
     };
     this.handleAddToCart = this.handleAddToCart.bind(this);
+    this.handleVote = this.handleVote.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +30,16 @@ export class TicketsListContainer extends Component {
     this.props.fetchTicketsList();
     if (ticketsList.dataReceived) {
       this.setState({ tickets: ticketsList.data });
+    }
+  }
+
+  handleVote(id) {
+    const { user } = this.props;
+    const isProMember =
+      user.dataReceived && user.current_membership.membership.is_pro_member;
+
+    if (isProMember) {
+      this.props.updatedTicketVote(id);
     }
   }
 
@@ -63,7 +74,7 @@ export class TicketsListContainer extends Component {
               <Tickets
                 ticketsList={tickets}
                 handleAddToCart={this.handleAddToCart}
-                handleVote={this.props.updatedTicketVote}
+                handleVote={this.handleVote}
                 user={user}
               />
             ) : (

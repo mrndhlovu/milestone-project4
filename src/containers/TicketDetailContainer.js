@@ -86,7 +86,7 @@ export class TicketDetailContainer extends Component {
       ticket: {
         isLoading,
         dataReceived,
-        data: { title, description, votes, views, id, comments, owner }
+        data: { title, description, votes, views, id, comments, owner, is_bug }
       },
       solution,
       user
@@ -94,7 +94,6 @@ export class TicketDetailContainer extends Component {
     const { activeIndex, index } = this.state;
     const isProMember =
       user.data && user.data.current_membership.membership.is_pro_member;
-    console.log(isProMember);
 
     return (
       <Container style={{ paddingTop: 50 }}>
@@ -116,15 +115,17 @@ export class TicketDetailContainer extends Component {
           isLoading={isLoading}
         />
 
-        <TicketSolution
-          handleAccordionClick={this.handleAccordionClick}
-          activeIndex={activeIndex}
-          index={index}
-          solution={solution.data}
-          isAuthenticated={user.isAuthenticated}
-          addToCart={this.handleAddToCart}
-          id={id}
-        />
+        {!is_bug && (
+          <TicketSolution
+            handleAccordionClick={this.handleAccordionClick}
+            activeIndex={activeIndex}
+            index={index}
+            solution={solution.data}
+            isAuthenticated={user.isAuthenticated}
+            addToCart={this.handleAddToCart}
+            id={id}
+          />
+        )}
 
         <TicketDetailStats
           handleVoteClick={this.handleVoteClick}
