@@ -16,12 +16,14 @@ import userReducer from "./userReducer";
 import addRemoveCartItemReducer from "./addRemoveCartItemReducer";
 import pendingOrderReducer from "./pendingOrderReducer";
 import ticketSolutionReducer from "./ticketSolutionReducer";
+import donationsReducer from "./donationsReducer";
 
 export default combineReducers({
   auth: authReducer,
   cartAddOrRemove: addRemoveCartItemReducer,
   checkout: checkOutReducer,
   comments: commentsReducer,
+  donations: donationsReducer,
   editTicket: editTicketReducer,
   errorAlert: errorsReducer,
   form: formReducer,
