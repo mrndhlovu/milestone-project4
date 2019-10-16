@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import UserProfile
 import json
 import stripe
+from django.contrib.auth.models import User
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -59,34 +60,44 @@ class CancelSubscriptionAPIView(ListAPIView):
         current_membership = get_user_membership(request)
 
         if current_membership is not None:
-            user_subscription = get_user_subscription(request)
 
-            if user_subscription.is_active is False:
+            if current_membership.membership == 'pro':
+                user_subscription = get_user_subscription(request)
 
-                message = 'No active subscription found!'
-                return JsonResponse({'message': message}, status=status.HTTP_400_BAD_REQUEST)
+                if user_subscription.is_active is False:
 
-            user_subscription.delete()
+                    message = 'No active subscription found!'
+                    return JsonResponse({'message': message}, status=status.HTTP_400_BAD_REQUEST)
 
-            free_membership = Membership.objects.filter(
-                membership_type='free').first()
-            user_membership = get_user_membership(request)
+                user_subscription.delete()
 
-            user_membership.membership = free_membership
-            user_membership.is_pro_member = False
-            user_membership.save()
+                free_membership = Membership.objects.filter(
+                    membership_type='free').first()
+                user_membership = get_user_membership(request)
 
-            user_profile = UserProfile.objects.get(user=request.user)
-            user_profile.active_membership.remove(
-                current_membership.membership)
-            user_profile.active_membership.add(free_membership)
-            user_profile.save()
+                user_membership.membership = free_membership
+                user_membership.is_pro_member = False
+                user_membership.save()
 
+                user_profile = UserProfile.objects.get(user=request.user)
+                user_profile.active_membership.remove(
+                    current_membership.membership)
+                user_profile.active_membership.add(free_membership)
+                user_profile.save()
+
+                context = {
+                    'message': 'Deactivated you subscription!'
+                }
+
+                return JsonResponse(context, status=200, safe=False)
+            else:
+                user = User.objects.get(username=request.user.username)
+                user.delete()
+                context = {'message': 'Account deleted'}
+                return JsonResponse(context, status=200, safe=False)
+        else:
             context = {
-                'message': 'Deactivated you subscription!'
+                'message': 'Error deactivating account'
             }
 
-            return JsonResponse(context, status=200, safe=False)
-        else:
-            context = {'message': 'Error! could not cancel your subscription'}
-            return JsonResponse(context, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(context, status=400, safe=False)
