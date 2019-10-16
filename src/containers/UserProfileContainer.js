@@ -8,6 +8,7 @@ import { cancelSubscription } from "../actions/MembershipActions";
 
 import { getUserProfile } from "../selectors/appSelectors";
 import UserProfileCard from "../components/userAuth/UserProfileCard";
+import { fetchUser } from "../actions/AuthActions";
 
 export class UserProfileContainer extends Component {
   constructor(props) {
@@ -16,6 +17,9 @@ export class UserProfileContainer extends Component {
 
     this.handleConfirm = this.handleConfirm.bind(this);
     this.handleCancelSubscription = this.handleCancelSubscription.bind(this);
+  }
+  componentDidMount() {
+    this.props.fetchUser();
   }
 
   componentDidUpdate(prevProps) {
@@ -81,5 +85,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { cancelSubscription }
+  { cancelSubscription, fetchUser }
 )(withRouter(UserProfileContainer));

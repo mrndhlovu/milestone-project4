@@ -7,7 +7,6 @@ import {
   deleteTicket,
   fetchTicketSolution
 } from "../actions/TicketActions";
-
 import { addItemToCart } from "../actions/CheckoutActions";
 
 import { Segment, Container } from "semantic-ui-react";
@@ -27,12 +26,15 @@ import TicketDetail from "../components/tickets/TicketDetail";
 import TicketDetailStats from "../components/tickets/TicketDetailStats";
 import TicketSolution from "../components/tickets/TicketSolution";
 
+const initialState = {
+  index: 0,
+  buttonText: "Add to Cart"
+};
+
 export class TicketDetailContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      index: 0
-    };
+    this.state = { ...initialState };
     this.handleVoteClick = this.handleVoteClick.bind(this);
     this.handleTicketDelete = this.handleTicketDelete.bind(this);
     this.handleAccordionClick = this.handleAccordionClick.bind(this);
@@ -42,6 +44,10 @@ export class TicketDetailContainer extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.requestTicketsDetail(id);
+
+    setTimeout(() => {
+      this.props.fetchTicketSolution(id);
+    }, 100);
   }
 
   componentDidUpdate(prevProps) {
@@ -50,12 +56,11 @@ export class TicketDetailContainer extends Component {
 
     if (prevProps.ticket.dataReceived !== ticket.dataReceived) {
       if (user.isAuthenticated) {
-        this.props.fetchTicketSolution(id);
       }
     }
   }
 
-  handleAccordionClick = (e, titleProps) => {
+  handleAccordionClick = () => {
     const { activeIndex, index } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
 
@@ -63,7 +68,10 @@ export class TicketDetailContainer extends Component {
   };
 
   handleAddToCart(id) {
-    this.props.addItemToCart(id, "ticket");
+    if (id) {
+      return this.props.addItemToCart(id, "ticket");
+    }
+    this.setState({ buttonText: "Login to Add to Cart" });
   }
 
   updateVoteCount() {
@@ -91,7 +99,7 @@ export class TicketDetailContainer extends Component {
       solution,
       user
     } = this.props;
-    const { activeIndex, index } = this.state;
+    const { activeIndex, index, buttonText } = this.state;
     const isProMember =
       user.data && user.data.current_membership.membership.is_pro_member;
 
@@ -124,6 +132,8 @@ export class TicketDetailContainer extends Component {
             isAuthenticated={user.isAuthenticated}
             addToCart={this.handleAddToCart}
             id={id}
+            handleAddToCart={this.handleAddToCart}
+            buttonText={buttonText}
           />
         )}
 

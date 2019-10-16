@@ -1,13 +1,6 @@
 import React from "react";
 
-import {
-  Accordion,
-  Icon,
-  Segment,
-  Button,
-  Header,
-  Popup
-} from "semantic-ui-react";
+import { Accordion, Icon, Segment, Button, Header } from "semantic-ui-react";
 
 const TicketSolution = ({
   activeIndex,
@@ -16,7 +9,9 @@ const TicketSolution = ({
   addToCart,
   solution,
   id,
-  isAuthenticated
+  buttonText,
+  isAuthenticated,
+  handleAddToCart
 }) => {
   return (
     <Accordion styled fluid>
@@ -35,19 +30,16 @@ const TicketSolution = ({
         ) : (
           <Segment clearing>
             <Header as="h5">Ticket solution requires payment</Header>
-            <Popup
-              content="Login or Signup to add item to cart"
-              trigger={
-                <Button
-                  size="tiny"
-                  color="orange"
-                  onClick={isAuthenticated ? () => addToCart(id) : () => {}}
-                  floated="right"
-                >
-                  Add to Cart
-                </Button>
+            <Button
+              size="tiny"
+              color="orange"
+              onClick={
+                isAuthenticated ? () => addToCart(id) : () => handleAddToCart()
               }
-            />
+              floated="right"
+            >
+              {buttonText}
+            </Button>
           </Segment>
         )}
       </Accordion.Content>
