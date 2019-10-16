@@ -91,6 +91,16 @@ export async function requestAddItemToCart(id, productType) {
   );
 }
 
+export async function requestDonation(amount) {
+  const stripeToken = localStorage.getItem("stripeToken");
+
+  return axios.post(
+    `${CHECKOUT_EP}/donate/`,
+    { stripeToken, amount: (amount * 1000) / 100 },
+    authQueryParams
+  );
+}
+
 export async function requestPendingOrder() {
   return axios.get(`${CHECKOUT_EP}/pending-order/`, authQueryParams);
 }

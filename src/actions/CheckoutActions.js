@@ -12,7 +12,10 @@ import {
   REQUEST_PENDING_ORDER,
   TRANSCATION_UPDATE_FAIL,
   TRANSCATION_UPDATED,
-  UPDATE_TRANSCATION
+  UPDATE_TRANSCATION,
+  REQUEST_DONATION,
+  RECEIVE_DONATION,
+  DONATION_ERROR
 } from "./ActionTypes";
 
 import {
@@ -20,7 +23,8 @@ import {
   requestAddItemToCart,
   requestPendingOrder,
   requestRemoveItemFromCart,
-  requestItemPayment
+  requestItemPayment,
+  requestDonation
 } from "../apis/apiRequests";
 
 import {
@@ -113,6 +117,22 @@ export const updateTranscation = () => {
       error => {
         dispatch(createMessage({ errorMsg: error.message }));
         dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
+      }
+    );
+  };
+};
+
+export const donate = amount => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_DONATION));
+    requestDonation(amount).then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_DONATION, response.data));
+        dispatch(createMessage({ successMsg: response.data.message }));
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: error.message }));
+        dispatch(dataRequestFail(DONATION_ERROR, error));
       }
     );
   };

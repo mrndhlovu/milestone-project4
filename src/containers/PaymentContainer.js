@@ -8,8 +8,9 @@ import { CardElement } from "react-stripe-elements";
 
 import { Form, Button, Card, Segment } from "semantic-ui-react";
 
-import { makePayment } from "../actions/CheckoutActions";
-import { getCheckout } from "../selectors/appSelectors";
+import { makePayment, donate } from "../actions/CheckoutActions";
+import { getCheckout, getDonations } from "../selectors/appSelectors";
+import Donations from "../components/ecommerce/Donations";
 
 const StyledButton = styled(Button)`
   border-radius: 0 !important;
@@ -21,20 +22,32 @@ export class PaymentContainer extends Component {
     this.state = {
       paymentOption: "",
       isLoading: false,
-      isDisabled: true
+      isDisabled: true,
+      donateIsDisable: false,
+      buttonText: "Enter donation amount",
+      donation: ""
     };
 
     this.handleTextInput = this.handleTextInput.bind(this);
+    this.handleDonationInput = this.handleDonationInput.bind(this);
   }
 
   handleTextInput() {
     this.setState({ isDisabled: false });
   }
 
+  handleDonationInput(e) {
+    const re = /^[0-9\b]+$/;
+    if (e.target.value === "" || re.test(e.target.value)) {
+      this.setState({ donation: e.target.value });
+    }
+  }
+
   componentDidUpdate(prevProps) {
-    const { checkout } = this.props;
-    if (prevProps.checkout !== checkout) {
-      if (checkout.dataReceived) {
+    const { checkout, donations } = this.props;
+
+    if (prevProps.checkout !== checkout || prevProps.donations !== donations) {
+      if (checkout.dataReceived || donations.dataReceived) {
         this.setState({ isLoading: false });
         setTimeout(() => {
           this.props.history.push("/user-profile");
@@ -44,20 +57,33 @@ export class PaymentContainer extends Component {
   }
 
   handlePayNow() {
-    this.setState({ isLoading: true });
+    const { donation } = this.state;
+    this.setState({ isLoading: true, donateIsDisable: true });
+
     const { clickedSubmit, makePayment } = this.props;
+
     clickedSubmit();
 
     setTimeout(() => {
+      if (donation !== "") {
+        return this.props.donate(donation);
+      }
       return makePayment();
     }, 1000);
   }
 
   render() {
-    const { isLoading, isDisabled } = this.state;
-
+    const { isLoading, isDisabled, donateIsDisable, buttonText } = this.state;
     return (
       <Card fluid>
+        <Card.Content header="Donations" />
+        <Donations
+          handleDonationInput={this.handleDonationInput}
+          handlePayNow={this.handlePayNow}
+          donateIsDisable={donateIsDisable}
+          buttonText={buttonText}
+        />
+
         <Card.Content header="Payment" />
         <Card.Content>
           <Form.Group widths="equal">
@@ -86,11 +112,12 @@ export class PaymentContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    checkout: getCheckout(state)
+    checkout: getCheckout(state),
+    donations: getDonations(state)
   };
 };
 
 export default connect(
   mapStateToProps,
-  { makePayment }
+  { makePayment, donate }
 )(withRouter(PaymentContainer));

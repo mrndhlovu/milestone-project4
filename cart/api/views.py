@@ -19,7 +19,7 @@ import random
 import string
 import json
 from django.utils import timezone
-from cart.models import Cart, CartItem, CartPayment
+from cart.models import Cart, CartItem, CartPayment, Donation
 from django.contrib.contenttypes.models import ContentType
 import stripe
 import traceback
@@ -430,10 +430,41 @@ class DonationAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         request_data = json.loads(request.body.decode('utf-8'))
+        total = request_data['amount']
         token = request_data['stripeToken']
+        user = User.objects.get(id=request.user.id)
 
-        context = {
-            'message': request_data
-        }
+        if user is not None:
+            user_profile = UserProfile.objects.get(user=request.user)
+            customer = get_stripe_customer(request, token)
 
-        return Response(context, status=status.HTTP_200_OK)
+            if customer:
+                charge = stripe.Charge.create(
+                    amount=total,
+                    currency="eur",
+                    customer=user_profile.stripe_customer_id
+                )
+            else:
+                charge = stripe.Charge.create(
+                    amount=total,
+                    currency="eur",
+                    source=token
+                )
+            donation = Donation()
+            donation.stripe_charge_id = charge['id']
+            donation.user = self.request.user
+            donation.amount = total
+            donation.save()
+
+            context = {
+                'message': 'Thank you for the €{} donation!'.format(total),
+            }
+
+            return Response(context, status=status.HTTP_200_OK)
+
+        else:
+            context = {
+                'message': "Registered user not found"
+            }
+
+            return Response(context, status=status.HTTP_200_OK)
