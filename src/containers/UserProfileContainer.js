@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import { Confirm, Segment, Container } from "semantic-ui-react";
 
@@ -21,7 +22,6 @@ export class UserProfileContainer extends Component {
     const { user } = this.props;
     if (prevProps.user !== user) {
       if (user.data.username) {
-        console.log("updated", user);
       }
     }
   }
@@ -29,6 +29,12 @@ export class UserProfileContainer extends Component {
   handleConfirm() {
     this.props.cancelSubscription();
     this.setState({ showCancelSubscription: false });
+
+    setTimeout(() => {
+      localStorage.clear();
+      this.props.history.push("/");
+      window.location.reload();
+    }, 1000);
   }
 
   handleCancelSubscription() {
@@ -76,4 +82,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { cancelSubscription }
-)(UserProfileContainer);
+)(withRouter(UserProfileContainer));

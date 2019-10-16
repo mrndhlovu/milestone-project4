@@ -54,6 +54,19 @@ def update_profile(request):
         return False
 
 
+def get_purchases(request):
+    user_profile = UserProfile.objects.filter(user=request.user)
+    if user_profile.exists():
+        profile = user_profile.first()
+        tickets = profile.paid_tickets.values()
+        purchases = {
+            'tickets': tickets,
+        }
+        return purchases
+    else:
+        return None
+
+
 class SignupAPI(GenericAPIView):
     serializer_class = SignupSerializer
 
@@ -122,6 +135,7 @@ class UserAPI(RetrieveAPIView):
             membership_type = get_user_membership(self.request).membership
 
             if current_membership is not None:
+                purchases = get_purchases(self.request)
                 current_membership['type'] = str(membership_type)
 
                 if get_user_subscription(self.request) is not None:
@@ -130,6 +144,7 @@ class UserAPI(RetrieveAPIView):
                     current_membership['date_subscribed'] = subscription.date_subscribed
             membership = {
                 'membership': current_membership,
+                'purchases': purchases
             }
             context['current_membership'] = membership
 

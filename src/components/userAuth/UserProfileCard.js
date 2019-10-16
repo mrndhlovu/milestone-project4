@@ -1,9 +1,10 @@
 import React, { Fragment } from "react";
 
-import { Card, Label, Grid } from "semantic-ui-react";
+import { Card, Grid, Segment, Button } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
 import userImage from "../../images/userImage.png";
+import UserPurchases from "./UserPurchases";
 
 const UserProfileCard = ({ user, handleCancelSubscription }) => {
   const {
@@ -11,6 +12,8 @@ const UserProfileCard = ({ user, handleCancelSubscription }) => {
     current_membership: { membership }
   } = user;
   const { next_billing_date, is_pro_member } = membership;
+  const PURCHASES = user.current_membership.purchases.tickets;
+
   return (
     <Grid stackable columns={2}>
       <Grid.Column width={4}>
@@ -35,17 +38,32 @@ const UserProfileCard = ({ user, handleCancelSubscription }) => {
           fluid
         />
 
-        {is_pro_member ? (
-          <Fragment>
-            <Label
-              icon="globe"
-              content="Cancel Subscription"
-              floated="right"
-              color="blue"
-              as="a"
-              onClick={() => handleCancelSubscription()}
-            />
-            <Label
+        {PURCHASES.length > 0 && (
+          <UserPurchases purchases={user.current_membership.purchases} />
+        )}
+        <Card>
+          {is_pro_member ? (
+            <Fragment>
+              <Button
+                floated="right"
+                icon="globe"
+                content="Cancel Subscription"
+                floated="right"
+                color="blue"
+                as="a"
+                onClick={() => handleCancelSubscription()}
+              />
+              <Button
+                icon="globe"
+                content="Deactivate account"
+                floated="right"
+                color="blue"
+                as="a"
+                onClick={() => handleCancelSubscription()}
+              />
+            </Fragment>
+          ) : (
+            <Button
               icon="globe"
               content="Deactivate account"
               floated="right"
@@ -53,17 +71,8 @@ const UserProfileCard = ({ user, handleCancelSubscription }) => {
               as="a"
               onClick={() => handleCancelSubscription()}
             />
-          </Fragment>
-        ) : (
-          <Label
-            icon="globe"
-            content="Deactivate account"
-            floated="right"
-            color="blue"
-            as="a"
-            onClick={() => handleCancelSubscription()}
-          />
-        )}
+          )}
+        </Card>
       </Grid.Column>
     </Grid>
   );
