@@ -24,6 +24,8 @@ export const getMembershipProfile = state => state.userProfile.data;
 
 export const getCheckout = state => state.checkout;
 
+export const getDonations = state => state.donations;
+
 export const getCheckoutDetail = state => state.checkoutDetail;
 
 export const getCartAddOrRemove = state => state.cartAddOrRemove;
