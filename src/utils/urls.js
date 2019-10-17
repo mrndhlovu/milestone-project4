@@ -31,9 +31,10 @@ export const queryParams = {
   }
 };
 
-export const getCheckoutBody = (product_id, product) => ({
+export const getCheckoutBody = (product_id, product, donation) => ({
   product_id,
   product,
+  donation,
   stripeToken: localStorage.getItem("stripeToken")
 });
 
