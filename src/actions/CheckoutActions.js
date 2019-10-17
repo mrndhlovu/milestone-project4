@@ -35,10 +35,10 @@ import {
 } from "./index";
 import { destroyLocalStorage } from "../utils/appUtils";
 
-export const addItemToCart = (id, productType) => {
+export const addItemToCart = (id, productType, otherProps) => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_ADD_TO_CART));
-    requestAddItemToCart(id, productType).then(
+    requestAddItemToCart(id, productType, otherProps).then(
       response => {
         const subscriptionId = response.data.subscription_id || undefined;
         if (subscriptionId) {
