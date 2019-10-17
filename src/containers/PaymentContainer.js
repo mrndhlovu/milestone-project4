@@ -22,25 +22,14 @@ export class PaymentContainer extends Component {
     this.state = {
       paymentOption: "",
       isLoading: false,
-      isDisabled: true,
-      donateIsDisable: false,
-      buttonText: "Enter donation amount",
-      donation: ""
+      isDisabled: true
     };
 
     this.handleTextInput = this.handleTextInput.bind(this);
-    this.handleDonationInput = this.handleDonationInput.bind(this);
   }
 
   handleTextInput() {
     this.setState({ isDisabled: false });
-  }
-
-  handleDonationInput(e) {
-    const re = /^[0-9\b]+$/;
-    if (e.target.value === "" || re.test(e.target.value)) {
-      this.setState({ donation: e.target.value });
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -65,25 +54,14 @@ export class PaymentContainer extends Component {
     clickedSubmit();
 
     setTimeout(() => {
-      if (donation !== "") {
-        return this.props.donate(donation);
-      }
       return makePayment();
     }, 1000);
   }
 
   render() {
-    const { isLoading, isDisabled, donateIsDisable, buttonText } = this.state;
+    const { isLoading, isDisabled } = this.state;
     return (
       <Card fluid>
-        <Card.Content header="Donations" />
-        <Donations
-          handleDonationInput={this.handleDonationInput}
-          handlePayNow={this.handlePayNow}
-          donateIsDisable={donateIsDisable}
-          buttonText={buttonText}
-        />
-
         <Card.Content header="Payment" />
         <Card.Content>
           <Form.Group widths="equal">
