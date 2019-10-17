@@ -83,10 +83,10 @@ export async function requestCreateReply(body) {
 }
 
 // Checkout
-export async function requestAddItemToCart(id, productType) {
+export async function requestAddItemToCart(id, productType, otherProps) {
   return axios.post(
     `${CHECKOUT_EP}/add-to-cart/`,
-    getCheckoutBody(id, productType),
+    getCheckoutBody(id, productType, otherProps),
     authQueryParams
   );
 }
@@ -96,7 +96,7 @@ export async function requestDonation(amount) {
 
   return axios.post(
     `${CHECKOUT_EP}/donate/`,
-    { stripeToken, amount: (amount * 1000) / 100 },
+    { stripeToken, amount: amount * 100 },
     authQueryParams
   );
 }
