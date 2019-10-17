@@ -3,9 +3,7 @@ import React, { Component } from "react";
 import { injectStripe, Elements, StripeProvider } from "react-stripe-elements";
 import { Grid, Container, Segment, Message } from "semantic-ui-react";
 import OrderSummaryContainer from "./OrderSummaryContainer";
-
 import PaymentContainer from "./PaymentContainer";
-import BillingInformation from "../components/ecommerce/BillingInformation";
 
 class CheckoutContainer extends Component {
   constructor(props) {
@@ -41,7 +39,6 @@ class CheckoutContainer extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={9}>
-              <BillingInformation />
               <OrderSummaryContainer />
             </Grid.Column>
             <Grid.Column width={7}>
@@ -51,7 +48,6 @@ class CheckoutContainer extends Component {
                   <p>{message}</p>
                 </Message>
               )}
-
               <PaymentContainer clickedSubmit={this.clickedSubmit} />
             </Grid.Column>
           </Grid.Row>
