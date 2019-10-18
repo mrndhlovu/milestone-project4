@@ -1,4 +1,4 @@
-from .views import AddToCartAPIView, OrderDetailAPIView, CartRemoveItemAPIView, PaymentAPIView, DonationAPIView
+from .views import AddToCartAPIView, OrderDetailAPIView, CartRemoveItemAPIView, PaymentAPIView
 from django.urls import path, re_path
 
 app_name = 'cart'
@@ -9,5 +9,4 @@ urlpatterns = [
     path('remove-item/', CartRemoveItemAPIView.as_view(),
          name='cart_remove_item'),
     path('checkout/', PaymentAPIView.as_view(), name='checkout'),
-    path('donate/', DonationAPIView.as_view(), name='checkout'),
 ]

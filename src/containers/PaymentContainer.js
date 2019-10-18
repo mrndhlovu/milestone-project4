@@ -8,9 +8,8 @@ import { CardElement } from "react-stripe-elements";
 
 import { Form, Button, Card, Segment } from "semantic-ui-react";
 
-import { makePayment, donate } from "../actions/CheckoutActions";
+import { makePayment } from "../actions/CheckoutActions";
 import { getCheckout, getDonations } from "../selectors/appSelectors";
-import Donations from "../components/ecommerce/Donations";
 
 const StyledButton = styled(Button)`
   border-radius: 0 !important;
@@ -46,7 +45,6 @@ export class PaymentContainer extends Component {
   }
 
   handlePayNow() {
-    const { donation } = this.state;
     this.setState({ isLoading: true, donateIsDisable: true });
 
     const { clickedSubmit, makePayment } = this.props;
@@ -90,12 +88,11 @@ export class PaymentContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    checkout: getCheckout(state),
-    donations: getDonations(state)
+    checkout: getCheckout(state)
   };
 };
 
 export default connect(
   mapStateToProps,
-  { makePayment, donate }
+  { makePayment }
 )(withRouter(PaymentContainer));
