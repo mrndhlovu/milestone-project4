@@ -10,7 +10,7 @@ const TicketDetailStats = ({
   id
 }) => {
   return (
-    <Statistic.Group size="mini" color="black" style={{ marginLeft: 20 }}>
+    <Statistic.Group size="mini" color="black">
       <Statistic style={{ marginRight: 0 }} as="a">
         <Header as="h5" style={{ marginBottom: 0 }}>
           {votes > 0 ? votes : 0}

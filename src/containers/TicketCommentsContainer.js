@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { Button, Comment, Form } from "semantic-ui-react";
+import { Button, Comment, Form, Segment } from "semantic-ui-react";
 
 import { createComment, createReply } from "../actions/TicketActions";
 import { getUserProfile, getComments } from "../selectors/appSelectors";
@@ -85,33 +85,35 @@ export class TicketCommentsContainer extends Component {
     const { showReplyInput, buttonDisabled } = this.state;
 
     return (
-      <Comment.Group>
-        <CommentsBody
-          comments={comments}
-          hideReplyInput={this.hideReplyInput}
-          handleSubmit={this.handleSubmit}
-          handleCreateComment={this.handleCreateComment}
-          showReplyInput={showReplyInput}
-          buttonDisabled={buttonDisabled}
-          handleOnBlur={this.handleOnBlur}
-        />
+      <Segment>
+        <Comment.Group>
+          <CommentsBody
+            comments={comments}
+            hideReplyInput={this.hideReplyInput}
+            handleSubmit={this.handleSubmit}
+            handleCreateComment={this.handleCreateComment}
+            showReplyInput={showReplyInput}
+            buttonDisabled={buttonDisabled}
+            handleOnBlur={this.handleOnBlur}
+          />
 
-        <Form reply>
-          <Form.TextArea
-            onClick={this.handleOnBlur}
-            onChange={e => this.handleCreateComment(e)}
-          />
-          <Button
-            content="add a comment"
-            labelPosition="left"
-            disabled={buttonDisabled}
-            icon="edit"
-            size="small"
-            primary
-            onClick={() => this.handleSubmit(null)}
-          />
-        </Form>
-      </Comment.Group>
+          <Form reply>
+            <Form.TextArea
+              onClick={this.handleOnBlur}
+              onChange={e => this.handleCreateComment(e)}
+            />
+            <Button
+              content="add a comment"
+              labelPosition="left"
+              disabled={buttonDisabled}
+              icon="edit"
+              size="small"
+              primary
+              onClick={() => this.handleSubmit(null)}
+            />
+          </Form>
+        </Comment.Group>
+      </Segment>
     );
   }
 }

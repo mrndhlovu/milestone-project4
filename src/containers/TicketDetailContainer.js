@@ -16,7 +16,8 @@ import {
   getTicketDetail,
   getTicketUpdate,
   getSolution,
-  getUser
+  getUser,
+  getUserProfile
 } from "../selectors/appSelectors";
 
 import EditButtons from "../components/tickets/EditButtons";
@@ -101,18 +102,11 @@ export class TicketDetailContainer extends Component {
     } = this.props;
     const { activeIndex, index, buttonText } = this.state;
     const isProMember =
-      user.data && user.data.current_membership.membership.is_pro_member;
+      user.dataReceived &&
+      user.data.current_membership.membership.is_pro_member;
 
     return (
       <Container style={{ paddingTop: 50 }}>
-        {dataReceived && isProMember && (
-          <EditButtons
-            handleTicketDelete={this.handleTicketDelete}
-            ticketId={id}
-            owner={owner}
-          />
-        )}
-
         <TicketDetail
           isProMember={isProMember}
           description={description}
@@ -121,6 +115,13 @@ export class TicketDetailContainer extends Component {
           views={views}
           id={id}
           isLoading={isLoading}
+          buttonText={buttonText}
+          handleTicketDelete={this.handleTicketDelete}
+          owner={owner}
+          id={id}
+          isProMember={isProMember}
+          dataReceived={dataReceived}
+          handleVoteClick={this.handleVoteClick}
         />
 
         {!is_bug && (
@@ -132,30 +133,20 @@ export class TicketDetailContainer extends Component {
             isAuthenticated={user.isAuthenticated}
             addToCart={this.handleAddToCart}
             id={id}
-            handleAddToCart={this.handleAddToCart}
             buttonText={buttonText}
+            handleAddToCart={this.handleAddToCart}
           />
         )}
 
-        <TicketDetailStats
-          handleVoteClick={this.handleVoteClick}
-          isProMember={isProMember}
-          votes={votes}
-          views={views}
-          id={id}
-        />
-
-        <Segment>
-          {isProMember ? (
-            <TicketComments comments={comments} ticketId={id} />
-          ) : (
-            <StyledMessage
-              message="To view and make comments you need a "
-              linkText="Unicorn Pro Account."
-              redirect="/pricing"
-            />
-          )}
-        </Segment>
+        {isProMember ? (
+          <TicketComments comments={comments} ticketId={id} />
+        ) : (
+          <StyledMessage
+            message="To view and make comments you need a "
+            linkText="Unicorn Pro Account."
+            redirect="/pricing"
+          />
+        )}
       </Container>
     );
   }
@@ -167,7 +158,7 @@ const mapStateToProps = state => {
     ticketDelete: getTicketUpdate(state),
     vote: getVotes(state),
     solution: getSolution(state),
-    user: getUser(state)
+    user: getUserProfile(state)
   };
 };
 

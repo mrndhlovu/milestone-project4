@@ -25,7 +25,7 @@ const MembershipOptions = ({
   const renderOptions = () => {
     return Object.keys(memberships).map(key => {
       const { price, id, slug } = memberships[key];
-      const FREE = slug === "free" && !isProMember;
+      const FREE = slug === "free";
 
       const buttonText = FREE ? buttonTextFree : buttonTextPro;
       const buttonColor = FREE ? "blue" : "black";
@@ -45,11 +45,8 @@ const MembershipOptions = ({
               }
             />
 
-            {FREE ? (
-              <MembershipServiceList services={UNICORN_FREE_SERVICES} />
-            ) : (
-              <MembershipServiceList services={UNICORN_PRO_SERVICES} />
-            )}
+            {FREE && <MembershipServiceList services={UNICORN_FREE_SERVICES} />}
+            {!FREE && <MembershipServiceList services={UNICORN_PRO_SERVICES} />}
 
             <Button
               attached="bottom"
