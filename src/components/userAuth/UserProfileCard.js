@@ -6,7 +6,7 @@ import { getFormatedDate } from "../../utils/appUtils";
 import userImage from "../../images/userImage.png";
 import UserPurchases from "./UserPurchases";
 
-const UserProfileCard = ({ user, handleCancelSubscription }) => {
+const UserProfileCard = ({ user, handleCancelButtonClick }) => {
   const {
     username,
     current_membership: { membership }
@@ -50,15 +50,16 @@ const UserProfileCard = ({ user, handleCancelSubscription }) => {
                 content="Cancel Subscription"
                 color="blue"
                 as="a"
-                onClick={() => handleCancelSubscription()}
+                onClick={() => handleCancelButtonClick()}
               />
+              <br />
               <Button
                 icon="globe"
                 content="Deactivate account"
                 floated="right"
                 color="blue"
                 as="a"
-                onClick={() => handleCancelSubscription()}
+                onClick={() => handleCancelButtonClick("deactivate")}
               />
             </Fragment>
           ) : (
@@ -68,7 +69,7 @@ const UserProfileCard = ({ user, handleCancelSubscription }) => {
               floated="right"
               color="blue"
               as="a"
-              onClick={() => handleCancelSubscription()}
+              onClick={() => handleCancelButtonClick("deactivate")}
             />
           )}
         </Card>

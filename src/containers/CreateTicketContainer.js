@@ -73,7 +73,7 @@ export class CreateTicketContainer extends Component {
     const { handleSubmit, field, errorAlert, valid, pristine } = this.props;
     const { isLoading, isBug, isFeature, value, isProMember } = this.state;
 
-    if (isProMember) {
+    if (!isProMember) {
       return <Redirect to="/login" />;
     }
 

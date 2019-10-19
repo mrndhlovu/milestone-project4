@@ -13,10 +13,15 @@ import { fetchUser } from "../actions/AuthActions";
 export class UserProfileContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { showCancelSubscription: false, userData: "" };
+    this.state = {
+      showConfirmModal: false,
+      userData: "",
+      showDeleteAccount: false,
+      option: ""
+    };
 
     this.handleConfirm = this.handleConfirm.bind(this);
-    this.handleCancelSubscription = this.handleCancelSubscription.bind(this);
+    this.handleCancelButtonClick = this.handleCancelButtonClick.bind(this);
   }
   componentDidMount() {
     this.props.fetchUser();
@@ -30,26 +35,39 @@ export class UserProfileContainer extends Component {
     }
   }
 
-  handleConfirm() {
-    this.props.cancelSubscription();
-    this.setState({ showCancelSubscription: false });
+  handleConfirm(option) {
+    this.setState({ showConfirmModal: false });
 
-    setTimeout(() => {
-      localStorage.clear();
-      this.props.history.push("/");
-      window.location.reload();
-    }, 1000);
+    if (option === "deactivate") {
+      // this.props.deactivate();
+      console.log("will delete account");
+
+      setTimeout(() => {
+        localStorage.clear();
+        this.props.history.push("/");
+        window.location.reload();
+      }, 1000);
+    } else {
+      this.props.cancelSubscription();
+
+      setTimeout(() => {
+        localStorage.clear();
+        this.props.history.push("/");
+        window.location.reload();
+      }, 1000);
+    }
   }
 
-  handleCancelSubscription() {
+  handleCancelButtonClick(option) {
     this.setState({
-      showCancelSubscription: !this.state.showCancelSubscription
+      showConfirmModal: !this.state.showConfirmModal,
+      option
     });
   }
 
   render() {
     const { user } = this.props;
-    const { showCancelSubscription } = this.state;
+    const { showConfirmModal, option } = this.state;
 
     return (
       <Container style={{ paddingTop: 20 }}>
@@ -57,18 +75,26 @@ export class UserProfileContainer extends Component {
           {user.dataReceived && user.data.username && (
             <UserProfileCard
               user={user.data}
-              handleCancelSubscription={this.handleCancelSubscription}
+              handleCancelButtonClick={this.handleCancelButtonClick}
             />
           )}
         </Segment>
 
         <Confirm
-          open={showCancelSubscription}
+          open={showConfirmModal}
           cancelButton="Never mind"
-          confirmButton="Yes, Cancel Subscription"
-          content="Are sure you want to cancel your subscription"
-          onCancel={() => this.setState({ showCancelSubscription: false })}
-          onConfirm={this.handleConfirm}
+          confirmButton={
+            option === "deactivate"
+              ? "Yes delete my account"
+              : "Yes, cancel subscription"
+          }
+          content={`Are sure you want to ${
+            option === "deactivate"
+              ? `delete your account`
+              : `cancel your subscription`
+          }`}
+          onCancel={() => this.setState({ showConfirmModal: false })}
+          onConfirm={() => this.handleConfirm(option)}
           size="tiny"
           color="grey"
         />
