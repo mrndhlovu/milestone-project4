@@ -331,8 +331,7 @@ class PaymentAPIView(APIView):
         request_data = json.loads(request.body.decode('utf-8'))
         token = request_data['stripeToken']
 
-        pending_order = get_object_or_404(
-            Cart, user=self.request.user)
+        pending_order = get_object_or_404(Cart, user=self.request.user)
         items = pending_order.items.all()
         total = sum(item.product.price for item in items) * 100
 

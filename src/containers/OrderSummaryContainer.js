@@ -42,7 +42,7 @@ export class OrderSummaryContainer extends Component {
     if (type === "button") {
       this.props.addItemToCart(null, "donation", amount);
     } else {
-      const otherAmount = parseInt(donation);
+    const otherAmount = parseInt(donation);
 
       this.props.addItemToCart(null, "donation", otherAmount);
     }
