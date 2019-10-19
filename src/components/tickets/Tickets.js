@@ -7,7 +7,7 @@ import { getFormatedDate } from "../../utils/appUtils";
 
 export const Tickets = ({ ticketsList, handleAddToCart, handleVote, user }) => {
   const isProMember =
-    user.dataReceived && user.current_membership.membership.is_pro_member;
+    user.dataReceived && user.data.current_membership.membership.is_pro_member;
 
   const renderList = () => {
     return Object.keys(ticketsList).map(key => {
@@ -64,9 +64,9 @@ export const Tickets = ({ ticketsList, handleAddToCart, handleVote, user }) => {
                 >
                   {!is_bug
                     ? "Add to cart"
-                    : !isProMember
-                    ? "Upgrade to PRO to Vote"
-                    : "Vote"}
+                    : isProMember
+                    ? "Vote"
+                    : "Upgrade to PRO to Vote"}
                 </Button>
               </Card>
             </Card.Group>

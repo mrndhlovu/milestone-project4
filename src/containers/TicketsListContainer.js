@@ -7,13 +7,13 @@ import HeadingImage from "../components/home/HeadingImage";
 import {
   getTicketList,
   getCartAddOrRemove,
-  getUser
+  getUserProfile
 } from "../selectors/appSelectors";
 import Tickets from "../components/tickets/Tickets";
 import { getObjectLength } from "../utils/appUtils";
 import TicketListWrapper from "../components/tickets/TicketListWrapper";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
-import GridLayout from "./GridLayout";
+import { Segment } from "semantic-ui-react";
 
 export class TicketsListContainer extends Component {
   constructor(props) {
@@ -36,7 +36,8 @@ export class TicketsListContainer extends Component {
   handleVote(id) {
     const { user } = this.props;
     const isProMember =
-      user.dataReceived && user.current_membership.membership.is_pro_member;
+      user.dataReceived &&
+      user.data.current_membership.membership.is_pro_member;
 
     if (isProMember) {
       this.props.updatedTicketVote(id);
@@ -65,12 +66,12 @@ export class TicketsListContainer extends Component {
     return (
       <Fragment>
         <HeadingImage />
-        <GridLayout>
+        <Segment>
           <TicketListWrapper
             ticketCount={ticketCount}
             isLoading={tickets.isLoading}
           >
-            {ticketsList.data.length > 0 ? (
+            {ticketsList.data.length > 0 && ticketsList.dataReceived ? (
               <Tickets
                 ticketsList={tickets}
                 handleAddToCart={this.handleAddToCart}
@@ -85,7 +86,7 @@ export class TicketsListContainer extends Component {
               />
             )}
           </TicketListWrapper>
-        </GridLayout>
+        </Segment>
       </Fragment>
     );
   }
@@ -95,7 +96,7 @@ const mapStateToProps = state => {
   return {
     ticketsList: getTicketList(state),
     ticketsCart: getCartAddOrRemove(state),
-    user: getUser(state)
+    user: getUserProfile(state)
   };
 };
 
