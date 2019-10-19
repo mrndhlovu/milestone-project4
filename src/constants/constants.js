@@ -29,6 +29,14 @@ export const NAVIGATION_LINKS = [
   { header: "Blog", key: "blog-article-list" }
 ];
 
+export const FOOTER_LINKS = [
+  { header: "Blog", key: "blog" },
+  { header: "Cart", key: "cart" },
+  { header: "Pricing", key: "pricing" },
+  { header: "Tickets", key: "tickets" },
+  { header: "Dashboard", key: "dashboard" }
+];
+
 export const MEMBERSHIP_OPTIONS = {
   free: {
     membership_type: "free"

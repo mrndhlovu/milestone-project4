@@ -1,6 +1,6 @@
 import React from "react";
-
 import { Route, Switch } from "react-router-dom";
+
 import ArticleDetail from "./components/blog/ArticleDetail";
 import ArticleList from "./components/blog/ArticleList";
 import AuthRouteCheck from "./utils/AuthRouteCheck";
@@ -19,7 +19,7 @@ import UserProfileContainer from "./containers/UserProfileContainer";
 const BaseRouter = () => {
   return (
     <Switch>
-      <Route exact path="/" component={HomeContainer} />
+      <Route exact path="/home" component={HomeContainer} />
       <Route path="/login" component={LoginContainer} />
       <Route path="/signup" component={SignupContainer} />
       <Route path="/tickets" component={TicketsListContainer} />

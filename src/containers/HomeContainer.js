@@ -26,7 +26,6 @@ const StyledHeaderSpan = styled.span`
 export class HomeContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
     this.handlelogout = this.handlelogout.bind(this);
   }
 
@@ -63,7 +62,7 @@ export class HomeContainer extends Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column textAlign="center">
-                <Button size="medium" color="grey" as={NavLink} to="/pricing">
+                <Button size="medium" color="orange" as={NavLink} to="/pricing">
                   <StyledHeaderSpan>Explore Pro Service</StyledHeaderSpan>
                 </Button>
               </Grid.Column>
@@ -109,10 +108,10 @@ export class HomeContainer extends Component {
               <StyledHeaderSpan> Make a kind contribution</StyledHeaderSpan>
             </Header>
             <p style={{ fontSize: "1.3rem" }}>
-              To keep the business run and the lights on, you can make a kind
-              contribution.
+              To keep the business running and the lights on, you can make a
+              kind contribution.
             </p>
-            <Button as={NavLink} to="/checkout" color="grey" size="medium">
+            <Button as={NavLink} to="/checkout" color="orange" size="medium">
               Make a Donation
             </Button>
           </Container>

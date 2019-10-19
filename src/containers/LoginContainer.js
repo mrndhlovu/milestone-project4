@@ -68,7 +68,7 @@ class LoginContainer extends Component {
     const { isLoading } = this.state;
 
     if (isAuthenticated) {
-      return <Redirect to="/" />;
+      return <Redirect to="/home" />;
     }
 
     return (

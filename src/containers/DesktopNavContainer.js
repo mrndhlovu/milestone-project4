@@ -66,12 +66,14 @@ export class DesktopNavContainer extends Component {
 
   showActiveLink(name) {
     const { isActive } = this.state;
-    Object.keys(isActive).map(item => {
-      return name === item
-        ? this.setState({
-            isActive: { ...isActive, [name]: true }
-          })
-        : this.setState({ isActive: { ...isActive, [item]: false } });
+    Object.keys(isActive).map(key => {
+      if (name === key) {
+        return this.setState({
+          isActive: { ...isActive, [name]: true }
+        });
+      } else {
+        return this.setState({ isActive: { ...isActive, [key]: false } });
+      }
     });
   }
 

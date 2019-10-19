@@ -12,9 +12,9 @@ export const NavigationLinks = ({ isActive, showActiveLink }) => {
     return (
       <Menu.Item
         key={index}
-        active={isActive[key] === true ? true : false}
+        active={isActive[key]}
         as={NavLink}
-        to={key === "home" ? "" : `/${key}`}
+        to={key}
         onClick={() => showActiveLink(key)}
       >
         {header}
