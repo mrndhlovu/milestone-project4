@@ -9,7 +9,7 @@ import { CardElement } from "react-stripe-elements";
 import { Form, Button, Card, Segment } from "semantic-ui-react";
 
 import { makePayment } from "../actions/CheckoutActions";
-import { getCheckout, getDonations } from "../selectors/appSelectors";
+import { getCheckout } from "../selectors/appSelectors";
 
 const StyledButton = styled(Button)`
   border-radius: 0 !important;
@@ -32,10 +32,10 @@ export class PaymentContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { checkout, donations } = this.props;
+    const { checkout } = this.props;
 
-    if (prevProps.checkout !== checkout || prevProps.donations !== donations) {
-      if (checkout.dataReceived || donations.dataReceived) {
+    if (prevProps.checkout !== checkout) {
+      if (checkout.dataReceived) {
         this.setState({ isLoading: false });
         setTimeout(() => {
           this.props.history.push("/user-profile");
