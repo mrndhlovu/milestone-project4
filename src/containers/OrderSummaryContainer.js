@@ -54,12 +54,14 @@ export class OrderSummaryContainer extends Component {
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
     return (
       <Fragment>
-        <OrderSummary
-          pendingOrders={pendingOrders.data}
-          handleRemoveClick={this.handleRemoveClick}
-          history={history}
-          count={count}
-        />
+        {count > 0 && (
+          <OrderSummary
+            pendingOrders={pendingOrders.data}
+            handleRemoveClick={this.handleRemoveClick}
+            history={history}
+            count={count}
+          />
+        )}
 
         <Donations
           handleDonationInput={this.handleDonationInput}
