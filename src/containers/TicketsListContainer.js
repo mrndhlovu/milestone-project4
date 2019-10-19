@@ -7,7 +7,8 @@ import HeadingImage from "../components/home/HeadingImage";
 import {
   getTicketList,
   getCartAddOrRemove,
-  getUserProfile
+  getUserProfile,
+  getUser
 } from "../selectors/appSelectors";
 import Tickets from "../components/tickets/Tickets";
 import { getObjectLength } from "../utils/appUtils";
@@ -19,7 +20,8 @@ export class TicketsListContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tickets: ""
+      tickets: "",
+      buttonText: "Add to cart"
     };
     this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleVote = this.handleVote.bind(this);
@@ -45,7 +47,12 @@ export class TicketsListContainer extends Component {
   }
 
   handleAddToCart(id) {
-    this.props.addItemToCart(id, "ticket");
+    const { isAuthenticated } = this.props.auth;
+    if (isAuthenticated) {
+      this.props.addItemToCart(id, "ticket");
+    } else {
+      this.setState({ buttonText: "Login to Add to cart" });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -60,7 +67,7 @@ export class TicketsListContainer extends Component {
 
   render() {
     const { ticketsList, user } = this.props;
-    const { tickets } = this.state;
+    const { tickets, buttonText } = this.state;
     const ticketCount = getObjectLength(tickets);
 
     return (
@@ -73,10 +80,11 @@ export class TicketsListContainer extends Component {
           >
             {ticketsList.data.length > 0 && ticketsList.dataReceived ? (
               <Tickets
-                ticketsList={tickets}
                 handleAddToCart={this.handleAddToCart}
                 handleVote={this.handleVote}
+                ticketsList={tickets}
                 user={user}
+                buttonText={buttonText}
               />
             ) : (
               <StyledMessage
@@ -96,7 +104,8 @@ const mapStateToProps = state => {
   return {
     ticketsList: getTicketList(state),
     ticketsCart: getCartAddOrRemove(state),
-    user: getUserProfile(state)
+    user: getUserProfile(state),
+    auth: getUser(state)
   };
 };
 

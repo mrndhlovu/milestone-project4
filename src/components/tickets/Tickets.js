@@ -5,7 +5,13 @@ import { Button, Grid, Card, Label, Segment } from "semantic-ui-react";
 import TicketsIcons from "./TicketsIcon";
 import { getFormatedDate } from "../../utils/appUtils";
 
-export const Tickets = ({ ticketsList, handleAddToCart, handleVote, user }) => {
+export const Tickets = ({
+  ticketsList,
+  handleAddToCart,
+  handleVote,
+  user,
+  buttonText
+}) => {
   const isProMember =
     user.dataReceived && user.data.current_membership.membership.is_pro_member;
 
@@ -63,7 +69,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, handleVote, user }) => {
                   }
                 >
                   {!is_bug
-                    ? "Add to cart"
+                    ? buttonText
                     : isProMember
                     ? "Vote"
                     : "Upgrade to PRO to Vote"}
