@@ -35,7 +35,7 @@ export class MembershipContainer extends Component {
     if (prevProps.cart.data !== cart.data) {
       if (cart.data && Object.keys(cart.data.orders).length > 0) {
         const { orders } = cart.data;
-        Object.keys(orders).map(order => {
+        Object.keys(orders).forEach(order => {
           const cartItems = orders[order];
           if (cartItems.membership === "pro") {
             return this.setState({ buttonTextPro: "Item in your cart" });

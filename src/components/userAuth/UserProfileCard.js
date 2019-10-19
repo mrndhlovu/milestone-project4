@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import { Card, Grid, Segment, Button } from "semantic-ui-react";
+import { Card, Grid, Button } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
 import userImage from "../../images/userImage.png";
@@ -48,7 +48,6 @@ const UserProfileCard = ({ user, handleCancelSubscription }) => {
                 floated="right"
                 icon="globe"
                 content="Cancel Subscription"
-                floated="right"
                 color="blue"
                 as="a"
                 onClick={() => handleCancelSubscription()}

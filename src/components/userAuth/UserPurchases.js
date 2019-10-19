@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-import { Segment, List, Header, Icon, Card } from "semantic-ui-react";
+import { List, Icon, Card } from "semantic-ui-react";
 
 const UserPurchases = ({ purchases }) => {
   const { tickets } = purchases;

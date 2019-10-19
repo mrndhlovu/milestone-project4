@@ -9,22 +9,19 @@ import {
 } from "../actions/TicketActions";
 import { addItemToCart } from "../actions/CheckoutActions";
 
-import { Segment, Container } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
 import {
   getVotes,
   getTicketDetail,
   getTicketUpdate,
   getSolution,
-  getUser,
   getUserProfile
 } from "../selectors/appSelectors";
 
-import EditButtons from "../components/tickets/EditButtons";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import TicketComments from "./TicketCommentsContainer";
 import TicketDetail from "../components/tickets/TicketDetail";
-import TicketDetailStats from "../components/tickets/TicketDetailStats";
 import TicketSolution from "../components/tickets/TicketSolution";
 
 const initialState = {
@@ -52,7 +49,6 @@ export class TicketDetailContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { id } = this.props.match.params;
     const { ticket, user } = this.props;
 
     if (prevProps.ticket.dataReceived !== ticket.dataReceived) {
@@ -118,8 +114,6 @@ export class TicketDetailContainer extends Component {
           buttonText={buttonText}
           handleTicketDelete={this.handleTicketDelete}
           owner={owner}
-          id={id}
-          isProMember={isProMember}
           dataReceived={dataReceived}
           handleVoteClick={this.handleVoteClick}
         />
@@ -154,11 +148,11 @@ export class TicketDetailContainer extends Component {
 
 const mapStateToProps = state => {
   return {
+    solution: getSolution(state),
     ticket: getTicketDetail(state),
     ticketDelete: getTicketUpdate(state),
-    vote: getVotes(state),
-    solution: getSolution(state),
-    user: getUserProfile(state)
+    user: getUserProfile(state),
+    vote: getVotes(state)
   };
 };
 
