@@ -129,8 +129,6 @@ def get_subscription_id(request, data):
         customer.source = token
         customer.save()
 
-        print(customer)
-
         subscription = stripe.Subscription.create(
             customer=user_membership.stripe_customer_id,
             items=[
@@ -164,6 +162,15 @@ def get_stripe_customer(request, token):
         return False
 
 
+def get_cart_items(request, product_content_type):
+    item = CartItem.objects.filter(
+        cart__user=request.user, product_content_type=product_content_type)
+    if item.exists():
+        return item.all()
+    else:
+        return None
+
+
 class AddToCartAPIView(ListAPIView):
     serializer_class = CartSerializer
     queryset = Cart.objects.all()
@@ -176,56 +183,56 @@ class AddToCartAPIView(ListAPIView):
         product_id = request_data['product_id']
         product_object = request_data['product']
 
-        cart = get_active_cart(request)
+        cart, created = Cart.objects.get_or_create(
+            user=request.user, is_paid=False)
+
         subscription_id = None
 
-        try:
+        if product_object == 'ticket':
+            product = get_object_or_404(
+                Ticket, id=product_id)
+        elif product_object == 'membership':
+            product = get_object_or_404(Membership, id=product_id)
 
-            if product_object == 'ticket':
-                product = get_object_or_404(
-                    Ticket, id=product_id)
-            elif product_object == 'membership':
-                product = get_object_or_404(
-                    Membership, id=product_id)
-                subscription_id = get_subscription_id(request, request_data)
-                if product.id == 2:
-                    product.membership_type = 'pro'
-            else:
-                donation_amount = request_data['donation']
-                product = Donation.objects.create(
-                    user=request.user, price=donation_amount)
+            subscription_id = get_subscription_id(request, request_data)
+            if product.id == 2:
+                product.membership_type = 'pro'
+        else:
+            donation_amount = request_data['donation']
+            product = Donation.objects.create(
+                user=request.user, price=donation_amount)
+            product.save()
 
-            if cart is not None and cart.is_paid is False:
-                product_content_type = ContentType.objects.get_for_model(
-                    product)
-                pending_orders_qs = CartItem.objects.filter(
-                    product_content_type=product_content_type, cart_id=request.user.id)
+        if cart is not None and cart.is_paid is False:
+            product_content_type = ContentType.objects.get_for_model(
+                product)
+            pending_orders_qs = get_cart_items(
+                request, product_content_type)
+
+            if pending_orders_qs is not None:
                 for item in pending_orders_qs:
-                    if item.product_object_id == product.id:
+                    if item.product_object_id == product_id:
                         context = {
                             'message': 'Item already in your cart.',
                         }
                         return JsonResponse(context, status=status.HTTP_200_OK)
-                    else:
-                        cart.add_item(product)
-                        context = {
-                            'message': 'Item added to cart',
-                            'subscription_id': subscription_id
-                        }
-                        return JsonResponse(context, status=status.HTTP_200_OK)
-
-            else:
-                cart, created = Cart.objects.get_or_create(user=request.user)
                 cart.add_item(product)
-
                 context = {
                     'message': 'Item added to cart',
                     'subscription_id': subscription_id
                 }
                 return JsonResponse(context, status=status.HTTP_200_OK)
-
-        except Exception:
-            print(traceback.print_exc())
+            else:
+                cart.add_item(product)
+                context = {
+                    'message': 'Item added to cart.',
+                }
+                return JsonResponse(context, status=status.HTTP_200_OK)
+        else:
+            context = {
+                'message': 'User cart not found',
+            }
+            return JsonResponse(context, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderDetailAPIView(APIView):
@@ -295,15 +302,14 @@ class CartRemoveItemAPIView(RetrieveAPIView):
             product_content_type = ContentType.objects.get_for_model(product)
             pending_order = CartItem.objects.filter(
                 product_content_type=product_content_type, product_object_id=product_id)
+
+            print('pending_order>>>>>>>>>>>>>>>>>>>', pending_order)
             if pending_order.exists():
-                cartItem = CartItem.objects.filter(
-                    product_content_type=product_content_type, product_object_id=product_id)
-                if product_object == 'donation':
-                    cart.delete()
+                cartItem = pending_order.first()
+                if product_content_type == 'donation':
                     product.delete()
                 else:
                     cartItem.delete()
-
                 context = {
                     'message': "Item removed from cart"
                 }
