@@ -67,7 +67,11 @@ const OrderSummary = ({
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell colSpan="6">
-              Your have {count} items in your cart
+              {count > 0
+                ? `Your have ${count} ${
+                    count > 1 ? "items" : "item"
+                  } in your cart`
+                : "Your cart is empty"}
             </Table.HeaderCell>
           </Table.Row>
 
