@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from memberships.models import Membership, UserMembership
 from tickets.models import Ticket
+from cart.models import Donation
 import stripe
 
 
@@ -79,11 +80,11 @@ post_save.connect(post_save_user_create_reciever, sender=CustomUser)
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True, blank=True)
-    bio = models.TextField(max_length=500, blank=True)
+    stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     occupation = models.CharField(max_length=30, blank=True)
+    bio = models.TextField(max_length=500, blank=True)
     active_membership = models.ManyToManyField(Membership, blank=True)
     paid_tickets = models.ManyToManyField(Ticket, blank=True)
-    stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
