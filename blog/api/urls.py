@@ -1,12 +1,14 @@
-from .views import SignupAPI, LoginAPI, UserAPI
-from knox import views as knox_views
-from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import ArticleListView, ArticleVoteToggleAPIView, ArticleDetailView, CreateArticleView, ArticleUpdateView, ArticleDeleteView
+from django.urls import path, re_path
 
+app_name = 'blog'
 
 urlpatterns = [
-    path('api/auth', include('knox.urls')),
-    path('api/auth/signup', SignupAPI.as_view()),
-    path('api/auth/login', LoginAPI.as_view()),
-    path('api/auth/user', UserAPI.as_view()),
-    path('api/auth/logout', knox_views.LogoutView.as_view(), name='knox_logout')
+    path('', ArticleListView.as_view()),
+    path('<pk>/', ArticleDetailView.as_view()),
+    path('update/<pk>/', ArticleUpdateView.as_view()),
+    path('delete/<pk>/', ArticleDeleteView.as_view()),
+    path('api/create/', CreateArticleView.as_view()),
+    path('api/<id>/vote/', ArticleVoteToggleAPIView.as_view()),
 ]

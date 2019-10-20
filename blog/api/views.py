@@ -1,154 +1,120 @@
-from .serializers import UserSerializer, SignupSerializer, LoginSerializer
-from accounts.models import UserProfile
+from .serializers import ArticleDetailSerializer, BlogSerializer
 from django.shortcuts import get_object_or_404
-from knox.models import AuthToken
-from memberships.models import Subscription
-from memberships.models import UserMembership, Membership
-from rest_framework import permissions
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework import permissions, authentication, generics
 from rest_framework.response import Response
-from tickets.models import Ticket
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, GenericAPIView
+from rest_framework.views import APIView
+from blog.models import Blog
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+import json
+from accounts.models import UserProfile
+import traceback
 
 
-def get_member_profile(request):
-    user_membership_qs = UserMembership.objects.filter(
-        user=get_user_membership(request).id)
+def get_article_owner(request):
+    article_owner_qs = User.objects.filter(username=request.user)
 
-    if user_membership_qs.exists():
-        user_subscription = user_membership_qs.values()
-        return user_subscription[0]
+    if article_owner_qs.exists():
+        return article_owner_qs.first()
     return None
 
 
-def get_user_membership(request):
-    user_membership_qs = UserMembership.objects.filter(user=request.user)
-
-    if user_membership_qs.exists():
-        return user_membership_qs.first()
-    return None
+class ArticleListView(ListAPIView):
+    serializer_class = BlogSerializer
+    queryset = Blog.objects.all()
+    permission_classes = [permissions.AllowAny]
 
 
-def get_user_subscription(request):
-    subscription = Subscription.objects.filter(
-        user_membership_id=request.user.id)
-
-    if subscription.exists():
-        user_subscription = get_object_or_404(
-            Subscription, user_membership_id=request.user.id)
-        return user_subscription
-    return None
+class ArticleDetailView(RetrieveAPIView):
+    serializer_class = ArticleDetailSerializer
+    queryset = Blog.objects.all()
+    permission_classes = [permissions.AllowAny]
 
 
-def update_profile(request):
-    user = UserProfile.objects.filter(user=request)
-    free_membership = Membership.objects.get(membership_type='free')
+class CreateArticleView(CreateAPIView):
+    serializer_class = Blog
+    queryset = Blog.objects.all()
+    permission_classes = [permissions.AllowAny]
 
-    if user.exists():
-        user_profile = user.first()
-        user_profile.active_membership.add(free_membership)
-        user_profile.save()
+    def create(self, request, *args, **kwargs):
+        current_article_owner = get_article_owner(request)
 
-        return True
-    else:
-        return False
+        data = request.data.copy()
+        data['owner'] = current_article_owner.id
+        data['username'] = current_article_owner.id
 
-
-def get_purchases(request):
-    user_profile = UserProfile.objects.filter(user=request.user)
-    if user_profile.exists():
-        profile = user_profile.first()
-        tickets = profile.paid_tickets.values()
-        purchases = {
-            'tickets': tickets,
-        }
-        return purchases
-    else:
-        return None
-
-
-class SignupAPI(GenericAPIView):
-    serializer_class = SignupSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-        user_profile = update_profile(user)
-        if user_profile is True:
 
-            context = {
-                "user": UserSerializer(user, context=self.get_serializer_context()).data,
-                "token": AuthToken.objects.create(user)[1]
-            }
-            return Response(context, status=200)
-
-        else:
-            context = {"message": 'Error sign in up please try again!'}
-
-            return Response(context, status=400)
+class ArticleVoteToggleAPIView(APIView):
+    authetication_classes = (authentication.SessionAuthentication)
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_context(self, *args, **kwargs):
         context = super().get_serializer_context(**kwargs)
+        current_article_owner = get_article_owner(self.request)
 
-        if self.request.method == 'GET':
-            current_membership = get_user_membership(self.request)
-            membership = {
-                'membership': current_membership,
-            }
-            context['current_membership'] = membership
-        else:
-            context['current_membership'] = None
+        context['owner'] = current_article_owner.id
+        context['username'] = current_article_owner.id
 
         return context
 
+    def get(self, request, id=None, format=None):
+        id = self.kwargs.get('id')
+        instance = get_object_or_404(Blog, id=id)
+        user = self.request.user
+        updated = False
+        voted = False
 
-class LoginAPI(GenericAPIView):
-    serializer_class = LoginSerializer
+        if user in instance.votes.all():
+            voted = False
+            updated = True
+            instance.votes.remove(user)
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-        context = {
-            'message': 'Login successful',
-            "user": LoginSerializer(user, context=self.get_serializer_context()).data['username'],
-            "token": AuthToken.objects.create(user)[1]
+        else:
+            voted = True
+            updated = True
+            instance.votes.add(user)
+
+        data = {
+            'voted': voted,
+            'updated': updated,
         }
-        return Response(context, status=200)
+
+        if instance.votes.count() >= 2:
+
+            instance.status = 'doing'
+            instance.save()
+
+        return Response(data)
 
 
-class UserAPI(RetrieveAPIView):
-    permissions._classes = [permissions.IsAuthenticated]
-    serializer_class = UserSerializer
+class ArticleUpdateView(UpdateAPIView):
+    serializer_class = BlogSerializer
+    queryset = Blog.objects.all()
+    permission_classes = (permissions.AllowAny,)
 
-    def get_object(self):
-        return self.request.user
+    def create(self, request, *args, **kwargs):
+        current_article_owner = get_article_owner(request)
 
-    def get_serializer_context(self, *args, **kwargs):
+        data = request.data.copy()
+        data['owner'] = current_article_owner.id
+        data['username'] = current_article_owner.id
 
-        context = super().get_serializer_context(**kwargs)
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-        if self.request.method == 'GET':
-            current_membership = get_member_profile(self.request)
-            membership_type = get_user_membership(self.request).membership
 
-            if current_membership is not None:
-                purchases = get_purchases(self.request)
-                current_membership['type'] = str(membership_type)
-
-                if get_user_subscription(self.request) is not None:
-                    subscription = get_user_subscription(self.request)
-                    current_membership['next_billing_date'] = subscription.get_next_billing_date
-                    current_membership['date_subscribed'] = subscription.date_subscribed
-            membership = {
-                'membership': current_membership,
-                'purchases': purchases
-            }
-            context['current_membership'] = membership
-
-        else:
-            context['current_membership'] = None
-
-        return context
+class ArticleDeleteView(DestroyAPIView):
+    serializer_class = BlogSerializer
+    queryset = Blog.objects.all()
+    permission_classes = [permissions.AllowAny]
