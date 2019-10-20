@@ -1,9 +1,7 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 
-export class ArticleDetail extends Component {
-  render() {
-    return <div>ArticleDetail</div>;
-  }
-}
+const ArticleDetail = () => {
+  return <div>ArticleDetail</div>;
+};
 
 export default ArticleDetail;
