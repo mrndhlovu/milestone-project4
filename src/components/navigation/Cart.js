@@ -9,7 +9,11 @@ export const Cart = ({ pendingOrders }) => {
   const renderOrderItems = orderItems => {
     return Object.keys(orderItems).map((key, index) => {
       const { ticket, membership } = orderItems[key];
-      const name = orderItems[key].ticket ? ticket : `Unicorn ${membership}`;
+      const name = orderItems[key].ticket
+        ? ticket
+        : membership
+        ? `Unicorn ${membership}`
+        : "Kind donation";
 
       return <Dropdown.Item key={index}>{name.toUpperCase()}</Dropdown.Item>;
     });
