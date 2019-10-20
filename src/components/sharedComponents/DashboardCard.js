@@ -2,12 +2,14 @@ import React from "react";
 
 import { Card, Header, Segment } from "semantic-ui-react";
 
-const DashboardCardWrapper = ({ children, header, color }) => (
+const DashboardCard = ({ header, color, component }) => (
   <Card fluid padded="true">
     <Header as="h4" attached content={header} color={color} />
 
-    <Segment attached>{children}</Segment>
+    <Segment attached stacked>
+      {component}
+    </Segment>
   </Card>
 );
 
-export default DashboardCardWrapper;
+export default DashboardCard;

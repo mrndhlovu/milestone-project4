@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Statistic } from "semantic-ui-react";
-import DashboardCardWrapper from "../sharedComponents/DashboardCardWrapper";
+import DashboardCard from "../sharedComponents/DashboardCard";
 
 const StatField = ({ label, value }) => {
   return (
@@ -25,13 +25,17 @@ const DashboardStats = ({ ticketList }) => {
   };
 
   return (
-    <DashboardCardWrapper attached header="Current">
-      <Statistic.Group>
-        <StatField label="Bugs" value={getTotal("is_bug")} />
-        <StatField label="Features" value={getTotal("is_feature")} />
-        <StatField label="Completed" value={getTotal("done")} />
-      </Statistic.Group>
-    </DashboardCardWrapper>
+    <DashboardCard
+      attached
+      header="Current"
+      component={
+        <Statistic.Group>
+          <StatField label="Bugs" value={getTotal("is_bug")} />
+          <StatField label="Features" value={getTotal("is_feature")} />
+          <StatField label="Completed" value={getTotal("done")} />
+        </Statistic.Group>
+      }
+    />
   );
 };
 

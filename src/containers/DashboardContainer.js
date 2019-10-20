@@ -2,11 +2,11 @@ import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
 
 import HeadingImage from "../components/home/HeadingImage";
-import GridLayout from "./GridLayout";
 import { getTicketList } from "../selectors/appSelectors";
 import { fetchTicketsList } from "../actions/TicketActions";
 import DashboardCards from "../components/dashboard/DashboardCards";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
+import { Segment } from "semantic-ui-react";
 
 export class DashboardContainer extends Component {
   componentDidMount() {
@@ -19,7 +19,7 @@ export class DashboardContainer extends Component {
       tickets.data && (
         <Fragment>
           <HeadingImage />
-          <GridLayout>
+          <Segment padded>
             {tickets.data.length > 0 ? (
               <DashboardCards ticketList={tickets.data} />
             ) : (
@@ -29,7 +29,7 @@ export class DashboardContainer extends Component {
                 linkText="Create a ticket"
               />
             )}
-          </GridLayout>
+          </Segment>
         </Fragment>
       )
     );

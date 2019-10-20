@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Card, Header, Progress } from "semantic-ui-react";
 
 import DashboardStats from "./DashboardStats";
-import DashboardCardWrapper from "../sharedComponents/DashboardCardWrapper";
+import DashboardCard from "../sharedComponents/DashboardCard";
 
 const getPercentage = (total, value) => {
   return (value / total) * 100;
@@ -35,7 +35,7 @@ const FilterTickets = ({ ticketList, value }) => {
             <Card.Description>{short_desc}</Card.Description>
           </Card.Content>
           <Card.Content textAlign="right">
-            <Header as="h5" textAlign="left" style={{}}>
+            <Header as="h5" textAlign="left">
               Votes: {votes}
             </Header>
           </Card.Content>
@@ -49,16 +49,24 @@ const DashboardCards = ({ ticketList }) => {
   return (
     <Card.Group>
       <DashboardStats ticketList={ticketList} />
-      <Card.Group itemsPerRow={3}>
-        <DashboardCardWrapper header="Todo" color="grey">
-          <FilterTickets value="todo" ticketList={ticketList} />
-        </DashboardCardWrapper>
-        <DashboardCardWrapper header="In Progress" color="grey">
-          <FilterTickets value="doing" ticketList={ticketList} />
-        </DashboardCardWrapper>
-        <DashboardCardWrapper header="Completed" color="green">
-          <FilterTickets value="done" ticketList={ticketList} />
-        </DashboardCardWrapper>
+      <Card.Group itemsPerRow={3} stackable style={{ paddingTop: 15 }}>
+        <DashboardCard
+          header="Todo"
+          color="grey"
+          component={<FilterTickets value="todo" ticketList={ticketList} />}
+        />
+
+        <DashboardCard
+          header="In Progress"
+          color="grey"
+          component={<FilterTickets value="doing" ticketList={ticketList} />}
+        />
+
+        <DashboardCard
+          header="Completed"
+          color="green"
+          component={<FilterTickets value="done" ticketList={ticketList} />}
+        />
       </Card.Group>
     </Card.Group>
   );
