@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 
 import { injectStripe, Elements, StripeProvider } from "react-stripe-elements";
+
 import { Grid, Container, Segment, Message } from "semantic-ui-react";
+
 import OrderSummaryContainer from "./OrderSummaryContainer";
 import PaymentContainer from "./PaymentContainer";
 

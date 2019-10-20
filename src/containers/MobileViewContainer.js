@@ -5,11 +5,7 @@ import MobileSideBarContainer from "./MobileSideBarContainer";
 
 import { Responsive, Sidebar } from "semantic-ui-react";
 
-const getWidth = () => {
-  const isSSR = typeof window === "undefined";
-
-  return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
-};
+import { getWidth } from "../utils/appUtils";
 
 const MobileViewContainer = ({ children }) => {
   return (

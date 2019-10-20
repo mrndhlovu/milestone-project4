@@ -26,7 +26,7 @@ const CartBody = ({ orderItems, handleRemoveClick, total, history }) => {
             <span style={{ fontWeight: 700, color: "black" }}>{id}</span>
           </List.Header>
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell textAlign="right">
           <List.Header as="a" onClick={() => history.push(`ticket/${id}`)}>
             <span style={{ fontWeight: 700, color: "black" }}>
               {name.toUpperCase()}
@@ -34,13 +34,13 @@ const CartBody = ({ orderItems, handleRemoveClick, total, history }) => {
           </List.Header>
         </Table.Cell>
 
-        <Table.Cell>€ {price}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell textAlign="right">€ {price}</Table.Cell>
+        <Table.Cell textAlign="right">
           <span>€ {price}</span>
         </Table.Cell>
-        <Table.Cell textAlign="center">
+        <Table.Cell textAlign="right">
           <List.Header as="a" onClick={() => handleRemoveClick(id, productId)}>
-            <Icon disabled name="delete" size="small" />
+            <Icon disabled name="delete" size="large" />
           </List.Header>
         </Table.Cell>
       </Table.Row>

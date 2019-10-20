@@ -30,6 +30,12 @@ const HEADER_TEXT = {
     headerButtonUrl: "/new-article",
     headerButtonText: "Create article",
     subHeading: "Head start on coding issues and save hours!"
+  },
+  checkout: {
+    headerText: "Shopping Cart",
+    headerButtonUrl: "/checkout",
+    headerButtonText: "Cart",
+    subHeading: "Your shopping cart"
   }
 };
 

@@ -10,6 +10,10 @@ import {
 import { getCartPendingOrder } from "../selectors/appSelectors";
 import Donations from "../components/ecommerce/Donations";
 import { addItemToCart } from "../actions/CheckoutActions";
+import { getWidth } from "../utils/appUtils";
+import HomepageHeading from "../components/home/HeadingImage";
+
+const width = getWidth();
 
 export class OrderSummaryContainer extends Component {
   constructor(props) {
@@ -17,7 +21,8 @@ export class OrderSummaryContainer extends Component {
     this.state = {
       donateIsDisable: true,
       buttonText: "Other amount",
-      donation: 0
+      donation: 0,
+      width: width
     };
 
     this.handleRemoveClick = this.handleRemoveClick.bind(this);
@@ -42,24 +47,27 @@ export class OrderSummaryContainer extends Component {
     if (type === "button") {
       this.props.addItemToCart(null, "donation", amount);
     } else {
-    const otherAmount = parseInt(donation);
+      const otherAmount = parseInt(donation);
 
       this.props.addItemToCart(null, "donation", otherAmount);
     }
   }
 
   render() {
-    const { donateIsDisable, buttonText } = this.state;
-    const { pendingOrders, history } = this.props;
+    const { donateIsDisable, buttonText, width } = this.state;
+    const { pendingOrders, history, mobile } = this.props;
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
+    console.log("mobile", width);
     return (
       <Fragment>
+        <HomepageHeading />
         {count > 0 && (
           <OrderSummary
             pendingOrders={pendingOrders.data}
             handleRemoveClick={this.handleRemoveClick}
             history={history}
             count={count}
+            width={width}
           />
         )}
 

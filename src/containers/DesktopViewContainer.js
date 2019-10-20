@@ -5,11 +5,7 @@ import { Responsive, Segment, Visibility } from "semantic-ui-react";
 
 import DesktopNavContainer from "../containers/DesktopNavContainer";
 
-const getWidth = () => {
-  const isSSR = typeof window === "undefined";
-
-  return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
-};
+import { getWidth } from "../utils/appUtils";
 
 const DesktopViewContainer = ({ children, showFixedMenu, hideFixedMenu }) => {
   return (

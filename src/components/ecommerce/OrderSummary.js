@@ -12,13 +12,17 @@ const OrderSummary = ({
   handleRemoveClick,
   history,
   count,
-  total
+  total,
+  width
 }) => {
   const orderItems = pendingOrders.orders ? pendingOrders.orders : {};
 
+  const isMobile = width <= 770;
+
   return pendingOrders !== {} ? (
-    <Table>
-      <CartHeader count={count} />
+    <Table celled striped>
+      {!isMobile && <CartHeader count={count} />}
+
       <Table.Body>
         <CartBody
           orderItems={orderItems}
@@ -27,6 +31,7 @@ const OrderSummary = ({
           handleRemoveClick={handleRemoveClick}
         />
       </Table.Body>
+
       <CartFooter total={pendingOrders.total} />
     </Table>
   ) : (

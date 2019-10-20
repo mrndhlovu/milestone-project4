@@ -1,3 +1,4 @@
+import { Responsive } from "semantic-ui-react";
 import { USER_PROFILE } from "../constants/constants";
 
 const cart = JSON.parse(localStorage.getItem("cart"));
@@ -185,4 +186,10 @@ export const createLocalStorageCart = () => {
   //   return localStorage.setItem("cart", orders);
   // }
   // return;
+};
+
+export const getWidth = () => {
+  const isSSR = typeof window === "undefined";
+
+  return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
 };

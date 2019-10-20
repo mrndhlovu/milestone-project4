@@ -41,17 +41,11 @@ class AppContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    userAuth: state.auth
-  };
-};
-
 ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   { authState }
 )(AppContainer);
