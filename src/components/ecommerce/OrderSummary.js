@@ -19,12 +19,14 @@ const OrderSummary = ({
   return pendingOrders !== {} ? (
     <Table>
       <CartHeader count={count} />
-      <CartBody
-        orderItems={orderItems}
-        total={total}
-        history={history}
-        handleRemoveClick={handleRemoveClick}
-      />
+      <Table.Body>
+        <CartBody
+          orderItems={orderItems}
+          total={total}
+          history={history}
+          handleRemoveClick={handleRemoveClick}
+        />
+      </Table.Body>
       <CartFooter total={pendingOrders.total} />
     </Table>
   ) : (
