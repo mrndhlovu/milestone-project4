@@ -15,7 +15,7 @@ const MobileNavigationLinks = ({ handleSidebarHide }) => {
         onClick={() => handleSidebarHide()}
         as={Link}
         name={key}
-        to={key === "home" ? "" : `/${key}`}
+        to={key}
       >
         {header}
       </Menu.Item>
