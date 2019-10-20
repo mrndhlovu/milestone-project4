@@ -7,6 +7,7 @@ import {
   queryParams,
   TICKETS_EP,
   CHECKOUT_EP,
+  BLOG_EP,
   getCheckoutBody
 } from "../utils/urls";
 
@@ -14,16 +15,32 @@ export async function requestTicketsList() {
   return axios.get(`${TICKETS_EP}`);
 }
 
+export async function requestArticlesList() {
+  return axios.get(`${BLOG_EP}`);
+}
+
 export async function requestTicketUpdate(id, body) {
   return axios.put(`${TICKETS_EP}update/${id}/`, body);
+}
+
+export async function requestArticleUpdate(id, body) {
+  return axios.put(`${BLOG_EP}update/${id}/`, body);
 }
 
 export async function requestTicketDelete(id) {
   return axios.delete(`${TICKETS_EP}delete/${id}/`, authQueryParams);
 }
 
+export async function requestArticleDelete(id) {
+  return axios.delete(`${BLOG_EP}delete/${id}/`, authQueryParams);
+}
+
 export async function requestTicketVoteUpdate(id) {
   return axios.get(`${TICKETS_EP}api/${id}/vote/`, authQueryParams);
+}
+
+export async function requestArticleVoteUpdate(id) {
+  return axios.get(`${BLOG_EP}api/${id}/vote/`, authQueryParams);
 }
 
 export async function requestMembershipsList() {
@@ -58,6 +75,10 @@ export async function requestCreateTicket(body) {
   return axios.post(`${TICKETS_EP}api/create/`, body, authQueryParams);
 }
 
+export async function requestCreateArticle(body) {
+  return axios.post(`${BLOG_EP}api/create/`, body, authQueryParams);
+}
+
 export async function requestTicketSolution(id) {
   return axios.post(
     `${TICKETS_EP}api/paid-tickets/`,
@@ -68,6 +89,10 @@ export async function requestTicketSolution(id) {
 
 export async function fetchTicketDetail(id) {
   return axios.get(`${TICKETS_EP}${id}/`);
+}
+
+export async function fetchArticleDetail(id) {
+  return axios.get(`${BLOG_EP}${id}/`);
 }
 
 export async function requestTicketComments() {

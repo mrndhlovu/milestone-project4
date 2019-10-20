@@ -7,6 +7,7 @@ export const getRootUrl =
     : process.env.REACT_APP_DEV_API_URL;
 
 export const TICKETS_EP = `${getRootUrl}/tickets/`;
+export const BLOG_EP = `${getRootUrl}/blog/`;
 export const COMMENTS_EP = `${getRootUrl}/comments/`;
 export const MEMBERSHIP_EP = `${getRootUrl}/memberships/`;
 export const AUTH_EP = `${getRootUrl}/accounts/api/auth/`;
