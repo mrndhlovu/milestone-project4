@@ -1,10 +1,3 @@
-import styled from "styled-components";
-import { Container } from "semantic-ui-react";
-
-export const StyledContainerWrapper = styled(Container)`
-  padding-top: 1.5rem;
-`;
-
 export const UNICORN_FREE_SERVICES = [
   "View Tickets",
   "Make donations",
@@ -26,12 +19,12 @@ export const NAVIGATION_LINKS = [
   { header: "Dashboard", key: "dashboard" },
   { header: "Pricing", key: "pricing" },
   { header: "Tickets", key: "tickets" },
-  { header: "Blog", key: "blog-article-list" }
+  { header: "Blog", key: "blog" }
 ];
 
 export const FOOTER_LINKS = [
   { header: "Blog", key: "blog" },
-  { header: "Cart", key: "cart" },
+  { header: "Cart", key: "checkout" },
   { header: "Pricing", key: "pricing" },
   { header: "Tickets", key: "tickets" },
   { header: "Dashboard", key: "dashboard" }

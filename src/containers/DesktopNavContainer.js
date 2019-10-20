@@ -103,7 +103,7 @@ export class DesktopNavContainer extends Component {
               {pendingOrder.data.count > 0 && (
                 <Cart pendingOrders={pendingOrder.data} />
               )}
-              {data.username && (
+              {data.dataReceived && (
                 <UserLabel
                   username={data.username}
                   current_membership={data.current_membership}

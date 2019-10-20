@@ -43,7 +43,7 @@ export class MobileSideBarContainer extends Component {
     const {
       children,
       user: { isAuthenticated },
-      userProfile: { username, current_membership }
+      userProfile: { data }
     } = this.props;
 
     return (
@@ -75,11 +75,11 @@ export class MobileSideBarContainer extends Component {
                 <Menu.Item onClick={this.handleToggle}>
                   <Icon name="sidebar" />
                 </Menu.Item>
-                {isAuthenticated && (
+                {isAuthenticated && data.dataReceived && (
                   <div style={styles}>
                     <UserLabel
-                      username={username}
-                      current_membership={current_membership}
+                      username={data.username}
+                      current_membership={data.current_membership}
                     />
                   </div>
                 )}

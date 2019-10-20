@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import ArticleDetail from "./components/blog/ArticleDetail";
-import ArticleList from "./components/blog/ArticleList";
 import AuthRouteCheck from "./utils/AuthRouteCheck";
 import CheckoutContainer from "./containers/CheckoutContainer";
 import CreateTicketContainer from "./containers/CreateTicketContainer";
@@ -15,6 +14,7 @@ import SignupContainer from "./containers/SignupContainer";
 import TicketDetailContainer from "./containers/TicketDetailContainer";
 import TicketsListContainer from "./containers/TicketsListContainer";
 import UserProfileContainer from "./containers/UserProfileContainer";
+import BlogContainer from "./containers/BlogContainer";
 
 const BaseRouter = () => {
   return (
@@ -29,7 +29,7 @@ const BaseRouter = () => {
       <Route path="/user-profile" component={UserProfileContainer} />
 
       <AuthRouteCheck path="/checkout" component={CheckoutContainer} />
-      <AuthRouteCheck path="/blog-article-list" component={ArticleList} />
+      <AuthRouteCheck path="/blog" component={BlogContainer} />
       <AuthRouteCheck path="/blog-article/:id" component={ArticleDetail} />
       <AuthRouteCheck path="/create-ticket" component={CreateTicketContainer} />
       <AuthRouteCheck path="/edit-ticket/:id" component={EditTicketContainer} />
