@@ -1,9 +1,11 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+
 import { Button, Grid, Card, Label, Segment } from "semantic-ui-react";
 
 import TicketsIcons from "./TicketsIcon";
 import { getFormatedDate } from "../../utils/appUtils";
+import DashboardCard from "../sharedComponents/DashboardCard";
 
 export const Tickets = ({
   ticketsList,
@@ -15,7 +17,7 @@ export const Tickets = ({
   const isProMember =
     user.dataReceived && user.data.current_membership.membership.is_pro_member;
 
-  const renderList = () => {
+  const renderTicketCards = () => {
     return Object.keys(ticketsList).map(key => {
       const {
         title,
@@ -32,9 +34,9 @@ export const Tickets = ({
 
       return (
         <Grid.Column key={id}>
-          <Segment stacked>
+          <Segment style={{ marginBottom: 10 }}>
             <Label
-              style={{ marginTop: 10 }}
+              style={{ marginBottom: 5 }}
               as="a"
               color={is_bug ? "teal" : "orange"}
               ribbon="right"
@@ -43,39 +45,44 @@ export const Tickets = ({
                 ? `${5 - votes} Bug votes to solution`
                 : `Fix Now Price € ${price}`}
             </Label>
-            <Card.Group>
-              <Card fluid>
-                <Card.Content>
-                  <Card.Header as={Link} to={`ticket/${id}`}>
-                    {title.toUpperCase()}
-                  </Card.Header>
-                  <Card.Meta>
-                    <span className="date">
-                      {username} | {getFormatedDate(created_at)}
-                    </span>
-                  </Card.Meta>
-                </Card.Content>
-                <Card.Content description={short_desc} />
+            <DashboardCard
+              header={
+                <Card.Header
+                  as={Link}
+                  to={`ticket/${id}`}
+                  content={title.toUpperCase()}
+                />
+              }
+              headerSize="h4"
+              subheader={
+                <Card.Meta style={{ fontSize: "0.8rem" }}>
+                  {username} | {getFormatedDate(created_at)}
+                </Card.Meta>
+              }
+              color="black"
+              component={short_desc}
+              otherProps={
                 <Card.Content extra>
                   <TicketsIcons votes={votes} status={status} views={views} />
+
+                  <Button
+                    disabled={!isProMember && is_bug}
+                    floated="right"
+                    size="tiny"
+                    color="orange"
+                    onClick={
+                      is_bug ? () => handleVote(id) : () => handleAddToCart(id)
+                    }
+                  >
+                    {!is_bug
+                      ? buttonText
+                      : isProMember
+                      ? "Vote"
+                      : "Upgrade to PRO to Vote"}
+                  </Button>
                 </Card.Content>
-                <Button
-                  disabled={!isProMember && is_bug}
-                  floated="right"
-                  size="tiny"
-                  color="orange"
-                  onClick={
-                    is_bug ? () => handleVote(id) : () => handleAddToCart(id)
-                  }
-                >
-                  {!is_bug
-                    ? buttonText
-                    : isProMember
-                    ? "Vote"
-                    : "Upgrade to PRO to Vote"}
-                </Button>
-              </Card>
-            </Card.Group>
+              }
+            />
           </Segment>
         </Grid.Column>
       );
@@ -83,8 +90,8 @@ export const Tickets = ({
   };
 
   return (
-    <Grid columns={3}>
-      <Grid.Row>{renderList()}</Grid.Row>
+    <Grid columns={3} stackable>
+      <Grid.Row>{renderTicketCards()}</Grid.Row>
     </Grid>
   );
 };

@@ -12,9 +12,9 @@ import {
 } from "../selectors/appSelectors";
 import Tickets from "../components/tickets/Tickets";
 import { getObjectLength } from "../utils/appUtils";
-import TicketListWrapper from "../components/tickets/TicketListWrapper";
+import TicketsList from "../components/tickets/TicketsList";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
-import { Segment } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
 export class TicketsListContainer extends Component {
   constructor(props) {
@@ -73,28 +73,29 @@ export class TicketsListContainer extends Component {
     return (
       <Fragment>
         <HeadingImage />
-        <Segment>
-          <TicketListWrapper
+        <Container style={{ paddingTop: 20 }}>
+          <TicketsList
             ticketCount={ticketCount}
             isLoading={tickets.isLoading}
-          >
-            {ticketsList.data.length > 0 && ticketsList.dataReceived ? (
-              <Tickets
-                handleAddToCart={this.handleAddToCart}
-                handleVote={this.handleVote}
-                ticketsList={tickets}
-                user={user}
-                buttonText={buttonText}
-              />
-            ) : (
-              <StyledMessage
-                message="No tickets at this time."
-                redirect="/create-ticket"
-                linkText="Create a ticket"
-              />
-            )}
-          </TicketListWrapper>
-        </Segment>
+            component={
+              ticketsList.data.length > 0 && ticketsList.dataReceived ? (
+                <Tickets
+                  handleAddToCart={this.handleAddToCart}
+                  handleVote={this.handleVote}
+                  ticketsList={tickets}
+                  user={user}
+                  buttonText={buttonText}
+                />
+              ) : (
+                <StyledMessage
+                  message="No tickets at this time."
+                  redirect="/create-ticket"
+                  linkText="Create a ticket"
+                />
+              )
+            }
+          />
+        </Container>
       </Fragment>
     );
   }
