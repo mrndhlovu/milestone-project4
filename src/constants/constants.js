@@ -15,11 +15,11 @@ export const UNICORN_PRO_SERVICES = [
 ];
 
 export const NAVIGATION_LINKS = [
-  { header: "Home", key: "home" },
-  { header: "Dashboard", key: "dashboard" },
-  { header: "Pricing", key: "pricing" },
-  { header: "Tickets", key: "tickets" },
-  { header: "Blog", key: "blog" }
+  { header: "Home", key: "/home" },
+  { header: "Dashboard", key: "/dashboard" },
+  { header: "Pricing", key: "/pricing" },
+  { header: "Tickets", key: "/tickets" },
+  { header: "Blog", key: "/blog" }
 ];
 
 export const FOOTER_LINKS = [

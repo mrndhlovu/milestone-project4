@@ -15,7 +15,7 @@ export const UserLabel = ({ username, current_membership }) => {
     <Fragment>
       <StyledSpan as={Link} to="/user-profile">
         <Icon name="user" size="small" />
-        {username.toUpperCase()} |{" "}
+        {username.toUpperCase()} |
         {current_membership.membership.type.toUpperCase()}
       </StyledSpan>
     </Fragment>

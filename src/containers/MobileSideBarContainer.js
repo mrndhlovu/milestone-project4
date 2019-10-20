@@ -5,12 +5,18 @@ import { connect } from "react-redux";
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
 import { logOut } from "../actions/AuthActions";
-import { getUser, getUserProfile } from "../selectors/appSelectors";
+import {
+  getUser,
+  getUserProfile,
+  getCartPendingOrder
+} from "../selectors/appSelectors";
+import { fetchPendingOrder } from "../actions/CheckoutActions";
 import MobileNavigationLinks from "../components/navigation/MobileNavigationLinks";
 import MobileSideBarButtons from "../components/navigation/MobileSideBarButtons";
 import UserLabel from "../components/navigation/UserLabel";
+import Cart from "../components/navigation/Cart";
 
-const styles = { paddingLeft: "56%", paddingTop: 10 };
+const styles = { paddingLeft: "31%", paddingTop: 10, fontSize: "0.8rem" };
 
 export class MobileSideBarContainer extends Component {
   constructor(props) {
@@ -24,6 +30,13 @@ export class MobileSideBarContainer extends Component {
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
     this.handleSidebarHide = this.handleSidebarHide.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { user } = this.props;
+    if (prevProps.user.isAuthenticated !== user.isAuthenticated) {
+      this.props.fetchPendingOrder();
+    }
   }
 
   handleSidebarHide() {
@@ -41,9 +54,9 @@ export class MobileSideBarContainer extends Component {
   render() {
     const { sidebarOpened } = this.state;
     const {
-      children,
       user: { isAuthenticated },
-      userProfile: { data }
+      userProfile,
+      pendingOrder
     } = this.props;
 
     return (
@@ -75,19 +88,30 @@ export class MobileSideBarContainer extends Component {
                 <Menu.Item onClick={this.handleToggle}>
                   <Icon name="sidebar" />
                 </Menu.Item>
-                {isAuthenticated && data.dataReceived && (
-                  <div style={styles}>
+
+                <Menu.Item
+                  style={
+                    pendingOrder.data.count > 0
+                      ? styles
+                      : { ...styles, paddingLeft: "56%" }
+                  }
+                >
+                  {pendingOrder.data.count > 0 && (
+                    <Cart pendingOrders={pendingOrder.data} />
+                  )}
+
+                  {isAuthenticated && userProfile.dataReceived && (
                     <UserLabel
-                      username={data.username}
-                      current_membership={data.current_membership}
+                      username={userProfile.data.username}
+                      current_membership={userProfile.data.current_membership}
                     />
-                  </div>
-                )}
+                  )}
+                </Menu.Item>
               </Menu>
             </Container>
           </Segment>
 
-          {children}
+          {this.props.children}
         </Sidebar.Pusher>
       </div>
     );
@@ -97,11 +121,12 @@ export class MobileSideBarContainer extends Component {
 const mapStateToProps = state => {
   return {
     user: getUser(state),
-    userProfile: getUserProfile(state)
+    userProfile: getUserProfile(state),
+    pendingOrder: getCartPendingOrder(state)
   };
 };
 
 export default connect(
   mapStateToProps,
-  { logOut }
+  { logOut, fetchPendingOrder }
 )(withRouter(MobileSideBarContainer));

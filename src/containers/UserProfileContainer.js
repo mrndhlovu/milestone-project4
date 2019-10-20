@@ -44,7 +44,7 @@ export class UserProfileContainer extends Component {
 
       setTimeout(() => {
         localStorage.clear();
-        this.props.history.push("/");
+        this.props.history.push("/home");
         window.location.reload();
       }, 1000);
     } else {
@@ -52,7 +52,7 @@ export class UserProfileContainer extends Component {
 
       setTimeout(() => {
         localStorage.clear();
-        this.props.history.push("/");
+        this.props.history.push("/home");
         window.location.reload();
       }, 1000);
     }
