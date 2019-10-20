@@ -36,7 +36,7 @@ class CheckoutContainer extends Component {
     const { error, message } = this.state;
     return (
       <Segment style={{ marginTop: 40 }}>
-        <Grid>
+        <Grid stackable>
           <Grid.Row>
             <Grid.Column width={9}>
               <OrderSummaryContainer />

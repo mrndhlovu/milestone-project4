@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Card,
-  Grid,
-  Menu,
-  Button,
-  Input,
-  Header,
-  Segment
-} from "semantic-ui-react";
+import { Card, Grid, Button, Input, Header, Segment } from "semantic-ui-react";
 
 import { DONATION_AMOUNTS } from "../../constants/constants";
 
@@ -34,15 +26,13 @@ const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
     return Object.keys(DONATION_AMOUNTS).map(key => {
       return (
         <Grid.Column key={key} style={{ paddingBottom: 10 }}>
-          <Menu fluid>
-            <Button
-              color="blue"
-              fluid
-              onClick={() => handleAddToCart("button", DONATION_AMOUNTS[key])}
-            >
-              € {DONATION_AMOUNTS[key]}
-            </Button>
-          </Menu>
+          <Button
+            color="blue"
+            fluid
+            onClick={() => handleAddToCart("button", DONATION_AMOUNTS[key])}
+          >
+            € {DONATION_AMOUNTS[key]}
+          </Button>
         </Grid.Column>
       );
     });
