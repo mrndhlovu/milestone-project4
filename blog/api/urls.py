@@ -6,7 +6,7 @@ app_name = 'blog'
 
 urlpatterns = [
     path('', ArticleListView.as_view()),
-    path('<pk>/', ArticleDetailView.as_view()),
+    path('article/<id>/', ArticleDetailView.as_view()),
     path('update/<pk>/', ArticleUpdateView.as_view()),
     path('delete/<pk>/', ArticleDeleteView.as_view()),
     path('api/create/', CreateArticleView.as_view()),

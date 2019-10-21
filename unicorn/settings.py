@@ -37,11 +37,12 @@ INSTALLED_APPS = [
 
     'accounts',
     'memberships',
-    'blog',
     'cart',
 
     'tickets',
     'comments',
+    'blog',
+
 
     'rest_framework',
     'corsheaders',

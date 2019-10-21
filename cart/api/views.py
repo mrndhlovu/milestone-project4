@@ -303,7 +303,6 @@ class CartRemoveItemAPIView(RetrieveAPIView):
             pending_order = CartItem.objects.filter(
                 product_content_type=product_content_type, product_object_id=product_id)
 
-            print('pending_order>>>>>>>>>>>>>>>>>>>', pending_order)
             if pending_order.exists():
                 cartItem = pending_order.first()
                 if product_content_type == 'donation':

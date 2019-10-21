@@ -1,11 +1,11 @@
-from .serializers import ArticleDetailSerializer, BlogSerializer
+from .serializers import ArticleDetailSerializer, ArticleSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import permissions, authentication, generics
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, GenericAPIView
 from rest_framework.views import APIView
-from blog.models import Blog
+from blog.models import Article
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
@@ -22,20 +22,37 @@ def get_article_owner(request):
 
 
 class ArticleListView(ListAPIView):
-    serializer_class = BlogSerializer
-    queryset = Blog.objects.all()
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
     permission_classes = [permissions.AllowAny]
 
 
 class ArticleDetailView(RetrieveAPIView):
     serializer_class = ArticleDetailSerializer
-    queryset = Blog.objects.all()
+    queryset = Article.objects.all()
     permission_classes = [permissions.AllowAny]
+
+    def get(self, request, id=None, format=None):
+
+        instance = Article.objects.filter(id=id)
+
+        if instance.exists():
+            instance_comments = Article.objects.get(id=id)
+            context = {
+                'data': instance.values()[0],
+                'comments': instance_comments.comments
+            }
+            return JsonResponse(context, status=status.HTTP_200_OK)
+        else:
+            context = {
+                'message': 'Article not found'
+            }
+            return JsonResponse(context, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateArticleView(CreateAPIView):
-    serializer_class = Blog
-    queryset = Blog.objects.all()
+    serializer_class = Article
+    queryset = Article.objects.all()
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
@@ -67,7 +84,7 @@ class ArticleVoteToggleAPIView(APIView):
 
     def get(self, request, id=None, format=None):
         id = self.kwargs.get('id')
-        instance = get_object_or_404(Blog, id=id)
+        instance = get_object_or_404(Article, id=id)
         user = self.request.user
         updated = False
         voted = False
@@ -96,8 +113,8 @@ class ArticleVoteToggleAPIView(APIView):
 
 
 class ArticleUpdateView(UpdateAPIView):
-    serializer_class = BlogSerializer
-    queryset = Blog.objects.all()
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
     permission_classes = (permissions.AllowAny,)
 
     def create(self, request, *args, **kwargs):
@@ -115,6 +132,6 @@ class ArticleUpdateView(UpdateAPIView):
 
 
 class ArticleDeleteView(DestroyAPIView):
-    serializer_class = BlogSerializer
-    queryset = Blog.objects.all()
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
     permission_classes = [permissions.AllowAny]

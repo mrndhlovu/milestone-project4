@@ -1,15 +1,15 @@
 from rest_framework import serializers
-from blog.models import Blog
+from blog.models import Article
 from django.conf import settings
 
 
-class BlogSerializer(serializers.ModelSerializer):
+class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Blog
+        model = Article
         fields = '__all__'
 
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Blog
+        model = Article
         fields = '__all__'
