@@ -3,32 +3,26 @@ import {
   RECEIVE_ARTICLE,
   RECEIVE_ARTICLE_DETAIL,
   FETCH_ARTICLE_DETAIL,
-  UPDATED_ARTICLE_VOTE,
   CREATED_COMMENT,
   CREATING_COMMENT,
-  REQUEST_ARTICLE_VOTE,
   FETCH_ARTICLE_LIST,
   REQUEST_ARTICLE_UPDATE,
   RECEIVE_ARTICLE_UPDATE,
   ARTICLE_DELETED,
   REQUEST_ARTICLE_DELETE,
-  CREATING_REPLY,
-  RECEIVED_REPLY,
-  ARTICLES_LIST_ERROR,
+  ARTICLE_LIST_ERROR,
   CREATE_ARTICLE_ERROR,
   ARTICLE_DETAIL_ERROR,
   ARTICLE_UPDATE_ERROR,
   DELETE_ARTICLE_ERROR,
-  ARTICLE_VOTE_ERROR,
-  REPLY_ERROR,
-  CREATE_COMMENT_ERROR
+  CREATE_COMMENT_ERROR,
+  RECEIVE_ARTICLE_LIST
 } from "./ActionTypes";
 
 import {
   requestArticlesList,
   requestCreateArticle,
   fetchArticleDetail,
-  requestArticleVoteUpdate,
   requestCreateComment,
   requestArticleUpdate,
   requestArticleDelete
@@ -47,10 +41,10 @@ export const fetchArticlesList = () => {
     dispatch(makeRequest(FETCH_ARTICLE_LIST));
     requestArticlesList().then(
       response => {
-        dispatch(requestSuccess(RECEIVE_ARTICLES_LIST, response.data));
+        dispatch(requestSuccess(RECEIVE_ARTICLE_LIST, response.data));
       },
       error => {
-        dispatch(errorsAlert(ARTICLES_LIST_ERROR, error));
+        dispatch(errorsAlert(ARTICLE_LIST_ERROR, error));
       }
     );
   };
@@ -114,19 +108,19 @@ export const deleteArticle = id => {
   };
 };
 
-export const updatedArticleVote = id => {
-  return dispatch => {
-    dispatch(makeRequest(REQUEST_ARTICLE_VOTE));
-    requestArticleVoteUpdate(id).then(
-      response => {
-        dispatch(requestSuccess(UPDATED_ARTICLE_VOTE, response.data));
-      },
-      error => {
-        dispatch(errorsAlert(ARTICLE_VOTE_ERROR, error));
-      }
-    );
-  };
-};
+// export const updatedArticleVote = id => {
+//   return dispatch => {
+//     dispatch(makeRequest(REQUEST_ARTICLE_VOTE));
+//     requestArticleVoteUpdate(id).then(
+//       response => {
+//         dispatch(requestSuccess(UPDATED_ARTICLE_VOTE, response.data));
+//       },
+//       error => {
+//         dispatch(errorsAlert(ARTICLE_VOTE_ERROR, error));
+//       }
+//     );
+//   };
+// };
 
 export const createComment = id => {
   return dispatch => {
@@ -137,20 +131,6 @@ export const createComment = id => {
       },
       error => {
         dispatch(errorsAlert(CREATE_COMMENT_ERROR, error));
-      }
-    );
-  };
-};
-
-export const createReply = id => {
-  return dispatch => {
-    dispatch(makeRequest(CREATING_REPLY));
-    requestCreateReply(id).then(
-      response => {
-        dispatch(requestSuccess(RECEIVED_REPLY, response.data));
-      },
-      error => {
-        dispatch(errorsAlert(REPLY_ERROR, error));
       }
     );
   };
