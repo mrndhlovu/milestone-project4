@@ -3,8 +3,6 @@ import {
   RECEIVE_ARTICLE,
   RECEIVE_ARTICLE_DETAIL,
   FETCH_ARTICLE_DETAIL,
-  CREATED_COMMENT,
-  CREATING_COMMENT,
   FETCH_ARTICLE_LIST,
   REQUEST_ARTICLE_UPDATE,
   RECEIVE_ARTICLE_UPDATE,
@@ -15,17 +13,19 @@ import {
   ARTICLE_DETAIL_ERROR,
   ARTICLE_UPDATE_ERROR,
   DELETE_ARTICLE_ERROR,
-  CREATE_COMMENT_ERROR,
-  RECEIVE_ARTICLE_LIST
+  RECEIVE_ARTICLE_LIST,
+  REQUEST_ARTICLE_VOTE,
+  UPDATED_ARTICLE_VOTE,
+  ARTICLE_VOTE_ERROR
 } from "./ActionTypes";
 
 import {
   requestArticlesList,
   requestCreateArticle,
   fetchArticleDetail,
-  requestCreateComment,
   requestArticleUpdate,
-  requestArticleDelete
+  requestArticleDelete,
+  requestArticleVoteUpdate
 } from "../apis/apiRequests";
 
 import {
@@ -64,7 +64,7 @@ export const createArticle = data => {
   };
 };
 
-export const requestArticlesDetail = id => {
+export const requestArticleDetail = id => {
   return dispatch => {
     dispatch(makeRequest(FETCH_ARTICLE_DETAIL));
     fetchArticleDetail(id).then(
@@ -108,29 +108,15 @@ export const deleteArticle = id => {
   };
 };
 
-// export const updatedArticleVote = id => {
-//   return dispatch => {
-//     dispatch(makeRequest(REQUEST_ARTICLE_VOTE));
-//     requestArticleVoteUpdate(id).then(
-//       response => {
-//         dispatch(requestSuccess(UPDATED_ARTICLE_VOTE, response.data));
-//       },
-//       error => {
-//         dispatch(errorsAlert(ARTICLE_VOTE_ERROR, error));
-//       }
-//     );
-//   };
-// };
-
-export const createComment = id => {
+export const updatedArticleVote = id => {
   return dispatch => {
-    dispatch(makeRequest(CREATING_COMMENT));
-    requestCreateComment(id).then(
+    dispatch(makeRequest(REQUEST_ARTICLE_VOTE));
+    requestArticleVoteUpdate(id).then(
       response => {
-        dispatch(requestSuccess(CREATED_COMMENT, response.data));
+        dispatch(requestSuccess(UPDATED_ARTICLE_VOTE, response.data));
       },
       error => {
-        dispatch(errorsAlert(CREATE_COMMENT_ERROR, error));
+        dispatch(errorsAlert(ARTICLE_VOTE_ERROR, error));
       }
     );
   };
