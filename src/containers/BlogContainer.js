@@ -11,12 +11,9 @@ import {
   getArticleList,
   getUserProfile
 } from "../selectors/appSelectors";
+import { Container } from "semantic-ui-react";
 
 export class BlogContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.fetchArticlesList();
   }
@@ -27,7 +24,9 @@ export class BlogContainer extends Component {
     return (
       <div>
         <HomepageHeading />
-        <BlogList />
+        <Container style={{ paddingTop: 20 }}>
+          {articles.dataReceived && <BlogList articles={articles.data} />}
+        </Container>
       </div>
     );
   }
