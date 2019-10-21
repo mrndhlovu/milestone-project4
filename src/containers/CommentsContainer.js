@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { Button, Comment, Form, Segment } from "semantic-ui-react";
+import { Button, Comment, Form, Segment, Message } from "semantic-ui-react";
 
+import { COMMENT_TYPE, APP_TYPE } from "../constants/constants";
 import { createComment, createReply } from "../actions/TicketActions";
-
 import { getUserProfile, getComments } from "../selectors/appSelectors";
 import CommentsBody from "../components/tickets/CommentsBody";
-import { COMMENT_TYPE, APP_TYPE } from "../constants/constants";
 
 export class CommentsContainer extends Component {
   constructor(props) {
@@ -107,18 +106,26 @@ export class CommentsContainer extends Component {
     const { comments } = this.props;
     const { showReplyInput, buttonDisabled } = this.state;
 
+    const hasComments = Object.keys(comments).length;
+
+    console.log(hasComments);
+
     return (
       <Segment>
         <Comment.Group>
-          <CommentsBody
-            comments={comments}
-            hideReplyInput={this.hideReplyInput}
-            handleSubmit={this.handleSubmit}
-            handleCreateComment={this.handleCreateComment}
-            showReplyInput={showReplyInput}
-            buttonDisabled={buttonDisabled}
-            handleOnBlur={this.handleOnBlur}
-          />
+          {hasComments > parseInt(0) || comments !== undefined ? (
+            <CommentsBody
+              comments={comments}
+              hideReplyInput={this.hideReplyInput}
+              handleSubmit={this.handleSubmit}
+              handleCreateComment={this.handleCreateComment}
+              showReplyInput={showReplyInput}
+              buttonDisabled={buttonDisabled}
+              handleOnBlur={this.handleOnBlur}
+            />
+          ) : (
+            <Message>No commets yet.</Message>
+          )}
 
           <Form reply>
             <Form.TextArea
