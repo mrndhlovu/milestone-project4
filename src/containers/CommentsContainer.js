@@ -5,11 +5,12 @@ import { withRouter } from "react-router-dom";
 import { Button, Comment, Form, Segment } from "semantic-ui-react";
 
 import { createComment, createReply } from "../actions/TicketActions";
+
 import { getUserProfile, getComments } from "../selectors/appSelectors";
 import CommentsBody from "../components/tickets/CommentsBody";
 import { COMMENT_TYPE, APP_TYPE } from "../constants/constants";
 
-export class TicketCommentsContainer extends Component {
+export class CommentsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,12 +52,33 @@ export class TicketCommentsContainer extends Component {
     const { comment, reply } = this.state;
     const {
       ticketId,
+      articleId,
       createComment,
       createReply,
-      profile: { id }
+      profile,
+      isArticle
     } = this.props;
+    const { id } = profile.data;
 
-    if (parentId !== null) {
+    if (isArticle && parentId !== null) {
+      const replyBody = {
+        user: id,
+        object_id: articleId,
+        parent: parentId,
+        comment: reply,
+        content_type: APP_TYPE.post
+      };
+      createReply(replyBody);
+    } else if (isArticle) {
+      const commentBody = {
+        object_id: articleId,
+        comment: comment,
+        content_type: APP_TYPE.post
+      };
+      createComment(commentBody);
+    }
+
+    if (!isArticle && parentId !== null) {
       const replyBody = {
         user: id,
         object_id: ticketId,
@@ -66,7 +88,7 @@ export class TicketCommentsContainer extends Component {
       };
 
       createReply(replyBody);
-    } else {
+    } else if (!isArticle) {
       const commentBody = {
         object_id: ticketId,
         comment: comment,
@@ -129,4 +151,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { createComment, createReply }
-)(withRouter(TicketCommentsContainer));
+)(withRouter(CommentsContainer));

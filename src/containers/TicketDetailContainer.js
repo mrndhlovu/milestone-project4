@@ -20,7 +20,7 @@ import {
 } from "../selectors/appSelectors";
 
 import StyledMessage from "../components/sharedComponents/StyledMessage";
-import TicketComments from "./TicketCommentsContainer";
+import TicketComments from "./CommentsContainer";
 import TicketDetail from "../components/tickets/TicketDetail";
 import TicketSolution from "../components/tickets/TicketSolution";
 import { APP_TYPE } from "../constants/constants";
