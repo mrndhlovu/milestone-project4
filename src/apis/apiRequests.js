@@ -92,7 +92,7 @@ export async function fetchTicketDetail(id) {
 }
 
 export async function fetchArticleDetail(id) {
-  return axios.get(`${BLOG_EP}${id}/`);
+  return axios.get(`${BLOG_EP}article/${id}/`);
 }
 
 export async function requestTicketComments() {
