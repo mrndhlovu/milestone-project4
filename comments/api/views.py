@@ -33,11 +33,11 @@ def get_parent_id(request):
 
 
 def get_app(request, data):
-    if data['app_object'] == 'Ticket':
+    if data['content_type'] == 'Ticket':
         app = get_object_or_404(Ticket, id=data['object_id'])
         return app
 
-    if data['app_object'] == 'Article':
+    if data['content_type'] == 'post':
         app = get_object_or_404(Article, id=data['object_id'])
         return app
 
@@ -69,7 +69,6 @@ class CreateCommentView(CreateAPIView):
         request_data = json.loads(request.body.decode('utf-8'))
 
         app_id = request_data['object_id']
-        app_object = request_data['app_object']
         app = get_app(request, request_data)
 
         if app is not None:
@@ -112,9 +111,8 @@ class CreateCommentReplyView(CreateAPIView):
         request_data = json.loads(request.body.decode('utf-8'))
 
         object_id = request_data['object_id']
-        app_object = request_data['app_object']
         comment = request_data['comment']
-        parent_id = request_data['parent_id']
+        parent_id = request_data['parent']
 
         app = get_app(request, request_data)
 
