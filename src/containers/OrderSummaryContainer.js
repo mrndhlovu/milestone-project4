@@ -55,7 +55,7 @@ export class OrderSummaryContainer extends Component {
 
   render() {
     const { donateIsDisable, buttonText, width } = this.state;
-    const { pendingOrders, history, mobile } = this.props;
+    const { pendingOrders, history } = this.props;
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
     console.log("mobile", width);
     return (
