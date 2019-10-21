@@ -7,6 +7,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.views import APIView
 from comments.models import Comment
 from tickets.models import Ticket
+from blog.models import Article
 from django.contrib.auth.models import User
 import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -29,6 +30,16 @@ def get_parent_id(request):
     if comment_parent_qs.exists():
         return comment_parent_qs.first()
     return None
+
+
+def get_app(request, data):
+    if data['app_object'] == 'Ticket':
+        app = get_object_or_404(Ticket, id=data['object_id'])
+        return app
+
+    if data['app_object'] == 'Article':
+        app = get_object_or_404(Article, id=data['object_id'])
+        return app
 
 
 class CommentsListView(ListAPIView):
@@ -55,34 +66,40 @@ class CreateCommentView(CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request, **kwargs):
-        data = request.data.copy()
+        request_data = json.loads(request.body.decode('utf-8'))
 
-        instance = get_object_or_404(Ticket, id=data['object_id'])
-        content_type = instance.get_content_type
+        app_id = request_data['object_id']
+        app_object = request_data['app_object']
+        app = get_app(request, request_data)
 
-        try:
+        if app is not None:
+            app_content_type = ContentType.objects.get_for_model(app)
             user = get_comment_owner(request)
-            object_id = data['object_id']
 
-        except:
+            if user is not None:
+                comment_reply, created = Comment.objects.get_or_create(
+                    user=user,
+                    content_type=app_content_type,
+                    object_id=app_id,
+                    comment=request_data['comment'],
+                )
+
+                context = {
+                    'message': 'Comment created'
+                }
+
+                return JsonResponse(context, status=status.HTTP_201_CREATED, )
+            else:
+                context = {
+                    'message': 'Failed to submit comment: Could not resolve comment owner'
+                }
+                return JsonResponse(context, status=status.HTTP_404_NOT_FOUND, )
+
+        else:
             context = {
-                'message': 'Failed to submit comment: Ticket was not found'
+                'message': 'App not found'
             }
             return JsonResponse(context, status=status.HTTP_404_NOT_FOUND, )
-
-        comment_reply, created = Comment.objects.get_or_create(
-            user=user,
-            content_type=content_type,
-            object_id=object_id,
-            comment=data['comment'],
-
-        )
-
-        context = {
-            'message': 'Comment created'
-        }
-
-        return JsonResponse(context, status=status.HTTP_201_CREATED, )
 
 
 class CreateCommentReplyView(CreateAPIView):
@@ -92,29 +109,42 @@ class CreateCommentReplyView(CreateAPIView):
 
     def post(self, request, **kwargs):
 
-        data = request.data.copy()
-        instance = get_object_or_404(Ticket, id=data['object_id'])
-        comment_instance = get_object_or_404(Comment, id=data['parent'])
+        request_data = json.loads(request.body.decode('utf-8'))
 
-        content_type = instance.get_content_type
-        try:
+        object_id = request_data['object_id']
+        app_object = request_data['app_object']
+        comment = request_data['comment']
+        parent_id = request_data['parent_id']
+
+        app = get_app(request, request_data)
+
+        if app is not None:
+
+            app_content_type = ContentType.objects.get_for_model(app)
+
             user = get_comment_owner(request)
-            parent_id = get_parent_id(request)
-            object_id = data['object_id']
+            parent = Comment.objects.get(id=parent_id)
 
-        except:
-            parent_id = None
+            if user is not None:
 
-        comment_reply, created = Comment.objects.get_or_create(
-            user=user,
-            content_type=content_type,
-            object_id=object_id,
-            comment=data['comment'],
-            parent=comment_instance
-        )
-
-        context = {
-            'message': 'Reply submitted'
-        }
-
-        return JsonResponse(context, status=status.HTTP_201_CREATED, )
+                comment_reply, created = Comment.objects.get_or_create(
+                    user=user,
+                    content_type=app_content_type,
+                    object_id=object_id,
+                    comment=comment,
+                    parent=parent
+                )
+                context = {
+                    'message': 'Reply submitted'
+                }
+                return JsonResponse(context, status=status.HTTP_201_CREATED, )
+            else:
+                context = {
+                    'message': 'Could not reslove parent id'
+                }
+                return JsonResponse(context, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            context = {
+                'message': 'Could not resolve app type'
+            }
+            return JsonResponse(context, status=status.HTTP_400_BAD_REQUEST)
