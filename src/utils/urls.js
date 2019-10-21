@@ -43,13 +43,3 @@ export const getPageId = () => {
   const location = window.location.pathname.slice(1);
   return location === "" ? "home" : location;
 };
-
-export const getRedirectParam = membershipType => {
-  let location = getPageId();
-
-  if (location === "pricing" && !hasSelectedMembership(membershipType)) {
-    return "/signup";
-  } else {
-    return "/checkout";
-  }
-};
