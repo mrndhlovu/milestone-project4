@@ -32,6 +32,8 @@ export const getCartPendingOrder = state => state.pending;
 
 export const getTicketCheckout = state => state.ticketCheckout;
 
-export const getArticleList = state => state.getArticleList;
+export const getArticleList = state => state.articleList;
 
 export const getSolution = state => state.ticketSolution;
+
+export const getArticle = state => state.articleDetail;
