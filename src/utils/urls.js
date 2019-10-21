@@ -1,5 +1,4 @@
 import { SESSION_TOKEN } from "../constants/localStorageConstants";
-import { hasSelectedMembership } from "../utils/appUtils";
 
 export const getRootUrl =
   process.env.NODE_ENV === "production"
