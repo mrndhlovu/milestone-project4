@@ -134,10 +134,10 @@ export const updatedTicketVote = id => {
   };
 };
 
-export const createComment = id => {
+export const createComment = body => {
   return dispatch => {
     dispatch(makeRequest(CREATING_COMMENT));
-    requestCreateComment(id).then(
+    requestCreateComment(body).then(
       response => {
         dispatch(requestSuccess(CREATED_COMMENT, response.data));
       },
@@ -148,10 +148,10 @@ export const createComment = id => {
   };
 };
 
-export const createReply = id => {
+export const createReply = body => {
   return dispatch => {
     dispatch(makeRequest(CREATING_REPLY));
-    requestCreateReply(id).then(
+    requestCreateReply(body).then(
       response => {
         dispatch(requestSuccess(RECEIVED_REPLY, response.data));
       },
