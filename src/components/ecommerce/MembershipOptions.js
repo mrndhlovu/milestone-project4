@@ -5,7 +5,8 @@ import { Button, Header, Grid, Card } from "semantic-ui-react";
 
 import {
   UNICORN_FREE_SERVICES,
-  UNICORN_PRO_SERVICES
+  UNICORN_PRO_SERVICES,
+  MEMBERSHIP_TYPE
 } from "../../constants/constants";
 
 import MembershipServiceList from "../../containers/MembershipServiceList";
@@ -25,7 +26,7 @@ const MembershipOptions = ({
   const renderOptions = () => {
     return Object.keys(memberships).map(key => {
       const { price, id, slug } = memberships[key];
-      const FREE = slug === "free";
+      const FREE = slug === MEMBERSHIP_TYPE.free;
 
       const buttonText = FREE ? buttonTextFree : buttonTextPro;
       const buttonColor = FREE ? "blue" : "black";

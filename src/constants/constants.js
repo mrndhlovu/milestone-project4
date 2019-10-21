@@ -30,15 +30,6 @@ export const FOOTER_LINKS = [
   { header: "Dashboard", key: "dashboard" }
 ];
 
-export const MEMBERSHIP_OPTIONS = {
-  free: {
-    membership_type: "free"
-  },
-  pro: {
-    membership_type: "pro"
-  }
-};
-
 export const USER_PROFILE = {
   username: "",
   userId: "",
@@ -59,9 +50,30 @@ export const AUTH_INITIAL_STATE = {
   isAuthenticated: false
 };
 
-export const DONATION_AMOUNTS = {
+export const DONATION_AMOUNTS = Object.freeze({
   three: 3,
   five: 5,
   ten: 10,
   fifteen: 15
-};
+});
+
+export const APP_TYPE = Object.freeze({
+  membership: "membership",
+  post: "post",
+  ticket: "ticket"
+});
+
+export const MEMBERSHIP_TYPE = Object.freeze({ pro: "pro", free: "free" });
+
+export const COMMENT_TYPE = Object.freeze({
+  comment: "comment",
+  reply: "reply"
+});
+
+export const TICKET_STATUS = Object.freeze({
+  todo: "todo",
+  doing: "doing",
+  done: "done",
+  is_bug: "is_bug",
+  is_feature: "is_feature"
+});

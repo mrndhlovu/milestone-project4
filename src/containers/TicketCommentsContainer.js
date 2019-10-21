@@ -7,6 +7,7 @@ import { Button, Comment, Form, Segment } from "semantic-ui-react";
 import { createComment, createReply } from "../actions/TicketActions";
 import { getUserProfile, getComments } from "../selectors/appSelectors";
 import CommentsBody from "../components/tickets/CommentsBody";
+import { COMMENT_TYPE, APP_TYPE } from "../constants/constants";
 
 export class TicketCommentsContainer extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ export class TicketCommentsContainer extends Component {
   handleCreateComment(event, commentOption) {
     const { value } = event.target;
 
-    if (commentOption === "reply") {
+    if (commentOption === COMMENT_TYPE.reply) {
       this.setState({ reply: value });
     } else {
       this.setState({ comment: value });
@@ -61,7 +62,7 @@ export class TicketCommentsContainer extends Component {
         object_id: ticketId,
         parent: parentId,
         comment: reply,
-        content_type: "ticket"
+        content_type: APP_TYPE.ticket
       };
 
       createReply(replyBody);
@@ -69,7 +70,7 @@ export class TicketCommentsContainer extends Component {
       const commentBody = {
         object_id: ticketId,
         comment: comment,
-        content_type: "ticket"
+        content_type: APP_TYPE.ticket
       };
 
       createComment(commentBody);

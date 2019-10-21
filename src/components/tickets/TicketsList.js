@@ -5,7 +5,7 @@ import DashboardCard from "../sharedComponents/DashboardCard";
 const TicketsList = ({ component, ticketCount, isLoading, size }) => {
   return (
     <DashboardCard
-      header={"TICKETS"}
+      header="TICKETS"
       headerSize="h2"
       subheader={`TOTAL:  ${ticketCount}`}
       component={component}

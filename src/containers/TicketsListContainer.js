@@ -15,6 +15,7 @@ import { getObjectLength } from "../utils/appUtils";
 import TicketsList from "../components/tickets/TicketsList";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import { Container } from "semantic-ui-react";
+import { APP_TYPE } from "../constants/constants";
 
 export class TicketsListContainer extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ export class TicketsListContainer extends Component {
   handleAddToCart(id) {
     const { isAuthenticated } = this.props.auth;
     if (isAuthenticated) {
-      this.props.addItemToCart(id, "ticket");
+      this.props.addItemToCart(id, APP_TYPE.ticket);
     } else {
       this.setState({ buttonText: "Login to Add to cart" });
     }

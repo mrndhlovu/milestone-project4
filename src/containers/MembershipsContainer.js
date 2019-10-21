@@ -11,6 +11,7 @@ import {
 } from "../selectors/appSelectors";
 import HeadingImage from "../components/home/HeadingImage";
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
+import { APP_TYPE, MEMBERSHIP_TYPE } from "../constants/constants";
 
 export class MembershipContainer extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ export class MembershipContainer extends Component {
         const { orders } = cart.data;
         Object.keys(orders).forEach(order => {
           const cartItems = orders[order];
-          if (cartItems.membership === "pro") {
+          if (cartItems.membership === MEMBERSHIP_TYPE.pro) {
             return this.setState({ buttonTextPro: "Item in your cart" });
           }
         });
@@ -61,7 +62,7 @@ export class MembershipContainer extends Component {
     const { isAuthenticated } = this.props.auth;
 
     if (isAuthenticated) {
-      return this.props.addItemToCart(id, "membership");
+      return this.props.addItemToCart(id, APP_TYPE.membership);
     }
     this.setState({ buttonTextPro: "Lets signup first" });
   }

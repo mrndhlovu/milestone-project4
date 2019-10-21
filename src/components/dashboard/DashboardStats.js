@@ -2,6 +2,7 @@ import React from "react";
 
 import { Statistic } from "semantic-ui-react";
 import DashboardCard from "../sharedComponents/DashboardCard";
+import { TICKET_STATUS } from "../../constants/constants";
 
 const StatField = ({ label, value }) => {
   return (
@@ -30,9 +31,12 @@ const DashboardStats = ({ ticketList }) => {
       header="Current"
       component={
         <Statistic.Group>
-          <StatField label="Bugs" value={getTotal("is_bug")} />
-          <StatField label="Features" value={getTotal("is_feature")} />
-          <StatField label="Completed" value={getTotal("done")} />
+          <StatField label="Bugs" value={getTotal(TICKET_STATUS.is_bug)} />
+          <StatField
+            label="Features"
+            value={getTotal(TICKET_STATUS.is_feature)}
+          />
+          <StatField label="Completed" value={getTotal(TICKET_STATUS.done)} />
         </Statistic.Group>
       }
     />

@@ -2,6 +2,8 @@ import React from "react";
 
 import { Form, Button } from "semantic-ui-react";
 
+import { COMMENT_TYPE } from "../../constants/constants";
+
 const CommentReplyInput = ({
   id,
   handleCreateComment,
@@ -14,7 +16,7 @@ const CommentReplyInput = ({
     showReplyInput && (
       <Form reply>
         <Form.TextArea
-          onChange={event => handleCreateComment(event, "reply")}
+          onChange={event => handleCreateComment(event, COMMENT_TYPE.reply)}
           onClick={() => handleOnBlur()}
         />
         <Button

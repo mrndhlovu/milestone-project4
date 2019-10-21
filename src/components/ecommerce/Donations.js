@@ -9,7 +9,7 @@ const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
       <Card.Content style={{ paddingBottom: 10 }}>
         <Input
           onChange={event => handleDonationInput(event)}
-          onBlur={() => handleAddToCart("other")}
+          onBlur={() => handleAddToCart(DONATION_AMOUNTS.other)}
           fluid
           action={{
             color: "blue",

@@ -23,6 +23,7 @@ import StyledMessage from "../components/sharedComponents/StyledMessage";
 import TicketComments from "./TicketCommentsContainer";
 import TicketDetail from "../components/tickets/TicketDetail";
 import TicketSolution from "../components/tickets/TicketSolution";
+import { APP_TYPE } from "../constants/constants";
 
 const initialState = {
   index: 0,
@@ -66,7 +67,7 @@ export class TicketDetailContainer extends Component {
 
   handleAddToCart(id) {
     if (id) {
-      return this.props.addItemToCart(id, "ticket");
+      return this.props.addItemToCart(id, APP_TYPE.ticket);
     }
     this.setState({ buttonText: "Login to Add to Cart" });
   }
