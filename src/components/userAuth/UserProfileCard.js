@@ -28,7 +28,7 @@ const UserProfileCard = ({ user, handleCancelButtonClick }) => {
           header={`Account: Unicorn ${
             membership.is_pro_member ? "PRO" : "FREE"
           }`}
-          extra={`Subscription: ${
+          extra={`Permission: ${
             is_pro_member ? "All accesss" : "Limited access"
           }`}
           description={
