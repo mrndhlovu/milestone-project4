@@ -27,6 +27,13 @@ import traceback
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
+app_type = {
+    'membership': 'membership',
+    'ticket': 'ticket',
+    'donation': 'donation'
+}
+
+
 def get_active_cart(request):
     cart = Cart.objects.filter(user=request.user, is_paid=False)
     if cart.exists():
@@ -41,11 +48,11 @@ def get_paid_cart(request):
     return None
 
 
-def get_user_membership(request):
-    user_membership_qs = UserMembership.objects.filter(user=request.user)
+def get_user(request):
+    user_qs = UserMembership.objects.filter(user=request.user)
 
-    if user_membership_qs.exists():
-        return user_membership_qs.first()
+    if user_qs.exists():
+        return user_qs.first()
     return None
 
 
@@ -73,77 +80,63 @@ def update_selected_membership(request, membership_type):
     return None
 
 
-def updated_user_membership(request, data):
-    user_membership = get_user_membership(request)
+def updated_user_membership(request, subscription_id):
 
-    user_membership.is_pro_member = True
-    user_membership.membership = get_object_or_404(Membership, id=2)
-    user_membership.save()
+    user = get_user(request)
+    user.is_pro_member = True
+    user.membership = get_object_or_404(Membership, id=2)
+    user.save()
+
     try:
-        subscription_id = data['subscriptionId']
         subscription, created = Subscription.objects.get_or_create(
-            user_membership=user_membership, is_active=True)
+            user_membership=user, is_active=True)
         subscription.stripe_subscription_id = subscription_id
         subscription.save()
 
         context = {
-            'message': 'Successfully created {} membership'.format(
-                user_membership.membership),
-            'membership': str(user_membership.membership)
+            'message': 'Successfully created {} membership'.format(user.membership),
         }
-
         return context
     except Exception:
-        print(traceback.print_exc())
+        context = {
+            'message': 'Failed to get subcription id'
+        }
 
 
 def get_ticket(item):
     ticket = get_object_or_404(Ticket, id=item.product_object_id)
-    if item.product_content_type.name == 'ticket':
+    if item.product_content_type.name == app_type['ticket']:
         return ticket
     return None
 
 
 def get_membership(item):
     membership = get_object_or_404(Membership, id=item.product_object_id)
-    if item.product_content_type.name == 'membership':
+    if item.product_content_type.name == app_type['membership']:
         return membership
     return None
 
 
-def get_subscription_id(request, data):
+def get_subscription_id(request, membership_id, customer):
 
-    user_membership = get_user_membership(request)
+    user = get_user(request)
 
+    choosen_membership = get_object_or_404(
+        Membership, id=membership_id)
     try:
-        choosen_membership = get_object_or_404(
-            Membership, id=data['product_id'])
-
-    except Exception:
-        print(traceback.print_exc())
-    try:
-        token = data['stripeToken']
-
-        customer = stripe.Customer.retrieve(
-            user_membership.stripe_customer_id)
-        customer.source = token
-        customer.save()
-
         subscription = stripe.Subscription.create(
-            customer=user_membership.stripe_customer_id,
+            customer=user.stripe_customer_id,
             items=[
                 {
                     "plan": choosen_membership.stripe_plan_id
                 }
             ]
         )
-
         subscription_id = subscription.id
-
         return subscription_id
 
     except Exception:
-        print(traceback.print_exc())
+        return None
 
 
 def get_stripe_customer(request, token):
@@ -179,24 +172,21 @@ class AddToCartAPIView(ListAPIView):
     def post(self, request):
 
         request_data = json.loads(request.body.decode('utf-8'))
-
         product_id = request_data['product_id']
         product_object = request_data['product']
 
         cart, created = Cart.objects.get_or_create(
             user=request.user, is_paid=False)
 
-        subscription_id = None
-
-        if product_object == 'ticket':
+        if product_object == app_type['ticket']:
             product = get_object_or_404(
                 Ticket, id=product_id)
-        elif product_object == 'membership':
-            product = get_object_or_404(Membership, id=product_id)
 
-            subscription_id = get_subscription_id(request, request_data)
+        elif product_object == app_type['membership']:
+            product = get_object_or_404(Membership, id=product_id)
             if product.id == 2:
                 product.membership_type = 'pro'
+
         else:
             donation_amount = request_data['donation']
             product = Donation.objects.create(
@@ -216,18 +206,20 @@ class AddToCartAPIView(ListAPIView):
                             'message': 'Item already in your cart.',
                         }
                         return JsonResponse(context, status=status.HTTP_200_OK)
+
                 cart.add_item(product)
                 context = {
                     'message': 'Item added to cart',
-                    'subscription_id': subscription_id
                 }
                 return JsonResponse(context, status=status.HTTP_200_OK)
+
             else:
                 cart.add_item(product)
                 context = {
                     'message': 'Item added to cart.',
                 }
                 return JsonResponse(context, status=status.HTTP_200_OK)
+
         else:
             context = {
                 'message': 'User cart not found',
@@ -245,9 +237,11 @@ class OrderDetailAPIView(APIView):
         orders = {}
         try:
             pending_order = get_active_cart(request)
+
             if pending_order is not None and pending_order.is_paid is False:
                 items = pending_order.items.all()
                 total = sum(item.product.price for item in items)
+
                 for num, item in enumerate(items, start=0):
                     orders[num] = {
                         str(items[num]): str(item.product),
@@ -269,7 +263,8 @@ class OrderDetailAPIView(APIView):
                 return Response(context, status=status.HTTP_200_OK)
 
         except Exception:
-            print(traceback.print_exc())
+            context = {'message': 'No active cart found'}
+            return Response(context, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CartRemoveItemAPIView(RetrieveAPIView):
@@ -279,34 +274,38 @@ class CartRemoveItemAPIView(RetrieveAPIView):
 
     def post(self, request):
         request_data = json.loads(request.body.decode('utf-8'))
-        print(request_data)
 
         product_id = request_data['product_id']
         product_object = request_data['product']
+
         cart = get_active_cart(request)
 
-        if product_object == 'ticket':
+        if product_object == app_type['ticket']:
             product = get_object_or_404(
                 Ticket, id=product_id)
-        elif product_object == 'membership':
+
+        elif product_object == app_type['membership']:
             product = get_object_or_404(
                 Membership, id=product_id)
             default_membership = get_object_or_404(
                 Membership, id=1)
             update_selected_membership(request, default_membership)
-        elif product_object == 'donation':
+
+        elif product_object == app_type['donation']:
             product = get_object_or_404(
                 Donation, user=request.user, id=product_id)
 
         try:
+
             product_content_type = ContentType.objects.get_for_model(product)
             pending_order = CartItem.objects.filter(
                 product_content_type=product_content_type, product_object_id=product_id)
 
             if pending_order.exists():
                 cartItem = pending_order.first()
-                if product_content_type == 'donation':
+                if product_content_type == app_type['donation']:
                     product.delete()
+
                 else:
                     cartItem.delete()
                 context = {
@@ -320,7 +319,8 @@ class CartRemoveItemAPIView(RetrieveAPIView):
                 return Response(context, status=status.HTTP_404_NOT_FOUND)
 
         except Exception:
-            print(traceback.print_exc())
+            context = {'message': 'Could not remove item from cart'}
+            return Response(context, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PaymentAPIView(APIView):
@@ -335,14 +335,11 @@ class PaymentAPIView(APIView):
         total = sum(item.product.price for item in items) * 100
 
         user_profile = UserProfile.objects.get(user=request.user)
-
         customer = get_stripe_customer(request, token)
 
         if customer is not None:
-
             try:
                 if customer:
-
                     charge = stripe.Charge.create(
                         amount=round(total),
                         currency="eur",
@@ -354,7 +351,6 @@ class PaymentAPIView(APIView):
                         currency="eur",
                         source=token
                     )
-
                 payment = CartPayment()
                 payment.stripe_charge_id = charge['id']
                 payment.user = self.request.user
@@ -362,9 +358,9 @@ class PaymentAPIView(APIView):
                 pending_order.is_paid = True
 
                 if pending_order.is_paid:
+
                     pending_order.save()
                     payment.save()
-
                     paid_cart = get_paid_cart(request)
                     paid_cart.delete()
 
@@ -372,17 +368,29 @@ class PaymentAPIView(APIView):
                     if user_profile is not None:
                         for item in items:
 
-                            if item.product_content_type.name == 'membership':
+                            if item.product_content_type.name == app_type['membership']:
                                 free_membership = get_object_or_404(
                                     Membership, id=1)
                                 membership = get_membership(item)
+
                                 user_profile.active_membership.add(membership)
                                 user_profile.active_membership.remove(
                                     free_membership)
                                 user_profile.save()
-                                updated_user_membership(request, request_data)
 
-                            elif item.product_content_type.name == 'ticket':
+                                subscription_id = get_subscription_id(
+                                    request, membership.id, customer)
+
+                                if subscription_id is not None:
+                                    updated_user_membership(
+                                        request, subscription_id)
+                                else:
+                                    context = {
+                                        'message': "no subscription id found"
+                                    }
+                                    return Response(context, status=status.HTTP_400_BAD_REQUEST)
+
+                            elif item.product_content_type.name == app_type['ticket']:
                                 ticket = get_ticket(item)
                                 user_profile.paid_tickets.add(ticket)
                                 user_profile.save()
@@ -393,7 +401,7 @@ class PaymentAPIView(APIView):
                                 ticket_solution.status = 'doing'
                                 ticket_solution.save()
 
-                            else:
+                            elif item.product_content_type.name == app_type['donation']:
 
                                 donation = get_object_or_404(
                                     Donation, is_paid=False, user=request.user)
