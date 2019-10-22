@@ -177,17 +177,6 @@ export const addOrderToStorage = (value, option) => {
   }
 };
 
-export const createLocalStorageCart = () => {
-  // const orders = JSON.stringify({
-  //   membershipOrder: {},
-  //   ticketOrders: []
-  // });
-  // if (cart === null) {
-  //   return localStorage.setItem("cart", orders);
-  // }
-  // return;
-};
-
 export const getWidth = () => {
   const isSSR = typeof window === "undefined";
 
