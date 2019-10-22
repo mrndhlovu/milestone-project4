@@ -20,7 +20,7 @@ import {
 } from "../selectors/appSelectors";
 
 import StyledMessage from "../components/sharedComponents/StyledMessage";
-import TicketComments from "./CommentsContainer";
+import TicketComments, { CommentsContainer } from "./CommentsContainer";
 import TicketDetail from "../components/tickets/TicketDetail";
 import TicketSolution from "../components/tickets/TicketSolution";
 import { APP_TYPE } from "../constants/constants";
@@ -134,7 +134,11 @@ export class TicketDetailContainer extends Component {
         )}
 
         {isProMember ? (
-          <TicketComments comments={comments} ticketId={id} />
+          <CommentsContainer
+            comments={comments}
+            ticketId={id}
+            isTicket={true}
+          />
         ) : (
           <StyledMessage
             message="To view and make comments you need a "
