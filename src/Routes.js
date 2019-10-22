@@ -19,6 +19,7 @@ import BlogContainer from "./containers/BlogContainer";
 const BaseRouter = () => {
   return (
     <Switch>
+      <Route exact path="/" component={HomeContainer} />
       <Route exact path="/home" component={HomeContainer} />
       <Route path="/login" component={LoginContainer} />
       <Route path="/signup" component={SignupContainer} />
