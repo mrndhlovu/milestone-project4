@@ -13,9 +13,11 @@ export const CommentReply = ({ comments, parentId }) => {
       parentId === parent && (
         <Fragment key={index}>
           <Comment.Group>
-            <Comment.Author as="a">{username}</Comment.Author>
+            <Comment.Author as="a">{username.toUpperCase()}</Comment.Author>
             <Comment.Metadata>
-              <Header as="h6">{getFormatedDate(timestamp)}</Header>
+              <Header as="h5" color="grey">
+                {getFormatedDate(timestamp)}
+              </Header>
             </Comment.Metadata>
             <Comment.Text>{comment}</Comment.Text>
           </Comment.Group>

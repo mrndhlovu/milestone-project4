@@ -16,11 +16,12 @@ export class CommentsContainer extends Component {
       comment: "",
       reply: "",
       showReplyInput: false,
-      buttonDisabled: true
+      buttonDisabled: true,
+      activeIndex: 0
     };
     this.handleCreateComment = this.handleCreateComment.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.hideReplyInput = this.hideReplyInput.bind(this);
+    this.handleReplyClick = this.handleReplyClick.bind(this);
     this.handleOnBlur = this.handleOnBlur.bind(this);
   }
 
@@ -55,9 +56,10 @@ export class CommentsContainer extends Component {
       createComment,
       createReply,
       profile,
-      isArticle
+      isArticle,
+      isTicket
     } = this.props;
-    const { id } = profile.data;
+    const id = profile.dataReceived && profile.data.id;
 
     if (isArticle && parentId !== null) {
       const replyBody = {
@@ -77,7 +79,7 @@ export class CommentsContainer extends Component {
       createComment(commentBody);
     }
 
-    if (!isArticle && parentId !== null) {
+    if (isTicket && parentId !== null) {
       const replyBody = {
         user: id,
         object_id: ticketId,
@@ -87,7 +89,7 @@ export class CommentsContainer extends Component {
       };
 
       createReply(replyBody);
-    } else if (!isArticle) {
+    } else if (isTicket) {
       const commentBody = {
         object_id: ticketId,
         comment: comment,
@@ -98,17 +100,15 @@ export class CommentsContainer extends Component {
     }
   }
 
-  hideReplyInput() {
-    this.setState({ showReplyInput: !this.state.showReplyInput });
+  handleReplyClick(activeIndex) {
+    this.setState({ showReplyInput: !this.state.showReplyInput, activeIndex });
   }
 
   render() {
     const { comments } = this.props;
-    const { showReplyInput, buttonDisabled } = this.state;
+    const { showReplyInput, buttonDisabled, activeIndex } = this.state;
 
-    const hasComments = Object.keys(comments).length;
-
-    console.log(hasComments);
+    const hasComments = Object.keys(comments).length || 0;
 
     return (
       <Segment>
@@ -116,12 +116,13 @@ export class CommentsContainer extends Component {
           {hasComments > parseInt(0) || comments !== undefined ? (
             <CommentsBody
               comments={comments}
-              hideReplyInput={this.hideReplyInput}
+              handleReplyClick={this.handleReplyClick}
               handleSubmit={this.handleSubmit}
               handleCreateComment={this.handleCreateComment}
               showReplyInput={showReplyInput}
               buttonDisabled={buttonDisabled}
               handleOnBlur={this.handleOnBlur}
+              activeIndex={activeIndex}
             />
           ) : (
             <Message>No commets yet.</Message>
@@ -133,12 +134,12 @@ export class CommentsContainer extends Component {
               onChange={e => this.handleCreateComment(e)}
             />
             <Button
-              content="add a comment"
+              content="Comment"
               labelPosition="left"
               disabled={buttonDisabled}
               icon="edit"
               size="small"
-              primary
+              color="orange"
               onClick={() => this.handleSubmit(null)}
             />
           </Form>

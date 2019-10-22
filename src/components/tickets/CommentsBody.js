@@ -1,6 +1,13 @@
 import React, { Fragment } from "react";
 
-import { Divider, Icon, Comment, Message, Header } from "semantic-ui-react";
+import {
+  Divider,
+  Icon,
+  Comment,
+  Message,
+  Header,
+  Segment
+} from "semantic-ui-react";
 
 import CommentReply from "../tickets/CommentReply";
 import CommentReplyInput from "../tickets/CommentReplyInput";
@@ -8,12 +15,13 @@ import { getFormatedDate } from "../../utils/appUtils";
 
 const CommentsBody = ({
   comments,
-  hideReplyInput,
+  handleReplyClick,
   handleCreateComment,
   handleSubmit,
   showReplyInput,
   buttonDisabled,
-  handleOnBlur
+  handleOnBlur,
+  activeIndex
 }) => {
   if (comments !== undefined) {
     return (
@@ -26,20 +34,25 @@ const CommentsBody = ({
 
           return (
             !parent && (
-              <Fragment key={index}>
+              <Segment key={index}>
                 <Comment>
-                  <Icon disabled name="user" />
+                  <Icon disabled name="user" color="orange" />
                   <Comment.Content>
                     <Comment.Author as="a">
-                      <Header as="h5">{username}</Header>
+                      <Header as="h5" color="orange">
+                        {username.toUpperCase()}
+                      </Header>
                     </Comment.Author>
                     <Comment.Metadata>
-                      <Header as="h6">{getFormatedDate(timestamp)}</Header>
+                      <Header as="h5">{getFormatedDate(timestamp)}</Header>
                     </Comment.Metadata>
-                    <Comment.Text>{comment}</Comment.Text>
+                    <Comment.Text as="h4">{comment}</Comment.Text>
                     <Comment.Actions>
-                      <Comment.Text as="a" onClick={() => hideReplyInput()}>
-                        <Header as="h5" color="blue">
+                      <Comment.Text
+                        as="a"
+                        onClick={() => handleReplyClick(index)}
+                      >
+                        <Header as="h5" color="teal">
                           Reply
                         </Header>
                       </Comment.Text>
@@ -51,11 +64,11 @@ const CommentsBody = ({
                   handleCreateComment={handleCreateComment}
                   handleSubmit={handleSubmit}
                   id={id}
-                  showReplyInput={showReplyInput}
+                  showReplyInput={activeIndex === index && showReplyInput}
                   handleOnBlur={handleOnBlur}
                   buttonDisabled={buttonDisabled}
                 />
-              </Fragment>
+              </Segment>
             )
           );
         })}

@@ -20,14 +20,13 @@ const CommentReplyInput = ({
           onClick={() => handleOnBlur()}
         />
         <Button
-          content="reply"
+          content="Reply"
           disabled={buttonDisabled}
           onClick={() => handleSubmit(id)}
           labelPosition="left"
           icon="edit"
+          color="teal"
           size="tiny"
-          color="linkedin"
-          primary
         />
       </Form>
     )
