@@ -33,7 +33,7 @@ def get_parent_id(request):
 
 
 def get_app(request, data):
-    if data['content_type'] == 'Ticket':
+    if data['content_type'] == 'ticket':
         app = get_object_or_404(Ticket, id=data['object_id'])
         return app
 
