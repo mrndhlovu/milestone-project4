@@ -4,7 +4,7 @@ import { Statistic, Icon, Header } from "semantic-ui-react";
 
 const TicketDetailStats = ({
   handleVoteClick,
-  isProMember,
+  allAccess,
   views,
   votes,
   id
@@ -22,7 +22,7 @@ const TicketDetailStats = ({
           color="grey"
           as="i"
           fitted
-          disabled={!isProMember}
+          disabled={!allAccess}
           onClick={() => handleVoteClick(id)}
         />
       </Statistic>

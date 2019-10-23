@@ -38,11 +38,11 @@ export class TicketsListContainer extends Component {
 
   handleVote(id) {
     const { user } = this.props;
-    const isProMember =
+    const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
 
-    if (isProMember) {
+    if (allAccess) {
       this.props.updatedTicketVote(id);
     }
   }

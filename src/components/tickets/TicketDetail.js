@@ -10,20 +10,11 @@ const TicketDetail = ({
   isLoading,
   data,
   handleTicketDelete,
-  isProMember,
+  allAccess,
   dataReceived,
   handleVoteClick
 }) => {
-  const {
-    title,
-    description,
-    votes,
-    views,
-    id,
-    comments,
-    owner,
-    is_bug
-  } = data;
+  const { title, description, votes, views, id, owner } = data;
   return isLoading ? (
     <UILoadingSpinner />
   ) : (
@@ -35,7 +26,7 @@ const TicketDetail = ({
           </Segment>
 
           <Segment>
-            {isProMember && (
+            {allAccess && (
               <EditButtons
                 handleTicketDelete={() => handleTicketDelete()}
                 ticketId={id}
@@ -51,7 +42,7 @@ const TicketDetail = ({
         <Segment>
           <TicketDetailStats
             handleVoteClick={() => handleVoteClick(id)}
-            isProMember={isProMember}
+            allAccess={allAccess}
             votes={votes}
             views={views}
             id={id}

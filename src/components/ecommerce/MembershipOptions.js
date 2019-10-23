@@ -21,7 +21,7 @@ const MembershipOptions = ({
   buttonTextFree,
   history,
   isAuthenticated,
-  isProMember
+  allAccess
 }) => {
   const renderOptions = () => {
     return Object.keys(memberships).map(key => {

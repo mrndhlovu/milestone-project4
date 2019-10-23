@@ -76,10 +76,10 @@ export class CreateTicketContainer extends Component {
       user
     } = this.props;
     const { isLoading, isBug, isFeature, value } = this.state;
-    const isProMember =
+    const allAccess =
       user.dataReceived && user.data.current_membership.membership;
 
-    if (!isProMember) {
+    if (!allAccess) {
       return <Redirect to="/login" />;
     }
 

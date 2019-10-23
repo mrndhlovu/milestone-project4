@@ -21,7 +21,7 @@ export class MembershipContainer extends Component {
       buttonTextPro: "Add to cart",
       buttonDisabled: true,
       redirectParam: "",
-      isProMember: ""
+      allAccess: ""
     };
     this.handleAddToCart = this.handleAddToCart.bind(this);
   }
@@ -47,11 +47,10 @@ export class MembershipContainer extends Component {
 
     if (prevProps.user !== user) {
       if (user.data && user.data.username) {
-        const isProMember =
-          user.data.current_membership.membership.is_pro_member;
+        const allAccess = user.data.current_membership.membership.is_pro_member;
 
-        this.setState({ isProMember });
-        if (!isProMember) {
+        this.setState({ allAccess });
+        if (!allAccess) {
           this.setState({ buttonTextFree: "Your current membership" });
         }
       }
@@ -78,7 +77,7 @@ export class MembershipContainer extends Component {
       buttonTextPro,
       buttonDisabled,
       redirectParam,
-      isProMember
+      allAccess
     } = this.state;
 
     return (
@@ -94,7 +93,7 @@ export class MembershipContainer extends Component {
           buttonDisabled={buttonDisabled}
           redirectParam={redirectParam}
           history={history}
-          isProMember={isProMember}
+          allAccess={allAccess}
         />
       </Fragment>
     );

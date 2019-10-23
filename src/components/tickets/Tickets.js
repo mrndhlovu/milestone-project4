@@ -14,7 +14,7 @@ export const Tickets = ({
   user,
   buttonText
 }) => {
-  const isProMember =
+  const allAccess =
     user.dataReceived && user.data.current_membership.membership.is_pro_member;
 
   const renderTicketCards = () => {
@@ -66,7 +66,7 @@ export const Tickets = ({
                   <TicketsIcons votes={votes} status={status} views={views} />
 
                   <Button
-                    disabled={!isProMember && is_bug}
+                    disabled={!allAccess && is_bug}
                     floated="right"
                     size="tiny"
                     color="orange"
@@ -76,7 +76,7 @@ export const Tickets = ({
                   >
                     {!is_bug
                       ? buttonText
-                      : isProMember
+                      : allAccess
                       ? "Vote"
                       : "Upgrade to PRO to Vote"}
                   </Button>

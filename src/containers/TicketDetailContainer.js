@@ -49,16 +49,11 @@ export class TicketDetailContainer extends Component {
     }, 100);
   }
 
-  componentDidUpdate(prevProps, nextProps) {
+  componentDidUpdate(prevProps) {
     const { ticket, user } = this.props;
 
-    if (prevProps.ticket.data !== ticket.data) {
-      const { comments } = ticket.data;
-
-      // console.log(comments);
-
-      if (prevProps.comments !== nextProps.comments) {
-        // console.log(comments);
+    if (prevProps.ticket.dataReceived !== ticket.dataReceived) {
+      if (user.isAuthenticated) {
       }
     }
   }
@@ -103,7 +98,7 @@ export class TicketDetailContainer extends Component {
       user
     } = this.props;
     const { activeIndex, index, buttonText } = this.state;
-    const isProMember =
+    const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
 
@@ -111,7 +106,7 @@ export class TicketDetailContainer extends Component {
       dataReceived && (
         <Container style={{ paddingTop: 50 }}>
           <TicketDetail
-            isProMember={isProMember}
+            allAccess={allAccess}
             data={data}
             isLoading={isLoading}
             buttonText={buttonText}
@@ -134,7 +129,7 @@ export class TicketDetailContainer extends Component {
             />
           )}
 
-          {dataReceived && isProMember ? (
+          {dataReceived && allAccess ? (
             <CommentsContainer
               comments={comments}
               ticketId={data.id}
