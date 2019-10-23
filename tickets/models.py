@@ -49,16 +49,13 @@ class Ticket(models.Model):
 
         comments = Comment.objects.filter_by_instance(
             self).values('comment', 'user_id', 'timestamp', 'content_type', 'parent', 'object_id', 'id')
-
-        newComments = {}
-
+        comments_obj = {}
         for num, comment in enumerate(comments, start=0):
             user = User.objects.get(pk=comment['user_id'])
-
-            newComments['comment-' + str(num)] = comments[num]
+            comments_obj[num] = comments[num]
             comment.update({'username': user.username})
 
-        return newComments
+        return comments_obj
 
     @property
     def get_content_type(self):
