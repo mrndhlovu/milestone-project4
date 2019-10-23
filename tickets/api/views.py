@@ -33,6 +33,23 @@ class TicketDetailView(RetrieveAPIView):
     queryset = Ticket.objects.all()
     permission_classes = [permissions.AllowAny]
 
+    def get(self, request, id=None, format=None):
+
+        instance = Ticket.objects.filter(id=id)
+
+        if instance.exists():
+            instance_comments = Ticket.objects.get(id=id)
+            context = {
+                'data': instance.values()[0],
+                'comments': instance_comments.comments
+            }
+            return JsonResponse(context, status=status.HTTP_200_OK)
+        else:
+            context = {
+                'message': 'Ticket not found'
+            }
+            return JsonResponse(context, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CreateTicketView(CreateAPIView):
     serializer_class = TicketSerializer
