@@ -49,11 +49,16 @@ export class TicketDetailContainer extends Component {
     }, 100);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, nextProps) {
     const { ticket, user } = this.props;
 
-    if (prevProps.ticket.dataReceived !== ticket.dataReceived) {
-      if (user.isAuthenticated) {
+    if (prevProps.ticket.data !== ticket.data) {
+      const { comments } = ticket.data;
+
+      // console.log(comments);
+
+      if (prevProps.comments !== nextProps.comments) {
+        // console.log(comments);
       }
     }
   }
