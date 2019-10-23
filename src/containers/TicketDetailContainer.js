@@ -92,7 +92,7 @@ export class TicketDetailContainer extends Component {
       ticket: {
         isLoading,
         dataReceived,
-        data: { title, description, votes, views, id, comments, owner, is_bug }
+        data: { data, comments }
       },
       solution,
       user
@@ -103,50 +103,47 @@ export class TicketDetailContainer extends Component {
       user.data.current_membership.membership.is_pro_member;
 
     return (
-      <Container style={{ paddingTop: 50 }}>
-        <TicketDetail
-          isProMember={isProMember}
-          description={description}
-          votes={votes}
-          title={title}
-          views={views}
-          id={id}
-          isLoading={isLoading}
-          buttonText={buttonText}
-          handleTicketDelete={this.handleTicketDelete}
-          owner={owner}
-          dataReceived={dataReceived}
-          handleVoteClick={this.handleVoteClick}
-        />
-
-        {!is_bug && (
-          <TicketSolution
-            handleAccordionClick={this.handleAccordionClick}
-            activeIndex={activeIndex}
-            index={index}
-            solution={solution.data}
-            isAuthenticated={user.isAuthenticated}
-            addToCart={this.handleAddToCart}
-            id={id}
+      dataReceived && (
+        <Container style={{ paddingTop: 50 }}>
+          <TicketDetail
+            isProMember={isProMember}
+            data={data}
+            isLoading={isLoading}
             buttonText={buttonText}
-            handleAddToCart={this.handleAddToCart}
+            handleTicketDelete={this.handleTicketDelete}
+            dataReceived={dataReceived}
+            handleVoteClick={this.handleVoteClick}
           />
-        )}
 
-        {dataReceived && isProMember ? (
-          <CommentsContainer
-            comments={comments}
-            ticketId={id}
-            isTicket={true}
-          />
-        ) : (
-          <StyledMessage
-            message="To view and make comments you need a "
-            linkText="Unicorn Pro Account."
-            redirect="/pricing"
-          />
-        )}
-      </Container>
+          {!data.is_bug && (
+            <TicketSolution
+              handleAccordionClick={this.handleAccordionClick}
+              activeIndex={activeIndex}
+              index={index}
+              solution={solution.data}
+              isAuthenticated={user.isAuthenticated}
+              addToCart={this.handleAddToCart}
+              id={data.id}
+              buttonText={buttonText}
+              handleAddToCart={this.handleAddToCart}
+            />
+          )}
+
+          {dataReceived && isProMember ? (
+            <CommentsContainer
+              comments={comments}
+              ticketId={data.id}
+              isTicket={true}
+            />
+          ) : (
+            <StyledMessage
+              message="To view and make comments you need a "
+              linkText="Unicorn Pro Account."
+              redirect="/pricing"
+            />
+          )}
+        </Container>
+      )
     );
   }
 }
