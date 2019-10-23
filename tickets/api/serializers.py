@@ -22,13 +22,3 @@ class TicketDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = '__all__'
-
-    def to_representation(self, instance):
-        rep = super(TicketDetailSerializer, self).to_representation(instance)
-
-        rep['username'] = instance.owner.username
-        rep['votes'] = instance.votes.count()
-        rep['comments'] = instance.comments
-        rep['views'] = instance.get_ticket_views
-
-        return rep
