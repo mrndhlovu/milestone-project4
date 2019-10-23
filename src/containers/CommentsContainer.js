@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -26,11 +26,10 @@ export class CommentsContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { userComments } = this.props;
+    const { commentsList } = this.props;
 
-    if (prevProps.userComments !== userComments) {
-      const { dataReceived } = userComments;
-      dataReceived && window.location.reload();
+    if (prevProps.commentsList !== commentsList) {
+      commentsList.dataReceived && window.location.reload();
     }
   }
 
@@ -151,7 +150,7 @@ export class CommentsContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    userComments: getComments(state),
+    commentsList: getComments(state),
     profile: getUserProfile(state)
   };
 };
