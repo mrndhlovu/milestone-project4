@@ -40,7 +40,6 @@ export class CreateTicketContainer extends Component {
 
     if (prevProps.user !== user) {
       if (user.data && user.dataReceived) {
-        const { is_pro_member } = user.data.current_membership.membership;
       }
     }
   }
