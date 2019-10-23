@@ -24,8 +24,7 @@ export class CreateTicketContainer extends Component {
     this.state = {
       isLoading: false,
       isFeature: false,
-      isBug: true,
-      isProMember: false
+      isBug: true
     };
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -42,7 +41,6 @@ export class CreateTicketContainer extends Component {
     if (prevProps.user !== user) {
       if (user.data && user.dataReceived) {
         const { is_pro_member } = user.data.current_membership.membership;
-        this.setState({ isProMember: is_pro_member });
       }
     }
   }
@@ -70,8 +68,17 @@ export class CreateTicketContainer extends Component {
   }
 
   render() {
-    const { handleSubmit, field, errorAlert, valid, pristine } = this.props;
-    const { isLoading, isBug, isFeature, value, isProMember } = this.state;
+    const {
+      handleSubmit,
+      field,
+      errorAlert,
+      valid,
+      pristine,
+      user
+    } = this.props;
+    const { isLoading, isBug, isFeature, value } = this.state;
+    const isProMember =
+      user.dataReceived && user.data.current_membership.membership;
 
     if (!isProMember) {
       return <Redirect to="/login" />;
