@@ -6,7 +6,7 @@ app_name = 'tickets'
 
 urlpatterns = [
     path('', TicketListView.as_view()),
-    path('<pk>/', TicketDetailView.as_view()),
+    path('<id>/', TicketDetailView.as_view()),
     path('update/<pk>/', TicketUpdateView.as_view()),
     path('delete/<pk>/', TicketDeleteView.as_view()),
     path('api/create/', CreateTicketView.as_view()),
