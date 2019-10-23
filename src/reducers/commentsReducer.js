@@ -12,11 +12,17 @@ import { hasError, fetchingData, dataReceived } from "../utils/appReducersUtil";
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case CREATING_REPLY || CREATING_COMMENT:
+    case CREATING_COMMENT:
       return fetchingData(state, action);
-    case CREATED_COMMENT || RECEIVED_REPLY:
+    case RECEIVED_REPLY:
       return dataReceived(state, action);
-    case CREATE_COMMENT_ERROR || REPLY_ERROR:
+    case REPLY_ERROR:
+      return hasError(state, action);
+    case CREATING_REPLY:
+      return fetchingData(state, action);
+    case CREATED_COMMENT:
+      return dataReceived(state, action);
+    case CREATE_COMMENT_ERROR:
       return hasError(state, action);
     default:
       return state;
