@@ -15,6 +15,7 @@ import TicketDetailContainer from "./containers/TicketDetailContainer";
 import TicketsListContainer from "./containers/TicketsListContainer";
 import UserProfileContainer from "./containers/UserProfileContainer";
 import BlogContainer from "./containers/BlogContainer";
+import CreateArticleContainer from "./containers/CreateArticleContainer";
 
 const BaseRouter = () => {
   return (
@@ -33,6 +34,7 @@ const BaseRouter = () => {
       <Route path="/blog" component={BlogContainer} />
       <AuthRouteCheck path="/article/:id" component={ArticleDetailContainer} />
       <AuthRouteCheck path="/create-ticket" component={CreateTicketContainer} />
+      <AuthRouteCheck path="/new-article" component={CreateArticleContainer} />
       <AuthRouteCheck path="/edit-ticket/:id" component={EditTicketContainer} />
     </Switch>
   );
