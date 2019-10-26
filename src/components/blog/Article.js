@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Card, Image, Icon } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
+import EditButtons from "../sharedComponents/EditButtons";
 
 const Article = ({
   title,
@@ -15,8 +16,12 @@ const Article = ({
   id,
   description,
   isArticleDetail,
-  handleLikeClick
+  handleLikeClick,
+  ownerId,
+  userId
 }) => {
+  const isOwner = userId === ownerId;
+
   return (
     <div>
       <Card fluid>
@@ -44,9 +49,10 @@ const Article = ({
             />
             {likes}
           </span>
-
           <Icon name="eye" />
           {views}
+
+          <EditButtons isOwner={isOwner} />
         </Card.Content>
       </Card>
     </div>
