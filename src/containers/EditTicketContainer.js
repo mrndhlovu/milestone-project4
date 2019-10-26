@@ -27,7 +27,7 @@ class EditTicketContainer extends Component {
     const { editTicket, ticket } = this.props;
 
     if (prevProps.ticket.data !== ticket.data) {
-      this.setState({ editFields: ticket.data });
+      this.setState({ editFields: ticket.data.data });
     }
     if (prevProps.editTicket.data !== editTicket.data) {
       const { id } = this.props.match.params;
@@ -36,10 +36,11 @@ class EditTicketContainer extends Component {
   }
 
   handleFieldChange = (fieldName, event) => {
+    const { editFields } = this.state;
     event.preventDefault();
     this.setState({
       editFields: {
-        ...this.state.editFields,
+        ...editFields,
         [fieldName]: event.target.value
       }
     });
@@ -65,32 +66,39 @@ class EditTicketContainer extends Component {
 
   render() {
     const { updating } = this.state;
-    const { ticket } = this.props;
+    const {
+      ticket,
+      ticket: {
+        data: { data }
+      }
+    } = this.props;
 
     return (
-      <Container style={{ paddingTop: 20 }}>
-        <Message
-          header="Edit your Ticket"
-          content="Fill out the form below to create a ticket"
-        />
-        <Segment>
-          <Form>
-            <EditTicketFields
-              ticket={ticket.data}
-              handleFieldChange={this.handleFieldChange}
-            />
-            <Button
-              loading={updating}
-              size="small"
-              color="blue"
-              type="submit"
-              onClick={this.handleSubmitClick}
-            >
-              Submit
-            </Button>
-          </Form>
-        </Segment>
-      </Container>
+      ticket.dataReceived && (
+        <Container style={{ paddingTop: 20 }}>
+          <Message
+            header="Edit your Ticket"
+            content="Fill out the form below to create a ticket"
+          />
+          <Segment>
+            <Form>
+              <EditTicketFields
+                ticket={data}
+                handleFieldChange={this.handleFieldChange}
+              />
+              <Button
+                loading={updating}
+                size="small"
+                color="blue"
+                type="submit"
+                onClick={this.handleSubmitClick}
+              >
+                Submit
+              </Button>
+            </Form>
+          </Segment>
+        </Container>
+      )
     );
   }
 }
