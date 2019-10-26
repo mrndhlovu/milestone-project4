@@ -34,6 +34,7 @@ const TicketDetail = ({
                 handleTicketDelete={() => handleTicketDelete()}
                 id={id}
                 isOwner={isOwner}
+                isTicket={true}
               />
             )}
           </Segment>
