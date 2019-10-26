@@ -41,6 +41,7 @@ class TicketDetailView(RetrieveAPIView):
             instance_comments = Ticket.objects.get(id=id)
             context = {
                 'data': instance.values()[0],
+                'owner': str(instance[0].owner),
                 'comments': instance_comments.comments
             }
             return JsonResponse(context, status=status.HTTP_200_OK)
@@ -64,6 +65,7 @@ class CreateTicketView(CreateAPIView):
         data['username'] = current_ticket_owner.id
 
         serializer = self.get_serializer(data=data)
+
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -122,6 +124,7 @@ class TicketUpdateView(UpdateAPIView):
         current_ticket_owner = get_ticket_owner(request)
 
         data = request.data.copy()
+
         data['owner'] = current_ticket_owner.id
         data['username'] = current_ticket_owner.id
 
