@@ -8,14 +8,26 @@ import {
   getUserProfile,
   getArticleDetail
 } from "../selectors/appSelectors";
-import { requestArticleDetail } from "../actions/BlogActions";
+import { requestArticleDetail, deleteArticle } from "../actions/BlogActions";
 import ArticleDetail from "../components/blog/ArticleDetail";
 import CommentsContainer from "./CommentsContainer";
 
 class ArticleDetailContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.handleArticleDelete = this.handleArticleDelete.bind(this);
+  }
+
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.requestArticleDetail(id);
+  }
+
+  handleArticleDelete() {
+    const { id } = this.props.match.params;
+    this.props.deleteArticle(id);
+    setTimeout(this.props.history.push(`/blog`), 1000);
   }
 
   render() {
@@ -28,6 +40,7 @@ class ArticleDetailContainer extends Component {
             article={article.data}
             owner={article.owner}
             user={user.data}
+            handleArticleDelete={this.handleArticleDelete}
           />
         )}
         {article.dataReceived && (
@@ -52,5 +65,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { requestArticleDetail }
+  { requestArticleDetail, deleteArticle }
 )(ArticleDetailContainer);
