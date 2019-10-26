@@ -11,6 +11,7 @@ import {
 import { requestArticleDetail, deleteArticle } from "../actions/BlogActions";
 import ArticleDetail from "../components/blog/ArticleDetail";
 import CommentsContainer from "./CommentsContainer";
+import StyledMessage from "../components/sharedComponents/StyledMessage";
 
 class ArticleDetailContainer extends Component {
   constructor(props) {
@@ -44,6 +45,9 @@ class ArticleDetailContainer extends Component {
     const { article, user } = this.props;
     const { showConfirmModal } = this.state;
 
+    const allAccess =
+      user.dataReceived && user.data.current_membership.membership.type;
+
     return (
       <Container style={{ paddingTop: 20 }}>
         <Confirm
@@ -61,11 +65,17 @@ class ArticleDetailContainer extends Component {
             handleDelete={this.handleDelete}
           />
         )}
-        {article.dataReceived && (
+        {article.dataReceived && allAccess ? (
           <CommentsContainer
             comments={article.data.comments}
             articleId={article.data.data.id}
             isArticle={true}
+          />
+        ) : (
+          <StyledMessage
+            redirect="/pricing"
+            message="Access to comments requires a "
+            linkText="Unicorn PRO Account"
           />
         )}
       </Container>

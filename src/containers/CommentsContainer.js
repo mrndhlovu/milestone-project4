@@ -2,11 +2,22 @@ import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { Button, Comment, Form, Segment, Message } from "semantic-ui-react";
+import {
+  Button,
+  Comment,
+  Form,
+  Segment,
+  Message,
+  Header
+} from "semantic-ui-react";
 
 import { COMMENT_TYPE, APP_TYPE } from "../constants/constants";
 import { createComment, createReply } from "../actions/TicketActions";
-import { getUserProfile, getComments } from "../selectors/appSelectors";
+import {
+  getUserProfile,
+  getComments,
+  getUser
+} from "../selectors/appSelectors";
 import CommentsBody from "../components/tickets/CommentsBody";
 
 export class CommentsContainer extends Component {
@@ -107,12 +118,15 @@ export class CommentsContainer extends Component {
     const { comments } = this.props;
     const { showReplyInput, buttonDisabled, activeIndex } = this.state;
 
-    const hasComments = Object.keys(comments).length || 0;
+    const commentCount = Object.keys(comments).length || 0;
 
     return (
       <Segment>
+        <Header
+          content={`${commentCount} Comment${commentCount > 1 ? "s" : ""}`}
+        />
         <Comment.Group>
-          {hasComments > parseInt(0) || comments !== undefined ? (
+          {commentCount > parseInt(0) && (
             <CommentsBody
               comments={comments}
               handleReplyClick={this.handleReplyClick}
@@ -123,13 +137,11 @@ export class CommentsContainer extends Component {
               handleOnBlur={this.handleOnBlur}
               activeIndex={activeIndex}
             />
-          ) : (
-            <Message>No commets yet.</Message>
           )}
 
           <Form reply>
             <Form.TextArea
-              onClick={this.handleOnBlur}
+              onClick={() => this.handleOnBlur()}
               onChange={e => this.handleCreateComment(e)}
             />
             <Button

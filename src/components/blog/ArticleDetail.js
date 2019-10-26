@@ -42,9 +42,6 @@ const ArticleDetail = ({ article, user, handleDelete }) => {
           />
         }
       />
-      <Segment>
-        <CommentsBody />
-      </Segment>
     </div>
   );
 };
