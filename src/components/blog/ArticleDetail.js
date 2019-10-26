@@ -13,7 +13,7 @@ const ArticleDetail = ({ article, user, handleDelete }) => {
     likes,
     created_at,
     id,
-    description,
+    content,
     owner_id
   } = article.data;
 
@@ -30,7 +30,7 @@ const ArticleDetail = ({ article, user, handleDelete }) => {
         views={views}
         username={article.owner}
         isArticleDetail={true}
-        description={description}
+        description={content}
         userId={user.id}
         ownerId={owner_id}
         buttons={
