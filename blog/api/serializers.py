@@ -8,6 +8,15 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = '__all__'
 
+    def to_representation(self, instance):
+        rep = super(ArticleSerializer, self).to_representation(instance)
+
+        rep['username'] = instance.owner.username
+        rep['likes'] = instance.likes.count()
+        rep['short_desc'] = str(instance.snippet)
+
+        return rep
+
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
     class Meta:
