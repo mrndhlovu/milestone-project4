@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 
 import { Container } from "semantic-ui-react";
 
-import { getUser, getUserProfile, getArticle } from "../selectors/appSelectors";
+import {
+  getUser,
+  getUserProfile,
+  getArticleDetail
+} from "../selectors/appSelectors";
 import { requestArticleDetail } from "../actions/BlogActions";
 import ArticleDetail from "../components/blog/ArticleDetail";
 import CommentsContainer from "./CommentsContainer";
@@ -15,11 +19,17 @@ class ArticleDetailContainer extends Component {
   }
 
   render() {
-    const { article } = this.props;
+    const { article, user } = this.props;
 
     return (
       <Container style={{ paddingTop: 20 }}>
-        {article.dataReceived && <ArticleDetail article={article.data} />}
+        {article.dataReceived && (
+          <ArticleDetail
+            article={article.data}
+            owner={article.owner}
+            user={user.data}
+          />
+        )}
         {article.dataReceived && (
           <CommentsContainer
             comments={article.data.comments}
@@ -34,7 +44,7 @@ class ArticleDetailContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    article: getArticle(state),
+    article: getArticleDetail(state),
     user: getUserProfile(state),
     auth: getUser(state)
   };
