@@ -14,7 +14,7 @@ import {
 
 import { logOut } from "../actions/AuthActions";
 
-import HeadingImage from "../components/home/HeadingImage";
+import PageHeader from "../components/sharedComponents/PageHeader";
 import image_1 from "../images/image_1.jpg";
 import image_2 from "../images/image_2.jpg";
 import { getUser } from "../selectors/appSelectors";
@@ -35,7 +35,7 @@ export class HomeContainer extends Component {
   render() {
     return (
       <Fragment>
-        <HeadingImage />
+        <PageHeader />
         <Segment style={{ padding: "3rem 0rem" }} vertical>
           <Grid container stackable verticalAlign="middle" textAlign="center">
             <Grid.Row>

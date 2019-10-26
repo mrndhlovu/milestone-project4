@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-import HeadingImage from "../home/HeadingImage";
+import PageHeader from "../home/PageHeader";
 
 export class Features extends Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export class Features extends Component {
   render() {
     return (
       <Fragment>
-        <HeadingImage />
+        <PageHeader />
         Features
       </Fragment>
     );

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { fetchTicketsList, updatedTicketVote } from "../actions/TicketActions";
 import { addItemToCart, fetchPendingOrder } from "../actions/CheckoutActions";
-import HeadingImage from "../components/home/HeadingImage";
+import PageHeader from "../components/sharedComponents/PageHeader";
 import {
   getTicketList,
   getCartAddOrRemove,
@@ -73,7 +73,7 @@ export class TicketsListContainer extends Component {
 
     return (
       <Fragment>
-        <HeadingImage />
+        <PageHeader />
         <Container style={{ paddingTop: 20 }}>
           <TicketsList
             ticketCount={ticketCount}

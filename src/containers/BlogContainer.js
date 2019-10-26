@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import HomepageHeading from "../components/home/HeadingImage";
+import HomepageHeading from "../components/sharedComponents/PageHeader";
 import BlogList from "../components/blog/BlogList";
 
 import { fetchArticlesList } from "../actions/BlogActions";

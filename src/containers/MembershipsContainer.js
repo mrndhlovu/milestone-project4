@@ -9,7 +9,7 @@ import {
   getCartPendingOrder,
   getUserProfile
 } from "../selectors/appSelectors";
-import HeadingImage from "../components/home/HeadingImage";
+import PageHeader from "../components/sharedComponents/PageHeader";
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
 import { APP_TYPE, MEMBERSHIP_TYPE } from "../constants/constants";
 
@@ -82,7 +82,7 @@ export class MembershipContainer extends Component {
 
     return (
       <Fragment>
-        <HeadingImage />
+        <PageHeader />
         <MembershipOptions
           isAuthenticated={isAuthenticated}
           memberships={memberships}

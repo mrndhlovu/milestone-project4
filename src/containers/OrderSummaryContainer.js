@@ -11,7 +11,7 @@ import { getCartPendingOrder } from "../selectors/appSelectors";
 import Donations from "../components/ecommerce/Donations";
 import { addItemToCart } from "../actions/CheckoutActions";
 import { getWidth } from "../utils/appUtils";
-import HomepageHeading from "../components/home/HeadingImage";
+import PageHeader from "../components/sharedComponents/PageHeader";
 
 const width = getWidth();
 
@@ -60,7 +60,7 @@ export class OrderSummaryContainer extends Component {
     console.log("mobile", width);
     return (
       <Fragment>
-        <HomepageHeading />
+        <PageHeader />
         {count > 0 && (
           <OrderSummary
             pendingOrders={pendingOrders.data}
