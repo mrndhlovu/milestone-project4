@@ -1,5 +1,6 @@
 import { Responsive } from "semantic-ui-react";
 import { USER_PROFILE } from "../constants/constants";
+import { getUserProfile } from "../selectors/appSelectors";
 
 const cart = JSON.parse(localStorage.getItem("cart"));
 
@@ -181,4 +182,26 @@ export const getWidth = () => {
   const isSSR = typeof window === "undefined";
 
   return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
+};
+
+export const validate = values => {
+  const formErrors = {};
+
+  if (!values.title) {
+    formErrors.title = "Enter a title";
+  }
+  if (!values.description) {
+    formErrors.description = "Enter a description";
+  }
+  if (!values.subject) {
+    formErrors.subject = "Enter a subject";
+  }
+  if (!values.prority_level) {
+    formErrors.priority = "Enter a priotrity level";
+  }
+
+  if (!values.content) {
+    formErrors.content = "Article content is required";
+  }
+  return formErrors;
 };
