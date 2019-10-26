@@ -51,6 +51,8 @@ class ArticleDetailView(RetrieveAPIView):
 
         if instance.exists():
             instance_comments = Article.objects.get(id=id)
+            instance[0].get_article_views
+
             context = {
                 'data': instance.values()[0],
                 'owner': str(instance[0].owner),

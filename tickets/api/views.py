@@ -51,6 +51,7 @@ class TicketDetailView(RetrieveAPIView):
 
         instance = Ticket.objects.filter(id=id)
         is_owner = check_is_owner(instance, request)
+        instance[0].get_ticket_views
 
         if instance.exists():
             instance_comments = Ticket.objects.get(id=id)
