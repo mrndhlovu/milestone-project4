@@ -36,4 +36,6 @@ export const getArticleList = state => state.articleList;
 
 export const getSolution = state => state.ticketSolution;
 
-export const getArticle = state => state.articleDetail;
+export const getArticleDetail = state => state.articleDetail;
+
+export const getArticle = state => state.article;
