@@ -28,7 +28,6 @@ export const Tickets = ({
         username,
         status,
         short_desc,
-        price,
         is_bug
       } = ticketsList[key];
 
@@ -41,9 +40,7 @@ export const Tickets = ({
               color={is_bug ? "teal" : "orange"}
               ribbon="right"
             >
-              {is_bug
-                ? `${5 - votes} Bug votes to solution`
-                : `Fix Now Price € ${price}`}
+              {is_bug ? "Bug" : "Feature"}
             </Label>
             <DashboardCard
               header={

@@ -74,29 +74,28 @@ export class TicketsListContainer extends Component {
     return (
       <Fragment>
         <PageHeader />
-        <Container style={{ paddingTop: 20 }}>
-          <TicketsList
-            ticketCount={ticketCount}
-            isLoading={tickets.isLoading}
-            component={
-              ticketsList.data.length > 0 && ticketsList.dataReceived ? (
-                <Tickets
-                  handleAddToCart={this.handleAddToCart}
-                  handleVote={this.handleVote}
-                  ticketsList={tickets}
-                  user={user}
-                  buttonText={buttonText}
-                />
-              ) : (
-                <StyledMessage
-                  message="No tickets at this time."
-                  redirect="/create-ticket"
-                  linkText="Create a ticket"
-                />
-              )
-            }
-          />
-        </Container>
+
+        <TicketsList
+          ticketCount={ticketCount}
+          isLoading={tickets.isLoading}
+          component={
+            ticketsList.data.length > 0 && ticketsList.dataReceived ? (
+              <Tickets
+                handleAddToCart={this.handleAddToCart}
+                handleVote={this.handleVote}
+                ticketsList={tickets}
+                user={user}
+                buttonText={buttonText}
+              />
+            ) : (
+              <StyledMessage
+                message="No tickets at this time."
+                redirect="/create-ticket"
+                linkText="Create a ticket"
+              />
+            )
+          }
+        />
       </Fragment>
     );
   }
