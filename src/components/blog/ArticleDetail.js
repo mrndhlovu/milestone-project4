@@ -36,7 +36,7 @@ const ArticleDetail = ({ article, user, handleArticleDelete }) => {
         buttons={
           <EditButtons
             isOwner={isOwner}
-            handleTicketDelete={() => handleArticleDelete()}
+            handleArticleDelete={handleArticleDelete}
             id={id}
             isTicket={false}
           />
