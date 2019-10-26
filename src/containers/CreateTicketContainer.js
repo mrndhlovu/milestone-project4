@@ -12,7 +12,7 @@ import {
   getTicket,
   getUserProfile
 } from "../selectors/appSelectors";
-import { slugify } from "../utils/appUtils";
+import { slugify, validate } from "../utils/appUtils";
 import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
 import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
@@ -139,25 +139,6 @@ const mapStateToProps = state => {
     user: getUserProfile(state)
   };
 };
-
-function validate(values) {
-  const formErrors = {};
-
-  if (!values.title) {
-    formErrors.title = "Enter a title";
-  }
-  if (!values.description) {
-    formErrors.description = "Enter a description";
-  }
-  if (!values.subject) {
-    formErrors.subject = "Enter a subject";
-  }
-  if (!values.prority_level) {
-    formErrors.priority = "Enter a priotrity level";
-  }
-
-  return formErrors;
-}
 
 export default reduxForm({ validate, form: "CreateTicketForm" })(
   connect(
