@@ -17,7 +17,7 @@ const ArticleDetail = ({ article, user, handleArticleDelete }) => {
     owner_id
   } = article.data;
 
-  const isOwner = user.id === owner_id;
+  const { isOwner } = article;
 
   return (
     <div>

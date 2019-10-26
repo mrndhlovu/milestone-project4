@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { Card, Image, Icon } from "semantic-ui-react";
 
@@ -24,7 +24,7 @@ const Article = ({
       <Card fluid>
         <Image src="/images/avatar/large/daniel.jpg" wrapped ui={false} />
         <Card.Content>
-          <Card.Header as={Link} to={`/article/${id}`}>
+          <Card.Header as={NavLink} to={`/article/${id}`}>
             {title.toUpperCase()}
           </Card.Header>
           <Card.Meta>

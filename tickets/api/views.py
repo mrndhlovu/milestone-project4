@@ -22,6 +22,20 @@ def get_ticket_owner(request):
     return None
 
 
+def check_is_owner(instance, request):
+    user = request.user
+    try:
+
+        owner_id = instance[0].owner_id
+        print(user)
+        if user is not None and user.id == owner_id:
+            return True
+        return False
+
+    except Exception:
+        return False
+
+
 class TicketListView(ListAPIView):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
@@ -36,12 +50,14 @@ class TicketDetailView(RetrieveAPIView):
     def get(self, request, id=None, format=None):
 
         instance = Ticket.objects.filter(id=id)
+        is_owner = check_is_owner(instance, request)
 
         if instance.exists():
             instance_comments = Ticket.objects.get(id=id)
             context = {
                 'data': instance.values()[0],
                 'owner': str(instance[0].owner),
+                'isOwner': is_owner,
                 'comments': instance_comments.comments
             }
             return JsonResponse(context, status=status.HTTP_200_OK)

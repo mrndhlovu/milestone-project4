@@ -1,8 +1,7 @@
 import React from "react";
 
-import { Grid } from "semantic-ui-react";
-
 import Article from "./Article";
+import BlogGrid from "./BlogGrid";
 
 const BlogList = ({ articles }) => {
   const renderList = () => {
@@ -17,26 +16,21 @@ const BlogList = ({ articles }) => {
         username
       } = articles[key];
       return (
-        <Grid.Column key={key} style={{ paddingBottom: 20 }}>
-          <Article
-            id={id}
-            title={title}
-            created_at={created_at}
-            short_disc={short_disc}
-            likes={likes}
-            views={views}
-            username={username}
-          />
-        </Grid.Column>
+        <Article
+          key={key}
+          id={id}
+          title={title}
+          created_at={created_at}
+          short_disc={short_disc}
+          likes={likes}
+          views={views}
+          username={username}
+        />
       );
     });
   };
 
-  return (
-    <Grid columns={3} stackable>
-      <Grid.Row>{renderList()}</Grid.Row>
-    </Grid>
-  );
+  return <BlogGrid article={renderList()} />;
 };
 
 export default BlogList;

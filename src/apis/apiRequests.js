@@ -88,11 +88,11 @@ export async function requestTicketSolution(id) {
 }
 
 export async function fetchTicketDetail(id) {
-  return axios.get(`${TICKETS_EP}${id}/`);
+  return axios.get(`${TICKETS_EP}${id}/`, authQueryParams);
 }
 
 export async function fetchArticleDetail(id) {
-  return axios.get(`${BLOG_EP}article/${id}/`);
+  return axios.get(`${BLOG_EP}article/${id}/`, authQueryParams);
 }
 
 export async function requestTicketComments() {

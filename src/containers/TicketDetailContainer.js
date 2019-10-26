@@ -92,7 +92,7 @@ export class TicketDetailContainer extends Component {
       ticket: {
         isLoading,
         dataReceived,
-        data: { data, comments }
+        data: { data, comments, isOwner }
       },
       solution,
       user
@@ -114,6 +114,7 @@ export class TicketDetailContainer extends Component {
             dataReceived={dataReceived}
             handleVoteClick={this.handleVoteClick}
             user={user.data}
+            isOwner={isOwner}
           />
 
           {!data.is_bug && (
