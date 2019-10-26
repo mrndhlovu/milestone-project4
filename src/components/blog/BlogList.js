@@ -13,7 +13,8 @@ const BlogList = ({ articles }) => {
         likes,
         views,
         username,
-        subject
+        subject,
+        image
       } = articles[key];
       return (
         <BlogGrid
@@ -26,6 +27,7 @@ const BlogList = ({ articles }) => {
           views={views}
           username={username}
           subject={subject}
+          image={image}
         />
       );
     });
