@@ -53,7 +53,8 @@ class CreateArticleContainer extends Component {
     } = this.props;
     const { isLoading, value } = this.state;
     const allAccess =
-      user.dataReceived && user.data.current_membership.membership;
+      user.dataReceived &&
+      user.data.current_membership.membership.is_pro_member;
 
     if (!allAccess) {
       return <Redirect to="/login" />;

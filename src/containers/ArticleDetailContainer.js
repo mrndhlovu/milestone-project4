@@ -46,7 +46,8 @@ class ArticleDetailContainer extends Component {
     const { showConfirmModal } = this.state;
 
     const allAccess =
-      user.dataReceived && user.data.current_membership.membership.type;
+      user.dataReceived &&
+      user.data.current_membership.membership.is_pro_member;
 
     return (
       <Container style={{ paddingTop: 20 }}>

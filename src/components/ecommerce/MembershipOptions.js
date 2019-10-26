@@ -20,8 +20,7 @@ const MembershipOptions = ({
   buttonTextPro,
   buttonTextFree,
   history,
-  isAuthenticated,
-  allAccess
+  isAuthenticated
 }) => {
   const renderOptions = () => {
     return Object.keys(memberships).map(key => {
