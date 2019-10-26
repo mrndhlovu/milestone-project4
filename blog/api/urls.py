@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from .views import ArticleListView, ArticleVoteToggleAPIView, ArticleDetailView, CreateArticleView, ArticleUpdateView, ArticleDeleteView
-from django.urls import path, re_path
+from django.urls import path
 
 app_name = 'blog'
 
