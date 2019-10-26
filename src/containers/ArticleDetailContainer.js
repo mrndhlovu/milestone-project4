@@ -8,7 +8,11 @@ import {
   getUserProfile,
   getArticleDetail
 } from "../selectors/appSelectors";
-import { requestArticleDetail, deleteArticle } from "../actions/BlogActions";
+import {
+  requestArticleDetail,
+  deleteArticle,
+  updateArticleLikes
+} from "../actions/BlogActions";
 import ArticleDetail from "../components/blog/ArticleDetail";
 import CommentsContainer from "./CommentsContainer";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
@@ -20,6 +24,7 @@ class ArticleDetailContainer extends Component {
 
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleLikeClick = this.handleLikeClick.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +40,10 @@ class ArticleDetailContainer extends Component {
     const { id } = this.props.match.params;
     this.props.deleteArticle(id);
     setTimeout(this.props.history.push(`/blog`), 1000);
+  }
+
+  handleLikeClick(id) {
+    this.props.updateArticleLikes(id);
   }
 
   handleCancel() {
@@ -64,6 +73,7 @@ class ArticleDetailContainer extends Component {
             owner={article.owner}
             user={user.data}
             handleDelete={this.handleDelete}
+            handleLikeClick={this.handleLikeClick}
           />
         )}
         {article.dataReceived && allAccess ? (
@@ -94,5 +104,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { requestArticleDetail, deleteArticle }
+  { requestArticleDetail, deleteArticle, updateArticleLikes }
 )(ArticleDetailContainer);

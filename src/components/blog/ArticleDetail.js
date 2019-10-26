@@ -5,19 +5,18 @@ import { Segment } from "semantic-ui-react";
 import CommentsBody from "../tickets/CommentsBody";
 import EditButtons from "../sharedComponents/EditButtons";
 
-const ArticleDetail = ({ article, user, handleDelete }) => {
+const ArticleDetail = ({ article, user, handleDelete, handleLikeClick }) => {
   const {
     title,
     short_disc,
     views,
-    likes,
     created_at,
     id,
     content,
     owner_id
   } = article.data;
 
-  const { isOwner } = article;
+  const { isOwner, likes } = article;
 
   return (
     <div>
@@ -29,6 +28,7 @@ const ArticleDetail = ({ article, user, handleDelete }) => {
         likes={likes}
         views={views}
         username={article.owner}
+        handleLikeClick={handleLikeClick}
         isArticleDetail={true}
         description={content}
         userId={user.id}
