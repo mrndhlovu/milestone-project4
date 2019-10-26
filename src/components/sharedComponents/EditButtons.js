@@ -2,17 +2,16 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import { Button } from "semantic-ui-react";
-import { isTicketOwner } from "../../utils/appUtils";
 
-function EditButtons({ handleTicketDelete, ticketId, owner }) {
+function EditButtons({ handleTicketDelete, id, isOwner }) {
   return (
-    isTicketOwner(owner) && (
+    isOwner && (
       <div style={{ paddingTop: 10 }}>
         <Button.Group floated="right" size="tiny">
           <Button size="tiny" as={NavLink} to="/create-ticket">
             Create
           </Button>
-          <Button as={NavLink} to={`/edit-ticket/${ticketId}`}>
+          <Button as={NavLink} to={`/edit-ticket/${id}`}>
             Edit
           </Button>
           <Button color="blue" onClick={() => handleTicketDelete()}>
