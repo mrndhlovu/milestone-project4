@@ -14,9 +14,9 @@ import {
   ARTICLE_UPDATE_ERROR,
   DELETE_ARTICLE_ERROR,
   RECEIVE_ARTICLE_LIST,
-  REQUEST_ARTICLE_VOTE,
-  UPDATED_ARTICLE_VOTE,
-  ARTICLE_VOTE_ERROR
+  REQUEST_ARTICLE_LIKE,
+  UPDATED_ARTICLE_LIKES,
+  ARTICLE_LIKE_ERROR
 } from "./ActionTypes";
 
 import {
@@ -108,15 +108,15 @@ export const deleteArticle = id => {
   };
 };
 
-export const updatedArticleVote = id => {
+export const updateArticleLikes = id => {
   return dispatch => {
-    dispatch(makeRequest(REQUEST_ARTICLE_VOTE));
+    dispatch(makeRequest(REQUEST_ARTICLE_LIKE));
     requestArticleVoteUpdate(id).then(
       response => {
-        dispatch(requestSuccess(UPDATED_ARTICLE_VOTE, response.data));
+        dispatch(requestSuccess(UPDATED_ARTICLE_LIKES, response.data));
       },
       error => {
-        dispatch(errorsAlert(ARTICLE_VOTE_ERROR, error));
+        dispatch(errorsAlert(ARTICLE_LIKE_ERROR, error));
       }
     );
   };

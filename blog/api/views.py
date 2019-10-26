@@ -54,6 +54,7 @@ class ArticleDetailView(RetrieveAPIView):
             context = {
                 'data': instance.values()[0],
                 'owner': str(instance[0].owner),
+                'likes': instance[0].likes.count(),
                 'isOwner': is_owner,
                 'comments': instance_comments.comments
             }
@@ -107,22 +108,22 @@ class ArticleVoteToggleAPIView(APIView):
         updated = False
         voted = False
 
-        if user in instance.votes.all():
-            voted = False
+        if user in instance.likes.all():
+            liked = False
             updated = True
-            instance.votes.remove(user)
+            instance.likes.remove(user)
 
         else:
-            voted = True
+            liked = True
             updated = True
-            instance.votes.add(user)
+            instance.likes.add(user)
 
         data = {
-            'voted': voted,
+            'liked': liked,
             'updated': updated,
         }
 
-        if instance.votes.count() >= 2:
+        if instance.likes.count() >= 2:
 
             instance.status = 'doing'
             instance.save()
