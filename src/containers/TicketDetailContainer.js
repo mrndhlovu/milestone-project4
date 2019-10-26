@@ -16,7 +16,8 @@ import {
   getTicketDetail,
   getTicketUpdate,
   getSolution,
-  getUserProfile
+  getUserProfile,
+  getUser
 } from "../selectors/appSelectors";
 
 import StyledMessage from "../components/sharedComponents/StyledMessage";
@@ -103,10 +104,11 @@ export class TicketDetailContainer extends Component {
       ticket: {
         isLoading,
         dataReceived,
-        data: { data, comments, isOwner }
+        data: { data, comments, isOwner, votes }
       },
       solution,
-      user
+      user,
+      auth
     } = this.props;
     const { activeIndex, index, buttonText, showConfirmModal } = this.state;
     const allAccess =
@@ -134,6 +136,7 @@ export class TicketDetailContainer extends Component {
             handleVoteClick={this.handleVoteClick}
             user={user.data}
             isOwner={isOwner}
+            votes={votes}
           />
 
           {!data.is_bug && (
@@ -142,7 +145,7 @@ export class TicketDetailContainer extends Component {
               activeIndex={activeIndex}
               index={index}
               solution={solution.data}
-              isAuthenticated={user.isAuthenticated}
+              isAuthenticated={auth.isAuthenticated}
               addToCart={this.handleAddToCart}
               id={data.id}
               buttonText={buttonText}
@@ -175,7 +178,8 @@ const mapStateToProps = state => {
     ticket: getTicketDetail(state),
     ticketDelete: getTicketUpdate(state),
     user: getUserProfile(state),
-    vote: getVotes(state)
+    vote: getVotes(state),
+    auth: getUser(state)
   };
 };
 

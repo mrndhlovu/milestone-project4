@@ -57,8 +57,9 @@ class TicketDetailView(RetrieveAPIView):
             context = {
                 'data': instance.values()[0],
                 'owner': str(instance[0].owner),
+                'votes': instance[0].votes.count(),
                 'isOwner': is_owner,
-                'comments': instance_comments.comments
+                'comments': instance_comments.comments,
             }
             return JsonResponse(context, status=status.HTTP_200_OK)
         else:

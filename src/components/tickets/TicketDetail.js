@@ -13,9 +13,10 @@ const TicketDetail = ({
   allAccess,
   dataReceived,
   handleVoteClick,
-  isOwner
+  isOwner,
+  votes
 }) => {
-  const { title, description, votes, views, id } = data;
+  const { title, description, views, id } = data;
 
   return isLoading ? (
     <UILoadingSpinner />
