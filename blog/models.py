@@ -23,13 +23,14 @@ class Article(models.Model):
     is_approved = models.BooleanField(default=False)
     likes = models.ManyToManyField(
         User, blank=True, related_name='article_likes')
+    image = models.FileField(null=True, blank=True)
 
     def __str__(self):
         return self.title
 
     @property
     def snippet(self):
-        return self.content[:100] + '...'
+        return self.content[:200] + '...'
 
     @property
     def get_article_views(self):
