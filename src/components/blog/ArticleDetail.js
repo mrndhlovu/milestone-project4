@@ -3,8 +3,9 @@ import React from "react";
 import Article from "./Article";
 import { Segment } from "semantic-ui-react";
 import CommentsBody from "../tickets/CommentsBody";
+import EditButtons from "../sharedComponents/EditButtons";
 
-const ArticleDetail = ({ article, user }) => {
+const ArticleDetail = ({ article, user, handleArticleDelete }) => {
   const {
     title,
     short_disc,
@@ -15,6 +16,8 @@ const ArticleDetail = ({ article, user }) => {
     description,
     owner_id
   } = article.data;
+
+  const isOwner = user.id === owner_id;
 
   return (
     <div>
@@ -30,6 +33,14 @@ const ArticleDetail = ({ article, user }) => {
         description={description}
         userId={user.id}
         ownerId={owner_id}
+        buttons={
+          <EditButtons
+            isOwner={isOwner}
+            handleTicketDelete={() => handleArticleDelete()}
+            id={id}
+            isTicket={false}
+          />
+        }
       />
       <Segment>
         <CommentsBody />
