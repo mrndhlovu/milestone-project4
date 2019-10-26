@@ -1,6 +1,5 @@
 import React from "react";
 
-import Article from "./Article";
 import BlogGrid from "./BlogGrid";
 
 const BlogList = ({ articles }) => {
@@ -10,27 +9,29 @@ const BlogList = ({ articles }) => {
         id,
         title,
         created_at,
-        short_disc,
+        short_desc,
         likes,
         views,
-        username
+        username,
+        subject
       } = articles[key];
       return (
-        <Article
+        <BlogGrid
           key={key}
           id={id}
           title={title}
+          short_desc={short_desc}
           created_at={created_at}
-          short_disc={short_disc}
           likes={likes}
           views={views}
           username={username}
+          subject={subject}
         />
       );
     });
   };
 
-  return <BlogGrid article={renderList()} />;
+  return <div> {renderList()}</div>;
 };
 
 export default BlogList;
