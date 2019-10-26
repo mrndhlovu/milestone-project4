@@ -113,6 +113,7 @@ export class TicketDetailContainer extends Component {
             handleTicketDelete={this.handleTicketDelete}
             dataReceived={dataReceived}
             handleVoteClick={this.handleVoteClick}
+            user={user.data}
           />
 
           {!data.is_bug && (
