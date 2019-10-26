@@ -77,3 +77,11 @@ export const TICKET_STATUS = Object.freeze({
   is_bug: "is_bug",
   is_feature: "is_feature"
 });
+
+export const EDIT_FIELDS = [
+  "description",
+  "title",
+  "subject",
+  "priority_level",
+  "content"
+];
