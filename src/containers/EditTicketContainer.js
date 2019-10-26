@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { Button, Form, Message, Container, Segment } from "semantic-ui-react";
-
 import { requestTicketsDetail, updateTicket } from "../actions/TicketActions";
-import EditTicketFields from "../components/tickets/EditTicketFields";
+import EditTicketFields from "../components/sharedComponents/EditFields";
 import { getTicketDetail, getTicketUpdate } from "../selectors/appSelectors";
+import EditFormWrapper from "../components/sharedComponents/EditFormWrapper";
 
 class EditTicketContainer extends Component {
   constructor(props) {
@@ -75,29 +74,17 @@ class EditTicketContainer extends Component {
 
     return (
       ticket.dataReceived && (
-        <Container style={{ paddingTop: 20 }}>
-          <Message
-            header="Edit your Ticket"
-            content="Fill out the form below to create a ticket"
-          />
-          <Segment>
-            <Form>
-              <EditTicketFields
-                ticket={data}
-                handleFieldChange={this.handleFieldChange}
-              />
-              <Button
-                loading={updating}
-                size="small"
-                color="blue"
-                type="submit"
-                onClick={this.handleSubmitClick}
-              >
-                Submit
-              </Button>
-            </Form>
-          </Segment>
-        </Container>
+        <EditFormWrapper
+          headerText="Edit your ticket"
+          handleSubmitClick={this.handleSubmitClick}
+          updating={updating}
+          fieldComponent={
+            <EditTicketFields
+              editOption={data}
+              handleFieldChange={this.handleFieldChange}
+            />
+          }
+        />
       )
     );
   }
