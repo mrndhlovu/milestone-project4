@@ -19,11 +19,13 @@ import ticketVoteReducer from "./ticketVoteReducer";
 import userProfileReducer from "./userProfileReducer";
 import userReducer from "./userReducer";
 import createArticleReducer from "./createArticleReducer";
+import articleUpdateReducer from "./articleUpdateReducer";
 
 export default combineReducers({
   articleDetail: articleDetailReducer,
   articleList: articleListReducer,
   article: createArticleReducer,
+  articleUpdate: articleUpdateReducer,
   auth: authReducer,
   cartAddOrRemove: addRemoveCartItemReducer,
   checkout: checkOutReducer,
