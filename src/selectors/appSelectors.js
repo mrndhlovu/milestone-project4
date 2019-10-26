@@ -39,3 +39,5 @@ export const getSolution = state => state.ticketSolution;
 export const getArticleDetail = state => state.articleDetail;
 
 export const getArticle = state => state.article;
+
+export const getArticleUpdate = state => state.articleUpdate;
