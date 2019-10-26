@@ -6,7 +6,7 @@ import { Button } from "semantic-ui-react";
 function EditButtons({
   isTicket,
   handleTicketDelete,
-  handleArticleDelete,
+  handleDelete,
   id,
   isOwner
 }) {
@@ -30,9 +30,7 @@ function EditButtons({
           <Button
             color="blue"
             onClick={
-              isTicket
-                ? () => handleTicketDelete()
-                : () => handleArticleDelete()
+              isTicket ? () => handleTicketDelete() : () => handleDelete()
             }
           >
             Delete

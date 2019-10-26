@@ -10,6 +10,7 @@ import {
   BLOG_EP,
   getCheckoutBody
 } from "../utils/urls";
+import { SESSION_TOKEN } from "../constants/localStorageConstants";
 
 export async function requestTicketsList() {
   return axios.get(`${TICKETS_EP}`);
@@ -88,11 +89,14 @@ export async function requestTicketSolution(id) {
 }
 
 export async function fetchTicketDetail(id) {
-  return axios.get(`${TICKETS_EP}${id}/`, authQueryParams);
+  return axios.get(`${TICKETS_EP}${id}/`, SESSION_TOKEN && authQueryParams);
 }
 
 export async function fetchArticleDetail(id) {
-  return axios.get(`${BLOG_EP}article/${id}/`, authQueryParams);
+  return axios.get(
+    `${BLOG_EP}article/${id}/`,
+    SESSION_TOKEN && authQueryParams
+  );
 }
 
 export async function requestTicketComments() {

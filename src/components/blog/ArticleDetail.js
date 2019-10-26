@@ -5,7 +5,7 @@ import { Segment } from "semantic-ui-react";
 import CommentsBody from "../tickets/CommentsBody";
 import EditButtons from "../sharedComponents/EditButtons";
 
-const ArticleDetail = ({ article, user, handleArticleDelete }) => {
+const ArticleDetail = ({ article, user, handleDelete }) => {
   const {
     title,
     short_disc,
@@ -36,7 +36,7 @@ const ArticleDetail = ({ article, user, handleArticleDelete }) => {
         buttons={
           <EditButtons
             isOwner={isOwner}
-            handleArticleDelete={handleArticleDelete}
+            handleDelete={handleDelete}
             id={id}
             isTicket={false}
           />

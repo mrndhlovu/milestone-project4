@@ -9,7 +9,7 @@ import {
 } from "../actions/TicketActions";
 import { addItemToCart } from "../actions/CheckoutActions";
 
-import { Container } from "semantic-ui-react";
+import { Container, Confirm } from "semantic-ui-react";
 
 import {
   getVotes,
@@ -27,17 +27,20 @@ import { APP_TYPE } from "../constants/constants";
 
 const initialState = {
   index: 0,
-  buttonText: "Add to Cart"
+  buttonText: "Add to Cart",
+  showConfirmModal: false
 };
 
 export class TicketDetailContainer extends Component {
   constructor(props) {
     super(props);
     this.state = { ...initialState };
+
     this.handleVoteClick = this.handleVoteClick.bind(this);
     this.handleTicketDelete = this.handleTicketDelete.bind(this);
     this.handleAccordionClick = this.handleAccordionClick.bind(this);
     this.handleAddToCart = this.handleAddToCart.bind(this);
+    this.handleConfirm = this.handleConfirm.bind(this);
   }
 
   componentDidMount() {
@@ -78,6 +81,14 @@ export class TicketDetailContainer extends Component {
   }
 
   handleTicketDelete() {
+    this.setState({ showConfirmModal: true });
+  }
+
+  handleCancel() {
+    this.setState({ showConfirmModal: false });
+  }
+
+  handleConfirm() {
     const { id } = this.props.match.params;
     this.props.deleteTicket(id);
     setTimeout(this.props.history.push(`/tickets`), 1000);
@@ -97,7 +108,7 @@ export class TicketDetailContainer extends Component {
       solution,
       user
     } = this.props;
-    const { activeIndex, index, buttonText } = this.state;
+    const { activeIndex, index, buttonText, showConfirmModal } = this.state;
     const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
@@ -105,6 +116,14 @@ export class TicketDetailContainer extends Component {
     return (
       dataReceived && (
         <Container style={{ paddingTop: 50 }}>
+          <Confirm
+            open={showConfirmModal}
+            cancelButton="Cancel"
+            confirmButton="Yes delete"
+            onCancel={() => this.handleCancel()}
+            onConfirm={() => this.handleConfirm()}
+          />
+
           <TicketDetail
             allAccess={allAccess}
             data={data}
