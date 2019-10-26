@@ -26,6 +26,7 @@ const BlogGrid = ({
               src={image}
               as={NavLink}
               to={`/article/${id}`}
+              alt={`image-${id}`}
             />
           </Grid.Column>
           <Grid.Column width={8} floated="right">
