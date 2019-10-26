@@ -55,9 +55,9 @@ class CreateArticleContainer extends Component {
     const allAccess =
       user.dataReceived && user.data.current_membership.membership;
 
-    // if (!allAccess) {
-    //   return <Redirect to="/login" />;
-    // }
+    if (!allAccess) {
+      return <Redirect to="/login" />;
+    }
     return (
       <Container style={{ paddingTop: 20 }}>
         <Header content="Add a new article" />
