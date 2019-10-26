@@ -40,6 +40,7 @@ class ArticleDetailView(RetrieveAPIView):
             instance_comments = Article.objects.get(id=id)
             context = {
                 'data': instance.values()[0],
+                'owner': str(instance[0].owner),
                 'comments': instance_comments.comments
             }
             return JsonResponse(context, status=status.HTTP_200_OK)
@@ -51,7 +52,7 @@ class ArticleDetailView(RetrieveAPIView):
 
 
 class CreateArticleView(CreateAPIView):
-    serializer_class = Article
+    serializer_class = ArticleSerializer
     queryset = Article.objects.all()
     permission_classes = [permissions.AllowAny]
 
@@ -59,10 +60,13 @@ class CreateArticleView(CreateAPIView):
         current_article_owner = get_article_owner(request)
 
         data = request.data.copy()
+
         data['owner'] = current_article_owner.id
+
         data['username'] = current_article_owner.id
 
         serializer = self.get_serializer(data=data)
+
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
