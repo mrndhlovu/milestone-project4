@@ -17,6 +17,7 @@ import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
 import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import CreateTicketRadioButtons from "../components/tickets/CreateTicketRadioButtons";
+import { all } from "q";
 
 export class CreateTicketContainer extends Component {
   constructor(props) {
@@ -77,7 +78,8 @@ export class CreateTicketContainer extends Component {
     } = this.props;
     const { isLoading, isBug, isFeature, value } = this.state;
     const allAccess =
-      user.dataReceived && user.data.current_membership.membership;
+      user.dataReceived &&
+      user.data.current_membership.membership.is_pro_member;
 
     if (!allAccess) {
       return <Redirect to="/login" />;
