@@ -15,18 +15,21 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=120)
-    description = models.TextField()
     subject = models.CharField(max_length=120)
+    content = models.TextField()
     owner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, default=1)
     views = models.IntegerField(default=0)
+    is_approved = models.BooleanField(default=False)
+    likes = models.ManyToManyField(
+        User, blank=True, related_name='article_likes')
 
     def __str__(self):
         return self.title
 
     @property
     def snippet(self):
-        return self.description[:100] + '...'
+        return self.content[:100] + '...'
 
     @property
     def get_article_views(self):
