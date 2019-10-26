@@ -15,7 +15,7 @@ const BlogGrid = ({
   views
 }) => {
   return (
-    <Grid.Row style={{ padding: "3em 0em" }} vertical>
+    <Grid.Row style={{ padding: "3em 0em" }}>
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>
           <Grid.Column floated="left" width={6}>
