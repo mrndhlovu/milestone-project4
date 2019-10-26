@@ -17,11 +17,8 @@ const Article = ({
   description,
   isArticleDetail,
   handleLikeClick,
-  ownerId,
-  userId
+  buttons
 }) => {
-  const isOwner = userId === ownerId;
-
   return (
     <div>
       <Card fluid>
@@ -51,8 +48,7 @@ const Article = ({
           </span>
           <Icon name="eye" />
           {views}
-
-          <EditButtons isOwner={isOwner} />
+          {buttons}
         </Card.Content>
       </Card>
     </div>
