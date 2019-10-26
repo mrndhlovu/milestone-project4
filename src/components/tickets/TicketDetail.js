@@ -3,7 +3,7 @@ import React from "react";
 import { Card, Segment, Header } from "semantic-ui-react";
 
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-import EditButtons from "./EditButtons";
+import EditButtons from "../sharedComponents/EditButtons";
 import TicketDetailStats from "./TicketDetailStats";
 
 const TicketDetail = ({
@@ -12,9 +12,12 @@ const TicketDetail = ({
   handleTicketDelete,
   allAccess,
   dataReceived,
-  handleVoteClick
+  handleVoteClick,
+  user
 }) => {
-  const { title, description, votes, views, id, owner } = data;
+  const { title, description, votes, views, id, owner_id } = data;
+  const isOwner = user.id === owner_id;
+
   return isLoading ? (
     <UILoadingSpinner />
   ) : (
@@ -29,8 +32,8 @@ const TicketDetail = ({
             {allAccess && (
               <EditButtons
                 handleTicketDelete={() => handleTicketDelete()}
-                ticketId={id}
-                owner={owner}
+                id={id}
+                isOwner={isOwner}
               />
             )}
           </Segment>
