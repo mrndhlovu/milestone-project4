@@ -103,7 +103,7 @@ export class MobileSideBarContainer extends Component {
                   {isAuthenticated && userProfile.dataReceived && (
                     <UserLabel
                       username={userProfile.data.username}
-                      current_membership={userProfile.data.current_membership}
+                      currentMembership={userProfile.data.current_membership}
                     />
                   )}
                 </Menu.Item>

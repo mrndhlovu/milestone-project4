@@ -33,7 +33,7 @@ const MembershipOptions = ({
 
       return (
         <Grid.Column key={id} style={FREE ? { ...freeCard } : { ...proCard }}>
-          <Card fluid style={{ borderRadius: 0 }}>
+          <Card fluid>
             <Header
               as="h3"
               attached

@@ -82,7 +82,8 @@ export class DesktopNavContainer extends Component {
     const {
       user: { isAuthenticated },
       userProfile: { data },
-      pendingOrder
+      pendingOrder,
+      userProfile
     } = this.props;
 
     return (
@@ -103,10 +104,10 @@ export class DesktopNavContainer extends Component {
               {pendingOrder.data.count > 0 && (
                 <Cart pendingOrders={pendingOrder.data} />
               )}
-              {data.dataReceived && (
+              {userProfile.dataReceived && (
                 <UserLabel
                   username={data.username}
-                  current_membership={data.current_membership}
+                  currentMembership={data.current_membership}
                 />
               )}
               <NavigationButtons
