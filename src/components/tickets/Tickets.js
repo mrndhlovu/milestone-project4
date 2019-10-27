@@ -48,7 +48,7 @@ export const Tickets = ({
               headerSize="h4"
               subheader={
                 <Card.Meta style={{ fontSize: "0.8rem" }}>
-                  {username} | {getFormatedDate(created_at)}
+                  opened by {username} | {getFormatedDate(created_at)}
                 </Card.Meta>
               }
               color="black"

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
 import { Container, Confirm } from "semantic-ui-react";
@@ -16,6 +16,7 @@ import {
 import ArticleDetail from "../components/blog/ArticleDetail";
 import CommentsContainer from "./CommentsContainer";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
+import DynamicHeader from "../components/sharedComponents/DynamicHeader";
 
 class ArticleDetailContainer extends Component {
   constructor(props) {
@@ -59,37 +60,40 @@ class ArticleDetailContainer extends Component {
       user.data.current_membership.membership.is_pro_member;
 
     return (
-      <Container style={{ paddingTop: 20 }}>
-        <Confirm
-          open={showConfirmModal}
-          cancelButton="Cancel"
-          confirmButton="Yes delete"
-          onCancel={() => this.handleCancel()}
-          onConfirm={() => this.handleConfirm()}
-        />
-        {article.dataReceived && (
-          <ArticleDetail
-            article={article.data}
-            owner={article.owner}
-            user={user.data}
-            handleDelete={this.handleDelete}
-            handleLikeClick={this.handleLikeClick}
+      <Fragment>
+        <DynamicHeader option="post" />
+        <Container style={{ paddingTop: 20 }}>
+          <Confirm
+            open={showConfirmModal}
+            cancelButton="Cancel"
+            confirmButton="Yes delete"
+            onCancel={() => this.handleCancel()}
+            onConfirm={() => this.handleConfirm()}
           />
-        )}
-        {article.dataReceived && allAccess ? (
-          <CommentsContainer
-            comments={article.data.comments}
-            articleId={article.data.data.id}
-            isArticle={true}
-          />
-        ) : (
-          <StyledMessage
-            redirect="/pricing"
-            message="Access to comments requires a "
-            linkText="Unicorn PRO Account"
-          />
-        )}
-      </Container>
+          {article.dataReceived && (
+            <ArticleDetail
+              article={article.data}
+              owner={article.owner}
+              user={user.data}
+              handleDelete={this.handleDelete}
+              handleLikeClick={this.handleLikeClick}
+            />
+          )}
+          {article.dataReceived && allAccess ? (
+            <CommentsContainer
+              comments={article.data.comments}
+              articleId={article.data.data.id}
+              isArticle={true}
+            />
+          ) : (
+            <StyledMessage
+              redirect="/pricing"
+              message="Access to comments requires a "
+              linkText="Unicorn PRO Account"
+            />
+          )}
+        </Container>
+      </Fragment>
     );
   }
 }

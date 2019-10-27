@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import HomepageHeading from "../components/sharedComponents/PageHeader";
+import PageHeader from "../components/sharedComponents/PageHeader";
 import BlogList from "../components/blog/BlogList";
 
 import { fetchArticlesList } from "../actions/BlogActions";
@@ -23,7 +23,7 @@ export class BlogContainer extends Component {
 
     return (
       <div>
-        <HomepageHeading />
+        <PageHeader />
         <Container style={{ paddingTop: 20 }}>
           {articles.dataReceived && <BlogList articles={articles.data} />}
         </Container>

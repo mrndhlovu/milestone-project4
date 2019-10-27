@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
 import {
@@ -25,6 +25,7 @@ import CommentsContainer from "./CommentsContainer";
 import TicketDetail from "../components/tickets/TicketDetail";
 import TicketSolution from "../components/tickets/TicketSolution";
 import { APP_TYPE } from "../constants/constants";
+import DynamicHeader from "../components/sharedComponents/DynamicHeader";
 
 const initialState = {
   index: 0,
@@ -117,56 +118,59 @@ export class TicketDetailContainer extends Component {
 
     return (
       dataReceived && (
-        <Container style={{ paddingTop: 50 }}>
-          <Confirm
-            open={showConfirmModal}
-            cancelButton="Cancel"
-            confirmButton="Yes delete"
-            onCancel={() => this.handleCancel()}
-            onConfirm={() => this.handleConfirm()}
-          />
+        <Fragment>
+          <DynamicHeader />
+          <Container style={{ paddingTop: 50 }}>
+            <Confirm
+              open={showConfirmModal}
+              cancelButton="Cancel"
+              confirmButton="Yes delete"
+              onCancel={() => this.handleCancel()}
+              onConfirm={() => this.handleConfirm()}
+            />
 
-          <TicketDetail
-            allAccess={allAccess}
-            data={data}
-            isLoading={isLoading}
-            buttonText={buttonText}
-            handleTicketDelete={this.handleTicketDelete}
-            dataReceived={dataReceived}
-            handleVoteClick={this.handleVoteClick}
-            user={user.data}
-            isOwner={isOwner}
-            votes={votes}
-          />
-
-          {!data.is_bug && (
-            <TicketSolution
-              handleAccordionClick={this.handleAccordionClick}
-              activeIndex={activeIndex}
-              index={index}
-              solution={solution.data}
-              isAuthenticated={auth.isAuthenticated}
-              addToCart={this.handleAddToCart}
-              id={data.id}
+            <TicketDetail
+              allAccess={allAccess}
+              data={data}
+              isLoading={isLoading}
               buttonText={buttonText}
-              handleAddToCart={this.handleAddToCart}
+              handleTicketDelete={this.handleTicketDelete}
+              dataReceived={dataReceived}
+              handleVoteClick={this.handleVoteClick}
+              user={user.data}
+              isOwner={isOwner}
+              votes={votes}
             />
-          )}
 
-          {dataReceived && allAccess ? (
-            <CommentsContainer
-              comments={comments}
-              ticketId={data.id}
-              isTicket={true}
-            />
-          ) : (
-            <StyledMessage
-              message="To view and make comments you need a "
-              linkText="Unicorn Pro Account."
-              redirect="/pricing"
-            />
-          )}
-        </Container>
+            {!data.is_bug && (
+              <TicketSolution
+                handleAccordionClick={this.handleAccordionClick}
+                activeIndex={activeIndex}
+                index={index}
+                solution={solution.data}
+                isAuthenticated={auth.isAuthenticated}
+                addToCart={this.handleAddToCart}
+                id={data.id}
+                buttonText={buttonText}
+                handleAddToCart={this.handleAddToCart}
+              />
+            )}
+
+            {dataReceived && allAccess ? (
+              <CommentsContainer
+                comments={comments}
+                ticketId={data.id}
+                isTicket={true}
+              />
+            ) : (
+              <StyledMessage
+                message="To view and make comments you need a "
+                linkText="Unicorn Pro Account."
+                redirect="/pricing"
+              />
+            )}
+          </Container>
+        </Fragment>
       )
     );
   }

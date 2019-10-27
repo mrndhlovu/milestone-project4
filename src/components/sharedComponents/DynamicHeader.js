@@ -1,10 +1,9 @@
-import PropTypes from "prop-types";
 import React from "react";
+import { getDynamicHeader } from "../../constants/headerConstants";
+
 import { NavLink } from "react-router-dom";
 
 import styled from "styled-components";
-
-import { getHeaderObject } from "../../constants/headerConstants";
 
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
 
@@ -12,13 +11,13 @@ const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
 `;
 
-export const PageHeader = ({ mobile }) => {
+const DynamicHeader = ({ option, mobile }) => {
   const {
     headerText,
     headerButtonText,
     headerButtonUrl,
     subHeading
-  } = getHeaderObject();
+  } = getDynamicHeader(option);
 
   return (
     <div>
@@ -59,8 +58,4 @@ export const PageHeader = ({ mobile }) => {
   );
 };
 
-PageHeader.propTypes = {
-  mobile: PropTypes.bool
-};
-
-export default PageHeader;
+export default DynamicHeader;

@@ -39,6 +39,6 @@ export const getCheckoutBody = (product_id, product, donation) => ({
 });
 
 export const getPageId = () => {
-  const location = window.location.pathname.slice(1);
-  return location === "" ? "home" : location;
+  const pageId = window.location.pathname.slice(1);
+  return pageId;
 };
