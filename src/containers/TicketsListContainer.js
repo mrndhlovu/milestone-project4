@@ -12,7 +12,7 @@ import {
   getUser
 } from "../selectors/appSelectors";
 import Tickets from "../components/tickets/Tickets";
-import { getObjectLength } from "../utils/appUtils";
+import { getObjectLength, getCounts } from "../utils/appUtils";
 import TicketsList from "../components/tickets/TicketsList";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import { Grid, Container } from "semantic-ui-react";
@@ -78,13 +78,20 @@ export class TicketsListContainer extends Component {
     const { tickets, buttonText } = this.state;
     const ticketCount = getObjectLength(tickets);
 
+    const { bugCount, featureCount, closed } = getCounts(tickets);
+
     return (
       <Fragment>
         <PageHeader />
         <SytledContainer fluid>
           <Grid stackable columns={2}>
             <Grid.Column width={4}>
-              <ListSideBar />
+              <ListSideBar
+                total={ticketCount}
+                closed={closed}
+                featureCount={featureCount}
+                bugCount={bugCount}
+              />
             </Grid.Column>
 
             <Grid.Column width={12}>

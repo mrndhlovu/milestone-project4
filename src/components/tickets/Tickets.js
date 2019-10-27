@@ -24,7 +24,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, user }) => {
       } = ticketsList[key];
 
       return (
-        <Table.Row>
+        <Table.Row key={id}>
           <Table.Cell>
             <Icon name={is_bug ? "bug" : "code"} />
           </Table.Cell>
@@ -67,7 +67,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, user }) => {
                 size="small"
                 onClick={() => handleAddToCart(id)}
               >
-                <Icon name="cart" color="white" />
+                <Icon name="cart" />
                 Add to cart
               </Button>
             )}

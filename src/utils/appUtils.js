@@ -221,3 +221,22 @@ export const validate = values => {
   }
   return formErrors;
 };
+
+export const getCounts = tickets => {
+  const counts = { bugCount: 0, featureCount: 0, closed: 0 };
+
+  Object.keys(tickets).filter(key => {
+    if (tickets[key].is_bug) {
+      const update = { ...counts, bugCount: counts.bugCount++ };
+    }
+    if (tickets[key].is_feature) {
+      const update = { ...counts, featureCount: counts.featureCount++ };
+    }
+
+    if (tickets[key].status === "done") {
+      const update = { ...counts, closed: counts.closed++ };
+    }
+  });
+
+  return counts;
+};
