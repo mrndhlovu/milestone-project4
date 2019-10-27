@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Card, Header, Progress } from "semantic-ui-react";
+import { Card, Header, Progress, Grid } from "semantic-ui-react";
 
 import DashboardStats from "./DashboardStats";
 import DashboardCard from "../sharedComponents/DashboardCard";
+import DashboardBarChart from "./DashboardBarChart";
+import DashboardPieChart from "./DashboardPieChart";
 
 const getPercentage = (total, value) => {
   return (value / total) * 100;
@@ -45,10 +47,20 @@ const FilterTickets = ({ ticketList, value }) => {
   });
 };
 
-const DashboardCards = ({ ticketList }) => {
+const DashboardCards = ({ ticketList, chartData }) => {
   return (
     <Card.Group>
       <DashboardStats ticketList={ticketList} />
+
+      <Grid stackable columns={2} style={{ width: "100%" }}>
+        <Grid.Column>
+          <DashboardBarChart chartData={chartData} />
+        </Grid.Column>
+        <Grid.Column>
+          <DashboardPieChart chartData={chartData} />
+        </Grid.Column>
+      </Grid>
+
       <Card.Group itemsPerRow={3} stackable style={{ paddingTop: 15 }}>
         <DashboardCard
           header="Todo"
