@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
 import { fetchTicketsList, updatedTicketVote } from "../actions/TicketActions";
 import { addItemToCart, fetchPendingOrder } from "../actions/CheckoutActions";
@@ -14,8 +15,14 @@ import Tickets from "../components/tickets/Tickets";
 import { getObjectLength } from "../utils/appUtils";
 import TicketsList from "../components/tickets/TicketsList";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
-import { Container } from "semantic-ui-react";
+import { Grid, Container } from "semantic-ui-react";
 import { APP_TYPE } from "../constants/constants";
+import ListSideBar from "../components/tickets/ListSideBar";
+
+const SytledContainer = styled(Container)`
+  padding: 20px 20px;
+  background-color: #eee;
+`;
 
 export class TicketsListContainer extends Component {
   constructor(props) {
@@ -74,28 +81,37 @@ export class TicketsListContainer extends Component {
     return (
       <Fragment>
         <PageHeader />
+        <SytledContainer fluid>
+          <Grid stackable columns={2}>
+            <Grid.Column width={4}>
+              <ListSideBar />
+            </Grid.Column>
 
-        <TicketsList
-          ticketCount={ticketCount}
-          isLoading={tickets.isLoading}
-          component={
-            ticketsList.data.length > 0 && ticketsList.dataReceived ? (
-              <Tickets
-                handleAddToCart={this.handleAddToCart}
-                handleVote={this.handleVote}
-                ticketsList={tickets}
-                user={user}
-                buttonText={buttonText}
+            <Grid.Column width={12}>
+              <TicketsList
+                ticketCount={ticketCount}
+                isLoading={tickets.isLoading}
+                component={
+                  ticketsList.data.length > 0 && ticketsList.dataReceived ? (
+                    <Tickets
+                      handleAddToCart={this.handleAddToCart}
+                      handleVote={this.handleVote}
+                      ticketsList={tickets}
+                      user={user}
+                      buttonText={buttonText}
+                    />
+                  ) : (
+                    <StyledMessage
+                      message="No tickets at this time."
+                      redirect="/create-ticket"
+                      linkText="Create a ticket"
+                    />
+                  )
+                }
               />
-            ) : (
-              <StyledMessage
-                message="No tickets at this time."
-                redirect="/create-ticket"
-                linkText="Create a ticket"
-              />
-            )
-          }
-        />
+            </Grid.Column>
+          </Grid>
+        </SytledContainer>
       </Fragment>
     );
   }

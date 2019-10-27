@@ -6,7 +6,7 @@ const TicketsList = ({ component, ticketCount, isLoading, size }) => {
   return (
     <DashboardCard
       header="TICKETS"
-      headerSize="h2"
+      headerSize="h3"
       subheader={`TOTAL:  ${ticketCount}`}
       component={component}
       isLoading={isLoading}

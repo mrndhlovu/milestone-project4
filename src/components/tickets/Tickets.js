@@ -1,19 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-import { Button, Grid, Card, Label, Segment, Icon } from "semantic-ui-react";
+import { Label, List, Icon, Table, Header, Button } from "semantic-ui-react";
 
-import TicketsIcons from "./TicketsIcon";
 import { getFormatedDate } from "../../utils/appUtils";
-import DashboardCard from "../sharedComponents/DashboardCard";
 
-export const Tickets = ({
-  ticketsList,
-  handleAddToCart,
-  handleVote,
-  user,
-  buttonText
-}) => {
+export const Tickets = ({ ticketsList, handleAddToCart, user }) => {
   const allAccess =
     user.dataReceived && user.data.current_membership.membership.is_pro_member;
 
@@ -27,60 +19,68 @@ export const Tickets = ({
         votes,
         username,
         status,
-        short_desc,
         is_bug,
         is_feature
       } = ticketsList[key];
 
       return (
-        <Grid.Column key={id}>
-          <Segment style={{ marginBottom: 10 }}>
-            {is_bug && <Icon name="bug" color="red" />}
-            {is_feature && <Icon name="circle" color="olive" />}
-            <DashboardCard
-              header={
-                <Card.Header
-                  as={Link}
-                  to={`ticket/${id}`}
-                  content={title.toUpperCase()}
+        <Table.Row>
+          <Table.Cell>
+            <Icon name={is_bug ? "bug" : "code"} />
+          </Table.Cell>
+          <Table.Cell>
+            <List.Item>
+              <NavLink to={`ticket/${id}`}>
+                <Header as="h5" content={title.toUpperCase()} />
+              </NavLink>
+              <span style={{ paddingRight: 10 }}>
+                <Header
+                  color="grey"
+                  as="h5"
+                  content={`Opened by ${username} ${getFormatedDate(
+                    created_at
+                  )}`}
                 />
-              }
-              headerSize="h4"
-              subheader={
-                <Card.Meta style={{ fontSize: "0.8rem" }}>
-                  opened by {username} | {getFormatedDate(created_at)}
-                </Card.Meta>
-              }
-              color="black"
-              component={short_desc}
-              otherProps={
-                <Card.Content extra>
-                  <TicketsIcons votes={votes} status={status} views={views} />
-
-                  {is_feature && (
-                    <Button
-                      disabled={!allAccess}
-                      floated="right"
-                      size="tiny"
-                      color="orange"
-                      onClick={() => handleAddToCart(id)}
-                    >
-                      {buttonText}
-                    </Button>
-                  )}
-                </Card.Content>
-              }
-            />
-          </Segment>
-        </Grid.Column>
+                <Icon name="eye" />
+                {views} <Icon name="thumbs up" /> {votes}
+              </span>
+              <Label color={is_bug ? "grey" : "green"} horizontal>
+                {status}
+              </Label>
+              <Label
+                style={{ paddingLeft: 10 }}
+                color={is_bug ? "red" : "blue"}
+                horizontal
+              >
+                {is_bug ? "bug" : "feature"}
+              </Label>
+            </List.Item>
+          </Table.Cell>
+          <Table.Cell textAlign="right">
+            # {id}
+            <br />
+            {is_feature && (
+              <Button
+                disabled={!allAccess}
+                color="orange"
+                floated="right"
+                size="small"
+                onClick={() => handleAddToCart(id)}
+              >
+                <Icon name="cart" color="white" />
+                Add to cart
+              </Button>
+            )}
+          </Table.Cell>
+        </Table.Row>
       );
     });
   };
 
   return (
-    <Grid columns={3} stackable>
-      <Grid.Row>{renderTicketCards()}</Grid.Row>
-    </Grid>
+    <Table>
+      <Table.Body>{renderTicketCards()}</Table.Body>
+    </Table>
   );
 };
 
