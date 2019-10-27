@@ -1,10 +1,9 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Card, Image, Icon } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
-import EditButtons from "../sharedComponents/EditButtons";
 
 const Article = ({
   title,
@@ -24,7 +23,7 @@ const Article = ({
       <Card fluid>
         <Image src="/images/avatar/large/daniel.jpg" wrapped ui={false} />
         <Card.Content>
-          <Card.Header as={NavLink} to={`/article/${id}`}>
+          <Card.Header as={Link} to={`/article/${id}`}>
             {title.toUpperCase()}
           </Card.Header>
           <Card.Meta>

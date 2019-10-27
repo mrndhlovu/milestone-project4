@@ -30,9 +30,9 @@ const BlogGrid = ({
             />
           </Grid.Column>
           <Grid.Column width={8} floated="right">
-            <Header as="h2" color="black">
-              {title.toUpperCase()}
-            </Header>
+            <NavLink to={`article/${id}`}>
+              <Header as="h2" color="black" content={title.toUpperCase()} />
+            </NavLink>
             <p>
               {getFormatedDate(created_at)} | Likes {likes} | Views {views}
             </p>
