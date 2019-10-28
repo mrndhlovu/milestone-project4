@@ -85,5 +85,3 @@ export const EDIT_FIELDS = [
   "priority_level",
   "content"
 ];
-
-export const STRIPE_PUBLISHABLE_KEY = `${process.env.STRIPE_PUBLISHABLE}`;

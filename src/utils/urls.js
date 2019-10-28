@@ -12,8 +12,6 @@ export const MEMBERSHIP_EP = `${getRootUrl}/memberships/`;
 export const AUTH_EP = `${getRootUrl}/accounts/api/auth/`;
 export const CHECKOUT_EP = `${getRootUrl}/cart`;
 
-console.log(process.env);
-
 export const authQueryParams = {
   headers: {
     Authorization: `Token ${SESSION_TOKEN}`,

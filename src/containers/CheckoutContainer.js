@@ -6,8 +6,6 @@ import { Grid, Container, Segment, Message } from "semantic-ui-react";
 
 import OrderSummaryContainer from "./OrderSummaryContainer";
 import PaymentContainer from "./PaymentContainer";
-import { STRIPE_PUBLISHABLE_KEY } from "../constants/constants";
-console.log(STRIPE_PUBLISHABLE_KEY);
 
 class CheckoutContainer extends Component {
   constructor(props) {
@@ -64,7 +62,7 @@ class CheckoutContainer extends Component {
 const FormInjection = injectStripe(CheckoutContainer);
 
 const StripeFormWrapper = () => (
-  <StripeProvider apiKey={STRIPE_PUBLISHABLE_KEY}>
+  <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLISHABLE}>
     <Container>
       <Elements>
         <FormInjection />
