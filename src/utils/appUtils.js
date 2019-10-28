@@ -226,14 +226,14 @@ export const getCounts = tickets => {
 
   Object.keys(tickets).filter(key => {
     if (tickets[key].is_bug) {
-      counts = { ...counts, bugCount: counts.bugCount++ };
+      return { ...counts, bugCount: counts.bugCount++ };
     }
     if (tickets[key].is_feature) {
-      counts = { ...counts, featureCount: counts.featureCount++ };
+      return { ...counts, featureCount: counts.featureCount++ };
     }
 
     if (tickets[key].status === "done") {
-      counts = { ...counts, closed: counts.closed++ };
+      return { ...counts, closed: counts.closed++ };
     }
     return counts;
   });
