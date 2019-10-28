@@ -11,21 +11,11 @@ const NavFooter = () => {
           <Header inverted as="h4" content="About" />
           <List link inverted>
             <List.Item href="https://github.com/mrndhlovu">
-              <List.Icon
-                name="github"
-                size="large"
-                verticalAlign="middle"
-                color="blue"
-              />
+              <List.Icon name="github" size="large" verticalAlign="middle" />
               GitHub
             </List.Item>
             <List.Item href="https://www.linkedin.com/in/mduduzi-ndhlovu/">
-              <List.Icon
-                name="linkedin"
-                size="large"
-                verticalAlign="middle"
-                color="blue"
-              />
+              <List.Icon name="linkedin" size="large" verticalAlign="middle" />
               LinkedIn
             </List.Item>
           </List>
