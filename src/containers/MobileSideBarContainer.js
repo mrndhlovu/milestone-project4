@@ -86,7 +86,7 @@ export class MobileSideBarContainer extends Component {
             <Container>
               <Menu inverted pointing secondary size="large">
                 <Menu.Item onClick={this.handleToggle}>
-                  <Icon name="sidebar" size="big" />
+                  <Icon name="sidebar" />
                 </Menu.Item>
 
                 <Menu.Item style={styles}>
