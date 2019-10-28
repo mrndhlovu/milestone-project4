@@ -87,19 +87,28 @@ WSGI_APPLICATION = 'unicorn.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-
-if "DATABASE_URL" in os.environ:
-    DATABASES = {'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL'))}
-
-else:
-
+if development:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['DATABASE_NAME'],
+            'USER': os.environ['DATABASE_USER'],
+            'PASSWORD': os.environ['DATABASE_PASSWORD'],
+            'HOST': os.environ['DATABASE_HOST'],
+            'PORT': '5432'
         }
     }
+else:
+    if "DATABASE_URL" in os.environ:
+        DATABASES = {'default': dj_database_url.parse(
+            os.environ.get('DATABASE_URL'))}
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
 
 
 # Password validation
@@ -169,8 +178,6 @@ MEDIA_URL = '/mediafiles/'
 
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny'
     ],
