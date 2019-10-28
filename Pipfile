@@ -41,7 +41,6 @@ django-rest-knox = "==4.0.1"
 django = "*"
 stripe = "*"
 pillow = "*"
-django-chartit = "*"
 
 [requires]
 python_version = "3.6"
