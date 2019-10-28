@@ -12,6 +12,7 @@ const Article = ({
   views,
   likes,
   created_at,
+  image,
   id,
   description,
   isArticleDetail,
@@ -21,7 +22,7 @@ const Article = ({
   return (
     <div>
       <Card fluid>
-        <Image src="/images/avatar/large/daniel.jpg" wrapped ui={false} />
+        <Image src={image} wrapped ui={false} />
         <Card.Content>
           <Card.Header as={Link} to={`/article/${id}`}>
             {title.toUpperCase()}

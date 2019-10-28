@@ -1,8 +1,6 @@
 import React from "react";
 
 import Article from "./Article";
-import { Segment } from "semantic-ui-react";
-import CommentsBody from "../tickets/CommentsBody";
 import EditButtons from "../sharedComponents/EditButtons";
 
 const ArticleDetail = ({ article, user, handleDelete, handleLikeClick }) => {
@@ -13,7 +11,8 @@ const ArticleDetail = ({ article, user, handleDelete, handleLikeClick }) => {
     created_at,
     id,
     content,
-    owner_id
+    owner_id,
+    image
   } = article.data;
 
   const { isOwner, likes } = article;
@@ -22,6 +21,7 @@ const ArticleDetail = ({ article, user, handleDelete, handleLikeClick }) => {
     <div>
       <Article
         id={id}
+        image={image}
         title={title}
         created_at={created_at}
         short_disc={short_disc}
