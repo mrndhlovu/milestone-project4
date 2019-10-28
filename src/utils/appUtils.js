@@ -1,6 +1,5 @@
 import { Responsive } from "semantic-ui-react";
 import { USER_PROFILE } from "../constants/constants";
-import { getUserProfile } from "../selectors/appSelectors";
 
 const cart = JSON.parse(localStorage.getItem("cart"));
 
@@ -223,19 +222,20 @@ export const validate = values => {
 };
 
 export const getCounts = tickets => {
-  const counts = { bugCount: 0, featureCount: 0, closed: 0 };
+  let counts = { bugCount: 0, featureCount: 0, closed: 0 };
 
   Object.keys(tickets).filter(key => {
     if (tickets[key].is_bug) {
-      const update = { ...counts, bugCount: counts.bugCount++ };
+      counts = { ...counts, bugCount: counts.bugCount++ };
     }
     if (tickets[key].is_feature) {
-      const update = { ...counts, featureCount: counts.featureCount++ };
+      counts = { ...counts, featureCount: counts.featureCount++ };
     }
 
     if (tickets[key].status === "done") {
-      const update = { ...counts, closed: counts.closed++ };
+      counts = { ...counts, closed: counts.closed++ };
     }
+    return counts;
   });
 
   return counts;
