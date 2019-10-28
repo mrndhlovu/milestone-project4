@@ -88,27 +88,18 @@ WSGI_APPLICATION = 'unicorn.wsgi.application'
 
 
 if development:
-
-    if "DATABASES_URL" in os.environ:
-
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': os.environ['DATABASE_NAME'],
-                'USER': os.environ['DATABASE_USER'],
-                'PASSWORD': os.environ['DATABASE_PASSWORD'],
-                'HOST': os.environ['DATABASE_HOST'],
-                'PORT': '5432'
-            }
+    print(development)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['DATABASE_NAME'],
+            'USER': os.environ['DATABASE_USER'],
+            'PASSWORD': os.environ['DATABASE_PASSWORD'],
+            'HOST': os.environ['DATABASE_HOST'],
+            'PORT': '5432'
         }
+    }
 
-    else:
-        print('Using sql lite db')
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': os.path.join(BASE_DIR, 'db.sqlites3'), }
-        }
 else:
     DATABASES = {'default': dj_database_url.parse(
         os.environ.get('DATABASE_URL'))}
