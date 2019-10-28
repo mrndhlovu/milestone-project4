@@ -87,31 +87,33 @@ WSGI_APPLICATION = 'unicorn.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 
-if development:
+DATABASES = {'default': dj_database_url.parse(
+    os.environ.get('DATABASE_URL'))}
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ['DATABASE_NAME'],
-            'USER': os.environ['DATABASE_USER'],
-            'PASSWORD': os.environ['DATABASE_PASSWORD'],
-            'HOST': os.environ['DATABASE_HOST'],
-            'PORT': '5432'
-        }
-    }
+# if development:
 
-else:
-    if "DATABASE_URL" in os.environ:
-        DATABASES = {'default': dj_database_url.parse(
-            os.environ.get('DATABASE_URL'))}
-    else:
-        print("Database URL not found. Using SQLite instead")
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-            }
-        }
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': os.environ['DATABASE_NAME'],
+#             'USER': os.environ['DATABASE_USER'],
+#             'PASSWORD': os.environ['DATABASE_PASSWORD'],
+#             'HOST': os.environ['DATABASE_HOST'],
+#             'PORT': '5432'
+#         }
+#     }
+
+# else:
+#     if "DATABASE_URL" in os.environ:
+
+#     else:
+#         print("Database URL not found. Using SQLite instead")
+#         DATABASES = {
+#             'default': {
+#                 'ENGINE': 'django.db.backends.sqlite3',
+#                 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#             }
+#         }
 
 
 # Password validation
