@@ -5,7 +5,6 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.dispatch import receiver
-from django.utils.translation import ugettext_lazy as _
 from memberships.models import Membership, UserMembership
 from tickets.models import Ticket
 from cart.models import Donation
