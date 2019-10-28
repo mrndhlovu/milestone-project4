@@ -15,7 +15,7 @@ const DesktopViewContainer = ({ children, showFixedMenu, hideFixedMenu }) => {
         onBottomPassed={showFixedMenu}
         onBottomPassedReverse={hideFixedMenu}
       >
-        <Segment textAlign="center" inverted vertical>
+        <Segment textAlign="center" inverted vertical style={{ paddingTop: 0 }}>
           <DesktopNavContainer />
         </Segment>
       </Visibility>

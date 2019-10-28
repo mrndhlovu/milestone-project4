@@ -16,7 +16,7 @@ import MobileSideBarButtons from "../components/navigation/MobileSideBarButtons"
 import UserLabel from "../components/navigation/UserLabel";
 import Cart from "../components/navigation/Cart";
 
-const styles = { paddingLeft: "31%", paddingTop: 10, fontSize: "0.8rem" };
+const styles = { paddingLeft: "31%", fontSize: "0.8rem" };
 
 export class MobileSideBarContainer extends Component {
   constructor(props) {
@@ -86,20 +86,15 @@ export class MobileSideBarContainer extends Component {
             <Container>
               <Menu inverted pointing secondary size="large">
                 <Menu.Item onClick={this.handleToggle}>
-                  <Icon name="sidebar" />
+                  <Icon name="sidebar" size="big" />
                 </Menu.Item>
 
-                <Menu.Item
-                  style={
-                    pendingOrder.data.count > 0
-                      ? styles
-                      : { ...styles, paddingLeft: "56%" }
-                  }
-                >
+                <Menu.Item style={styles}>
                   {pendingOrder.data.count > 0 && (
                     <Cart pendingOrders={pendingOrder.data} />
                   )}
-
+                </Menu.Item>
+                <Menu.Item>
                   {isAuthenticated && userProfile.dataReceived && (
                     <UserLabel
                       username={userProfile.data.username}

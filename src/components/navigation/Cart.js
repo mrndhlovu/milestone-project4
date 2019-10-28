@@ -20,26 +20,27 @@ export const Cart = ({ pendingOrders }) => {
   };
 
   return (
-    <Menu.Menu position="right" style={{ paddingRight: 10 }}>
-      <NavLink to="/checkout">
-        <Icon name="cart" color="orange" />
-      </NavLink>
-      <span style={{ paddingRight: 10 }}>{count}</span>
-      <Dropdown text="Cart" pointing>
-        <Dropdown.Menu>
-          {renderOrderItems(orders)}
-          <Dropdown.Divider />
-          <Dropdown.Header>
-            <Header
-              content="Checkout"
-              icon="shopping basket"
-              size="tiny"
-              as={NavLink}
-              to="/checkout"
-            />
-          </Dropdown.Header>
-        </Dropdown.Menu>
-      </Dropdown>
+    <Menu.Menu position="right">
+      <Menu.Item>
+        <Dropdown multiple>
+          <Dropdown.Menu>
+            {renderOrderItems(orders)}
+            <Dropdown.Divider />
+            <Dropdown.Header>
+              <Header
+                content="Checkout"
+                icon="shopping basket"
+                size="tiny"
+                as={NavLink}
+                to="/checkout"
+              />
+            </Dropdown.Header>
+          </Dropdown.Menu>
+        </Dropdown>
+        <NavLink to="/checkout">
+          <Icon name="cart" color="orange" /> {count}
+        </NavLink>
+      </Menu.Item>
     </Menu.Menu>
   );
 };

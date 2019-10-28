@@ -100,7 +100,7 @@ export class DesktopNavContainer extends Component {
               isActive={isActive}
               showActiveLink={this.showActiveLink}
             />
-            <Menu.Item position="right">
+            <Menu.Item position="right" style={{ paddingBottom: 0 }}>
               {pendingOrder.data.count > 0 && (
                 <Cart pendingOrders={pendingOrder.data} />
               )}
