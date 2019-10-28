@@ -50,7 +50,7 @@ class CustomUser(AbstractBaseUser):
     last_name = models.CharField(max_length=40, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(
-        _('date joined'), auto_now_add=True)
+        ('date joined'), auto_now_add=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
