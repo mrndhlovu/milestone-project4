@@ -9,7 +9,8 @@ import {
   Grid,
   Header,
   Image,
-  Segment
+  Segment,
+  Icon
 } from "semantic-ui-react";
 
 import { logOut } from "../actions/AuthActions";
@@ -45,12 +46,11 @@ export class HomeContainer extends Component {
               <Grid.Column width={8}>
                 <Header as="h3">
                   <StyledHeaderSpan>
-                    Problems are everywhere, solutions are here!
+                    Bugs are everywhere, solutions are here!
                   </StyledHeaderSpan>
                 </Header>
                 <p style={{ fontSize: "1.2rem" }}>
-                  We've got you covered for with all python, react, django,
-                  flask, code issues.
+                  We've got you covered, Python, React, Django, code issues.
                 </p>
                 <Header as="h3">
                   <StyledHeaderSpan>Explore Unicorn-Pro </StyledHeaderSpan>
@@ -63,7 +63,7 @@ export class HomeContainer extends Component {
             <Grid.Row>
               <Grid.Column textAlign="center">
                 <Button size="medium" color="orange" as={NavLink} to="/pricing">
-                  <StyledHeaderSpan>Explore Pro Service</StyledHeaderSpan>
+                  <StyledHeaderSpan>All Access Account</StyledHeaderSpan>
                 </Button>
               </Grid.Column>
             </Grid.Row>
@@ -77,19 +77,19 @@ export class HomeContainer extends Component {
                 style={{ paddingBottom: "5rem", paddingTop: "5rem" }}
               >
                 <Header as="h2">
-                  <StyledHeaderSpan>File your ticket</StyledHeaderSpan>
+                  <StyledHeaderSpan>File a ticket</StyledHeaderSpan>
                 </Header>
+                <Icon name="bug" />
+
                 <p style={{ fontSize: "1.3rem" }}>
-                  Head start on coding issues and save hours!
+                  Bugs issues will be attended to if enough votes are made.
                 </p>
                 <Header as="h2">
-                  <StyledHeaderSpan>
-                    Learn about the Unicorn Project{" "}
-                  </StyledHeaderSpan>
+                  <StyledHeaderSpan>Features require payment.</StyledHeaderSpan>
                 </Header>
+                <Icon name="code" />
                 <p style={{ fontSize: "1.3rem" }}>
-                  Learn more on how it is structure and how it runs, we tell it
-                  all
+                  For Just €5 you can have you issue fixed immediately
                 </p>
               </Grid.Column>
               <Grid.Column
@@ -112,6 +112,7 @@ export class HomeContainer extends Component {
               kind contribution.
             </p>
             <Button as={NavLink} to="/checkout" color="orange" size="medium">
+              <Icon name="heart" />
               Make a Donation
             </Button>
           </Container>
