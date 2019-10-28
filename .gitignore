@@ -11,7 +11,8 @@ Pipfile.lock
 *.pyc
 __pycache__/
 local_settings.py
-media
+mediafiles/
+staticfiles/
 .DS_Store
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
