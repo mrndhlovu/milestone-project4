@@ -10,11 +10,8 @@ import {
 import { getCartPendingOrder } from "../selectors/appSelectors";
 import Donations from "../components/ecommerce/Donations";
 import { addItemToCart } from "../actions/CheckoutActions";
-import { getWidth } from "../utils/appUtils";
 
 import { Segment, Header, Icon } from "semantic-ui-react";
-
-const width = getWidth();
 
 export class OrderSummaryContainer extends Component {
   constructor(props) {
@@ -22,8 +19,7 @@ export class OrderSummaryContainer extends Component {
     this.state = {
       donateIsDisable: true,
       buttonText: "Other amount",
-      donation: 0,
-      width: width
+      donation: 0
     };
 
     this.handleRemoveClick = this.handleRemoveClick.bind(this);
@@ -55,25 +51,24 @@ export class OrderSummaryContainer extends Component {
   }
 
   render() {
-    const { donateIsDisable, buttonText, width } = this.state;
+    const { donateIsDisable, buttonText } = this.state;
     const { pendingOrders, history } = this.props;
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
 
     return (
       <Segment>
-        <Header>
-          <Icon name="cart" />
-          {count > 0
-            ? `Your have ${count} ${count > 1 ? "items" : "item"} in your cart`
-            : "Your cart is empty"}
-        </Header>
+        {count > 0 && (
+          <Header>
+            Your have {count} {count > 1 ? "items" : "item"} in your cart.
+          </Header>
+        )}
+
         {count > 0 && (
           <OrderSummary
             pendingOrders={pendingOrders.data}
             handleRemoveClick={this.handleRemoveClick}
             history={history}
             count={count}
-            width={width}
           />
         )}
 

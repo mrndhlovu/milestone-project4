@@ -3,13 +3,12 @@ import styled from "styled-components";
 
 import { injectStripe, Elements, StripeProvider } from "react-stripe-elements";
 
-import { Grid, Container, Message } from "semantic-ui-react";
+import { Grid, Message } from "semantic-ui-react";
 
 import OrderSummaryContainer from "./OrderSummaryContainer";
 import PaymentContainer from "./PaymentContainer";
 
 const StyledDiv = styled.div`
-  background-color: #eee;
   width: 100%;
   padding: 20px 10%;
 `;

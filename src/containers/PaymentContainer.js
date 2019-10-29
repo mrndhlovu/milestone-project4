@@ -2,18 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import styled from "styled-components";
-
 import { CardElement } from "react-stripe-elements";
 
-import { Form, Button, Card, Segment } from "semantic-ui-react";
+import { Form, Card, Segment, Button } from "semantic-ui-react";
 
 import { makePayment } from "../actions/CheckoutActions";
 import { getCheckout } from "../selectors/appSelectors";
-
-const StyledButton = styled(Button)`
-  border-radius: 0 !important;
-`;
 
 export class PaymentContainer extends Component {
   constructor(props) {
@@ -71,7 +65,7 @@ export class PaymentContainer extends Component {
           </Form.Group>
         </Card.Content>
         <Card.Content extra>
-          <StyledButton
+          <Button
             color="orange"
             fluid
             onClick={() => this.handlePayNow()}
@@ -79,7 +73,7 @@ export class PaymentContainer extends Component {
             disabled={isDisabled}
           >
             PAY NOW
-          </StyledButton>
+          </Button>
         </Card.Content>
       </Card>
     );

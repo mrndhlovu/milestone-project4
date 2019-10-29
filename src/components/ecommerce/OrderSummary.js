@@ -1,39 +1,26 @@
 import React from "react";
 
-import { Table } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import CartFooter from "./CartFooter";
-import CartHeader from "./CartHeader";
+
 import CartBody from "./CartBody";
 
-const OrderSummary = ({
-  pendingOrders,
-  handleRemoveClick,
-  history,
-  count,
-  total,
-  width
-}) => {
+const OrderSummary = ({ pendingOrders, handleRemoveClick, history, total }) => {
   const orderItems = pendingOrders.orders ? pendingOrders.orders : {};
 
-  const isMobile = width <= 770;
-
   return pendingOrders !== {} ? (
-    <Table singleLine>
-      {!isMobile && <CartHeader count={count} />}
-
-      <Table.Body>
-        <CartBody
-          orderItems={orderItems}
-          total={total}
-          history={history}
-          handleRemoveClick={handleRemoveClick}
-        />
-      </Table.Body>
+    <Container>
+      <CartBody
+        orderItems={orderItems}
+        total={total}
+        history={history}
+        handleRemoveClick={handleRemoveClick}
+      />
 
       <CartFooter total={pendingOrders.total} />
-    </Table>
+    </Container>
   ) : (
     <UILoadingSpinner />
   );

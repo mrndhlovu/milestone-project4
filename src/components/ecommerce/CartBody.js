@@ -1,8 +1,9 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-import { Table, List, Icon } from "semantic-ui-react";
+import { Header, Icon, Card, Button } from "semantic-ui-react";
 
-const CartBody = ({ orderItems, handleRemoveClick, total, history }) => {
+const CartBody = ({ orderItems, handleRemoveClick }) => {
   return Object.keys(orderItems).map((item, index) => {
     const { ticket, membership } = orderItems[item];
     const { id, price } = orderItems[item];
@@ -11,39 +12,37 @@ const CartBody = ({ orderItems, handleRemoveClick, total, history }) => {
       ? ticket
       : membership
       ? `Unicorn ${membership}`
-      : `[Kind Donation]`;
+      : `Kind Donation`;
 
-    const productId = ticket
+    const productType = ticket
       ? "ticket"
       : membership
       ? "membership"
       : "donation";
 
     return (
-      <Table.Row key={index}>
-        <Table.Cell>
-          <List.Header as="a" onClick={() => history.push(`ticket/${id}`)}>
-            <span style={{ fontWeight: 700, color: "black" }}>{id}</span>
-          </List.Header>
-        </Table.Cell>
-        <Table.Cell textAlign="right">
-          <List.Header as="a" onClick={() => history.push(`ticket/${id}`)}>
-            <span style={{ fontWeight: 700, color: "black" }}>
-              {name.toUpperCase()}
-            </span>
-          </List.Header>
-        </Table.Cell>
+      <Card fluid key={index}>
+        <Card.Content>
+          <NavLink to={`ticket/${id}`}>
+            <Card.Header>{name.toUpperCase()}</Card.Header>
+          </NavLink>
+        </Card.Content>
+        <Card.Content extra>
+          <Card.Meta>Inc VAT</Card.Meta>
+          <Header style={{ margin: 0 }} as="h4" content={`Price € ${price}`} />
 
-        <Table.Cell textAlign="right">€ {price}</Table.Cell>
-        <Table.Cell textAlign="right">
-          <span>€ {price}</span>
-        </Table.Cell>
-        <Table.Cell textAlign="right">
-          <List.Header as="a" onClick={() => handleRemoveClick(id, productId)}>
-            <Icon disabled name="delete" size="large" />
-          </List.Header>
-        </Table.Cell>
-      </Table.Row>
+          <Button
+            basic
+            color="orange"
+            floated="right"
+            size="tiny"
+            onClick={() => handleRemoveClick(id, productType)}
+          >
+            <Icon disabled name="delete" size="small" />
+            Remove
+          </Button>
+        </Card.Content>
+      </Card>
     );
   });
 };
