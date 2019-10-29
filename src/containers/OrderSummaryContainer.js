@@ -11,7 +11,8 @@ import { getCartPendingOrder } from "../selectors/appSelectors";
 import Donations from "../components/ecommerce/Donations";
 import { addItemToCart } from "../actions/CheckoutActions";
 import { getWidth } from "../utils/appUtils";
-import PageHeader from "../components/sharedComponents/PageHeader";
+
+import { Segment, Header, Icon } from "semantic-ui-react";
 
 const width = getWidth();
 
@@ -59,8 +60,13 @@ export class OrderSummaryContainer extends Component {
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
 
     return (
-      <Fragment>
-        <PageHeader />
+      <Segment>
+        <Header>
+          <Icon name="cart" />
+          {count > 0
+            ? `Your have ${count} ${count > 1 ? "items" : "item"} in your cart`
+            : "Your cart is empty"}
+        </Header>
         {count > 0 && (
           <OrderSummary
             pendingOrders={pendingOrders.data}
@@ -78,7 +84,7 @@ export class OrderSummaryContainer extends Component {
           handleAddToCart={this.handleAddToCart}
           buttonText={buttonText}
         />
-      </Fragment>
+      </Segment>
     );
   }
 }

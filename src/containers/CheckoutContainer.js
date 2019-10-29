@@ -1,11 +1,18 @@
 import React, { Component } from "react";
+import styled from "styled-components";
 
 import { injectStripe, Elements, StripeProvider } from "react-stripe-elements";
 
-import { Grid, Container, Segment, Message } from "semantic-ui-react";
+import { Grid, Container, Message } from "semantic-ui-react";
 
 import OrderSummaryContainer from "./OrderSummaryContainer";
 import PaymentContainer from "./PaymentContainer";
+
+const StyledDiv = styled.div`
+  background-color: #eee;
+  width: 100%;
+  padding: 20px 10%;
+`;
 
 class CheckoutContainer extends Component {
   constructor(props) {
@@ -37,7 +44,7 @@ class CheckoutContainer extends Component {
   render() {
     const { error, message } = this.state;
     return (
-      <Segment style={{ marginTop: 40 }}>
+      <StyledDiv>
         <Grid stackable>
           <Grid.Row>
             <Grid.Column width={9}>
@@ -54,7 +61,7 @@ class CheckoutContainer extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </Segment>
+      </StyledDiv>
     );
   }
 }
@@ -63,11 +70,9 @@ const FormInjection = injectStripe(CheckoutContainer);
 
 const StripeFormWrapper = () => (
   <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLISHABLE}>
-    <Container>
-      <Elements>
-        <FormInjection />
-      </Elements>
-    </Container>
+    <Elements>
+      <FormInjection />
+    </Elements>
   </StripeProvider>
 );
 

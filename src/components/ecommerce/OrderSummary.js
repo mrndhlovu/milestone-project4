@@ -20,7 +20,7 @@ const OrderSummary = ({
   const isMobile = width <= 770;
 
   return pendingOrders !== {} ? (
-    <Table celled striped>
+    <Table singleLine>
       {!isMobile && <CartHeader count={count} />}
 
       <Table.Body>
