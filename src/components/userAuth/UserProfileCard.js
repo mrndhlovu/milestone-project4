@@ -2,26 +2,69 @@ import React, { Fragment } from "react";
 
 import { Card, Grid, Button } from "semantic-ui-react";
 
-import { getFormatedDate } from "../../utils/appUtils";
+import { getFormatedDate, getDate } from "../../utils/appUtils";
 import userImage from "../../images/userImage.png";
 import UserPurchases from "./UserPurchases";
 
-const UserProfileCard = ({ user, handleCancelButtonClick }) => {
+const UserProfileCard = ({
+  user,
+  handleCancelButtonClick,
+  handleUploadImage
+}) => {
   const {
     username,
     current_membership: { membership }
   } = user;
-  const { next_billing_date, is_pro_member } = membership;
+  const { next_billing_date, is_pro_member, image } = membership;
   const PURCHASES = user.current_membership.purchases.tickets;
 
   return (
     <Grid stackable columns={2}>
       <Grid.Column width={4}>
-        <Card
-          image={userImage}
-          meta={`Dated Joined: ${getFormatedDate(membership.date_signedup)}`}
-          header={username.toUpperCase()}
-        />
+        {!image && (
+          <Button
+            icon="image"
+            content="Upload an image"
+            fluid
+            color="blue"
+            as="a"
+            onClick={() => handleUploadImage()}
+          />
+        )}
+        <Card fluid image={userImage} header={username.toUpperCase()} />
+        {is_pro_member ? (
+          <Fragment>
+            <p>
+              <Button
+                icon="delete"
+                content="Deactivate account"
+                fluid
+                color="blue"
+                as="a"
+                onClick={() => handleCancelButtonClick("deactivate")}
+              />
+            </p>
+            <p>
+              <Button
+                fluid
+                icon="globe"
+                content="Cancel Subscription"
+                color="blue"
+                as="a"
+                onClick={() => handleCancelButtonClick()}
+              />
+            </p>
+          </Fragment>
+        ) : (
+          <Button
+            icon="globe"
+            content="Deactivate account"
+            floated="right"
+            color="blue"
+            as="a"
+            onClick={() => handleCancelButtonClick("deactivate")}
+          />
+        )}
       </Grid.Column>
       <Grid.Column width={12}>
         <Card
@@ -29,50 +72,23 @@ const UserProfileCard = ({ user, handleCancelButtonClick }) => {
             membership.is_pro_member ? "PRO" : "FREE"
           }`}
           extra={`Permission: ${
-            is_pro_member ? "All accesss" : "Limited access"
+            is_pro_member ? "All access" : "Limited access"
           }`}
           description={
-            is_pro_member &&
-            `Next billing date: ${getFormatedDate(next_billing_date)}`
+            is_pro_member && `Next billing date: ${getDate(next_billing_date)}`
           }
           fluid
         />
 
         {PURCHASES.length > 0 && (
-          <UserPurchases purchases={user.current_membership.purchases} />
+          <UserPurchases
+            allAccess={is_pro_member}
+            purchases={user.current_membership.purchases}
+            accountType={`Unicorn ${
+              membership.is_pro_member ? "PRO" : "FREE"
+            } membership`}
+          />
         )}
-        <Card>
-          {is_pro_member ? (
-            <Fragment>
-              <Button
-                floated="right"
-                icon="globe"
-                content="Cancel Subscription"
-                color="blue"
-                as="a"
-                onClick={() => handleCancelButtonClick()}
-              />
-              <br />
-              <Button
-                icon="globe"
-                content="Deactivate account"
-                floated="right"
-                color="blue"
-                as="a"
-                onClick={() => handleCancelButtonClick("deactivate")}
-              />
-            </Fragment>
-          ) : (
-            <Button
-              icon="globe"
-              content="Deactivate account"
-              floated="right"
-              color="blue"
-              as="a"
-              onClick={() => handleCancelButtonClick("deactivate")}
-            />
-          )}
-        </Card>
       </Grid.Column>
     </Grid>
   );

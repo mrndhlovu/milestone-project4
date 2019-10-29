@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { List, Icon, Card } from "semantic-ui-react";
 
-const UserPurchases = ({ purchases }) => {
+const UserPurchases = ({ purchases, accountType, allAccess }) => {
   const { tickets } = purchases;
 
   const renderPurchases = () => {
@@ -25,20 +25,28 @@ const UserPurchases = ({ purchases }) => {
   };
 
   return (
-    <div>
+    <Fragment>
       <Card fluid>
         <Card.Content>
           <Card.Header as="h2" attached="top">
-            Ticket Purchases
+            Purchases
           </Card.Header>
         </Card.Content>
         <Card.Content>
+          {allAccess && (
+            <Fragment>
+              <Icon name="check circle" color="olive" />
+              <List.Content>
+                <List.Header>{accountType}</List.Header>
+              </List.Content>
+            </Fragment>
+          )}
           <List divided verticalAlign="middle">
             {renderPurchases()}
           </List>
         </Card.Content>
       </Card>
-    </div>
+    </Fragment>
   );
 };
 

@@ -12,13 +12,18 @@ const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
 `;
 
-export const PageHeader = ({ mobile }) => {
+export const PageHeader = ({
+  mobile,
+  customHeader,
+  headerObject,
+  hideButton
+}) => {
   const {
     headerText,
     headerButtonText,
     headerButtonUrl,
     subHeading
-  } = getHeaderObject();
+  } = customHeader ? headerObject : getHeaderObject();
 
   return (
     <div>
@@ -44,16 +49,18 @@ export const PageHeader = ({ mobile }) => {
             marginTop: mobile ? "0.5em" : "1.5em"
           }}
         />
-        <Button
-          primary
-          color="linkedin"
-          size="large"
-          as={NavLink}
-          to={headerButtonUrl}
-        >
-          {headerButtonText}
-          <Icon name="right arrow" />
-        </Button>
+        {!hideButton && (
+          <Button
+            primary
+            color="linkedin"
+            size="large"
+            as={NavLink}
+            to={headerButtonUrl}
+          >
+            {headerButtonText}
+            <Icon name="right arrow" />
+          </Button>
+        )}
       </StyledSegment>
     </div>
   );

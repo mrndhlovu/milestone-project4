@@ -26,6 +26,13 @@ const HEADER_TEXT = {
     headerButtonText: "Open a ticket",
     subHeading: "Bug fixes are FREE! Features require payment for development!"
   },
+  "user-profile": {
+    headerText: "Your profile",
+    headerButtonUrl: "/create-ticket",
+    headerButtonText: "Open a ticket",
+    subHeading: "Bug fixes are FREE! Features require payment for development!",
+    image: ""
+  },
   blog: {
     headerText: "Unicorn Blog",
     headerButtonUrl: "/new-article",
