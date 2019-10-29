@@ -91,6 +91,15 @@ export const getTicketInCart = () => {
   return order;
 };
 
+export const getDate = dateValue => {
+  const newDate = new Date(`${dateValue}`);
+  const day = newDate.getDate();
+  const month = newDate.getMonth();
+  const year = newDate.getFullYear();
+
+  return year + "-" + month + "-" + day;
+};
+
 export const getFormatedDate = lastUpdate => {
   // From stackoverflow
   const now = new Date();
