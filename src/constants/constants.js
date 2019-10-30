@@ -70,6 +70,11 @@ export const COMMENT_TYPE = Object.freeze({
   reply: "reply"
 });
 
+export const ACCOUNT_CHANGE_OPTION = Object.freeze({
+  downgrade: "downgrade",
+  deactivate: "deactivate"
+});
+
 export const TICKET_STATUS = Object.freeze({
   todo: "todo",
   doing: "doing",
