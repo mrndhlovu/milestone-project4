@@ -48,6 +48,7 @@ class CustomUser(AbstractBaseUser):
     username = models.CharField(max_length=100, blank=True, null=True)
     first_name = models.CharField(max_length=40, blank=True, null=True)
     last_name = models.CharField(max_length=40, blank=True, null=True)
+    image = models.FileField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(
         ('date joined'), auto_now_add=True)
@@ -84,6 +85,7 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     active_membership = models.ManyToManyField(Membership, blank=True)
     paid_tickets = models.ManyToManyField(Ticket, blank=True)
+    image = models.FileField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username
