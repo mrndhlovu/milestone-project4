@@ -2,20 +2,21 @@ import React, { Fragment } from "react";
 
 import { Card, Grid, Button } from "semantic-ui-react";
 
-import { getFormatedDate, getDate } from "../../utils/appUtils";
+import { getDate } from "../../utils/appUtils";
 import userImage from "../../images/userImage.png";
 import UserPurchases from "./UserPurchases";
 
 const UserProfileCard = ({
   user,
   handleCancelButtonClick,
-  handleUploadImage
+  handleUploadImage,
+  image
 }) => {
   const {
     username,
     current_membership: { membership }
   } = user;
-  const { next_billing_date, is_pro_member, image } = membership;
+  const { next_billing_date, is_pro_member } = membership;
   const PURCHASES = user.current_membership.purchases.tickets;
 
   return (
@@ -31,7 +32,11 @@ const UserProfileCard = ({
             onClick={() => handleUploadImage()}
           />
         )}
-        <Card fluid image={userImage} header={username.toUpperCase()} />
+        <Card
+          fluid
+          image={image ? image : userImage}
+          header={username.toUpperCase()}
+        />
         {is_pro_member ? (
           <Fragment>
             <p>
@@ -51,7 +56,7 @@ const UserProfileCard = ({
                 content="Cancel Subscription"
                 color="blue"
                 as="a"
-                onClick={() => handleCancelButtonClick()}
+                onClick={() => handleCancelButtonClick("downgrade")}
               />
             </p>
           </Fragment>
@@ -62,6 +67,7 @@ const UserProfileCard = ({
             floated="right"
             color="blue"
             as="a"
+            fluid
             onClick={() => handleCancelButtonClick("deactivate")}
           />
         )}

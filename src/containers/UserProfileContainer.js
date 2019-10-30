@@ -4,13 +4,14 @@ import { withRouter } from "react-router-dom";
 
 import { Confirm, Segment, Container } from "semantic-ui-react";
 
-import { cancelSubscription } from "../actions/MembershipActions";
+import { changeAccount } from "../actions/MembershipActions";
 
 import { getUserProfile } from "../selectors/appSelectors";
 import UserProfileCard from "../components/userAuth/UserProfileCard";
 import { fetchUser } from "../actions/AuthActions";
 import PageHeader from "../components/sharedComponents/PageHeader";
 import { getFormatedDate } from "../utils/appUtils";
+import { ACCOUNT_CHANGE_OPTION } from "../constants/constants";
 
 export class UserProfileContainer extends Component {
   constructor(props) {
@@ -40,9 +41,8 @@ export class UserProfileContainer extends Component {
   handleConfirm(option) {
     this.setState({ showConfirmModal: false });
 
-    if (option === "deactivate") {
-      // this.props.deactivate();
-      console.log("will delete account");
+    if (option === ACCOUNT_CHANGE_OPTION.deactivate) {
+      this.props.changeAccount(option);
 
       setTimeout(() => {
         localStorage.clear();
@@ -50,11 +50,9 @@ export class UserProfileContainer extends Component {
         window.location.reload();
       }, 1000);
     } else {
-      this.props.cancelSubscription();
+      this.props.changeAccount(option);
 
       setTimeout(() => {
-        localStorage.clear();
-        this.props.history.push("/home");
         window.location.reload();
       }, 1000);
     }
@@ -69,7 +67,7 @@ export class UserProfileContainer extends Component {
   render() {
     const { user } = this.props;
     const { showConfirmModal, option } = this.state;
-    console.log(user);
+
     const headerObject = {
       headerText: user.dataReceived
         ? user.data.username.toUpperCase()
@@ -90,6 +88,9 @@ export class UserProfileContainer extends Component {
           <Segment>
             {user.dataReceived && user.data.username && (
               <UserProfileCard
+                image={
+                  "https://unicorn-ecommerce.s3.amazonaws.com/mediafiles/user-33638_640_1.png"
+                }
                 user={user.data}
                 handleCancelButtonClick={this.handleCancelButtonClick}
               />
@@ -100,12 +101,12 @@ export class UserProfileContainer extends Component {
             open={showConfirmModal}
             cancelButton="Never mind"
             confirmButton={
-              option === "deactivate"
+              option === ACCOUNT_CHANGE_OPTION.deactivate
                 ? "Yes delete my account"
                 : "Yes, cancel subscription"
             }
             content={`Are sure you want to ${
-              option === "deactivate"
+              option === ACCOUNT_CHANGE_OPTION.deactivate
                 ? `delete your account`
                 : `cancel your subscription`
             }`}
@@ -128,5 +129,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { cancelSubscription, fetchUser }
+  { changeAccount, fetchUser }
 )(withRouter(UserProfileContainer));

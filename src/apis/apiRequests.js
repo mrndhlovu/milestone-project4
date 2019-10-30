@@ -48,10 +48,10 @@ export async function requestMembershipsList() {
   return axios.get(`${MEMBERSHIP_EP}`);
 }
 
-export async function requestCancelSubsricption() {
+export async function requestCancelSubsricption(option) {
   return axios.post(
     `${MEMBERSHIP_EP}cancel-subscription/`,
-    null,
+    { option },
     authQueryParams
   );
 }

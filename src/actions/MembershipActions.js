@@ -28,10 +28,10 @@ export const fetchMembershipsList = () => {
   };
 };
 
-export const cancelSubscription = () => {
+export const changeAccount = option => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_CANCEL_SUBSCRIPTION));
-    requestCancelSubsricption().then(
+    requestCancelSubsricption(option).then(
       response => {
         dispatch(requestSuccess(RECEIVE_SUBSCRIPTION_CANCELED, response.data));
       },
