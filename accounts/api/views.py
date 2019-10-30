@@ -133,6 +133,8 @@ class UserAPI(RetrieveAPIView):
         if self.request.method == 'GET':
             current_membership = get_member_profile(self.request)
             membership_type = get_user_membership(self.request).membership
+            profile = get_object_or_404(
+                UserProfile, user=self.request.user)
 
             if current_membership is not None:
                 purchases = get_purchases(self.request)
@@ -144,7 +146,8 @@ class UserAPI(RetrieveAPIView):
                     current_membership['date_subscribed'] = subscription.date_subscribed
             membership = {
                 'membership': current_membership,
-                'purchases': purchases
+                'purchases': purchases,
+                'image': str(profile.image)
             }
             context['current_membership'] = membership
 
