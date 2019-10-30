@@ -57,11 +57,16 @@ class MembershipListAPIView(ListAPIView):
 class CancelSubscriptionAPIView(ListAPIView):
 
     def post(self, request, **kwargs):
+        request_data = json.loads(request.body.decode('utf-8'))
+
+        account_change = request_data['option']
         current_membership = get_user_membership(request)
 
         if current_membership is not None:
 
-            if current_membership.membership == 'pro':
+            if account_change == 'downgrade':
+
+                print(request_data)
                 user_subscription = get_user_subscription(request)
 
                 if user_subscription.is_active is False:
