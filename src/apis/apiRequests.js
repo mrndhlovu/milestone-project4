@@ -1,4 +1,7 @@
+import S3FileUpload from "react-s3";
+
 import axios from "axios";
+
 import {
   AUTH_EP,
   authQueryParams,
@@ -11,6 +14,7 @@ import {
   getCheckoutBody
 } from "../utils/urls";
 import { SESSION_TOKEN } from "../constants/localStorageConstants";
+import { AWS_BUCKET_CONFIG, getFileName } from "../utils/appUtils";
 
 export async function requestTicketsList() {
   return axios.get(`${TICKETS_EP}`);
@@ -62,6 +66,12 @@ export async function requestUser() {
 
 export async function requestSignup(body) {
   return axios.post(`${AUTH_EP}signup`, body, queryParams);
+}
+
+export async function requestUpdateUserProfile(imageUrl) {
+  const body = { image: imageUrl, email: "admin@gmail.com" };
+
+  return axios.post(`${AUTH_EP}update`, body, authQueryParams);
 }
 
 export async function requestLogin(body) {
@@ -143,4 +153,8 @@ export async function requestTransactionUpdate() {
     { stripeToken: localStorage.getItem("stripeToken") },
     authQueryParams
   );
+}
+
+export function requestFileUpload(file) {
+  return S3FileUpload.uploadFile(file, AWS_BUCKET_CONFIG);
 }
