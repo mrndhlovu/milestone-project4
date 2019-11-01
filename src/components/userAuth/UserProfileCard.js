@@ -1,10 +1,11 @@
 import React, { Fragment } from "react";
 
-import { Card, Grid, Button } from "semantic-ui-react";
+import { Card, Grid, Button, Label } from "semantic-ui-react";
 
 import { getDate } from "../../utils/appUtils";
 import userImage from "../../images/userImage.png";
 import UserPurchases from "./UserPurchases";
+import { DEFAULT_IMAGE } from "../../constants/constants";
 
 const UserProfileCard = ({
   user,
@@ -18,25 +19,22 @@ const UserProfileCard = ({
   } = user;
   const { next_billing_date, is_pro_member } = membership;
   const PURCHASES = user.current_membership.purchases.tickets;
+  const defaultImage = DEFAULT_IMAGE === image;
 
   return (
     <Grid stackable columns={2}>
       <Grid.Column width={4}>
-        {!image && (
-          <Button
-            icon="image"
-            content="Upload an image"
-            fluid
-            color="blue"
-            as="a"
-            onClick={() => handleUploadImage()}
-          />
-        )}
         <Card
           fluid
           image={image ? image : userImage}
           header={username.toUpperCase()}
+          extra={
+            defaultImage && (
+              <input type="file" onChange={event => handleUploadImage(event)} />
+            )
+          }
         />
+
         {is_pro_member ? (
           <Fragment>
             <p>
