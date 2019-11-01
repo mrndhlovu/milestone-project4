@@ -1,14 +1,16 @@
 from .serializers import UserSerializer, SignupSerializer, LoginSerializer
-from accounts.models import UserProfile
+from accounts.models import UserProfile, CustomUser
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 from knox.models import AuthToken
 from memberships.models import Subscription
 from memberships.models import UserMembership, Membership
 from rest_framework import permissions
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.response import Response
 from tickets.models import Ticket
+import json
 
 
 def get_member_profile(request):
@@ -136,6 +138,12 @@ class UserAPI(RetrieveAPIView):
             profile = get_object_or_404(
                 UserProfile, user=self.request.user)
 
+            default_image = 'https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/deafult.png'
+            image = profile.image
+
+            if image is None:
+                image = default_image
+
             if current_membership is not None:
                 purchases = get_purchases(self.request)
                 current_membership['type'] = str(membership_type)
@@ -147,7 +155,7 @@ class UserAPI(RetrieveAPIView):
             membership = {
                 'membership': current_membership,
                 'purchases': purchases,
-                'image': str(profile.image)
+                'image': image
             }
             context['current_membership'] = membership
 
@@ -155,3 +163,22 @@ class UserAPI(RetrieveAPIView):
             context['current_membership'] = None
 
         return context
+
+
+class UserUpdateAPIView(UpdateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        request_data = json.loads(request.body.decode('utf-8'))
+
+        image = request_data['image']
+        user = UserProfile.objects.filter(user=request.user)[0]
+
+        user.image = image
+        user.save()
+
+        context = {
+            'message': 'Image uploaded',
+        }
+        return Response(context, status=200)
