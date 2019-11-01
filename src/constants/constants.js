@@ -90,3 +90,6 @@ export const EDIT_FIELDS = [
   "priority_level",
   "content"
 ];
+
+export const DEFAULT_IMAGE =
+  "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/deafult.png";
