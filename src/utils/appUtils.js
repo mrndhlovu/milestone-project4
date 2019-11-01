@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Responsive } from "semantic-ui-react";
 import { USER_PROFILE } from "../constants/constants";
 
@@ -248,4 +249,23 @@ export const getCounts = tickets => {
   });
 
   return counts;
+};
+
+export const AWS_BUCKET_CONFIG = Object.freeze({
+  bucketName: `${process.env.REACT_APP_AWS_BUCKET_NAME}`,
+  dirName: `${process.env.REACT_APP_AWS_MEDIA_DIR}`,
+  region: `${process.env.REACT_APP_AWS_REGION}`,
+  accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
+  secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_ACCESS_KEY}`
+});
+
+// from Ben Award Youtube
+export const getFileName = filename => {
+  const date = moment().format("MM-DD-YYYY");
+  const randomString = Math.random()
+    .toString(36)
+    .substring(2, 7);
+  const cleanFileName = filename.toLowerCase().replace(/[^a-z0-9]/g, ".");
+  const newFilename = `${randomString}-${date}-${cleanFileName}`;
+  return newFilename.substring(0, 60);
 };
