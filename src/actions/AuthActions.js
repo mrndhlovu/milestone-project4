@@ -7,14 +7,22 @@ import {
   RECEIVED_USER,
   REQUEST_SIGNUP,
   REQUEST_LOGIN,
-  FETCH_USER_ERROR
+  FETCH_USER_ERROR,
+  UPLOAD_ERROR,
+  RECEIVE_UPLOAD,
+  REQUEST_UPLOAD,
+  RECEIVE_UPDATE_USER,
+  UPDATE_USER_ERROR,
+  REQUEST_UPDATE_USER
 } from "./ActionTypes";
 
 import {
   requestLogin,
   requestSignup,
   requestLogout,
-  requestUser
+  requestUser,
+  requestFileUpload,
+  requestUpdateUserProfile
 } from "../apis/apiRequests";
 
 import {
@@ -189,6 +197,39 @@ export const fetchUser = () => {
       error => {
         dispatch(createMessage({ errorMsg: error.response.data }));
         dispatch(dataRequestFail(FETCH_USER_ERROR, error));
+      }
+    );
+  };
+};
+
+export const uploadProfileImage = file => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_UPLOAD));
+    requestFileUpload(file).then(
+      response => {
+        console.log(response);
+        dispatch(requestSuccess(RECEIVE_UPLOAD, response.data));
+        dispatch(updateUserProfile(response.location));
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: error.response.data }));
+        dispatch(dataRequestFail(UPLOAD_ERROR, error));
+      }
+    );
+  };
+};
+
+export const updateUserProfile = userData => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_UPDATE_USER));
+    requestUpdateUserProfile(userData).then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_UPDATE_USER, response.data));
+        createMessage({ successMsg: response.data.message });
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: error.response.data }));
+        dispatch(dataRequestFail(UPDATE_USER_ERROR, error));
       }
     );
   };
