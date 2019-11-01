@@ -105,10 +105,7 @@ export class DesktopNavContainer extends Component {
                 <Cart pendingOrders={pendingOrder.data} />
               )}
               {userProfile.dataReceived && (
-                <UserLabel
-                  username={data.username}
-                  currentMembership={data.current_membership}
-                />
+                <UserLabel image={data.current_membership.image} />
               )}
               <NavigationButtons
                 isAuthenticated={isAuthenticated}
