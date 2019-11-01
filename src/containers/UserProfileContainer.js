@@ -8,9 +8,9 @@ import { changeAccount } from "../actions/MembershipActions";
 
 import { getUserProfile } from "../selectors/appSelectors";
 import UserProfileCard from "../components/userAuth/UserProfileCard";
-import { fetchUser } from "../actions/AuthActions";
+import { fetchUser, uploadProfileImage } from "../actions/AuthActions";
 import PageHeader from "../components/sharedComponents/PageHeader";
-import { getFormatedDate } from "../utils/appUtils";
+import { getFormatedDate, getFileName } from "../utils/appUtils";
 import { ACCOUNT_CHANGE_OPTION } from "../constants/constants";
 
 export class UserProfileContainer extends Component {
@@ -25,6 +25,7 @@ export class UserProfileContainer extends Component {
 
     this.handleConfirm = this.handleConfirm.bind(this);
     this.handleCancelButtonClick = this.handleCancelButtonClick.bind(this);
+    this.handleUploadImage = this.handleUploadImage.bind(this);
   }
   componentDidMount() {
     this.props.fetchUser();
@@ -36,6 +37,12 @@ export class UserProfileContainer extends Component {
       if (user.data.username) {
       }
     }
+  }
+
+  handleUploadImage(event) {
+    const file = event.target.files[0];
+
+    this.props.uploadProfileImage(file);
   }
 
   handleConfirm(option) {
@@ -65,7 +72,7 @@ export class UserProfileContainer extends Component {
     });
   }
   render() {
-    const { user } = this.props;
+    const { user, image } = this.props;
     const { showConfirmModal, option } = this.state;
 
     const headerObject = {
@@ -88,11 +95,10 @@ export class UserProfileContainer extends Component {
           <Segment>
             {user.dataReceived && user.data.username && (
               <UserProfileCard
-                image={
-                  "https://unicorn-ecommerce.s3.amazonaws.com/mediafiles/user-33638_640_1.png"
-                }
+                image={user.data.current_membership.image}
                 user={user.data}
                 handleCancelButtonClick={this.handleCancelButtonClick}
+                handleUploadImage={this.handleUploadImage}
               />
             )}
           </Segment>
@@ -129,5 +135,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { changeAccount, fetchUser }
+  { changeAccount, fetchUser, uploadProfileImage }
 )(withRouter(UserProfileContainer));
