@@ -1,43 +1,88 @@
-import React, { Fragment } from "react";
+import React from "react";
+import styled from "styled-components";
 
-import { Card, Container, Image, Icon, Button } from "semantic-ui-react";
+import { Card, Image, Icon, Button, Grid, Container } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
+import { DEFAULT_IMAGE_URL } from "../../constants/constants";
 
-import { DEFAULT_IMAGE } from "../../constants/constants";
+const StyledContainer = styled(Container)`
+  padding: 5px;
+`;
 
-const UserProfileCard = ({ user, handleUploadImage, image }) => {
-  const { username, bio, date_joined, first_name, last_name } = user;
-  const defaultImage = DEFAULT_IMAGE === image;
+const UserProfileCard = ({
+  user,
+  handleUploadImage,
+  image,
+  handleEditImage
+}) => {
+  const {
+    username,
+    date_joined,
+    first_name,
+    last_name,
+    current_membership: { bio, occupation }
+  } = user;
+  const defaultImage = DEFAULT_IMAGE_URL === image;
 
   return (
-    <Container>
-      <Card fluid>
-        <Image src={image} wrapped ui={false} />
-
-        <Card.Content>
-          <Card.Header>
-            {first_name} {last_name}
-          </Card.Header>
-          <Card.Meta>
-            <span className="date">Joined {getFormatedDate(date_joined)}</span>
-          </Card.Meta>
-          <Card.Description>{bio}</Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          <Icon name="user" color="olive" />
-          {username.toUpperCase()}
-
-          {defaultImage && (
-            <Button floated="right" color="linkedin">
-              <span style={{ paddingRight: 10 }}> Upload an image</span>
-              <Icon name="upload" color="olive" />
-              <input type="file" onChange={event => handleUploadImage(event)} />
-            </Button>
-          )}
-        </Card.Content>
-      </Card>
-    </Container>
+    <StyledContainer>
+      <Card.Group>
+        <Grid stackable>
+          <Grid.Row columns={2}>
+            <Grid.Column width={8}>
+              <Card fluid>
+                <Image
+                  src={image}
+                  onClick={() => handleEditImage()}
+                  wrapped
+                  ui={false}
+                  label={{
+                    as: "a",
+                    color: "red",
+                    corner: "right",
+                    icon: "save"
+                  }}
+                />
+                <Card.Content>
+                  <Card.Header>
+                    {first_name} {last_name}
+                  </Card.Header>
+                  <Card.Meta>
+                    <span className="date">
+                      Joined {getFormatedDate(date_joined)}
+                    </span>
+                  </Card.Meta>
+                  <Card.Description>{occupation}</Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                  {defaultImage && (
+                    <Button floated="right" fluid>
+                      <Icon name="upload" />
+                      <input
+                        type="file"
+                        onChange={event => handleUploadImage(event)}
+                      />
+                    </Button>
+                  )}
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <Card fluid>
+                <Card.Content header={`About ${first_name.toUpperCase()}`} />
+                <Card.Content description={bio} />
+                <Card.Content extra>
+                  <Card.Content extra>
+                    Username: {username.toUpperCase()}
+                  </Card.Content>
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Card.Group>
+    </StyledContainer>
   );
 };
 
