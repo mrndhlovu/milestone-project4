@@ -13,7 +13,10 @@ import {
   REQUEST_UPLOAD,
   RECEIVE_UPDATE_USER,
   UPDATE_USER_ERROR,
-  REQUEST_UPDATE_USER
+  REQUEST_UPDATE_USER,
+  RECEIVE_PROFILE_UPDATE,
+  PROFILE_UPDATE_ERROR,
+  REQUEST_PROFILE_UPDATE
 } from "./ActionTypes";
 
 import {
@@ -207,9 +210,9 @@ export const uploadProfileImage = file => {
     dispatch(makeRequest(REQUEST_UPLOAD));
     requestFileUpload(file).then(
       response => {
-        console.log(response);
         dispatch(requestSuccess(RECEIVE_UPLOAD, response.data));
-        dispatch(updateUserProfile(response.location));
+        const userData = { image: response.location, isImageUpload: true };
+        dispatch(updateUserProfile(userData));
       },
       error => {
         dispatch(createMessage({ errorMsg: error.response.data }));
@@ -221,15 +224,15 @@ export const uploadProfileImage = file => {
 
 export const updateUserProfile = userData => {
   return dispatch => {
-    dispatch(makeRequest(REQUEST_UPDATE_USER));
+    dispatch(makeRequest(RECEIVE_PROFILE_UPDATE));
     requestUpdateUserProfile(userData).then(
       response => {
-        dispatch(requestSuccess(RECEIVE_UPDATE_USER, response.data));
+        dispatch(requestSuccess(RECEIVE_PROFILE_UPDATE, response.data));
         createMessage({ successMsg: response.data.message });
       },
       error => {
         dispatch(createMessage({ errorMsg: error.response.data }));
-        dispatch(dataRequestFail(UPDATE_USER_ERROR, error));
+        dispatch(dataRequestFail(PROFILE_UPDATE_ERROR, error));
       }
     );
   };

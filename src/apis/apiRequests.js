@@ -68,10 +68,18 @@ export async function requestSignup(body) {
   return axios.post(`${AUTH_EP}signup`, body, queryParams);
 }
 
-export async function requestUpdateUserProfile(imageUrl) {
-  const body = { image: imageUrl, email: "admin@gmail.com" };
+export async function requestUpdateUserProfile(userData) {
+  let requestBody;
+  if (userData.isImageUpload) {
+    requestBody = {
+      image: userData.image,
+      isImageUpload: userData.isImageUpload
+    };
+  } else {
+    requestBody = { ...userData, isImageUpload: false };
+  }
 
-  return axios.post(`${AUTH_EP}update`, body, authQueryParams);
+  return axios.post(`${AUTH_EP}update`, requestBody, authQueryParams);
 }
 
 export async function requestLogin(body) {
