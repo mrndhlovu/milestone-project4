@@ -163,6 +163,10 @@ export async function requestTransactionUpdate() {
   );
 }
 
-export function requestFileUpload(file) {
+export function requestAwsFileUpload(file) {
   return S3FileUpload.uploadFile(file, AWS_BUCKET_CONFIG);
+}
+
+export function requestAwsDeleteFile(file) {
+  return S3FileUpload.deleteFile(file, AWS_BUCKET_CONFIG);
 }

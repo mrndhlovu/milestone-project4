@@ -11,9 +11,6 @@ import {
   UPLOAD_ERROR,
   RECEIVE_UPLOAD,
   REQUEST_UPLOAD,
-  RECEIVE_UPDATE_USER,
-  UPDATE_USER_ERROR,
-  REQUEST_UPDATE_USER,
   RECEIVE_PROFILE_UPDATE,
   PROFILE_UPDATE_ERROR,
   REQUEST_PROFILE_UPDATE
@@ -24,7 +21,8 @@ import {
   requestSignup,
   requestLogout,
   requestUser,
-  requestFileUpload,
+  requestAwsFileUpload,
+  requestAwsDeleteFile,
   requestUpdateUserProfile
 } from "../apis/apiRequests";
 
@@ -208,7 +206,7 @@ export const fetchUser = () => {
 export const uploadProfileImage = file => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_UPLOAD));
-    requestFileUpload(file).then(
+    requestAwsFileUpload(file).then(
       response => {
         dispatch(requestSuccess(RECEIVE_UPLOAD, response.data));
         const userData = { image: response.location, isImageUpload: true };
@@ -224,14 +222,30 @@ export const uploadProfileImage = file => {
 
 export const updateUserProfile = userData => {
   return dispatch => {
-    dispatch(makeRequest(RECEIVE_PROFILE_UPDATE));
+    dispatch(makeRequest(REQUEST_PROFILE_UPDATE));
     requestUpdateUserProfile(userData).then(
       response => {
         dispatch(requestSuccess(RECEIVE_PROFILE_UPDATE, response.data));
         createMessage({ successMsg: response.data.message });
       },
       error => {
-        dispatch(createMessage({ errorMsg: error.response.data }));
+        dispatch(createMessage({ errorMsg: error }));
+        dispatch(dataRequestFail(PROFILE_UPDATE_ERROR, error));
+      }
+    );
+  };
+};
+
+export const deleteProfileImage = fileName => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_PROFILE_UPDATE));
+    requestAwsDeleteFile(fileName).then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_PROFILE_UPDATE, response.data));
+        createMessage({ successMsg: response.data.message });
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: error }));
         dispatch(dataRequestFail(PROFILE_UPDATE_ERROR, error));
       }
     );
