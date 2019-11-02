@@ -11,9 +11,7 @@ const EditProfile = ({
   const {
     first_name,
     last_name,
-    current_membership: {
-      bio: { bio, occupation }
-    }
+    current_membership: { bio, occupation }
   } = userData;
 
   return (
