@@ -41,8 +41,6 @@ django = "*"
 stripe = "*"
 pillow = "*"
 django-storages = "*"
-python-dateutil = "==1.5"
-boto3 = "*"
 
 [requires]
 python_version = "3.6"
