@@ -30,7 +30,7 @@ class Ticket(models.Model):
     subject = models.CharField(max_length=120)
     tag = models.SlugField(blank=True)
     owner = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True, default=1)
+        User, on_delete=models.SET_DEFAULT, null=True, blank=True, default=1)
     status = models.CharField(
         max_length=6, choices=STATUS, default='todo')
     votes = models.ManyToManyField(
