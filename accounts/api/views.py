@@ -139,8 +139,7 @@ class UserAPI(RetrieveAPIView):
                 UserProfile, user=self.request.user)
 
             user_profile = {
-                'occupation': profile.occupation,
-                'bio': profile.bio
+
             }
 
             default_image = 'https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/deafult.png'
@@ -158,7 +157,8 @@ class UserAPI(RetrieveAPIView):
                     current_membership['next_billing_date'] = subscription.get_next_billing_date
                     current_membership['date_subscribed'] = subscription.date_subscribed
             membership = {
-                'bio': user_profile,
+                'occupation': profile.occupation,
+                'bio': profile.bio,
                 'membership': current_membership,
                 'purchases': purchases,
                 'image': image
