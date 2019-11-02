@@ -6,18 +6,25 @@ import { Confirm, Container, Tab } from "semantic-ui-react";
 
 import { changeAccount } from "../actions/MembershipActions";
 
-import { getUserProfile, getUser } from "../selectors/appSelectors";
+import {
+  getUserProfile,
+  getUser,
+  getProfileUpdate
+} from "../selectors/appSelectors";
 import UserProfileCard from "../components/userAuth/UserProfileCard";
 import {
   fetchUser,
   uploadProfileImage,
-  updateUserProfile
+  updateUserProfile,
+  deleteProfileImage
 } from "../actions/AuthActions";
 import PageHeader from "../components/sharedComponents/PageHeader";
-import { getFormatedDate, getFileName } from "../utils/appUtils";
+import { getFormatedDate, getFileName, refresh } from "../utils/appUtils";
 import { ACCOUNT_CHANGE_OPTION } from "../constants/constants";
 import EditProfile from "../components/userAuth/EditProfile";
 import UserPurchases from "../components/userAuth/UserPurchases";
+import EditImageModal from "../components/userAuth/EditImageModal";
+import { parse } from "url";
 
 export class UserProfileContainer extends Component {
   constructor(props) {
@@ -27,7 +34,8 @@ export class UserProfileContainer extends Component {
       userData: "",
       showDeleteAccount: false,
       option: "",
-      editFields: ""
+      editFields: "",
+      showEditImageModal: false
     };
 
     this.handleConfirm = this.handleConfirm.bind(this);
@@ -36,19 +44,47 @@ export class UserProfileContainer extends Component {
     this.panes = this.panes.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
+    this.handleEditImage = this.handleEditImage.bind(this);
+    this.handleDeleteImage = this.handleDeleteImage.bind(this);
   }
-  componentDidMount() {}
 
   componentDidUpdate(prevProps) {
-    const { user } = this.props;
+    const { user, updateProfile } = this.props;
 
     if (prevProps.user.dataReceived !== user.dataReceived) {
       const { first_name, last_name, current_membership: bio } = user.data;
-
       const editUserFields = { first_name, last_name, ...bio };
 
       this.setState({ editFields: editUserFields });
     }
+
+    if (prevProps.updateProfile !== updateProfile) {
+      if (updateProfile.dataReceived) {
+        refresh();
+      }
+    }
+
+    if (prevProps.user.data !== user.data) {
+      if (user.dataReceived) {
+        const { purchases } = user.data.current_membership;
+        console.log(purchases);
+        // if (prevProps.purchases.tickets.lenght !== purchases.tickets.lenght) {
+        //   refresh();
+        // }
+      }
+    }
+  }
+
+  handleEditImage() {
+    this.setState({
+      showEditImageModal: !this.state.showEditImageModal
+    });
+  }
+
+  handleDeleteImage(fileName) {
+    const imageName = fileName.substring(fileName.lastIndexOf("/") + 1);
+
+    this.props.deleteProfileImage(`${imageName}`);
   }
 
   panes() {
@@ -72,6 +108,7 @@ export class UserProfileContainer extends Component {
                 user={user.data}
                 handleCancelButtonClick={this.handleCancelButtonClick}
                 handleUploadImage={this.handleUploadImage}
+                handleEditImage={this.handleEditImage}
               />
             )}
           </Tab.Pane>
@@ -161,9 +198,10 @@ export class UserProfileContainer extends Component {
       option
     });
   }
+
   render() {
     const { user } = this.props;
-    const { showConfirmModal, option } = this.state;
+    const { showConfirmModal, option, showEditImageModal } = this.state;
 
     const headerObject = {
       headerText: user.dataReceived
@@ -186,6 +224,16 @@ export class UserProfileContainer extends Component {
             menu={{ secondary: true, pointing: false }}
             panes={this.panes()}
           />
+
+          {showEditImageModal && (
+            <EditImageModal
+              showEditImageModal={showEditImageModal}
+              user={user.data}
+              handleUploadImage={this.handleUploadImage}
+              handleDeleteImage={this.handleDeleteImage}
+              handleEditImage={this.handleEditImage}
+            />
+          )}
 
           <Confirm
             open={showConfirmModal}
@@ -214,11 +262,18 @@ export class UserProfileContainer extends Component {
 const mapStateToProps = state => {
   return {
     user: getUserProfile(state),
-    auth: getUser(state)
+    auth: getUser(state),
+    updateProfile: getProfileUpdate(state)
   };
 };
 
 export default connect(
   mapStateToProps,
-  { changeAccount, fetchUser, uploadProfileImage, updateUserProfile }
+  {
+    changeAccount,
+    fetchUser,
+    uploadProfileImage,
+    updateUserProfile,
+    deleteProfileImage
+  }
 )(withRouter(UserProfileContainer));
