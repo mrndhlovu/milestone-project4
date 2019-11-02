@@ -98,17 +98,16 @@ if development:
             'PORT': '5432'
         }
     }
+elif "DATABASE_URL" in os.environ:
+    DATABASES = {'default': dj_database_url.parse(
+        os.environ.get('DATABASE_URL'))}
 else:
-    if "DATABASE_URL" in os.environ:
-        DATABASES = {'default': dj_database_url.parse(
-            os.environ.get('DATABASE_URL'))}
-    else:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-            }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
+    }
 
 
 # Password validation
@@ -174,9 +173,6 @@ DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 MEDIA_URL = '/mediafiles/'
-
-
-# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 
 REST_FRAMEWORK = {
