@@ -138,6 +138,11 @@ class UserAPI(RetrieveAPIView):
             profile = get_object_or_404(
                 UserProfile, user=self.request.user)
 
+            user_profile = {
+                'occupation': profile.occupation,
+                'bio': profile.bio
+            }
+
             default_image = 'https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/deafult.png'
             image = profile.image
 
@@ -153,6 +158,7 @@ class UserAPI(RetrieveAPIView):
                     current_membership['next_billing_date'] = subscription.get_next_billing_date
                     current_membership['date_subscribed'] = subscription.date_subscribed
             membership = {
+                'bio': user_profile,
                 'membership': current_membership,
                 'purchases': purchases,
                 'image': image
@@ -171,14 +177,36 @@ class UserUpdateAPIView(UpdateAPIView):
 
     def post(self, request, *args, **kwargs):
         request_data = json.loads(request.body.decode('utf-8'))
+        image_upload_only = request_data['isImageUpload']
 
-        image = request_data['image']
-        user = UserProfile.objects.filter(user=request.user)[0]
+        user_profile = UserProfile.objects.filter(user=request.user)[0]
+        user = request.user
 
-        user.image = image
-        user.save()
+        if user_profile is not None:
 
-        context = {
-            'message': 'Image uploaded',
-        }
-        return Response(context, status=200)
+            if image_upload_only:
+                image_url = request_data['image']
+                user_profile.image = image_url
+                user_profile.save()
+            else:
+
+                user_profile.occupation = request_data['occupation']
+                user_profile.bio = request_data['bio']
+                user_profile.first_name = request_data['first_name']
+                user_profile.last_name = request_data['last_name']
+                user_profile.save()
+
+                if request_data['first_name'] or request_data['last_name']:
+                    user.first_name = request_data['first_name']
+                    user.last_name = request_data['last_name']
+                    user.save()
+
+            context = {
+                'message': 'Profile Updated',
+            }
+            return Response(context, status=200)
+        else:
+            context = {
+                'message': 'Failed to update your profile',
+            }
+            return Response(context, status=400)
