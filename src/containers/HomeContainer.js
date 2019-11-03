@@ -19,6 +19,7 @@ import PageHeader from "../components/sharedComponents/PageHeader";
 import image_1 from "../images/image_1.jpg";
 import image_2 from "../images/image_2.jpg";
 import { getUser } from "../selectors/appSelectors";
+import { DEFAULT_IMAGES } from "../constants/constants";
 
 const StyledHeaderSpan = styled.span`
   text-transform: uppercase;
@@ -41,7 +42,7 @@ export class HomeContainer extends Component {
           <Grid container stackable verticalAlign="middle" textAlign="center">
             <Grid.Row>
               <Grid.Column floated="left" textAlign="center" width={8}>
-                <Image bordered rounded src={image_1} />
+                <Image bordered rounded src={DEFAULT_IMAGES.homeImage1} />
               </Grid.Column>
               <Grid.Column width={8}>
                 <Header as="h3">
@@ -96,7 +97,7 @@ export class HomeContainer extends Component {
                 style={{ paddingBottom: "3rem", paddingTop: "2em" }}
                 width={8}
               >
-                <Image bordered rounded src={image_2} />
+                <Image bordered rounded src={DEFAULT_IMAGES.homeImage2} />
               </Grid.Column>
             </Grid.Row>
           </Grid>

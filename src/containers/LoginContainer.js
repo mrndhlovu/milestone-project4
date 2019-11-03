@@ -15,7 +15,6 @@ import SubmitButton from "../components/sharedComponents/SubmitButton";
 import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 import { DEFAULT_IMAGES } from "../constants/constants";
 import { validate } from "../utils/appUtils";
-import PageHeader from "../components/sharedComponents/PageHeader";
 
 const styles = {
   width: "100%",
