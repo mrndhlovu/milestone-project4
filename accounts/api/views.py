@@ -11,6 +11,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
 from rest_framework.response import Response
 from tickets.models import Ticket
 import json
+import os
 
 
 def get_member_profile(request):
@@ -142,7 +143,7 @@ class UserAPI(RetrieveAPIView):
 
             }
 
-            default_image = 'https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/deafult.png'
+            default_image = os.environ.get('UNICORN_DEFAULT_USER_IMAGE_URL')
             image = profile.image
 
             if image is None:

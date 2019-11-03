@@ -53,5 +53,7 @@
     "node": "12.3.1",
     "npm": "6.10.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jasmine-enzyme": "^7.1.2"
+  }
 }
