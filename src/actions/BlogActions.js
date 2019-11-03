@@ -28,14 +28,16 @@ import {
   fetchArticleDetail,
   requestArticleUpdate,
   requestArticleDelete,
-  requestArticleVoteUpdate
+  requestArticleVoteUpdate,
+  requestAwsFileUpload
 } from "../apis/apiRequests";
 
 import {
   makeRequest,
   errorsAlert,
   createMessage,
-  requestSuccess
+  requestSuccess,
+  dataRequestFail
 } from "./index";
 
 // fetch tickets list
@@ -120,6 +122,21 @@ export const updateArticleLikes = id => {
       },
       error => {
         dispatch(errorsAlert(ARTICLE_LIKE_ERROR, error));
+      }
+    );
+  };
+};
+
+export const uploadArticleImage = file => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_UPLOAD));
+    requestAwsFileUpload(file).then(
+      response => {
+        dispatch(requestSuccess(RECEIVE_UPLOAD, response.data));
+      },
+      error => {
+        dispatch(createMessage({ errorMsg: error.response.data }));
+        dispatch(dataRequestFail(UPLOAD_ERROR, error));
       }
     );
   };
