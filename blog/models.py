@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
 from django.contrib.contenttypes.fields import GenericForeignKey
+import os
 
 
 class Article(models.Model):
@@ -23,7 +24,8 @@ class Article(models.Model):
     is_approved = models.BooleanField(default=False)
     likes = models.ManyToManyField(
         User, blank=True, related_name='article_likes')
-    image = models.FileField(null=True, blank=True)
+    image = models.CharField(max_length=120, null=True,
+                             blank=True, default=os.environ.get('UNICORN_DEFAULT_POST_IMAGE_URL'))
 
     def __str__(self):
         return self.title
