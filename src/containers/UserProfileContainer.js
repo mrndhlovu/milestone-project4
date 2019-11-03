@@ -9,7 +9,8 @@ import { changeAccount } from "../actions/MembershipActions";
 import {
   getUserProfile,
   getUser,
-  getProfileUpdate
+  getProfileUpdate,
+  getAccountUpdate
 } from "../selectors/appSelectors";
 import UserProfileCard from "../components/userAuth/UserProfileCard";
 import {
@@ -24,7 +25,6 @@ import { ACCOUNT_CHANGE_OPTION } from "../constants/constants";
 import EditProfile from "../components/userAuth/EditProfile";
 import UserPurchases from "../components/userAuth/UserPurchases";
 import EditImageModal from "../components/userAuth/EditImageModal";
-import { parse } from "url";
 
 export class UserProfileContainer extends Component {
   constructor(props) {
@@ -49,7 +49,7 @@ export class UserProfileContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { user, updateProfile } = this.props;
+    const { user, updateProfile, account } = this.props;
 
     if (prevProps.user.dataReceived !== user.dataReceived) {
       const { first_name, last_name, current_membership: bio } = user.data;
@@ -64,13 +64,11 @@ export class UserProfileContainer extends Component {
       }
     }
 
-    if (prevProps.user.data !== user.data) {
-      if (user.dataReceived) {
-        const { purchases } = user.data.current_membership;
-        console.log(purchases);
-        // if (prevProps.purchases.tickets.lenght !== purchases.tickets.lenght) {
-        //   refresh();
-        // }
+    if (prevProps.account !== account) {
+      if (account.dataReceived && account.data.message === "Account deleted") {
+        localStorage.clear();
+        this.props.history.push("/home");
+        refresh();
       }
     }
   }
@@ -177,17 +175,11 @@ export class UserProfileContainer extends Component {
 
     if (option === ACCOUNT_CHANGE_OPTION.deactivate) {
       this.props.changeAccount(option);
-
-      setTimeout(() => {
-        localStorage.clear();
-        this.props.history.push("/home");
-        window.location.reload();
-      }, 1000);
     } else {
       this.props.changeAccount(option);
 
       setTimeout(() => {
-        window.location.reload();
+        refresh();
       }, 1000);
     }
   }
@@ -263,7 +255,8 @@ const mapStateToProps = state => {
   return {
     user: getUserProfile(state),
     auth: getUser(state),
-    updateProfile: getProfileUpdate(state)
+    updateProfile: getProfileUpdate(state),
+    account: getAccountUpdate(state)
   };
 };
 
