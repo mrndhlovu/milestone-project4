@@ -29,11 +29,16 @@ class SignupSerializer(serializers.ModelSerializer):
             "min_length": "Password should be more than 6 charaters long.",
         },
     )
+    confirm_password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('id', 'username', 'email', 'password', 'confirm_password')
+
+    def validate(self, data):
+        if data['password'] != data.pop('confirm_password'):
+            raise serializers.ValidationError("Passwords do not match")
+        return data
 
     def create(self, validated_data):
         user = User.objects.create_user(
