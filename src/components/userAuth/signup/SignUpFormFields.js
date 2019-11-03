@@ -9,7 +9,7 @@ const SignUpFormFields = ({ field, error, touched }) => {
       {...field.input}
       fluid
       icon={
-        field.label === "Password" || field.label === "Confirm Password"
+        field.label === "Password" || field.label === "Confirm password"
           ? "lock"
           : field.label === "Email"
           ? "mail"
@@ -18,14 +18,14 @@ const SignUpFormFields = ({ field, error, touched }) => {
       iconPosition="left"
       placeholder={field.label}
       autoComplete={
-        field.label === "Password" || field.label === "Confirm Password"
+        field.label === "Password" || field.label === "Confirm password"
           ? "new-password"
           : field.label === "Email"
           ? "email"
           : field.name
       }
       type={
-        field.label === "Password" || field.label === "Confirm Password"
+        field.label === "Password" || field.label === "Confirm password"
           ? "password"
           : "text"
       }

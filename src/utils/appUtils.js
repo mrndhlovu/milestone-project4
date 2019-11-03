@@ -213,20 +213,37 @@ export const validate = values => {
   const formErrors = {};
 
   if (!values.title) {
-    formErrors.title = "Enter a title";
+    formErrors.title = "A title is required";
   }
   if (!values.description) {
-    formErrors.description = "Enter a description";
+    formErrors.description = "A description is required";
   }
   if (!values.subject) {
-    formErrors.subject = "Enter a subject";
+    formErrors.subject = "A subject is required";
   }
-  if (!values.prority_level) {
-    formErrors.priority = "Enter a priotrity level";
-  }
-
   if (!values.content) {
     formErrors.content = "Article content is required";
+  }
+
+  if (!values.username) {
+    formErrors.username = "A username is required";
+  }
+  if (!values.password) {
+    formErrors.password = "A password is required";
+  }
+
+  if (!values.confirm_password) {
+    formErrors.confirm_password = "A confirmation password is required";
+  }
+  if (!values.email) {
+    formErrors.email = "A email is required";
+  }
+  if (!values.first_name) {
+    formErrors.first_name = "A name is required";
+  }
+
+  if (!values.last_name) {
+    formErrors.last_name = "lastname is required";
   }
   return formErrors;
 };
