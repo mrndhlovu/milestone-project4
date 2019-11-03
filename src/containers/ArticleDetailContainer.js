@@ -17,11 +17,13 @@ import ArticleDetail from "../components/blog/ArticleDetail";
 import CommentsContainer from "./CommentsContainer";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import DynamicHeader from "../components/sharedComponents/DynamicHeader";
+import { DEFAULT_IMAGES } from "../constants/constants";
+import { thisExpression } from "@babel/types";
 
 class ArticleDetailContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { showConfirmModal: false };
+    this.state = { showConfirmModal: false, image: "", articleTitle: "" };
 
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -31,6 +33,17 @@ class ArticleDetailContainer extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.requestArticleDetail(id);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { article } = this.props;
+
+    if (prevProps.article !== article) {
+      if (article.dataReceived) {
+        const { image, title } = article.data.data;
+        this.setState({ image: image, articleTitle: title });
+      }
+    }
   }
 
   handleDelete() {
@@ -53,7 +66,7 @@ class ArticleDetailContainer extends Component {
 
   render() {
     const { article, user } = this.props;
-    const { showConfirmModal } = this.state;
+    const { showConfirmModal, image, articleTitle } = this.state;
 
     const allAccess =
       user.dataReceived &&
@@ -61,15 +74,12 @@ class ArticleDetailContainer extends Component {
 
     return (
       <Fragment>
-        <DynamicHeader option="post" />
+        <DynamicHeader
+          option="post"
+          image={image}
+          articleTitle={articleTitle}
+        />
         <Container style={{ paddingTop: 20 }}>
-          <Confirm
-            open={showConfirmModal}
-            cancelButton="Cancel"
-            confirmButton="Yes delete"
-            onCancel={() => this.handleCancel()}
-            onConfirm={() => this.handleConfirm()}
-          />
           {article.dataReceived && (
             <ArticleDetail
               article={article.data}
@@ -92,6 +102,14 @@ class ArticleDetailContainer extends Component {
               linkText="Unicorn PRO Account"
             />
           )}
+
+          <Confirm
+            open={showConfirmModal}
+            cancelButton="Cancel"
+            confirmButton="Yes delete"
+            onCancel={() => this.handleCancel()}
+            onConfirm={() => this.handleConfirm()}
+          />
         </Container>
       </Fragment>
     );
