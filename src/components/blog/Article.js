@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Card, Image, Icon } from "semantic-ui-react";
+import { Card, Icon } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
 
@@ -12,7 +12,6 @@ const Article = ({
   views,
   likes,
   created_at,
-  image,
   id,
   description,
   isArticleDetail,
@@ -22,7 +21,6 @@ const Article = ({
   return (
     <div>
       <Card fluid>
-        <Image src={image} wrapped ui={false} />
         <Card.Content>
           <Card.Header as={Link} to={`/article/${id}`}>
             {title.toUpperCase()}
