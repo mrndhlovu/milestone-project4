@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Responsive } from "semantic-ui-react";
-import { USER_PROFILE } from "../constants/constants";
+import { USER_PROFILE, APP_TYPE } from "../constants/constants";
 
 const cart = JSON.parse(localStorage.getItem("cart"));
 
@@ -268,13 +268,21 @@ export const getCounts = tickets => {
   return counts;
 };
 
-export const AWS_BUCKET_CONFIG = Object.freeze({
-  bucketName: `${process.env.REACT_APP_AWS_BUCKET_NAME}`,
-  dirName: `${process.env.REACT_APP_AWS_MEDIA_DIR}`,
-  region: `${process.env.REACT_APP_AWS_REGION}`,
-  accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
-  secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_ACCESS_KEY}`
-});
+export const getAwsConfig = app => {
+  const config = {
+    bucketName: `${process.env.REACT_APP_AWS_BUCKET_NAME}`,
+    dirName: `${
+      app === APP_TYPE.post
+        ? process.env.REACT_APP_AWS_MEDIA_POST
+        : process.env.REACT_APP_AWS_MEDIA_USER
+    }`,
+    region: `${process.env.REACT_APP_AWS_REGION}`,
+    accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
+    secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_ACCESS_KEY}`
+  };
+
+  return config;
+};
 
 // from Ben Award Youtube
 export const getFileName = filename => {
