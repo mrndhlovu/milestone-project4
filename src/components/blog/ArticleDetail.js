@@ -9,7 +9,8 @@ const ArticleDetail = ({
   user,
   handleDelete,
   handleLikeClick,
-  isLoading
+  isLoading,
+  handleUpdateImage
 }) => {
   const {
     title,
@@ -19,8 +20,7 @@ const ArticleDetail = ({
     id,
     content,
     owner_id,
-    image,
-    handleUpdateImage
+    image
   } = article.data;
 
   const { isOwner, likes } = article;
@@ -28,16 +28,14 @@ const ArticleDetail = ({
   return (
     <Fragment>
       {isOwner && (
-        <Fragment>
-          <Input
-            size="mini"
-            icon="image"
-            label="Update Image"
-            loading={isLoading}
-            type="file"
-            onChange={event => handleUpdateImage(event)}
-          />
-        </Fragment>
+        <Input
+          size="mini"
+          icon="image"
+          label="Update Image"
+          loading={isLoading}
+          type="file"
+          onChange={event => handleUpdateImage(event)}
+        />
       )}
       <Article
         id={id}
