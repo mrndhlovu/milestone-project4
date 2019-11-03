@@ -12,7 +12,13 @@ import {
   requestCancelSubsricption
 } from "../apis/apiRequests";
 
-import { makeRequest, errorsAlert, requestSuccess } from "./index";
+import {
+  makeRequest,
+  errorsAlert,
+  requestSuccess,
+  createMessage
+} from "./index";
+import { refresh } from "../utils/appUtils";
 
 export const fetchMembershipsList = () => {
   return dispatch => {
@@ -34,6 +40,7 @@ export const changeAccount = option => {
     requestCancelSubsricption(option).then(
       response => {
         dispatch(requestSuccess(RECEIVE_SUBSCRIPTION_CANCELED, response.data));
+        dispatch(createMessage({ successMsg: response.data.message }));
       },
       error => {
         dispatch(errorsAlert(CANCEL_SUBSCRIPTION_ERROR, error));
