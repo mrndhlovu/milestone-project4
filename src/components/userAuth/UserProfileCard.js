@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Card, Image, Icon, Button, Grid, Container } from "semantic-ui-react";
+import { Card, Image, Grid, Container } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
 import { DEFAULT_IMAGES } from "../../constants/constants";
+import UploadImageButton from "../sharedComponents/UploadImageButton";
 
 const StyledContainer = styled(Container)`
   padding: 5px;
@@ -57,13 +58,7 @@ const UserProfileCard = ({
                 </Card.Content>
                 <Card.Content extra>
                   {defaultImage && (
-                    <Button floated="right" fluid>
-                      <Icon name="upload" />
-                      <input
-                        type="file"
-                        onChange={event => handleUploadImage(event)}
-                      />
-                    </Button>
+                    <UploadImageButton handleUploadImage={handleUploadImage} />
                   )}
                 </Card.Content>
               </Card>
