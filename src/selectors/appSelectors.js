@@ -43,3 +43,5 @@ export const getArticle = state => state.article;
 export const getArticleUpdate = state => state.articleUpdate;
 
 export const getProfileUpdate = state => state.updateProfile;
+
+export const getAccountUpdate = state => state.account;
