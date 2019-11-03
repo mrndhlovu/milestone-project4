@@ -1,9 +1,16 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import Article from "./Article";
 import EditButtons from "../sharedComponents/EditButtons";
+import { Icon, Label, Input } from "semantic-ui-react";
 
-const ArticleDetail = ({ article, user, handleDelete, handleLikeClick }) => {
+const ArticleDetail = ({
+  article,
+  user,
+  handleDelete,
+  handleLikeClick,
+  isLoading
+}) => {
   const {
     title,
     short_disc,
@@ -12,13 +19,26 @@ const ArticleDetail = ({ article, user, handleDelete, handleLikeClick }) => {
     id,
     content,
     owner_id,
-    image
+    image,
+    handleUpdateImage
   } = article.data;
 
   const { isOwner, likes } = article;
 
   return (
-    <div>
+    <Fragment>
+      {isOwner && (
+        <Fragment>
+          <Input
+            size="mini"
+            icon="image"
+            label="Update Image"
+            loading={isLoading}
+            type="file"
+            onChange={event => handleUpdateImage(event)}
+          />
+        </Fragment>
+      )}
       <Article
         id={id}
         image={image}
@@ -42,7 +62,7 @@ const ArticleDetail = ({ article, user, handleDelete, handleLikeClick }) => {
           />
         }
       />
-    </div>
+    </Fragment>
   );
 };
 

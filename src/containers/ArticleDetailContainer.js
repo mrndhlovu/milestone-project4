@@ -28,6 +28,7 @@ class ArticleDetailContainer extends Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleLikeClick = this.handleLikeClick.bind(this);
+    this.handleUpdateImage = this.handleUpdateImage.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +50,8 @@ class ArticleDetailContainer extends Component {
   handleDelete() {
     this.setState({ showConfirmModal: true });
   }
+
+  handleUpdateImage() {}
 
   handleConfirm() {
     const { id } = this.props.match.params;
