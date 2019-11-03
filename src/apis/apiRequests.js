@@ -14,7 +14,7 @@ import {
   getCheckoutBody
 } from "../utils/urls";
 import { SESSION_TOKEN } from "../constants/localStorageConstants";
-import { AWS_BUCKET_CONFIG, getFileName } from "../utils/appUtils";
+import { getFileName, getAwsConfig } from "../utils/appUtils";
 
 export async function requestTicketsList() {
   return axios.get(`${TICKETS_EP}`);
@@ -28,8 +28,19 @@ export async function requestTicketUpdate(id, body) {
   return axios.put(`${TICKETS_EP}update/${id}/`, body);
 }
 
-export async function requestArticleUpdate(id, body) {
-  return axios.put(`${BLOG_EP}update/${id}/`, body);
+export async function requestArticleUpdate(id, data) {
+  let body;
+  let method;
+
+  if (data.isImageUpload) {
+    body = { image: data.image, isImageUpload: data.isImageUpload, id };
+    method = "post";
+  } else {
+    body = { ...data, isImageUpload: false, id };
+    method = "put";
+  }
+
+  return axios[method](`${BLOG_EP}update/${id}/`, body);
 }
 
 export async function requestTicketDelete(id) {
@@ -163,10 +174,10 @@ export async function requestTransactionUpdate() {
   );
 }
 
-export function requestAwsFileUpload(file) {
-  return S3FileUpload.uploadFile(file, AWS_BUCKET_CONFIG);
+export function requestAwsFileUpload(file, app) {
+  return S3FileUpload.uploadFile(file, getAwsConfig(app));
 }
 
 export function requestAwsDeleteFile(file) {
-  return S3FileUpload.deleteFile(file, AWS_BUCKET_CONFIG);
+  return S3FileUpload.deleteFile(file, getAwsConfig());
 }

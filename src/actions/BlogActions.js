@@ -127,12 +127,15 @@ export const updateArticleLikes = id => {
   };
 };
 
-export const uploadArticleImage = file => {
+export const uploadArticleImage = (file, app, id) => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_UPLOAD));
-    requestAwsFileUpload(file).then(
+    requestAwsFileUpload(file, app).then(
       response => {
         dispatch(requestSuccess(RECEIVE_UPLOAD, response.data));
+
+        const userData = { image: response.location, isImageUpload: true };
+        dispatch(updateArticle(id, userData));
       },
       error => {
         dispatch(createMessage({ errorMsg: error.response.data }));
