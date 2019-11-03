@@ -45,3 +45,5 @@ export const getArticleUpdate = state => state.articleUpdate;
 export const getProfileUpdate = state => state.updateProfile;
 
 export const getAccountUpdate = state => state.account;
+
+export const getUpload = state => state.upload;
