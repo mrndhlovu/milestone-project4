@@ -7,7 +7,6 @@ import { fetchTicketsList } from "../actions/TicketActions";
 import DashboardCards from "../components/dashboard/DashboardCards";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import { Segment } from "semantic-ui-react";
-import DashboardPieChart from "../components/dashboard/DashboardBarChart";
 
 export class DashboardContainer extends Component {
   constructor(props) {

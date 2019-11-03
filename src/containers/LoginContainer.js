@@ -73,7 +73,7 @@ class LoginContainer extends Component {
 
     return (
       <Fragment>
-        <Image size="large" src={DEFAULT_IMAGES.login} style={styles} />
+        <Image size="large" src={DEFAULT_IMAGES.signup} style={styles} />
         <Container style={{ paddingTop: 20 }}>
           <FormHeader header="Login" />
 

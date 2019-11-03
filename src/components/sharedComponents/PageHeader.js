@@ -6,11 +6,19 @@ import styled from "styled-components";
 
 import { getHeaderObject } from "../../constants/headerConstants";
 
-import { Button, Header, Icon, Segment } from "semantic-ui-react";
+import { Button, Header, Icon, Segment, Image } from "semantic-ui-react";
+import { DEFAULT_IMAGES } from "../../constants/constants";
 
 const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
 `;
+
+const styles = {
+  width: "100%",
+  height: "100vh",
+  opacity: "0.1",
+  position: "fixed"
+};
 
 export const PageHeader = ({
   mobile,
@@ -28,6 +36,7 @@ export const PageHeader = ({
 
   return (
     <StyledSegment textAlign="center" inverted vertical>
+      <Image size="large" src={DEFAULT_IMAGES.signup} style={styles} />
       <Header
         as="h1"
         content={headerText}

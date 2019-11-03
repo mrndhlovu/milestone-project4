@@ -16,8 +16,6 @@ import {
 import { logOut } from "../actions/AuthActions";
 
 import PageHeader from "../components/sharedComponents/PageHeader";
-import image_1 from "../images/image_1.jpg";
-import image_2 from "../images/image_2.jpg";
 import { getUser } from "../selectors/appSelectors";
 import { DEFAULT_IMAGES } from "../constants/constants";
 
