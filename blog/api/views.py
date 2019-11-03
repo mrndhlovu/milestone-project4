@@ -130,7 +130,7 @@ class ArticleVoteToggleAPIView(APIView):
             instance.status = 'doing'
             instance.save()
 
-        return Response(data)
+        return Response(data, status=200)
 
 
 class ArticleUpdateView(UpdateAPIView):
@@ -138,18 +138,32 @@ class ArticleUpdateView(UpdateAPIView):
     queryset = Article.objects.all()
     permission_classes = (permissions.AllowAny,)
 
-    def create(self, request, *args, **kwargs):
-        current_article_owner = get_article_owner(request)
-
+    def post(self, request, *args, **kwargs):
         data = request.data.copy()
-        data['owner'] = current_article_owner.id
-        data['username'] = current_article_owner.id
+        article_id = data['id']
+        article = get_object_or_404(Article, id=article_id)
 
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        image_upload_only = data['isImageUpload']
+
+        if image_upload_only:
+            image_url = data['image']
+            article.image = image_url
+            article.save()
+            context = {
+                'message': 'Image Uploaded'
+            }
+
+            return Response(context, status=200)
+
+        else:
+            data['owner'] = article.id
+            data['username'] = article.id
+
+            serializer = self.get_serializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=200, headers=headers)
 
 
 class ArticleDeleteView(DestroyAPIView):
