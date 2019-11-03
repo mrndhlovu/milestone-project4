@@ -11,14 +11,14 @@ import {
 import {
   requestArticleDetail,
   deleteArticle,
-  updateArticleLikes
+  updateArticleLikes,
+  uploadArticleImage
 } from "../actions/BlogActions";
 import ArticleDetail from "../components/blog/ArticleDetail";
 import CommentsContainer from "./CommentsContainer";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import DynamicHeader from "../components/sharedComponents/DynamicHeader";
-import { DEFAULT_IMAGES } from "../constants/constants";
-import { thisExpression } from "@babel/types";
+import { APP_TYPE } from "../constants/constants";
 
 class ArticleDetailContainer extends Component {
   constructor(props) {
@@ -51,7 +51,11 @@ class ArticleDetailContainer extends Component {
     this.setState({ showConfirmModal: true });
   }
 
-  handleUpdateImage() {}
+  handleUpdateImage(event) {
+    const file = event.target.files[0];
+    const { id } = this.props.match.params;
+    this.props.uploadArticleImage(file, APP_TYPE.post, id);
+  }
 
   handleConfirm() {
     const { id } = this.props.match.params;
@@ -90,6 +94,7 @@ class ArticleDetailContainer extends Component {
               user={user.data}
               handleDelete={this.handleDelete}
               handleLikeClick={this.handleLikeClick}
+              handleUpdateImage={this.handleUpdateImage}
             />
           )}
           {article.dataReceived && allAccess ? (
@@ -129,5 +134,10 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { requestArticleDetail, deleteArticle, updateArticleLikes }
+  {
+    requestArticleDetail,
+    deleteArticle,
+    updateArticleLikes,
+    uploadArticleImage
+  }
 )(ArticleDetailContainer);
