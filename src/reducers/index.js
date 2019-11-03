@@ -22,8 +22,10 @@ import updateProfileReducer from "./updateProfileReducer";
 import userProfileReducer from "./userProfileReducer";
 import userReducer from "./userReducer";
 import changeAccountReducer from "./changeAccountReducer";
+import uploadImageReducers from "./uploadImageReducers";
 
 export default combineReducers({
+  account: changeAccountReducer,
   article: createArticleReducer,
   articleDetail: articleDetailReducer,
   articleList: articleListReducer,
@@ -43,8 +45,8 @@ export default combineReducers({
   tickets: ticketsReducer,
   ticketSolution: ticketSolutionReducer,
   updateProfile: updateProfileReducer,
+  upload: uploadImageReducers,
   user: userReducer,
   userProfile: userProfileReducer,
-  vote: ticketVoteReducer,
-  account: changeAccountReducer
+  vote: ticketVoteReducer
 });
