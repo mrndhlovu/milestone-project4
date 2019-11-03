@@ -21,6 +21,7 @@ import ticketVoteReducer from "./ticketVoteReducer";
 import updateProfileReducer from "./updateProfileReducer";
 import userProfileReducer from "./userProfileReducer";
 import userReducer from "./userReducer";
+import changeAccountReducer from "./changeAccountReducer";
 
 export default combineReducers({
   article: createArticleReducer,
@@ -44,5 +45,6 @@ export default combineReducers({
   updateProfile: updateProfileReducer,
   user: userReducer,
   userProfile: userProfileReducer,
-  vote: ticketVoteReducer
+  vote: ticketVoteReducer,
+  account: changeAccountReducer
 });
