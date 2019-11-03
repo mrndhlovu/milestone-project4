@@ -95,5 +95,6 @@ export const DEFAULT_IMAGES = {
   user: "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/deafult.png",
   signup:
     "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/defaults/unicorn-signup-image.jpg",
-  login: "login"
+  login:
+    "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/defaults/unicorn-login-image.png"
 };

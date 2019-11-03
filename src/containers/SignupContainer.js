@@ -82,68 +82,71 @@ class SignupContainer extends Component {
     }
 
     return (
-      <Grid celled="internally" columns="equal" stackable>
-        <Grid.Column style={{ paddingTop: 0, paddingLeft: 0 }}>
-          <Image size="large" src={DEFAULT_IMAGES.signup} style={styles} />
+      <Fragment>
+        <Image size="large" src={DEFAULT_IMAGES.signup} style={styles} />
+        <Grid celled="internally" columns="equal" stackable>
+          <Grid.Column style={{ paddingTop: 0, paddingLeft: 0 }}>
+            <Image size="large" src={DEFAULT_IMAGES.signup} style={styles} />
 
-          <FormHeader header="Lets get you setup for your Unicorn Account" />
+            <FormHeader header="Lets get you setup for your Unicorn Account" />
 
-          {showError && (
-            <Grid textAlign="center" style={{ paddingBottom: 10 }}>
-              <Grid.Column style={{ maxWidth: 700 }}>
-                <ErrorMessage
-                  errors={auth.data}
-                  handleDismiss={this.handleDismiss}
-                />
-              </Grid.Column>
-            </Grid>
-          )}
+            {showError && (
+              <Grid textAlign="center" style={{ paddingBottom: 10 }}>
+                <Grid.Column style={{ maxWidth: 700 }}>
+                  <ErrorMessage
+                    errors={auth.data}
+                    handleDismiss={this.handleDismiss}
+                  />
+                </Grid.Column>
+              </Grid>
+            )}
 
-          <Form size="large" onSubmit={handleSubmit(this.handleSignupClick)}>
-            <Segment style={{ maxWidth: 700, margin: "0 auto" }}>
-              <Container fluid>
-                <Field
-                  name="username"
-                  label="Username"
-                  component={this.renderField}
-                />
+            <Form size="large" onSubmit={handleSubmit(this.handleSignupClick)}>
+              <Segment style={{ maxWidth: 700, margin: "0 auto" }}>
+                <Container fluid>
+                  <Field
+                    name="username"
+                    label="Username"
+                    component={this.renderField}
+                  />
 
-                <Field
-                  name="email"
-                  label="Email"
-                  component={this.renderField}
-                />
+                  <Field
+                    name="email"
+                    label="Email"
+                    component={this.renderField}
+                  />
 
-                <Field
-                  name="password"
-                  label="Password"
-                  component={this.renderField}
-                />
+                  <Field
+                    name="password"
+                    label="Password"
+                    component={this.renderField}
+                  />
 
-                <Field
-                  name="confirm_password"
-                  label="Confirm password"
-                  component={this.renderField}
-                />
+                  <Field
+                    name="confirm_password"
+                    label="Confirm password"
+                    component={this.renderField}
+                  />
 
-                <SubmitButton
-                  isLoading={isLoading}
-                  buttonText="Sign up"
-                  valid={valid}
-                  pristine={pristine}
-                  hasError={hasError}
-                />
+                  <SubmitButton
+                    isLoading={isLoading}
+                    buttonText="Sign up"
+                    valid={valid}
+                    pristine={pristine}
+                    hasError={hasError}
+                  />
 
-                <FormFooter
-                  message="Already have an account?"
-                  redirect="/login"
-                  linkText="Login"
-                />
-              </Container>
-            </Segment>
-          </Form>
-        </Grid.Column>
-      </Grid>
+                  <FormFooter
+                    message="Already have an account?"
+                    redirect="/login"
+                    linkText="Login"
+                  />
+                </Container>
+              </Segment>
+            </Form>
+          </Grid.Column>
+        </Grid>
+      </Fragment>
     );
   }
 }
