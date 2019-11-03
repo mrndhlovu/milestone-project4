@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Card, Image, Icon, Button, Grid, Container } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
-import { DEFAULT_IMAGE_URL } from "../../constants/constants";
+import { DEFAULT_IMAGES } from "../../constants/constants";
 
 const StyledContainer = styled(Container)`
   padding: 5px;
@@ -23,7 +23,7 @@ const UserProfileCard = ({
     last_name,
     current_membership: { bio, occupation }
   } = user;
-  const defaultImage = DEFAULT_IMAGE_URL === image;
+  const defaultImage = DEFAULT_IMAGES.user === image;
 
   return (
     <StyledContainer>
