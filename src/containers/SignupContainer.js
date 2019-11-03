@@ -3,11 +3,9 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { reduxForm, Field } from "redux-form";
 
-import styled from "styled-components";
-
 import { signup } from "../actions/AuthActions";
 
-import { Form, Grid, Segment, Container } from "semantic-ui-react";
+import { Form, Grid, Container, Image, Segment, Icon } from "semantic-ui-react";
 import FormHeader from "../components/sharedComponents/FormHeader";
 import FormFooter from "../components/sharedComponents/StyledMessage";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
@@ -15,10 +13,15 @@ import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 
 import SignupFormFields from "../components/userAuth/signup/SignUpFormFields";
 import { getUser, getErrors } from "../selectors/appSelectors";
+import { DEFAULT_IMAGES } from "../constants/constants";
+import { validate } from "../utils/appUtils";
 
-const StyleContainer = styled(Container)`
-  padding: 10vh 0;
-`;
+const styles = {
+  width: "100%",
+  height: "100vh",
+  opacity: "0.1",
+  position: "fixed"
+};
 
 class SignupContainer extends Component {
   constructor(props) {
@@ -27,22 +30,33 @@ class SignupContainer extends Component {
       showModal: true,
       loginModal: false,
       isLoading: false,
-      buttonDisabled: true
+      buttonDisabled: true,
+      showError: false
     };
 
     this.handleSignupClick = this.handleSignupClick.bind(this);
     this.renderField = this.renderField.bind(this);
+    this.handleDismiss = this.handleDismiss.bind(this);
   }
 
   handleSignupClick(values) {
     this.setState({ isLoading: true });
+
     this.props.signup(values);
   }
 
-  componentDidUpdate() {
-    const { isAuthenticated } = this.props.auth;
+  handleDismiss() {
+    this.setState({ showError: false });
+  }
 
-    isAuthenticated && window.location.reload();
+  componentDidUpdate(prevProps, prevState) {
+    const { auth } = this.props;
+
+    auth.isAuthenticated && window.location.reload();
+
+    if (prevProps.auth.hasError !== auth.hasError) {
+      this.setState({ showError: !this.state.showError });
+    }
   }
 
   renderField(field) {
@@ -61,64 +75,75 @@ class SignupContainer extends Component {
       auth: { isAuthenticated, hasError },
       auth
     } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, showError } = this.state;
 
     if (isAuthenticated) {
       return <Redirect to="/" />;
     }
 
     return (
-      <Fragment>
-        <StyleContainer>
+      <Grid celled="internally" columns="equal" stackable>
+        <Grid.Column style={{ paddingTop: 0, paddingLeft: 0 }}>
+          <Image size="large" src={DEFAULT_IMAGES.signup} style={styles} />
+
           <FormHeader header="Lets get you setup for your Unicorn Account" />
 
-          <Grid textAlign="center">
-            <Grid.Column style={{ maxWidth: 500 }}>
-              {hasError && <ErrorMessage errors={auth.data} />}
-              <Form
-                size="large"
-                onSubmit={handleSubmit(this.handleSignupClick)}
-              >
-                <Segment stacked>
-                  <Field
-                    name="username"
-                    label="Username"
-                    component={this.renderField}
-                  />
-                  <br />
-                  <Field
-                    name="email"
-                    label="Email"
-                    component={this.renderField}
-                  />
-                  <br />
-                  <Field
-                    name="password"
-                    label="Password"
-                    component={this.renderField}
-                  />
+          {showError && (
+            <Grid textAlign="center" style={{ paddingBottom: 10 }}>
+              <Grid.Column style={{ maxWidth: 700 }}>
+                <ErrorMessage
+                  errors={auth.data}
+                  handleDismiss={this.handleDismiss}
+                />
+              </Grid.Column>
+            </Grid>
+          )}
 
-                  <br />
+          <Form size="large" onSubmit={handleSubmit(this.handleSignupClick)}>
+            <Segment style={{ maxWidth: 700, margin: "0 auto" }}>
+              <Container fluid>
+                <Field
+                  name="username"
+                  label="Username"
+                  component={this.renderField}
+                />
 
-                  <SubmitButton
-                    isLoading={isLoading}
-                    buttonText="Sign up"
-                    valid={valid}
-                    pristine={pristine}
-                    hasError={hasError}
-                  />
+                <Field
+                  name="email"
+                  label="Email"
+                  component={this.renderField}
+                />
 
-                  <FormFooter
-                    message="Already have an account?"
-                    redirect="/login"
-                    linkText="Login"
-                  />
-                </Segment>
-              </Form>
-            </Grid.Column>
-          </Grid>
-        </StyleContainer>
-      </Fragment>
+                <Field
+                  name="password"
+                  label="Password"
+                  component={this.renderField}
+                />
+
+                <Field
+                  name="confirm_password"
+                  label="Confirm password"
+                  component={this.renderField}
+                />
+
+                <SubmitButton
+                  isLoading={isLoading}
+                  buttonText="Sign up"
+                  valid={valid}
+                  pristine={pristine}
+                  hasError={hasError}
+                />
+
+                <FormFooter
+                  message="Already have an account?"
+                  redirect="/login"
+                  linkText="Login"
+                />
+              </Container>
+            </Segment>
+          </Form>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
@@ -129,22 +154,6 @@ const mapStateToProps = state => {
     error: getErrors(state).alertMsg
   };
 };
-
-function validate(values) {
-  const formErrors = {};
-
-  if (!values.username) {
-    formErrors.username = "Enter a username";
-  }
-  if (!values.password) {
-    formErrors.password = "Enter a password";
-  }
-  if (!values.email) {
-    formErrors.email = "Enter a Email";
-  }
-
-  return formErrors;
-}
 
 export default reduxForm({ validate, form: "LoginForm" })(
   connect(
