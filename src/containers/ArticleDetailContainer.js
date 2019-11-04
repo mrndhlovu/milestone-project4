@@ -6,7 +6,8 @@ import { Container, Confirm } from "semantic-ui-react";
 import {
   getUser,
   getUserProfile,
-  getArticleDetail
+  getArticleDetail,
+  getArticleUpdate
 } from "../selectors/appSelectors";
 import {
   requestArticleDetail,
@@ -19,11 +20,12 @@ import CommentsContainer from "./CommentsContainer";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import DynamicHeader from "../components/sharedComponents/DynamicHeader";
 import { APP_TYPE } from "../constants/constants";
+import { refresh } from "../utils/appUtils";
 
 class ArticleDetailContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { showConfirmModal: false, image: "", articleTitle: "" };
+    this.state = { showConfirmModal: false, image: "", title: "" };
 
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -37,12 +39,18 @@ class ArticleDetailContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { article } = this.props;
+    const { article, updateArticle } = this.props;
 
     if (prevProps.article !== article) {
       if (article.dataReceived) {
         const { image, title } = article.data.data;
-        this.setState({ image: image, articleTitle: title });
+        this.setState({ image: image, title: title });
+      }
+    }
+
+    if (prevProps.updateArticle !== updateArticle) {
+      if (updateArticle.dataReceived) {
+        refresh();
       }
     }
   }
@@ -73,7 +81,7 @@ class ArticleDetailContainer extends Component {
 
   render() {
     const { article, user } = this.props;
-    const { showConfirmModal, image, articleTitle } = this.state;
+    const { showConfirmModal, image, title } = this.state;
 
     const allAccess =
       user.dataReceived &&
@@ -81,11 +89,7 @@ class ArticleDetailContainer extends Component {
 
     return (
       <Fragment>
-        <DynamicHeader
-          option="post"
-          image={image}
-          articleTitle={articleTitle}
-        />
+        <DynamicHeader option="post" image={image} title={title} />
         <Container style={{ paddingTop: 20 }}>
           {article.dataReceived && (
             <ArticleDetail
@@ -128,7 +132,8 @@ const mapStateToProps = state => {
   return {
     article: getArticleDetail(state),
     user: getUserProfile(state),
-    auth: getUser(state)
+    auth: getUser(state),
+    updateArticle: getArticleUpdate(state)
   };
 };
 
