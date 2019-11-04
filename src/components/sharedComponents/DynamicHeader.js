@@ -7,6 +7,8 @@ import { Header, Segment } from "semantic-ui-react";
 const StyledSegment = styled(Segment)`
   background-image: url(${props => props.image}) !important;
   height: 35vh;
+
+  opacity: ${props => props.image && 0.9};
 `;
 
 const StyledHeader = styled(Header)`
@@ -15,11 +17,18 @@ const StyledHeader = styled(Header)`
   padding-top: 4rem !important;
 `;
 
-const DynamicHeader = ({ image, articleTitle }) => {
+const StyledSpan = styled.span`
+  background-color: #000;
+  opacity: 0.8;
+  padding: 5px 10px;
+  border-radius: 5px;
+`;
+
+const DynamicHeader = ({ image, title }) => {
   return (
     <StyledSegment textAlign="center" inverted vertical image={image}>
       <StyledHeader as="h1" inverted>
-        {articleTitle.toUpperCase()}
+        <StyledSpan>{title.toUpperCase()}</StyledSpan>
       </StyledHeader>
     </StyledSegment>
   );
