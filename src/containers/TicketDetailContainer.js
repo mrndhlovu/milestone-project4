@@ -24,13 +24,15 @@ import StyledMessage from "../components/sharedComponents/StyledMessage";
 import CommentsContainer from "./CommentsContainer";
 import TicketDetail from "../components/tickets/TicketDetail";
 import TicketSolution from "../components/tickets/TicketSolution";
-import { APP_TYPE } from "../constants/constants";
+import { APP_TYPE, DEFAULT_IMAGES } from "../constants/constants";
 import DynamicHeader from "../components/sharedComponents/DynamicHeader";
 
 const initialState = {
   index: 0,
   buttonText: "Add to Cart",
-  showConfirmModal: false
+  showConfirmModal: false,
+  title: "",
+  image: ""
 };
 
 export class TicketDetailContainer extends Component {
@@ -57,8 +59,10 @@ export class TicketDetailContainer extends Component {
   componentDidUpdate(prevProps) {
     const { ticket, user } = this.props;
 
-    if (prevProps.ticket.dataReceived !== ticket.dataReceived) {
-      if (user.isAuthenticated) {
+    if (prevProps.ticket !== ticket) {
+      if (ticket.dataReceived) {
+        const { title } = ticket.data.data;
+        this.setState({ title: title, image: DEFAULT_IMAGES.feature });
       }
     }
   }
@@ -111,7 +115,14 @@ export class TicketDetailContainer extends Component {
       user,
       auth
     } = this.props;
-    const { activeIndex, index, buttonText, showConfirmModal } = this.state;
+    const {
+      activeIndex,
+      index,
+      buttonText,
+      showConfirmModal,
+      title,
+      image
+    } = this.state;
     const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
@@ -119,7 +130,7 @@ export class TicketDetailContainer extends Component {
     return (
       dataReceived && (
         <Fragment>
-          <DynamicHeader />
+          <DynamicHeader title={title} image={image} />
           <Container style={{ paddingTop: 50 }}>
             <Confirm
               open={showConfirmModal}
