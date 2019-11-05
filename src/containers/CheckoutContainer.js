@@ -10,7 +10,7 @@ import PaymentContainer from "./PaymentContainer";
 
 const StyledDiv = styled.div`
   width: 100%;
-  padding: 20px 10%;
+  padding: 20px 15px;
 `;
 
 class CheckoutContainer extends Component {
