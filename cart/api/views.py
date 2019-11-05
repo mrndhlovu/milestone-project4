@@ -189,6 +189,7 @@ class AddToCartAPIView(ListAPIView):
 
         else:
             donation_amount = request_data['donation']
+
             product = Donation.objects.create(
                 user=request.user, price=donation_amount)
             product.save()
@@ -200,8 +201,19 @@ class AddToCartAPIView(ListAPIView):
                 request, product_content_type)
 
             if pending_orders_qs is not None:
+
                 for item in pending_orders_qs:
+                    if app_type['donation']:
+                        item.delete()
+                        cart.add_item(product)
+
+                        context = {
+                            'message': 'Updated donation amount.',
+                        }
+                        return JsonResponse(context, status=status.HTTP_200_OK)
+
                     if item.product_object_id == product_id:
+
                         context = {
                             'message': 'Item already in your cart.',
                         }
