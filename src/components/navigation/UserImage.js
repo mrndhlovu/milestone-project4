@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import { Feed } from "semantic-ui-react";
 
-export const UserLabel = ({ image }) => {
+export const UserImage = ({ image }) => {
   return (
     <Fragment>
       <Feed>
@@ -19,4 +19,4 @@ export const UserLabel = ({ image }) => {
   );
 };
 
-export default UserLabel;
+export default UserImage;

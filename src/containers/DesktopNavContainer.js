@@ -14,7 +14,7 @@ import {
 } from "../selectors/appSelectors";
 import NavigationButtons from "../components/navigation/NavigationButtons";
 import NavigationLinks from "../components/navigation/NavigationLinks";
-import UserLabel from "../components/navigation/UserLabel";
+import UserImage from "../components/navigation/UserImage";
 import Cart from "../components/navigation/Cart";
 
 export class DesktopNavContainer extends Component {
@@ -105,7 +105,7 @@ export class DesktopNavContainer extends Component {
                 <Cart pendingOrders={pendingOrder.data} />
               )}
               {userProfile.dataReceived && (
-                <UserLabel image={data.current_membership.image} />
+                <UserImage image={data.current_membership.image} />
               )}
               <NavigationButtons
                 isAuthenticated={isAuthenticated}

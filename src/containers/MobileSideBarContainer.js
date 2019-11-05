@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -13,9 +13,8 @@ import {
 import { fetchPendingOrder } from "../actions/CheckoutActions";
 import MobileNavigationLinks from "../components/navigation/MobileNavigationLinks";
 import MobileSideBarButtons from "../components/navigation/MobileSideBarButtons";
-import UserLabel from "../components/navigation/UserLabel";
+import UserImage from "../components/navigation/UserImage";
 import Cart from "../components/navigation/Cart";
-import { DEFAULT_IMAGES } from "../constants/constants";
 
 const styles = { paddingLeft: "31%", fontSize: "0.8rem" };
 
@@ -69,7 +68,7 @@ export class MobileSideBarContainer extends Component {
     } = this.props;
 
     return (
-      <div>
+      <Fragment>
         <Sidebar
           as={Menu}
           animation="push"
@@ -86,12 +85,7 @@ export class MobileSideBarContainer extends Component {
         </Sidebar>
 
         <Sidebar.Pusher dimmed={sidebarOpened}>
-          <Segment
-            inverted
-            textAlign="center"
-            style={{ padding: "1em 0em" }}
-            vertical
-          >
+          <Segment inverted textAlign="center" vertical>
             <Container>
               <Menu inverted pointing secondary size="large">
                 <Menu.Item onClick={this.handleToggle}>
@@ -103,9 +97,9 @@ export class MobileSideBarContainer extends Component {
                     <Cart pendingOrders={pendingOrder.data} />
                   )}
                 </Menu.Item>
-                <Menu.Item>
+                <Menu.Item textAlign="right">
                   {isAuthenticated && userProfile.dataReceived && (
-                    <UserLabel
+                    <UserImage
                       username={userProfile.data.username}
                       currentMembership={userProfile.data.current_membership}
                       image={image}
@@ -118,7 +112,7 @@ export class MobileSideBarContainer extends Component {
 
           {this.props.children}
         </Sidebar.Pusher>
-      </div>
+      </Fragment>
     );
   }
 }
