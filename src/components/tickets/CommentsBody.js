@@ -30,13 +30,16 @@ const CommentsBody = ({
         <Divider />
 
         {Object.keys(comments).map(index => {
-          const { username, timestamp, comment, parent, id } = comments[index];
+          const { username, timestamp, comment, parent, id, image } = comments[
+            index
+          ];
 
           return (
             !parent && (
               <Segment key={index}>
                 <Comment>
-                  <Icon disabled name="user" color="orange" />
+                  <Comment.Avatar src={image} />
+
                   <Comment.Content>
                     <Comment.Author as="a">
                       <Header as="h5" color="orange">

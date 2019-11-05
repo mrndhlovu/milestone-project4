@@ -7,6 +7,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.views import APIView
 from comments.models import Comment
 from tickets.models import Ticket
+from accounts.models import UserProfile
 from blog.models import Article
 from django.contrib.auth.models import User
 import json
@@ -74,6 +75,7 @@ class CreateCommentView(CreateAPIView):
         if app is not None:
             app_content_type = ContentType.objects.get_for_model(app)
             user = get_comment_owner(request)
+            user_profile = get_list_or_404(UserProfile, user=request.user)[0]
 
             if user is not None:
                 comment_reply, created = Comment.objects.get_or_create(
@@ -81,7 +83,7 @@ class CreateCommentView(CreateAPIView):
                     content_type=app_content_type,
                     object_id=app_id,
                     comment=request_data['comment'],
-                )
+                    image=user_profile.image)
 
                 context = {
                     'message': 'Comment created'
@@ -113,6 +115,7 @@ class CreateCommentReplyView(CreateAPIView):
         object_id = request_data['object_id']
         comment = request_data['comment']
         parent_id = request_data['parent']
+        user_profile = get_list_or_404(UserProfile, user=request.user)[0]
 
         app = get_app(request, request_data)
 
@@ -130,8 +133,8 @@ class CreateCommentReplyView(CreateAPIView):
                     content_type=app_content_type,
                     object_id=object_id,
                     comment=comment,
-                    parent=parent
-                )
+                    parent=parent,
+                    image=user_profile.image)
                 context = {
                     'message': 'Reply submitted'
                 }

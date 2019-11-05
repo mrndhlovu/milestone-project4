@@ -48,7 +48,7 @@ class Ticket(models.Model):
     def comments(self):
 
         comments = Comment.objects.filter_by_instance(
-            self).values('comment', 'user_id', 'timestamp', 'content_type', 'parent', 'object_id', 'id')
+            self).values('comment', 'user_id', 'timestamp', 'content_type', 'parent', 'object_id', 'id', 'image')
         comments_obj = {}
         for num, comment in enumerate(comments, start=0):
             user = User.objects.get(pk=comment['user_id'])

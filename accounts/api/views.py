@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from knox.models import AuthToken
 from memberships.models import Subscription
 from memberships.models import UserMembership, Membership
+from comments.models import Comment
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView, UpdateAPIView
@@ -181,6 +182,7 @@ class UserUpdateAPIView(UpdateAPIView):
         image_upload_only = request_data['isImageUpload']
 
         user_profile = UserProfile.objects.filter(user=request.user)[0]
+
         user = request.user
 
         if user_profile is not None:
@@ -189,6 +191,12 @@ class UserUpdateAPIView(UpdateAPIView):
                 image_url = request_data['image']
                 user_profile.image = image_url
                 user_profile.save()
+
+                user_comments = Comment.objects.filter(user=request.user)
+                for comment in user_comments:
+                    comment.image = image_url
+                    comment.save()
+
             else:
 
                 user_profile.occupation = request_data['occupation']

@@ -104,5 +104,5 @@ export const DEFAULT_IMAGES = {
   bug:
     "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/defaults/unicorn-bug.jpg",
   feature:
-    "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/defaults/unicorn-feature.jpg"
+    "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/defaults/unicorn-signup-image.jpg"
 };
