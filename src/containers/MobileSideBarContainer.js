@@ -85,25 +85,25 @@ export class MobileSideBarContainer extends Component {
         </Sidebar>
 
         <Sidebar.Pusher dimmed={sidebarOpened}>
-          <Segment inverted textAlign="center" vertical>
+          <Segment inverted vertical>
             <Container>
               <Menu inverted pointing secondary size="large">
                 <Menu.Item onClick={this.handleToggle}>
                   <Icon name="sidebar" />
                 </Menu.Item>
-
-                <Menu.Item style={styles}>
-                  {pendingOrder.data.count > 0 && (
-                    <Cart pendingOrders={pendingOrder.data} />
-                  )}
-                </Menu.Item>
-                <Menu.Item textAlign="right">
+                <Menu.Item style={{ postion: "fixed" }}>
                   {isAuthenticated && userProfile.dataReceived && (
                     <UserImage
                       username={userProfile.data.username}
                       currentMembership={userProfile.data.current_membership}
                       image={image}
                     />
+                  )}
+                </Menu.Item>
+
+                <Menu.Item style={styles}>
+                  {pendingOrder.data.count > 0 && (
+                    <Cart pendingOrders={pendingOrder.data} />
                   )}
                 </Menu.Item>
               </Menu>

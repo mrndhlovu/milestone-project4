@@ -7,7 +7,7 @@ export const UserImage = ({ image }) => {
   return (
     <Fragment>
       <Feed>
-        <Feed.Event style={{ marginTop: 10 }}>
+        <Feed.Event>
           <Feed.Label as={NavLink} to="/user-profile">
             <img src={image} />
           </Feed.Label>
