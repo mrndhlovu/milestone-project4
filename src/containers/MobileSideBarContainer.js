@@ -15,6 +15,7 @@ import MobileNavigationLinks from "../components/navigation/MobileNavigationLink
 import MobileSideBarButtons from "../components/navigation/MobileSideBarButtons";
 import UserLabel from "../components/navigation/UserLabel";
 import Cart from "../components/navigation/Cart";
+import { DEFAULT_IMAGES } from "../constants/constants";
 
 const styles = { paddingLeft: "31%", fontSize: "0.8rem" };
 
@@ -24,7 +25,8 @@ export class MobileSideBarContainer extends Component {
     this.state = {
       showLoginModal: false,
       showSignupModal: false,
-      sidebarOpened: false
+      sidebarOpened: false,
+      image: ""
     };
 
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
@@ -33,9 +35,16 @@ export class MobileSideBarContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { user } = this.props;
+    const { user, userProfile } = this.props;
     if (prevProps.user.isAuthenticated !== user.isAuthenticated) {
       this.props.fetchPendingOrder();
+    }
+
+    if (prevProps.userProfile !== userProfile) {
+      if (userProfile.dataReceived) {
+        const { image } = userProfile.data.current_membership;
+        this.setState({ image: image });
+      }
     }
   }
 
@@ -52,7 +61,7 @@ export class MobileSideBarContainer extends Component {
   }
 
   render() {
-    const { sidebarOpened } = this.state;
+    const { sidebarOpened, image } = this.state;
     const {
       user: { isAuthenticated },
       userProfile,
@@ -99,6 +108,7 @@ export class MobileSideBarContainer extends Component {
                     <UserLabel
                       username={userProfile.data.username}
                       currentMembership={userProfile.data.current_membership}
+                      image={image}
                     />
                   )}
                 </Menu.Item>
