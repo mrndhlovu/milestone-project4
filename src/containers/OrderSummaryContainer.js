@@ -10,8 +10,13 @@ import {
 import { getCartPendingOrder } from "../selectors/appSelectors";
 import Donations from "../components/ecommerce/Donations";
 import { addItemToCart } from "../actions/CheckoutActions";
+import styled from "styled-components";
 
-import { Segment, Header, Icon } from "semantic-ui-react";
+import { Segment, Header } from "semantic-ui-react";
+
+const StyledSegment = styled(Segment)`
+  padding: 1rem 0 !important;
+`;
 
 export class OrderSummaryContainer extends Component {
   constructor(props) {
@@ -56,9 +61,9 @@ export class OrderSummaryContainer extends Component {
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
 
     return (
-      <Segment>
+      <StyledSegment>
         {count > 0 && (
-          <Header>
+          <Header style={{ paddingLeft: 15 }}>
             Your have {count} {count > 1 ? "items" : "item"} in your cart.
           </Header>
         )}
@@ -79,7 +84,7 @@ export class OrderSummaryContainer extends Component {
           handleAddToCart={this.handleAddToCart}
           buttonText={buttonText}
         />
-      </Segment>
+      </StyledSegment>
     );
   }
 }
