@@ -57,14 +57,11 @@ export const Tickets = ({ ticketsList, handleAddToCart, user }) => {
             </List.Item>
           </Table.Cell>
           <Table.Cell textAlign="right">
-            # {id}
-            <br />
             {is_feature && (
               <Button
                 disabled={!allAccess}
                 color="orange"
-                floated="right"
-                size="small"
+                size="tiny"
                 onClick={() => handleAddToCart(id)}
               >
                 <Icon name="cart" />

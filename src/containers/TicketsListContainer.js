@@ -20,7 +20,7 @@ import { APP_TYPE } from "../constants/constants";
 import ListSideBar from "../components/tickets/ListSideBar";
 
 const SytledContainer = styled(Container)`
-  padding: 20px 20px;
+  padding: 20px 5px;
   background-color: #eee;
 `;
 
