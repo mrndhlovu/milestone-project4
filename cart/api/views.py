@@ -203,7 +203,7 @@ class AddToCartAPIView(ListAPIView):
             if pending_orders_qs is not None:
 
                 for item in pending_orders_qs:
-                    if app_type['donation']:
+                    if product_object == app_type['donation']:
                         item.delete()
                         cart.add_item(product)
 
@@ -212,7 +212,7 @@ class AddToCartAPIView(ListAPIView):
                         }
                         return JsonResponse(context, status=status.HTTP_200_OK)
 
-                    if item.product_object_id == product_id:
+                    elif item.product_object_id == product_id:
 
                         context = {
                             'message': 'Item already in your cart.',
