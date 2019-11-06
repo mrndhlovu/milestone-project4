@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter, Switch } from "react-router-dom";
 
 import { Form, Message, Container } from "semantic-ui-react";
 
@@ -17,6 +17,8 @@ import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
 import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import CreateTicketRadioButtons from "../components/tickets/CreateTicketRadioButtons";
+import { all } from "q";
+import MessageModal from "../components/sharedComponents/MessageModal";
 
 export class CreateTicketContainer extends Component {
   constructor(props) {
@@ -36,11 +38,6 @@ export class CreateTicketContainer extends Component {
     if (prevProps.ticket !== ticket) {
       ticket.data.id !== undefined &&
         this.props.history.push(`/ticket/${ticket.data.id}`);
-    }
-
-    if (prevProps.user !== user) {
-      if (user.data && user.dataReceived) {
-      }
     }
   }
 
@@ -73,16 +70,13 @@ export class CreateTicketContainer extends Component {
       errorAlert,
       valid,
       pristine,
-      user
+      user,
+      history
     } = this.props;
     const { isLoading, isBug, isFeature, value } = this.state;
     const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
-
-    if (!allAccess) {
-      return <Redirect to="/login" />;
-    }
 
     return (
       <Container style={{ paddingTop: 20 }}>
@@ -119,6 +113,7 @@ export class CreateTicketContainer extends Component {
           <CreateTicketDropdown field={field} />
           <div style={{ paddingTop: 10 }}>
             <SubmitButton
+              allAccess={allAccess}
               pristine={pristine}
               valid={valid}
               isLoading={isLoading}
@@ -127,6 +122,16 @@ export class CreateTicketContainer extends Component {
             />
           </div>
         </Form>
+
+        {!allAccess && (
+          <MessageModal
+            feature="file a ticket"
+            history={history}
+            redirect="pricing"
+            showMessageModal={true}
+            header="UPGRADE MEMBERSHIP"
+          />
+        )}
       </Container>
     );
   }
