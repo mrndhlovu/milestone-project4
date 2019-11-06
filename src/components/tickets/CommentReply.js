@@ -6,13 +6,14 @@ import { Comment, Header } from "semantic-ui-react";
 
 export const CommentReply = ({ comments, parentId }) => {
   return Object.keys(comments).map(index => {
-    const { username, timestamp, comment, parent } = comments[index];
+    const { username, timestamp, comment, parent, image } = comments[index];
 
     return (
       parent &&
       parentId === parent && (
         <Fragment key={index}>
           <Comment.Group>
+            <Comment.Avatar src={image} style={{ paddingRight: 10 }} />
             <Comment.Author as="a">{username.toUpperCase()}</Comment.Author>
             <Comment.Metadata>
               <Header as="h5" color="grey">
