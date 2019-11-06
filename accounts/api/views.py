@@ -140,10 +140,6 @@ class UserAPI(RetrieveAPIView):
             profile = get_object_or_404(
                 UserProfile, user=self.request.user)
 
-            user_profile = {
-
-            }
-
             default_image = os.environ.get('UNICORN_DEFAULT_USER_IMAGE_URL')
             image = profile.image
 
