@@ -1,10 +1,11 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-import { List, Icon, Card } from "semantic-ui-react";
+import { List, Icon, Card, Segment, Header } from "semantic-ui-react";
 
 const UserPurchases = ({ purchases, accountType, allAccess }) => {
-  const { tickets } = purchases;
+  const { tickets, donations } = purchases;
+  console.log(donations);
 
   const renderPurchases = () => {
     return Object.keys(tickets).map(key => {
@@ -24,29 +25,55 @@ const UserPurchases = ({ purchases, accountType, allAccess }) => {
     });
   };
 
-  return (
-    <Fragment>
-      <Card fluid>
-        <Card.Content>
-          <Card.Header as="h2" attached="top">
-            Purchases
-          </Card.Header>
-        </Card.Content>
-        <Card.Content>
-          {allAccess && (
-            <Fragment>
-              <Icon name="check circle" color="olive" />
+  const renderDonations = () => {
+    return Object.keys(donations).map(key => {
+      return (
+        <Fragment key={key}>
+          <List.Item>
+            <List.Header>
               <List.Content>
-                <List.Header>{accountType}</List.Header>
+                <Icon name="heart" color="red" /> € {donations[key]} donation.
               </List.Content>
-            </Fragment>
-          )}
+            </List.Header>
+          </List.Item>
+        </Fragment>
+      );
+    });
+  };
+
+  return (
+    <Card fluid>
+      <Card.Content>
+        <Card.Header as="h2" attached="top">
+          Purchases
+        </Card.Header>
+      </Card.Content>
+      <Card.Content>
+        {allAccess && (
+          <Segment>
+            <Header content="Membership Upgrade" />
+
+            <List.Content>
+              <List.Header>
+                <Icon name="check circle" color="olive" /> {accountType}
+              </List.Header>
+            </List.Content>
+          </Segment>
+        )}
+        <Segment>
+          <Header content="Tickets" />
           <List divided verticalAlign="middle">
             {renderPurchases()}
           </List>
-        </Card.Content>
-      </Card>
-    </Fragment>
+        </Segment>
+        <Segment>
+          <Header content="Donations" />
+          <List divided verticalAlign="middle">
+            {renderDonations()}
+          </List>
+        </Segment>
+      </Card.Content>
+    </Card>
   );
 };
 

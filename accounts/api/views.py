@@ -11,6 +11,7 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.response import Response
 from tickets.models import Ticket
+from cart.models import Donation
 import json
 import os
 
@@ -63,9 +64,18 @@ def get_purchases(request):
     if user_profile.exists():
         profile = user_profile.first()
         tickets = profile.paid_tickets.values()
-        purchases = {
-            'tickets': tickets,
-        }
+
+        donation_bucket = Donation.objects.filter(
+            user=request.user, is_paid=True)
+
+        if donation_bucket is not None:
+            donations = {}
+            for num, donation in enumerate(donation_bucket):
+                donations[num] = donation.price
+        else:
+            donations = {}
+
+        purchases = {'tickets': tickets, 'donations': donations}
         return purchases
     else:
         return None
