@@ -31,7 +31,7 @@ class SignupContainer extends Component {
       loginModal: false,
       isLoading: false,
       buttonDisabled: true,
-      showError: false
+      showError: true
     };
 
     this.handleSignupClick = this.handleSignupClick.bind(this);
@@ -46,17 +46,13 @@ class SignupContainer extends Component {
   }
 
   handleDismiss() {
-    this.setState({ showError: false });
+    this.setState({ showError: !this.state.showError });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     const { auth } = this.props;
 
     auth.isAuthenticated && window.location.reload();
-
-    if (prevProps.auth.hasError !== auth.hasError) {
-      this.setState({ showError: !this.state.showError });
-    }
   }
 
   renderField(field) {
@@ -83,14 +79,13 @@ class SignupContainer extends Component {
 
     return (
       <Fragment>
-        <Image size="large" src={DEFAULT_IMAGES.signup} style={styles} />
         <Grid celled="internally" columns="equal" stackable>
           <Grid.Column style={{ paddingTop: 0, paddingLeft: 0 }}>
             <Image size="large" src={DEFAULT_IMAGES.signup} style={styles} />
 
             <FormHeader header="Lets get you setup for your Unicorn Account" />
 
-            {showError && (
+            {hasError && showError && (
               <Grid textAlign="center" style={{ paddingBottom: 10 }}>
                 <Grid.Column style={{ maxWidth: 700 }}>
                   <ErrorMessage
