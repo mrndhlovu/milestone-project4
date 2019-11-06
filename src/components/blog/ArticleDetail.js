@@ -10,7 +10,8 @@ const ArticleDetail = ({
   handleDelete,
   handleLikeClick,
   isLoading,
-  handleUpdateImage
+  handleUpdateImage,
+  image
 }) => {
   const {
     title,
@@ -19,8 +20,7 @@ const ArticleDetail = ({
     created_at,
     id,
     content,
-    owner_id,
-    image
+    owner_id
   } = article.data;
 
   const { isOwner, likes } = article;

@@ -27,7 +27,7 @@ import MessageModal from "../components/sharedComponents/MessageModal";
 class ArticleDetailContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { showConfirmModal: false, image: "", title: "" };
+    this.state = { showConfirmModal: false, title: "" };
 
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -45,8 +45,8 @@ class ArticleDetailContainer extends Component {
 
     if (prevProps.article !== article) {
       if (article.dataReceived) {
-        const { image, title } = article.data.data;
-        this.setState({ image: image, title: title });
+        const { title } = article.data.data;
+        this.setState({ title: title });
       }
     }
 
@@ -83,18 +83,19 @@ class ArticleDetailContainer extends Component {
 
   render() {
     const { article, user, history } = this.props;
-    const { showConfirmModal, image, title } = this.state;
-
+    const { showConfirmModal, title } = this.state;
+    const image = article.dataReceived && article.data.data.image;
     const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
 
     return (
       <Fragment>
-        <DynamicHeader option="post" image={image} title={title} />
+        <DynamicHeader option="post" title={title} />
         <Container style={{ paddingTop: 20 }}>
           {article.dataReceived && (
             <ArticleDetail
+              image={image}
               article={article.data}
               owner={article.owner}
               user={user.data}
