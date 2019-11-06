@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import { Container, Confirm } from "semantic-ui-react";
 
@@ -21,6 +22,7 @@ import StyledMessage from "../components/sharedComponents/StyledMessage";
 import DynamicHeader from "../components/sharedComponents/DynamicHeader";
 import { APP_TYPE } from "../constants/constants";
 import { refresh } from "../utils/appUtils";
+import MessageModal from "../components/sharedComponents/MessageModal";
 
 class ArticleDetailContainer extends Component {
   constructor(props) {
@@ -80,7 +82,7 @@ class ArticleDetailContainer extends Component {
   }
 
   render() {
-    const { article, user } = this.props;
+    const { article, user, history } = this.props;
     const { showConfirmModal, image, title } = this.state;
 
     const allAccess =
@@ -122,6 +124,15 @@ class ArticleDetailContainer extends Component {
             onCancel={() => this.handleCancel()}
             onConfirm={() => this.handleConfirm()}
           />
+          {!allAccess && (
+            <MessageModal
+              feature="read the article"
+              history={history}
+              redirect="blog"
+              showMessageModal={true}
+              header="UPGRADE MEMBERSHIP"
+            />
+          )}
         </Container>
       </Fragment>
     );
@@ -145,4 +156,4 @@ export default connect(
     updateArticleLikes,
     uploadArticleImage
   }
-)(ArticleDetailContainer);
+)(withRouter(ArticleDetailContainer));

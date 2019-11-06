@@ -14,6 +14,7 @@ import {
 } from "../selectors/appSelectors";
 import { Header, Message, Container, Form } from "semantic-ui-react";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
+import MessageModal from "../components/sharedComponents/MessageModal";
 
 class CreateArticleContainer extends Component {
   constructor(props) {
@@ -45,20 +46,17 @@ class CreateArticleContainer extends Component {
   render() {
     const {
       handleSubmit,
-      field,
       errorAlert,
       valid,
       pristine,
-      user
+      user,
+      history
     } = this.props;
-    const { isLoading, value } = this.state;
+    const { isLoading } = this.state;
     const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
 
-    if (!allAccess) {
-      return <Redirect to="/login" />;
-    }
     return (
       <Container style={{ paddingTop: 20 }}>
         <Header content="Add a new article" />
@@ -89,6 +87,16 @@ class CreateArticleContainer extends Component {
             />
           </div>
         </Form>
+
+        {!allAccess && (
+          <MessageModal
+            feature="create an article"
+            history={history}
+            redirect="pricing"
+            showMessageModal={true}
+            header="UPGRADE MEMBERSHIP"
+          />
+        )}
       </Container>
     );
   }
