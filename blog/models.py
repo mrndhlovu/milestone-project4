@@ -24,7 +24,7 @@ class Article(models.Model):
     is_approved = models.BooleanField(default=False)
     likes = models.ManyToManyField(
         User, blank=True, related_name='article_likes')
-    image = models.CharField(max_length=120, null=True,
+    image = models.CharField(max_length=200, null=True,
                              blank=True, default=os.environ.get('UNICORN_DEFAULT_POST_IMAGE_URL'))
 
     def __str__(self):
@@ -50,7 +50,7 @@ class Article(models.Model):
     @property
     def comments(self):
         comments = Comment.objects.filter_by_instance(
-            self).values('comment', 'user_id', 'timestamp', 'content_type', 'parent', 'object_id', 'id')
+            self).values('comment', 'user_id', 'timestamp', 'content_type', 'parent', 'object_id', 'id', 'image')
         comments_obj = {}
         for num, comment in enumerate(comments, start=0):
             user = User.objects.get(pk=comment['user_id'])
