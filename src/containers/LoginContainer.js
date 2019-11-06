@@ -42,7 +42,6 @@ class LoginContainer extends Component {
     }
   }
 
-  // request a login, and redirect to home page
   handleLoginClick(data) {
     this.setState({ isLoading: true });
     this.props.login(data);
@@ -79,7 +78,7 @@ class LoginContainer extends Component {
 
           <Grid textAlign="center" style={{ maxWidth: 700, margin: "0 auto" }}>
             <Grid.Column>
-              {showError && (
+              {hasError && showError && (
                 <ErrorMessage
                   style={{ paddingBottom: 10 }}
                   errors={auth.data}
