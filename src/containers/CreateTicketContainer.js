@@ -32,7 +32,7 @@ export class CreateTicketContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { ticket, user } = this.props;
+    const { ticket } = this.props;
 
     if (prevProps.ticket !== ticket) {
       ticket.data.id !== undefined &&
