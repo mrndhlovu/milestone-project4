@@ -417,7 +417,7 @@ class PaymentAPIView(APIView):
 
                                 donation = get_object_or_404(
                                     Donation, is_paid=False, user=request.user)
-
+                                donation.stripe_charge_id = payment.stripe_charge_id
                                 donation.is_paid = True
                                 donation.save()
 
