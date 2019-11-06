@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import { createArticle } from "../actions/BlogActions";
 import CreateArticleFormField from "../components/blog/CreateArticleFormField";
@@ -27,7 +27,7 @@ class CreateArticleContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { article, user } = this.props;
+    const { article } = this.props;
 
     if (prevProps.article !== article) {
       article.data.id !== undefined &&
