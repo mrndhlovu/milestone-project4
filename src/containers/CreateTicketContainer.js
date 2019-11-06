@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-import { withRouter, Switch } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import { Form, Message, Container } from "semantic-ui-react";
 
@@ -17,7 +17,6 @@ import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
 import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import CreateTicketRadioButtons from "../components/tickets/CreateTicketRadioButtons";
-import { all } from "q";
 import MessageModal from "../components/sharedComponents/MessageModal";
 
 export class CreateTicketContainer extends Component {
