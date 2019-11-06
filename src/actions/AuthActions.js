@@ -178,7 +178,7 @@ export const signup = data => {
         dispatch(createSession(sessionToken, sessionLife));
       },
       error => {
-        dispatch(createMessage({ errorMsg: error.response.data }));
+        dispatch(createMessage({ errorMsg: "Signup error" }));
         dispatch(dataRequestFail(USER_AUTH_FAIL, error.response.data));
       }
     );
