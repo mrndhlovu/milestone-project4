@@ -5,7 +5,6 @@ import { List, Icon, Card, Segment, Header } from "semantic-ui-react";
 
 const UserPurchases = ({ purchases, accountType, allAccess }) => {
   const { tickets, donations } = purchases;
-  console.log(donations);
 
   const renderPurchases = () => {
     return Object.keys(tickets).map(key => {
@@ -67,7 +66,7 @@ const UserPurchases = ({ purchases, accountType, allAccess }) => {
           </List>
         </Segment>
         <Segment>
-          <Header content="Donations" />
+          <Header content="Contributions" />
           <List divided verticalAlign="middle">
             {renderDonations()}
           </List>
