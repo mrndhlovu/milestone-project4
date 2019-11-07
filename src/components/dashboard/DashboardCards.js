@@ -1,25 +1,37 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import { Card, Header, Progress } from "semantic-ui-react";
+import { Card, Header, Progress, Segment, Image } from "semantic-ui-react";
 
 import DashboardStats from "./DashboardStats";
 import DashboardCard from "../sharedComponents/DashboardCard";
+import { TICKET_STATUS } from "../../constants/constants";
 
 const getPercentage = (total, value) => {
   return (value / total) * 100;
 };
 
+const StyledSegment = styled(Segment)`
+  background-color: #eee !important;
+`;
+
 const FilterTickets = ({ ticketList, value }) => {
   return Object.keys(ticketList).map(index => {
-    const { title, username, short_desc, status, votes, id } = ticketList[
-      index
-    ];
+    const {
+      title,
+      username,
+      short_desc,
+      status,
+      votes,
+      id,
+      image
+    } = ticketList[index];
 
     return (
       value === status && (
         <Card key={index} fluid>
-          {status === "todo" && (
+          {status === TICKET_STATUS.todo && (
             <Progress
               percent={getPercentage(2, votes)}
               attached="top"
@@ -28,6 +40,7 @@ const FilterTickets = ({ ticketList, value }) => {
           )}
 
           <Card.Content>
+            <Image floated="right" size="mini" src={image} />
             <Card.Header as={Link} to={`/ticket/${id}`}>
               {title}
             </Card.Header>
@@ -47,29 +60,56 @@ const FilterTickets = ({ ticketList, value }) => {
 
 const DashboardCards = ({ ticketList }) => {
   return (
-    <Card.Group>
+    <Fragment>
       <DashboardStats ticketList={ticketList} />
+      <StyledSegment>
+        <Card.Group itemsPerRow={4} stackable>
+          <DashboardCard
+            header="Backlog"
+            color="grey"
+            component={
+              <FilterTickets
+                value={TICKET_STATUS.backlog}
+                ticketList={ticketList}
+              />
+            }
+          />
 
-      <Card.Group itemsPerRow={3} stackable style={{ paddingTop: 15 }}>
-        <DashboardCard
-          header="Todo"
-          color="grey"
-          component={<FilterTickets value="todo" ticketList={ticketList} />}
-        />
+          <DashboardCard
+            header="Up Next"
+            color="grey"
+            component={
+              <FilterTickets
+                value={TICKET_STATUS.todo}
+                ticketList={ticketList}
+              />
+            }
+          />
 
-        <DashboardCard
-          header="In Progress"
-          color="grey"
-          component={<FilterTickets value="doing" ticketList={ticketList} />}
-        />
+          <DashboardCard
+            header="In Progress"
+            color="grey"
+            component={
+              <FilterTickets
+                value={TICKET_STATUS.doing}
+                ticketList={ticketList}
+              />
+            }
+          />
 
-        <DashboardCard
-          header="Completed"
-          color="green"
-          component={<FilterTickets value="done" ticketList={ticketList} />}
-        />
-      </Card.Group>
-    </Card.Group>
+          <DashboardCard
+            header="Closed"
+            color="green"
+            component={
+              <FilterTickets
+                value={TICKET_STATUS.done}
+                ticketList={ticketList}
+              />
+            }
+          />
+        </Card.Group>
+      </StyledSegment>
+    </Fragment>
   );
 };
 

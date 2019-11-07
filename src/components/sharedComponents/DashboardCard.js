@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Card, Header, Segment } from "semantic-ui-react";
+import { Card, Segment } from "semantic-ui-react";
 
 const DashboardCard = ({
   header,
@@ -11,18 +11,16 @@ const DashboardCard = ({
   isLoading,
   headerSize
 }) => (
-  <Card fluid padded="true">
-    <Header
-      as={headerSize}
-      attached
-      content={header}
-      color={color}
-      subheader={subheader}
-    />
-    <Segment attached stacked loading={isLoading}>
-      {component}
-    </Segment>
-    {otherProps}
+  <Card fluid>
+    <Card.Content>
+      <Card.Header as={headerSize} attached color={color} subheader={subheader}>
+        {header}
+      </Card.Header>
+      <Segment attached stacked loading={isLoading}>
+        {component}
+      </Segment>
+      {otherProps}
+    </Card.Content>
   </Card>
 );
 

@@ -79,6 +79,7 @@ export const TICKET_STATUS = Object.freeze({
   todo: "todo",
   doing: "doing",
   done: "done",
+  backlog: "backlog",
   is_bug: "is_bug",
   is_feature: "is_feature"
 });

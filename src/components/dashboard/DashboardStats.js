@@ -1,7 +1,6 @@
 import React from "react";
 
-import { Statistic } from "semantic-ui-react";
-import DashboardCard from "../sharedComponents/DashboardCard";
+import { Statistic, Card } from "semantic-ui-react";
 import { TICKET_STATUS } from "../../constants/constants";
 
 const StatField = ({ label, value }) => {
@@ -26,10 +25,9 @@ const DashboardStats = ({ ticketList }) => {
   };
 
   return (
-    <DashboardCard
-      attached
-      header="Current"
-      component={
+    <Card fluid>
+      <Card.Content>
+        <Card.Header as="h5">Unicorn Attactor Dashboard</Card.Header>
         <Statistic.Group>
           <StatField label="Bugs" value={getTotal(TICKET_STATUS.is_bug)} />
           <StatField
@@ -38,8 +36,8 @@ const DashboardStats = ({ ticketList }) => {
           />
           <StatField label="Completed" value={getTotal(TICKET_STATUS.done)} />
         </Statistic.Group>
-      }
-    />
+      </Card.Content>
+    </Card>
   );
 };
 

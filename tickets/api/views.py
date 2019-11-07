@@ -7,6 +7,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.views import APIView
 from tickets.models import Ticket, TicketSolution
 from comments.models import Comment
+from accounts.models import UserProfile
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
@@ -77,10 +78,14 @@ class CreateTicketView(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         current_ticket_owner = get_ticket_owner(request)
+        user = UserProfile.objects.filter(user=request.user).first()
 
         data = request.data.copy()
         data['owner'] = current_ticket_owner.id
         data['username'] = current_ticket_owner.id
+        data['image'] = user.image
+
+        print(data)
 
         serializer = self.get_serializer(data=data)
 

@@ -22,6 +22,7 @@ class Ticket(models.Model):
         ('todo', 'To-do'),
         ('doing', 'Doing'),
         ('done', 'Done'),
+        ('backlog', 'Backlog',)
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -40,6 +41,7 @@ class Ticket(models.Model):
     has_solution = models.BooleanField(default=False)
     price = models.IntegerField(default=5, null=True)
     views = models.IntegerField(default=0)
+    image = models.CharField(null=True, max_length=200)
 
     def __str__(self):
         return self.title
