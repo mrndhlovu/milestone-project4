@@ -28,7 +28,7 @@ def check_is_owner(instance, request):
     try:
 
         owner_id = instance[0].owner_id
-        print(user)
+
         if user is not None and user.id == owner_id:
             return True
         return False
@@ -85,8 +85,6 @@ class CreateTicketView(CreateAPIView):
         data['username'] = current_ticket_owner.id
         data['image'] = user.image
 
-        print(data)
-
         serializer = self.get_serializer(data=data)
 
         serializer.is_valid(raise_exception=True)
@@ -109,8 +107,8 @@ class TicketVoteToggleAPIView(APIView):
         return context
 
     def get(self, request, id=None, format=None):
-        id = self.kwargs.get('id')
-        instance = get_object_or_404(Ticket, id=id)
+        ticket_id = self.kwargs.get('id')
+        instance = get_object_or_404(Ticket, id=ticket_id)
         user = self.request.user
         updated = False
         voted = False
@@ -189,7 +187,9 @@ class TicketSolutionAPIView(GenericAPIView):
     permissions._classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        request_data = json.loads(request.body.decode('utf-8'))
+
+        request_data = request.data.copy()
+
         try:
 
             ticket = get_paid_ticket(request, request_data)
