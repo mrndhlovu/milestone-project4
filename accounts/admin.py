@@ -4,7 +4,6 @@ from comments.models import Comment
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from memberships.models import Membership, UserMembership, Subscription
-from tickets.models import Ticket, TicketSolution
 from cart.models import Cart, CartItem, CartPayment, Donation
 from blog.models import Article
 
@@ -18,8 +17,6 @@ admin.site.register(Membership)
 admin.site.register(UserMembership)
 admin.site.register(Subscription)
 
-admin.site.register(Ticket)
-admin.site.register(TicketSolution)
 admin.site.register(Comment)
 
 admin.site.register(Cart)
