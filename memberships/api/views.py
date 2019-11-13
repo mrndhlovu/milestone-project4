@@ -66,7 +66,6 @@ class CancelSubscriptionAPIView(ListAPIView):
 
             if account_change == 'downgrade':
 
-                print(request_data)
                 user_subscription = get_user_subscription(request)
 
                 if user_subscription.is_active is False:
