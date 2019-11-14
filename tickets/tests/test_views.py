@@ -1,7 +1,6 @@
 import json
 from rest_framework import status
-from django.test import TestCase, Client
-from django.urls import reverse
+from django.test import TestCase
 from ..models import Ticket, TicketSolution
 from ..api.serializers import TicketSerializer
 from django.contrib.auth.models import User
@@ -10,11 +9,6 @@ from rest_framework.test import APIRequestFactory
 from ..api import views
 from rest_framework.test import APIClient
 from knox.models import AuthToken
-from django.http import JsonResponse
-from django.test.utils import setup_test_environment
-from django.contrib.auth import get_user_model
-from accounts.api import views as login_view
-from django.utils.encoding import iri_to_uri
 
 
 class TicketListAPIViewTest(TestCase):
