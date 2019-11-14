@@ -86,10 +86,12 @@ class SignupAPI(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
+
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
         user_profile = update_profile(user)
+
         if user_profile is True:
 
             context = {
@@ -184,7 +186,7 @@ class UserUpdateAPIView(UpdateAPIView):
     queryset = User.objects.all()
 
     def post(self, request, *args, **kwargs):
-        request_data = json.loads(request.body.decode('utf-8'))
+        request_data = request.data.copy()
         image_upload_only = request_data['isImageUpload']
 
         user_profile = UserProfile.objects.filter(user=request.user)[0]
