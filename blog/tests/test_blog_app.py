@@ -21,12 +21,13 @@ class TestBlogApp(APITestCase):
 
         self.list_url = '/blog/'
         self.article_detail_url = '/blog/article/2/'
-        self.article_url = '/blog/api/1/vote/'
+        self.article_vote_url = '/blog/api/2/vote/'
         self.update_article_url = '/blog/update/1/'
         self.delete_article_url = '/blog/delete/1/'
+        self.create_article_url = '/blog/api/create/'
         self.single_article_id = 2
 
-        self.update_article_data = {
+        self.new_article_data = {
             'title': 'Updated title',
             'subject': 'Updated subject',
             'content': 'Updated content',
@@ -52,8 +53,34 @@ class TestBlogApp(APITestCase):
 
     def test_article_detail_url_and_get_data(self):
 
-        response = self.sigup_client.get(self.article_detail_url)
+        response = self.client.get(self.article_detail_url)
         response_data = json.loads(response.content)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response_data['owner_id'], self.user.id)
+        self.assertEqual(response_data['data']['owner_id'], self.user.id)
+
+    def test_article_vote_url_vote(self):
+        article = Article.objects.filter(id=self.article_two.id).first()
+        response = self.client.get(self.article_vote_url)
+        response_data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data['liked'], True)
+
+    def test_update_article_url(self):
+        article = Article.objects.filter(id=self.article_two.id).first()
+        response = self.client.put(
+            self.update_article_url, data=self.new_article_data)
+        response_data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data['title'],
+                         self.update_article_data['title'])
+
+    def test_create_article_url(self):
+
+        response = self.client.post(
+            self.create_article_url, data=self.new_article_data)
+        response_data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 201)
