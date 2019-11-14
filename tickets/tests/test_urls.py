@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 
 
-class TestTicketURL(APITestCase):
+class TestTicketAppURLS(APITestCase):
 
     def setUp(self):
 
