@@ -171,7 +171,7 @@ class AddToCartAPIView(ListAPIView):
 
     def post(self, request):
 
-        request_data = json.loads(request.body.decode('utf-8'))
+        request_data = request.data.copy()
         product_id = request_data['product_id']
         product_object = request_data['product']
 
@@ -285,7 +285,7 @@ class CartRemoveItemAPIView(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        request_data = json.loads(request.body.decode('utf-8'))
+        request_data = request.data.copy()
 
         product_id = request_data['product_id']
         product_object = request_data['product']
@@ -339,7 +339,7 @@ class PaymentAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        request_data = json.loads(request.body.decode('utf-8'))
+        request_data = request.data.copy()
         token = request_data['stripeToken']
 
         pending_order = get_object_or_404(Cart, user=self.request.user)
