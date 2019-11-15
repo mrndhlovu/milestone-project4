@@ -67,7 +67,7 @@ class CreateCommentView(CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request, **kwargs):
-        request_data = json.loads(request.body.decode('utf-8'))
+        request_data = request.data.copy()
 
         app_id = request_data['object_id']
         app = get_app(request, request_data)
@@ -110,7 +110,7 @@ class CreateCommentReplyView(CreateAPIView):
 
     def post(self, request, **kwargs):
 
-        request_data = json.loads(request.body.decode('utf-8'))
+        request_data = request.data.copy()
 
         object_id = request_data['object_id']
         comment = request_data['comment']
