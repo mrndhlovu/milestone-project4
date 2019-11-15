@@ -10,7 +10,6 @@ from ..models import Article
 class TestBlogApp(APITestCase):
 
     def setUp(self):
-        self.sigup_client = APIClient()
         self.user = self.setup_user()
         self.token = AuthToken.objects.create(user=self.user)
         self.client = APIClient(HTTP_AUTHORIZATION='Token ' + self.token[1])
@@ -65,7 +64,7 @@ class TestBlogApp(APITestCase):
         response_data = json.loads(response.content)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response_data['liked'], True)
+        self.assertTrue(response_data['liked'])
 
     def test_update_article_url(self):
         article = Article.objects.filter(id=self.article_two.id).first()
@@ -75,7 +74,7 @@ class TestBlogApp(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_data['title'],
-                         self.update_article_data['title'])
+                         self.new_article_data['title'])
 
     def test_create_article_url(self):
 
