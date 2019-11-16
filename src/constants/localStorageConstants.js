@@ -1,3 +1,5 @@
+"use es6";
+
 export const STRIPE_TOKEN = localStorage.getItem("stripeToken");
 
 export const SESSION_TOKEN = localStorage.getItem("sessionToken");

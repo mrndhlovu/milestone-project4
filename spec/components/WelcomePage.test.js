@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import PageHeader from "./sharedComponents/PageHeader";
-import { HEADER_TEXT } from "../constants/headerConstants";
-import WelcomePage from "./WelcomePage";
+import { HEADER_TEXT } from "../../src/constants/headerConstants";
+import WelcomePage from "../../src/components/WelcomePage";
+import PageHeader from "../../src/components/sharedComponents/PageHeader";
 
 const pageHeaderProps = {
   customHeader: true,
