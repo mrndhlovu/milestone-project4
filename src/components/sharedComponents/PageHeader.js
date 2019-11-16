@@ -17,7 +17,8 @@ export const PageHeader = ({
   mobile,
   customHeader,
   headerObject,
-  hideButton
+  hideButton,
+  className
 }) => {
   const {
     headerText,
@@ -27,7 +28,7 @@ export const PageHeader = ({
   } = customHeader ? headerObject : getHeaderObject();
 
   return (
-    <StyledSegment textAlign="center" inverted vertical>
+    <StyledSegment textAlign="center" inverted vertical className={className}>
       <Header
         as="h1"
         content={headerText}
