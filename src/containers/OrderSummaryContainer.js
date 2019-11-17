@@ -61,7 +61,7 @@ export class OrderSummaryContainer extends Component {
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
 
     return (
-      <StyledSegment>
+      <StyledSegment data-test-id="order-summary-page">
         {count > 0 && (
           <Header style={{ paddingLeft: 15 }}>
             Your have {count} {count > 1 ? "items" : "item"} in your cart.
@@ -95,7 +95,8 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { fetchPendingOrder, removeItemFromCart, addItemToCart }
-)(withRouter(OrderSummaryContainer));
+export default connect(mapStateToProps, {
+  fetchPendingOrder,
+  removeItemFromCart,
+  addItemToCart
+})(withRouter(OrderSummaryContainer));

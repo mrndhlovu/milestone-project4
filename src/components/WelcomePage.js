@@ -14,6 +14,7 @@ import {
 
 import { DEFAULT_IMAGES } from "../constants/constants";
 import PageHeader from "./sharedComponents/PageHeader";
+import { getPageId } from "../utils/urls";
 
 const StyledHeaderSpan = styled.span`
   text-transform: uppercase;
@@ -21,8 +22,12 @@ const StyledHeaderSpan = styled.span`
 
 export const WelcomePage = () => {
   return (
-    <div>
-      <PageHeader className="home-container-header" />
+    <div data-test-id="welcome-page">
+      <PageHeader
+        data-test-id="home-container-header"
+        pageId={getPageId()}
+        buttonId="get-started-button"
+      />
       <Segment style={{ padding: "3rem 0rem" }} vertical>
         <Grid container stackable verticalAlign="middle" textAlign="center">
           <Grid.Row>
@@ -48,7 +53,13 @@ export const WelcomePage = () => {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column textAlign="center">
-              <Button size="medium" color="orange" as={NavLink} to="/pricing">
+              <Button
+                data-test-id="all-access-button"
+                size="medium"
+                color="orange"
+                as={NavLink}
+                to="/pricing"
+              >
                 <StyledHeaderSpan>All Access Account</StyledHeaderSpan>
               </Button>
             </Grid.Column>
@@ -95,7 +106,13 @@ export const WelcomePage = () => {
             To keep the business running and the lights on, you can make a kind
             contribution.
           </p>
-          <Button as={NavLink} to="/checkout" color="orange" size="medium">
+          <Button
+            as={NavLink}
+            to="/checkout"
+            color="orange"
+            size="medium"
+            data-test-id="make-donation-button"
+          >
             <Icon name="heart" />
             Make a Donation
           </Button>
@@ -104,3 +121,5 @@ export const WelcomePage = () => {
     </div>
   );
 };
+
+export default WelcomePage;

@@ -9,11 +9,9 @@ const renderList = () => {
   return Object.keys(FOOTER_LINKS).map(index => {
     const { header, key } = FOOTER_LINKS[index];
     return (
-      <Fragment key={index}>
-        <List.Item as={NavLink} to={`/${key}`}>
-          {header}
-        </List.Item>
-      </Fragment>
+      <List.Item as={NavLink} to={`/${key}`} key={index}>
+        {header}
+      </List.Item>
     );
   });
 };
@@ -22,7 +20,7 @@ const FooterLinks = () => {
   return (
     <div>
       <Header inverted as="h4" content="Menu" />
-      <List link inverted>
+      <List link inverted data-test-id="footer-links">
         {renderList()}
       </List>
     </div>

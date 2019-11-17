@@ -5,7 +5,7 @@ import FooterLinks from "./FooterLinks";
 
 const NavFooter = () => {
   return (
-    <Container>
+    <Container data-test-id="footer-icons">
       <Grid inverted columns={2}>
         <Grid.Column>
           <Header inverted as="h4" content="About" />
