@@ -18,6 +18,7 @@ import StyledMessage from "../components/sharedComponents/StyledMessage";
 import { Grid, Container } from "semantic-ui-react";
 import { APP_TYPE } from "../constants/constants";
 import ListSideBar from "../components/tickets/ListSideBar";
+import { getPageId } from "../utils/urls";
 
 const SytledContainer = styled(Container)`
   padding: 20px 5px;
@@ -82,7 +83,7 @@ export class TicketsListContainer extends Component {
 
     return (
       <Fragment>
-        <PageHeader />
+        <PageHeader pageId={getPageId()} />
         <SytledContainer fluid>
           <Grid stackable columns={2}>
             <Grid.Column width={4}>
@@ -133,7 +134,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { fetchTicketsList, addItemToCart, fetchPendingOrder, updatedTicketVote }
-)(TicketsListContainer);
+export default connect(mapStateToProps, {
+  fetchTicketsList,
+  addItemToCart,
+  fetchPendingOrder,
+  updatedTicketVote
+})(TicketsListContainer);

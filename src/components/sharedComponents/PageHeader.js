@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { getHeaderObject } from "../../constants/headerConstants";
 
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
+import { getPageId } from "../../utils/urls";
 
 const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
@@ -15,20 +16,25 @@ const StyledSegment = styled(Segment)`
 
 export const PageHeader = ({
   mobile,
-  customHeader,
-  headerObject,
   hideButton,
-  className
+  dataTestId,
+  pageId,
+  buttonId
 }) => {
   const {
     headerText,
     headerButtonText,
     headerButtonUrl,
     subHeading
-  } = customHeader ? headerObject : getHeaderObject();
+  } = getHeaderObject(pageId);
 
   return (
-    <StyledSegment textAlign="center" inverted vertical className={className}>
+    <StyledSegment
+      textAlign="center"
+      inverted
+      vertical
+      data-test-id={dataTestId}
+    >
       <Header
         as="h1"
         content={headerText}
@@ -52,6 +58,7 @@ export const PageHeader = ({
       />
       {!hideButton && (
         <Button
+          data-test-id={buttonId}
           primary
           color="linkedin"
           size="large"

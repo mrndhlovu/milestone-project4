@@ -206,11 +206,7 @@ export class UserProfileContainer extends Component {
     };
     return (
       <Fragment>
-        <PageHeader
-          headerObject={headerObject}
-          customHeader={true}
-          hideButton={true}
-        />
+        <PageHeader pageId="user-profile" hideButton={true} />
         <Container style={{ paddingTop: 20 }}>
           <Tab
             menu={{ secondary: true, pointing: false }}
@@ -260,13 +256,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    changeAccount,
-    fetchUser,
-    uploadProfileImage,
-    updateUserProfile,
-    deleteProfileImage
-  }
-)(withRouter(UserProfileContainer));
+export default connect(mapStateToProps, {
+  changeAccount,
+  fetchUser,
+  uploadProfileImage,
+  updateUserProfile,
+  deleteProfileImage
+})(withRouter(UserProfileContainer));

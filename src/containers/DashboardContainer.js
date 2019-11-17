@@ -9,6 +9,7 @@ import { fetchTicketsList } from "../actions/TicketActions";
 import DashboardCards from "../components/dashboard/DashboardCards";
 import StyledMessage from "../components/sharedComponents/StyledMessage";
 import { Segment } from "semantic-ui-react";
+import { getPageId } from "../utils/urls";
 
 const StyledContainer = styled(Segment)`
   background-color: #eee !important;
@@ -30,7 +31,7 @@ export class DashboardContainer extends Component {
     return (
       tickets.data && (
         <Fragment>
-          <PageHeader />
+          <PageHeader pageId={getPageId()} />
           <StyledContainer>
             {tickets.data.length > 0 ? (
               <DashboardCards ticketList={tickets.data} />
@@ -54,7 +55,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { fetchTicketsList }
-)(DashboardContainer);
+export default connect(mapStateToProps, { fetchTicketsList })(
+  DashboardContainer
+);

@@ -167,7 +167,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { createComment, createReply }
-)(withRouter(CommentsContainer));
+export default connect(mapStateToProps, { createComment, createReply })(
+  withRouter(CommentsContainer)
+);

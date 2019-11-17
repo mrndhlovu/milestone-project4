@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
@@ -18,6 +18,7 @@ import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import CreateTicketRadioButtons from "../components/tickets/CreateTicketRadioButtons";
 import MessageModal from "../components/sharedComponents/MessageModal";
+import PageHeader from "../components/sharedComponents/PageHeader";
 
 export class CreateTicketContainer extends Component {
   constructor(props) {
@@ -78,60 +79,67 @@ export class CreateTicketContainer extends Component {
       user.data.current_membership.membership.is_pro_member;
 
     return (
-      <Container style={{ paddingTop: 20 }}>
-        <Message
-          header="Create a Ticket"
-          content="Fill out the form below to create a ticket"
-          attached
-        />
-        {errorAlert.status !== "" && errorAlert.status ? (
+      <Fragment>
+        <PageHeader pageId="open-ticket" />
+        <Container style={{ paddingTop: 20 }}>
           <Message
-            size="small"
-            error
-            header="Error creating ticket: "
-            content={errorAlert.alertMsg}
+            header="Create a Ticket"
+            content="Fill out the form below to create a ticket"
+            attached
           />
-        ) : null}
-        <Form
-          className="attached fluid segment"
-          onSubmit={handleSubmit(this.handleSubmitClick)}
-        >
-          <CreateTicketRadioButtons
-            value={value}
-            handleChange={this.handleChange}
-            isBug={isBug}
-            isFeature={isFeature}
-          />
-          <Field name="title" label="Title" component={this.renderField} />
-          <Field name="subject" label="Subject" component={this.renderField} />
-          <Field
-            name="description"
-            label="Description"
-            component={this.renderField}
-          />
-          <CreateTicketDropdown field={field} />
-          <div style={{ paddingTop: 10 }}>
-            <SubmitButton
-              allAccess={allAccess}
-              pristine={pristine}
-              valid={valid}
-              isLoading={isLoading}
-              onClick={() => this.setState({ isLoading: true })}
-              buttonText="Submit"
+          {errorAlert.status !== "" && errorAlert.status ? (
+            <Message
+              size="small"
+              error
+              header="Error creating ticket: "
+              content={errorAlert.alertMsg}
             />
-          </div>
-        </Form>
+          ) : null}
+          <Form
+            className="attached fluid segment"
+            onSubmit={handleSubmit(this.handleSubmitClick)}
+          >
+            <CreateTicketRadioButtons
+              value={value}
+              handleChange={this.handleChange}
+              isBug={isBug}
+              isFeature={isFeature}
+            />
+            <Field name="title" label="Title" component={this.renderField} />
+            <Field
+              name="subject"
+              label="Subject"
+              component={this.renderField}
+            />
+            <Field
+              name="description"
+              label="Description"
+              component={this.renderField}
+            />
+            <CreateTicketDropdown field={field} />
+            <div style={{ paddingTop: 10 }}>
+              <SubmitButton
+                allAccess={allAccess}
+                pristine={pristine}
+                valid={valid}
+                isLoading={isLoading}
+                onClick={() => this.setState({ isLoading: true })}
+                buttonText="Submit"
+              />
+            </div>
+          </Form>
 
-        {!allAccess && (
-          <MessageModal
-            feature="file a ticket"
-            history={history}
-            redirect="pricing"
-            showMessageModal={true}
-            header="UPGRADE MEMBERSHIP"
-          />
-        )}
-      </Container>
+          {!allAccess && (
+            <MessageModal
+              feature="file a ticket"
+              history={history}
+              redirect="pricing"
+              showMessageModal={true}
+              header="UPGRADE MEMBERSHIP"
+            />
+          )}
+        </Container>
+      </Fragment>
     );
   }
 }
@@ -146,8 +154,5 @@ const mapStateToProps = state => {
 };
 
 export default reduxForm({ validate, form: "CreateTicketForm" })(
-  connect(
-    mapStateToProps,
-    { createTicket }
-  )(withRouter(CreateTicketContainer))
+  connect(mapStateToProps, { createTicket })(withRouter(CreateTicketContainer))
 );

@@ -44,33 +44,22 @@ export const HEADER_TEXT = {
     headerButtonUrl: "/checkout",
     headerButtonText: "Cart",
     subHeading: "Your shopping cart"
-  }
-};
-
-export const getDynamicHeader = option => {
-  const ticketObject = {
+  },
+  "open-ticket": {
     headerText: "Open a ticket",
     headerButtonUrl: "/tickets",
     headerButtonText: "Tickets List",
     subHeading: "Bug fixes are FREE! Features require payment for development!"
-  };
-
-  const articleObject = {
+  },
+  "create-article": {
     headerText: "Create your article",
     headerButtonUrl: "/blog",
     headerButtonText: "Article List",
     subHeading: "Share your content and your ideas!"
-  };
-
-  if (option === APP_TYPE.post) {
-    return articleObject;
-  } else {
-    return ticketObject;
   }
 };
 
-export const getHeaderObject = () => {
-  const pageId = getPageId();
+export const getHeaderObject = pageId => {
   let headerObject;
 
   Object.keys(HEADER_TEXT).forEach(key => {

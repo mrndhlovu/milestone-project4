@@ -12,6 +12,7 @@ import {
   getUserProfile
 } from "../selectors/appSelectors";
 import { Container } from "semantic-ui-react";
+import { getPageId } from "../utils/urls";
 
 export class BlogContainer extends Component {
   componentDidMount() {
@@ -23,7 +24,7 @@ export class BlogContainer extends Component {
 
     return (
       <div>
-        <PageHeader />
+        <PageHeader pageId={getPageId()} />
         <Container style={{ paddingTop: 20 }}>
           {articles.dataReceived && <BlogList articles={articles.data} />}
         </Container>
@@ -40,7 +41,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { fetchArticlesList }
-)(BlogContainer);
+export default connect(mapStateToProps, { fetchArticlesList })(BlogContainer);

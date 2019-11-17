@@ -12,6 +12,7 @@ import {
 import PageHeader from "../components/sharedComponents/PageHeader";
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
 import { APP_TYPE, MEMBERSHIP_TYPE } from "../constants/constants";
+import { getPageId } from "../utils/urls";
 
 export class MembershipContainer extends Component {
   constructor(props) {
@@ -82,7 +83,7 @@ export class MembershipContainer extends Component {
 
     return (
       <Fragment>
-        <PageHeader />
+        <PageHeader pageId={getPageId()} />
         <MembershipOptions
           isAuthenticated={isAuthenticated}
           memberships={memberships}
@@ -109,7 +110,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { fetchMembershipsList, addItemToCart }
-)(MembershipContainer);
+export default connect(mapStateToProps, {
+  fetchMembershipsList,
+  addItemToCart
+})(MembershipContainer);

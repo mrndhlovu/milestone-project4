@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
@@ -15,6 +15,7 @@ import {
 import { Header, Message, Container, Form } from "semantic-ui-react";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import MessageModal from "../components/sharedComponents/MessageModal";
+import PageHeader from "../components/sharedComponents/PageHeader";
 
 class CreateArticleContainer extends Component {
   constructor(props) {
@@ -58,46 +59,57 @@ class CreateArticleContainer extends Component {
       user.data.current_membership.membership.is_pro_member;
 
     return (
-      <Container style={{ paddingTop: 20 }}>
-        <Header content="Add a new article" />
-        {errorAlert.status !== "" && errorAlert.status ? (
-          <Message
-            size="small"
-            error
-            header="Error creating ticket: "
-            content={errorAlert.alertMsg}
-          />
-        ) : null}
-        <Form
-          className="attached fluid segment"
-          onSubmit={handleSubmit(this.handlePublish)}
-        >
-          <Field name="title" label="Title" component={this.renderField} />
-          <Field name="subject" label="Subject" component={this.renderField} />
-
-          <Field name="content" label="Content" component={this.renderField} />
-
-          <div style={{ paddingTop: 10 }}>
-            <SubmitButton
-              pristine={pristine}
-              valid={valid}
-              isLoading={isLoading}
-              onClick={() => this.setState({ isLoading: true })}
-              buttonText="Publish"
+      <Fragment>
+        <PageHeader pageId="create-article" />
+        <Container style={{ paddingTop: 20 }}>
+          <Header content="Add a new article" />
+          {errorAlert.status !== "" && errorAlert.status ? (
+            <Message
+              size="small"
+              error
+              header="Error creating ticket: "
+              content={errorAlert.alertMsg}
             />
-          </div>
-        </Form>
+          ) : null}
+          <Form
+            className="attached fluid segment"
+            onSubmit={handleSubmit(this.handlePublish)}
+          >
+            <Field name="title" label="Title" component={this.renderField} />
+            <Field
+              name="subject"
+              label="Subject"
+              component={this.renderField}
+            />
 
-        {!allAccess && (
-          <MessageModal
-            feature="create an article"
-            history={history}
-            redirect="pricing"
-            showMessageModal={true}
-            header="UPGRADE MEMBERSHIP"
-          />
-        )}
-      </Container>
+            <Field
+              name="content"
+              label="Content"
+              component={this.renderField}
+            />
+
+            <div style={{ paddingTop: 10 }}>
+              <SubmitButton
+                pristine={pristine}
+                valid={valid}
+                isLoading={isLoading}
+                onClick={() => this.setState({ isLoading: true })}
+                buttonText="Publish"
+              />
+            </div>
+          </Form>
+
+          {!allAccess && (
+            <MessageModal
+              feature="create an article"
+              history={history}
+              redirect="pricing"
+              showMessageModal={true}
+              header="UPGRADE MEMBERSHIP"
+            />
+          )}
+        </Container>
+      </Fragment>
     );
   }
 }
@@ -112,8 +124,7 @@ const mapStateToProps = state => {
 };
 
 export default reduxForm({ validate, form: "CreateArticleForm" })(
-  connect(
-    mapStateToProps,
-    { createArticle }
-  )(withRouter(CreateArticleContainer))
+  connect(mapStateToProps, { createArticle })(
+    withRouter(CreateArticleContainer)
+  )
 );
