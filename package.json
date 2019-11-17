@@ -35,7 +35,7 @@
     "build": "react-scripts build",
     "test": "cross-env NODE_ENV=test jasmine",
     "eject": "react-scripts eject",
-    "postinstall": "npm run build"
+    "postinstall": "yarn run build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -54,7 +54,7 @@
   },
   "engines": {
     "node": "12.3.1",
-    "npm": "6.10.0"
+    "yarn": "6.10.0"
   },
   "devDependencies": {
     "@babel/register": "^7.7.0",
