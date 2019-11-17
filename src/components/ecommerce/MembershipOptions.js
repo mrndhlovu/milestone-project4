@@ -10,6 +10,8 @@ import {
 } from "../../constants/constants";
 
 import MembershipServiceList from "../../containers/MembershipServiceList";
+import PageHeader from "../sharedComponents/PageHeader";
+import { getPageId } from "../../utils/urls";
 
 const proCard = { marginRight: 50, marginLeft: 10 };
 const freeCard = { marginLeft: 50, marginRight: 10 };
@@ -64,9 +66,13 @@ const MembershipOptions = ({
   };
 
   return (
-    <Grid stackable columns="equal" style={{ paddingTop: 50 }}>
-      <Grid.Row>{renderOptions()}</Grid.Row>
-    </Grid>
+    <div data-test-id="pricing-page">
+      <PageHeader pageId={getPageId()} buttonId="file-ticket" />
+
+      <Grid stackable columns="equal" style={{ paddingTop: 50 }}>
+        <Grid.Row>{renderOptions()}</Grid.Row>
+      </Grid>
+    </div>
   );
 };
 
