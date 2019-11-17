@@ -2,8 +2,6 @@ import moment from "moment";
 import { Responsive } from "semantic-ui-react";
 import { USER_PROFILE, APP_TYPE } from "../constants/constants";
 
-const cart = JSON.parse(localStorage.getItem("cart"));
-
 export const getSelectedMemberShip = () =>
   localStorage.getItem("selectedMembership");
 
@@ -82,16 +80,6 @@ export const getMembershipType = () => {
   };
 };
 
-export const getTicketInCart = () => {
-  const { ticketOrders } = cart;
-  let order = [];
-  ticketOrders.forEach(ticket => {
-    order.push(ticket);
-  });
-
-  return order;
-};
-
 export const getDate = dateValue => {
   const newDate = new Date(`${dateValue}`);
   const day = newDate.getDate();
@@ -144,63 +132,10 @@ export const getObjectLength = object => {
   return object !== "" && Object.keys(object).length;
 };
 
-export const itemInCart = () => {
-  const { membershipOrder } = cart;
-
-  if (membershipOrder !== {}) {
-    return true;
-  }
-  return false;
-};
-
 export const hasMembership = query => {
   const membership = localStorage.getItem("currentMembership");
   if (membership === query) return true;
   return false;
-};
-
-export const hasSelectedMembership = query => {
-  const { membershipOrder } = cart;
-  if (membershipOrder !== {} && membershipOrder.membership === query) {
-    return true;
-  }
-  return false;
-};
-
-export const getMembershipButtonText = () => {
-  if (hasMembership("free")) {
-    return {
-      free: hasMembership("free") ? "Your current membership" : "Add to cart",
-      pro: hasSelectedMembership("pro") ? "item in your cart" : "Add to cart"
-    };
-  } else if (hasMembership("pro")) {
-    return {
-      free: "Downgrade to unicorn-free",
-      pro: "item in your cart"
-    };
-  } else {
-    return {
-      free: hasSelectedMembership("free") ? "item in your cart" : "Add to cart",
-      pro: hasSelectedMembership("pro") ? "item in your cart" : "Add to cart"
-    };
-  }
-};
-
-export const addOrderToStorage = (value, option) => {
-  const cart = JSON.parse(localStorage.getItem("cart"));
-
-  if (option) {
-    const { ticketOrders } = cart;
-
-    ticketOrders.push({ ticketId: value });
-    const storageUpdate = { ticketOrders, ...cart };
-
-    localStorage.setItem("cart", JSON.stringify(storageUpdate));
-  } else {
-    const membership = { membership: value.membership, id: value.id };
-    const storageUpdate = { ...cart, membershipOrder: membership };
-    localStorage.setItem("cart", JSON.stringify(storageUpdate));
-  }
 };
 
 export const getWidth = () => {
