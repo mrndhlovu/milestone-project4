@@ -9,7 +9,7 @@ const getPercentage = (total, value) => {
   return (value / total) * 100;
 };
 
-export const DashboardCardStatus = ({ ticketList, cardType }) => {
+export const DashboardCardStatus = ({ ticketList, cardType, dataTestId }) => {
   return Object.keys(ticketList).map(index => {
     const {
       title,
@@ -26,7 +26,7 @@ export const DashboardCardStatus = ({ ticketList, cardType }) => {
 
     return (
       cardMatch && (
-        <Card key={index} fluid>
+        <Card key={index} fluid data-test-id={`${dataTestId}-${index}`}>
           {showTicketVoteProgress && (
             <Progress
               percent={getPercentage(2, votes)}

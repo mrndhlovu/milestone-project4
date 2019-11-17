@@ -10,7 +10,6 @@ const DEFAULT_PROPS = {
 
 describe("DashboardCards", () => {
   const wrapper = shallow(<DashboardCards />);
-
   let container;
 
   it("should load correctly", () => {

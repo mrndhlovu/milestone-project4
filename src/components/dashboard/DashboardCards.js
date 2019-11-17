@@ -25,6 +25,7 @@ const DashboardCards = ({ ticketList }) => {
               <DashboardCardStatus
                 cardType={TICKET_STATUS.backlog}
                 ticketList={ticketList}
+                dataTestId="card-status-backlog"
               />
             }
           />
@@ -36,6 +37,7 @@ const DashboardCards = ({ ticketList }) => {
               <DashboardCardStatus
                 cardType={TICKET_STATUS.todo}
                 ticketList={ticketList}
+                dataTestId="card-status-todo"
               />
             }
           />
@@ -47,6 +49,7 @@ const DashboardCards = ({ ticketList }) => {
               <DashboardCardStatus
                 cardType={TICKET_STATUS.doing}
                 ticketList={ticketList}
+                dataTestId="card-status-doing"
               />
             }
           />
@@ -58,6 +61,7 @@ const DashboardCards = ({ ticketList }) => {
               <DashboardCardStatus
                 cardType={TICKET_STATUS.done}
                 ticketList={ticketList}
+                dataTestId="card-status-done"
               />
             }
           />

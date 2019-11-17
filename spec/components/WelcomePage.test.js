@@ -14,12 +14,12 @@ const DEFAULT_PROPS = {
   buttonId: "get-started-button"
 };
 
-const mockWindowObject = url => {
+const mockWindowObject = pathname => {
   global.window = Object.create(window);
 
   Object.defineProperty(window, "location", {
     value: {
-      href: url
+      pathname
     }
   });
 };
@@ -51,7 +51,7 @@ describe("HomeContainer", () => {
     );
 
     getStartedButton.simulate("click");
-    expect(window.location.href).toMatch("/pricing");
+    expect(window.location.pathname).toMatch("/pricing");
   });
 
   it("Should click on all access button and redirect to pricing page", () => {
@@ -59,7 +59,7 @@ describe("HomeContainer", () => {
     const allAccessButton = wrapper.find('[data-test-id="all-access-button"]');
     allAccessButton.simulate("click");
 
-    expect(window.location.href).toMatch("/pricing");
+    expect(window.location.pathname).toMatch("/pricing");
   });
 
   it("Should click on donation button and redirect to login page", () => {
@@ -69,7 +69,7 @@ describe("HomeContainer", () => {
     );
 
     donationDonationButton.simulate("click");
-    expect(window.location.href).toMatch("/login");
+    expect(window.location.pathname).toMatch("/login");
   });
 
   it("Should render footer and footer links", () => {
