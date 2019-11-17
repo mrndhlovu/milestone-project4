@@ -9,7 +9,7 @@ import DashboardContainer from "./containers/DashboardContainer";
 import EditTicketContainer from "./containers/EditTicketContainer";
 import HomeContainer from "./containers/HomeContainer";
 import LoginContainer from "./containers/LoginContainer";
-import MembershipContainer from "./containers/MembershipsContainer";
+import PricingContainer from "./containers/PricingContainer";
 import SignupContainer from "./containers/SignupContainer";
 import TicketDetailContainer from "./containers/TicketDetailContainer";
 import TicketsListContainer from "./containers/TicketsListContainer";
@@ -27,7 +27,7 @@ const BaseRouter = () => {
       <Route path="/signup" component={SignupContainer} />
       <Route path="/tickets" component={TicketsListContainer} />
       <Route path="/ticket/:id" component={TicketDetailContainer} />
-      <Route path="/pricing" component={MembershipContainer} />
+      <Route path="/pricing" component={PricingContainer} />
       <Route path="/dashboard" component={DashboardContainer} />
       <Route path="/user-profile" component={UserProfileContainer} />
 
