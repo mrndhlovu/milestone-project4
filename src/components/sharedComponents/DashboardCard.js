@@ -5,7 +5,7 @@ import { Card, Segment } from "semantic-ui-react";
 const DashboardCard = ({
   header,
   color,
-  component,
+  cardStatus,
   otherProps,
   subheader,
   isLoading,
@@ -17,7 +17,7 @@ const DashboardCard = ({
         {header}
       </Card.Header>
       <Segment attached stacked loading={isLoading}>
-        {component}
+        {cardStatus}
       </Segment>
       {otherProps}
     </Card.Content>
