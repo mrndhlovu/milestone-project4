@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
 
 import { fetchTicketsList } from "../actions/TicketActions";
 import { addItemToCart, fetchPendingOrder } from "../actions/CheckoutActions";
-import PageHeader from "../components/sharedComponents/PageHeader";
+
 import {
   getTicketList,
   getCartAddOrRemove,
@@ -12,15 +11,7 @@ import {
   getUser
 } from "../selectors/appSelectors";
 import TicketsList from "../components/tickets/TicketsList";
-import { Grid, Container } from "semantic-ui-react";
 import { APP_TYPE } from "../constants/constants";
-import ListSideBar from "../components/tickets/ListSideBar";
-import { getPageId } from "../utils/urls";
-
-const SytledContainer = styled(Container)`
-  padding: 20px 5px;
-  background-color: #eee;
-`;
 
 export class TicketsListContainer extends Component {
   constructor(props) {
@@ -50,26 +41,13 @@ export class TicketsListContainer extends Component {
 
     return (
       ticketsList.dataReceived && (
-        <Fragment>
-          <PageHeader pageId={getPageId()} dataTestId="tickets-page-header" />
-          <SytledContainer fluid>
-            <Grid stackable columns={2}>
-              <Grid.Column width={4}>
-                <ListSideBar data={ticketsList.data} />
-              </Grid.Column>
-
-              <Grid.Column width={12}>
-                <TicketsList
-                  tickets={ticketsList.data}
-                  isLoading={ticketsList.isLoading}
-                  buttonText={buttonText}
-                  user={user}
-                  handleAddToCart={this.handleAddToCart}
-                />
-              </Grid.Column>
-            </Grid>
-          </SytledContainer>
-        </Fragment>
+        <TicketsList
+          tickets={ticketsList.data}
+          isLoading={ticketsList.isLoading}
+          buttonText={buttonText}
+          user={user}
+          handleAddToCart={this.handleAddToCart}
+        />
       )
     );
   }
