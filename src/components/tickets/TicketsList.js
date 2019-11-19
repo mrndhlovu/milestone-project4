@@ -1,14 +1,14 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
-import StyledMessage from "../sharedComponents/StyledMessage";
-import Tickets from "./Tickets";
-import { getObjectLength } from "../../utils/appUtils";
-
 import { Card, Segment, Container, Grid } from "semantic-ui-react";
-import PageHeader from "../sharedComponents/PageHeader";
+
+import { getObjectLength } from "../../utils/appUtils";
 import { getPageId } from "../../utils/urls";
 import ListSideBar from "./ListSideBar";
+import PageHeader from "../sharedComponents/PageHeader";
+import StyledMessage from "../sharedComponents/StyledMessage";
+import Tickets from "./Tickets";
 
 const SytledContainer = styled(Container)`
   padding: 20px 5px;
