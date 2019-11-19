@@ -2,32 +2,6 @@ import moment from "moment";
 import { Responsive } from "semantic-ui-react";
 import { USER_PROFILE, APP_TYPE } from "../constants/constants";
 
-export const getSelectedMemberShip = () =>
-  localStorage.getItem("selectedMembership");
-
-export const getUser = () => JSON.parse(localStorage.getItem("customer"));
-
-export const isTicketOwner = id => {
-  if (getUser()) {
-    return getUser().userId === id;
-  } else {
-    return false;
-  }
-};
-
-export const hasProMembership = () => {
-  if (getUser()) {
-    return getUser().currentMembership === "pro";
-  } else {
-    return false;
-  }
-};
-export const isAuthenticated = () => {
-  const token = localStorage.getItem("sessionToken");
-
-  return getUser() && getUser().currentMembership && getUser().userId && token;
-};
-
 export const destroyLocalStorage = keys => {
   keys.forEach(key => {
     localStorage.removeItem(key);
@@ -55,30 +29,6 @@ export const refresh = () => window.location.reload();
 
 export const capitalizeFirstLetter = string =>
   string.charAt(0).toUpperCase() + string.slice(1);
-
-export const getCurrentMembership = () => {
-  const membership = localStorage.getItem("currentMembership");
-
-  if (membership === "pro") return "pro";
-  else if (membership === "free") return "free";
-  else return "guest";
-};
-
-export const getChoosenMembership = () => {
-  const token = localStorage.getItem("stripeToken");
-  const selectedMembership = getSelectedMemberShip();
-
-  return {
-    membership_type: `${selectedMembership}`,
-    stripeToken: `${token}`
-  };
-};
-
-export const getMembershipType = () => {
-  return {
-    membership_type: getSelectedMemberShip()
-  };
-};
 
 export const getDate = dateValue => {
   const newDate = new Date(`${dateValue}`);
@@ -132,12 +82,6 @@ export const getObjectLength = object => {
   return object !== "" && Object.keys(object).length;
 };
 
-export const hasMembership = query => {
-  const membership = localStorage.getItem("currentMembership");
-  if (membership === query) return true;
-  return false;
-};
-
 export const getWidth = () => {
   const isSSR = typeof window === "undefined";
 
@@ -183,7 +127,7 @@ export const validate = values => {
   return formErrors;
 };
 
-export const getCounts = tickets => {
+export const getTicketTotals = tickets => {
   let counts = { bugCount: 0, featureCount: 0, closed: 0 };
 
   Object.keys(tickets).filter(key => {
@@ -204,10 +148,12 @@ export const getCounts = tickets => {
 };
 
 export const getAwsConfig = app => {
+  const ARTICLE_CONFIG = app === APP_TYPE.post;
+
   const config = {
     bucketName: `${process.env.REACT_APP_AWS_BUCKET_NAME}`,
     dirName: `${
-      app === APP_TYPE.post
+      ARTICLE_CONFIG
         ? process.env.REACT_APP_AWS_MEDIA_POST
         : process.env.REACT_APP_AWS_MEDIA_USER
     }`,
