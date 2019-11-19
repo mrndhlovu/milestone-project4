@@ -7,7 +7,6 @@ import styled from "styled-components";
 import { getHeaderObject } from "../../constants/headerConstants";
 
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
-import { getPageId } from "../../utils/urls";
 
 const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
