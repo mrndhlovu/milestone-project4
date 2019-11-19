@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { addItemToCart } from "../actions/CheckoutActions";
@@ -9,12 +9,12 @@ import {
   getCartPendingOrder,
   getUserProfile
 } from "../selectors/appSelectors";
-import PageHeader from "../components/sharedComponents/PageHeader";
+
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
 import { APP_TYPE, MEMBERSHIP_TYPE } from "../constants/constants";
-import { getPageId } from "../utils/urls";
+import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
-export class MembershipContainer extends Component {
+export class PricingContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,22 +81,21 @@ export class MembershipContainer extends Component {
       allAccess
     } = this.state;
 
-    return (
-      <Fragment>
-        <PageHeader pageId={getPageId()} />
-        <MembershipOptions
-          isAuthenticated={isAuthenticated}
-          memberships={memberships}
-          getMembershipChoice={this.renderServicesList}
-          handleAddToCart={this.handleAddToCart}
-          buttonTextFree={buttonTextFree}
-          buttonTextPro={buttonTextPro}
-          buttonDisabled={buttonDisabled}
-          redirectParam={redirectParam}
-          history={history}
-          allAccess={allAccess}
-        />
-      </Fragment>
+    return memberships.dataReceived ? (
+      <MembershipOptions
+        isAuthenticated={isAuthenticated}
+        memberships={memberships.data}
+        getMembershipChoice={this.renderServicesList}
+        handleAddToCart={this.handleAddToCart}
+        buttonTextFree={buttonTextFree}
+        buttonTextPro={buttonTextPro}
+        buttonDisabled={buttonDisabled}
+        redirectParam={redirectParam}
+        history={history}
+        allAccess={allAccess}
+      />
+    ) : (
+      <UILoadingSpinner />
     );
   }
 }
@@ -113,4 +112,4 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   fetchMembershipsList,
   addItemToCart
-})(MembershipContainer);
+})(PricingContainer);
