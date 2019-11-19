@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import { Header } from "semantic-ui-react";
+import { Header, Button } from "semantic-ui-react";
 
 import PageHeader from "../../../src/components/sharedComponents/PageHeader";
 import { HEADER_TEXT } from "../../../src/constants/headerConstants";
@@ -32,13 +32,10 @@ const DEFAULT_PROPS = {
       { id: 1, slug: "free", membership_type: "free", price: 0 },
       { id: 1, slug: "pro", membership_type: "pro", price: 10 }
     ],
-    handleAddToCart: emptyFunction,
     buttonText: "button text",
-    history: {
-      push: emptyFunction
-    },
+    history: { push: jasmine.createSpy("onClick") },
     isAuthenticated: false,
-    handleAddToCart: emptyFunction
+    handleAddToCart: jasmine.createSpy("onClick")
   }
 };
 
@@ -48,19 +45,21 @@ describe("PricingContainer", () => {
   let description;
   let header;
   let container;
+  let button;
 
   function getMemberShip(option) {
     const freeMembership = option === "free";
 
     membership = shallow(
       <Membership
+        handleAddToCart={DEFAULT_PROPS.membershipProps.handleAddToCart}
         history={DEFAULT_PROPS.membershipProps.history}
         membership={
           freeMembership
             ? DEFAULT_PROPS.membershipProps.memberships[0]
             : DEFAULT_PROPS.membershipProps.memberships[1]
         }
-        buttonText={freeMembership ? "free sign up" : "add-tocart"}
+        buttonText={freeMembership ? "free sign up" : "add to cart"}
       />
     );
     description = shallow(
@@ -136,13 +135,17 @@ describe("PricingContainer", () => {
 
   it("should click on free signup button", () => {
     membership = getMemberShip("free");
-    const freeSignUpButton = findByDataTestId(membership, "free-signup-button");
+    button = findByDataTestId(membership, "free-signup-button");
 
-    const onClickSpy = jasmine.createSpy("onClickSpy");
-    membership.setProps({
-      onClick: onClickSpy
-    });
-    freeSignUpButton.props().onClick();
-    expect(onClickSpy).toHaveBeenCalled();
+    button.simulate("click");
+    expect(DEFAULT_PROPS.membershipProps.history.push).toHaveBeenCalled();
+  });
+
+  it("should click pro membership button", () => {
+    membership = getMemberShip();
+    button = findByDataTestId(membership, "add-to-cart");
+
+    button.simulate("click");
+    expect(DEFAULT_PROPS.membershipProps.handleAddToCart).toHaveBeenCalled();
   });
 });
