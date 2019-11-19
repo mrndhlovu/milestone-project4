@@ -8,8 +8,12 @@ import {
   Sidebar,
   Divider
 } from "semantic-ui-react";
+import { getTicketTotals, getObjectLength } from "../../utils/appUtils";
 
-const ListSideBar = ({ total, closed, featureCount, bugCount }) => {
+const ListSideBar = ({ data }) => {
+  const { bugCount, featureCount, closed } = getTicketTotals(data);
+  const total = getObjectLength(data);
+
   const FeedItem = ({ text, count }) => {
     return (
       <Fragment>
