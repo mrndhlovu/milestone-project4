@@ -3,6 +3,7 @@ import { shallow } from "enzyme";
 import DashboardCards from "../../../src/components/dashboard/DashboardCards";
 
 import { Card } from "semantic-ui-react";
+import { findByDataTestId } from "../../testUtils.js/utils";
 
 const DEFAULT_PROPS = {
   headers: ["Backlog", "Up Next", "In Progress", "Closed"]
@@ -13,9 +14,7 @@ describe("DashboardCards", () => {
   let container;
 
   it("should load correctly", () => {
-    container = wrapper
-      .find('[data-test-id="statistic-cards-container"]')
-      .first();
+    container = findByDataTestId(wrapper, "statistic-cards-container").first();
     expect(container).toBeDefined();
   });
 
