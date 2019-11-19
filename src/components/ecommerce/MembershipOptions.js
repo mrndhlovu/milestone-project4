@@ -1,20 +1,10 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 
-import { Button, Header, Grid, Card } from "semantic-ui-react";
+import { Grid, Card } from "semantic-ui-react";
 
-import {
-  UNICORN_FREE_SERVICES,
-  UNICORN_PRO_SERVICES,
-  MEMBERSHIP_TYPE
-} from "../../constants/constants";
-
-import MembershipServiceList from "../../containers/MembershipServiceList";
 import PageHeader from "../sharedComponents/PageHeader";
 import { getPageId } from "../../utils/urls";
-
-const proCard = { marginRight: 50, marginLeft: 10 };
-const freeCard = { marginLeft: 50, marginRight: 10 };
+import { Membership } from "./Membership";
 
 const MembershipOptions = ({
   memberships,
@@ -24,56 +14,39 @@ const MembershipOptions = ({
   history,
   isAuthenticated
 }) => {
-  const renderOptions = () => {
-    return Object.keys(memberships).map(key => {
-      const { price, id, slug } = memberships[key];
-      const FREE = slug === MEMBERSHIP_TYPE.free;
-
-      const buttonText = FREE ? buttonTextFree : buttonTextPro;
-      const buttonColor = FREE ? "blue" : "black";
-      const header = `Unicorn ${slug}`;
-
-      return (
-        <Grid.Column key={id} style={FREE ? { ...freeCard } : { ...proCard }}>
-          <Card fluid>
-            <Header
-              as="h3"
-              attached
-              color={FREE ? "blue" : "black"}
-              textAlign="center"
-              content={header.toUpperCase()}
-              subheader={
-                FREE ? `€ ${price} Per / month` : `€ ${price} Per User / month`
-              }
-            />
-
-            {FREE && <MembershipServiceList services={UNICORN_FREE_SERVICES} />}
-            {!FREE && <MembershipServiceList services={UNICORN_PRO_SERVICES} />}
-
-            <Button
-              attached="bottom"
-              disabled={FREE && isAuthenticated}
-              content={buttonText.toUpperCase()}
-              color={buttonColor}
-              onClick={
-                FREE ? () => history.push("/signup") : () => handleAddToCart(id)
-              }
-            />
-          </Card>
-        </Grid.Column>
-      );
-    });
-  };
+  const freeMembership = memberships[0];
+  const proMembership = memberships[1];
 
   return (
-    <div data-test-id="pricing-page">
-      <PageHeader pageId={getPageId()} buttonId="file-ticket" />
+    <div data-test-id="membership-options">
+      <PageHeader
+        pageId={getPageId()}
+        buttonId="file-ticket"
+        dataTestId="pricing-header"
+      />
+      <Card fluid>
+        <Grid stackable columns="equal" style={{ paddingTop: 50 }}>
+          <Grid.Row data-test-id="membership-grid-container">
+            <Membership
+              membership={freeMembership}
+              buttonText={buttonTextFree}
+              isAuthenticated={isAuthenticated}
+              handleAddToCart={handleAddToCart}
+              history={history}
+            />
 
-      <Grid stackable columns="equal" style={{ paddingTop: 50 }}>
-        <Grid.Row>{renderOptions()}</Grid.Row>
-      </Grid>
+            <Membership
+              membership={proMembership}
+              buttonText={buttonTextPro}
+              isAuthenticated={isAuthenticated}
+              handleAddToCart={handleAddToCart}
+              history={history}
+            />
+          </Grid.Row>
+        </Grid>
+      </Card>
     </div>
   );
 };
 
-export default withRouter(MembershipOptions);
+export default MembershipOptions;
