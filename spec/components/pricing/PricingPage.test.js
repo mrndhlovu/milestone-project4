@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import { Header, Button } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 
 import PageHeader from "../../../src/components/sharedComponents/PageHeader";
 import { HEADER_TEXT } from "../../../src/constants/headerConstants";
@@ -11,11 +11,7 @@ import Membership from "../../../src/components/ecommerce/Membership";
 
 import MembershipOptions from "../../../src/components/ecommerce/MembershipOptions";
 
-import {
-  findByDataTestId,
-  mockWindowObject,
-  emptyFunction
-} from "../../testUtils.js/utils";
+import { findByDataTestId } from "../../testUtils.js/utils";
 import {
   UNICORN_FREE_SERVICES,
   UNICORN_PRO_SERVICES
