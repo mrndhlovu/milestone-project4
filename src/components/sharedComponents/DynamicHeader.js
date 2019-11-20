@@ -1,5 +1,4 @@
 import React from "react";
-
 import styled from "styled-components";
 
 import { Header, Segment } from "semantic-ui-react";
@@ -26,10 +25,16 @@ const StyledSpan = styled.span`
   border-radius: 5px;
 `;
 
-const DynamicHeader = ({ image, title }) => {
+const DynamicHeader = ({ image, title, dataTestId }) => {
   return (
-    <StyledSegment textAlign="center" inverted vertical image={image}>
-      <StyledHeader as="h1" inverted>
+    <StyledSegment
+      textAlign="center"
+      inverted
+      vertical
+      image={image}
+      data-test-id={dataTestId}
+    >
+      <StyledHeader as="h1" inverted data-test-id="article-title">
         <StyledSpan>{title.toUpperCase()}</StyledSpan>
       </StyledHeader>
     </StyledSegment>

@@ -1,6 +1,11 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { NavLink } from "react-router-dom";
 
-import BlogGrid from "./BlogGrid";
+import { Container, Grid, Button, Header, Image } from "semantic-ui-react";
+
+import PageHeader from "../sharedComponents/PageHeader";
+import { getPageId } from "../../utils/urls";
+import { getFormatedDate } from "../../utils/appUtils";
 
 const BlogList = ({ articles }) => {
   const renderList = () => {
@@ -17,23 +22,65 @@ const BlogList = ({ articles }) => {
         image
       } = articles[key];
       return (
-        <BlogGrid
-          key={key}
-          id={id}
-          title={title}
-          short_desc={short_desc}
-          created_at={created_at}
-          likes={likes}
-          views={views}
-          username={username}
-          subject={subject}
-          image={image}
-        />
+        <Grid.Row style={{ padding: "3em 0em" }} key={key}>
+          <Grid container stackable verticalAlign="middle">
+            <Grid.Row>
+              <Grid.Column floated="left" width={6}>
+                <Image
+                  bordered
+                  rounded
+                  size="large"
+                  src={image}
+                  as={NavLink}
+                  to={`/article/${id}`}
+                  alt={`image-${id}`}
+                />
+              </Grid.Column>
+              <Grid.Column width={8} floated="right">
+                <NavLink to={`article/${id}`}>
+                  <Header as="h2" color="black" content={title.toUpperCase()} />
+                </NavLink>
+                <p>
+                  {getFormatedDate(created_at)} | Likes {likes} | Views {views}{" "}
+                  | by {username}
+                </p>
+                <Header as="h4" color="grey">
+                  {subject.toUpperCase()}
+                </Header>
+                <p style={{ fontSize: "1.33em" }}>{short_desc}</p>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column textAlign="right">
+                <Button
+                  data-test-id={`read-more-button-${id}`}
+                  color="orange"
+                  size="small"
+                  as={NavLink}
+                  to={`/article/${id}`}
+                >
+                  Read more
+                </Button>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Grid.Row>
       );
     });
   };
 
-  return <div> {renderList()}</div>;
+  return (
+    <Fragment>
+      <PageHeader
+        pageId={getPageId()}
+        dataTestId="blog-page-header"
+        buttonId="from-blog-create-article"
+      />
+      <Container data-test-id="blog-list" style={{ paddingTop: 20 }}>
+        {renderList()}
+      </Container>
+    </Fragment>
+  );
 };
 
 export default BlogList;

@@ -11,7 +11,6 @@ import {
   getArticleList,
   getUserProfile
 } from "../selectors/appSelectors";
-import { Container } from "semantic-ui-react";
 import { getPageId } from "../utils/urls";
 
 export class BlogContainer extends Component {
@@ -22,14 +21,7 @@ export class BlogContainer extends Component {
   render() {
     const { articles } = this.props;
 
-    return (
-      <div>
-        <PageHeader pageId={getPageId()} />
-        <Container style={{ paddingTop: 20 }}>
-          {articles.dataReceived && <BlogList articles={articles.data} />}
-        </Container>
-      </div>
-    );
+    return articles.dataReceived && <BlogList articles={articles.data} />;
   }
 }
 

@@ -1,8 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-
-import { Container, Confirm } from "semantic-ui-react";
 
 import {
   getUser,
@@ -17,12 +15,8 @@ import {
   uploadArticleImage
 } from "../actions/BlogActions";
 import ArticleDetail from "../components/blog/ArticleDetail";
-import CommentsContainer from "./CommentsContainer";
-import StyledMessage from "../components/sharedComponents/StyledMessage";
-import DynamicHeader from "../components/sharedComponents/DynamicHeader";
 import { APP_TYPE } from "../constants/constants";
 import { refresh } from "../utils/appUtils";
-import MessageModal from "../components/sharedComponents/MessageModal";
 
 class ArticleDetailContainer extends Component {
   constructor(props) {
@@ -83,59 +77,29 @@ class ArticleDetailContainer extends Component {
 
   render() {
     const { article, user, history } = this.props;
-    const { showConfirmModal, title } = this.state;
+    const { showConfirmModal } = this.state;
     const image = article.dataReceived && article.data.data.image;
     const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
 
     return (
-      <Fragment>
-        <DynamicHeader option="post" title={title} />
-        <Container style={{ paddingTop: 20 }}>
-          {article.dataReceived && (
-            <ArticleDetail
-              image={image}
-              article={article.data}
-              owner={article.owner}
-              user={user.data}
-              handleDelete={this.handleDelete}
-              handleLikeClick={this.handleLikeClick}
-              handleUpdateImage={this.handleUpdateImage}
-            />
-          )}
-          {article.dataReceived && allAccess ? (
-            <CommentsContainer
-              comments={article.data.comments}
-              articleId={article.data.data.id}
-              isArticle={true}
-            />
-          ) : (
-            <StyledMessage
-              redirect="/pricing"
-              message="Access to comments requires a "
-              linkText="Unicorn PRO Account"
-            />
-          )}
-
-          <Confirm
-            open={showConfirmModal}
-            cancelButton="Cancel"
-            confirmButton="Yes delete"
-            onCancel={() => this.handleCancel()}
-            onConfirm={() => this.handleConfirm()}
-          />
-          {!allAccess && (
-            <MessageModal
-              feature="read the article"
-              history={history}
-              redirect="blog"
-              showMessageModal={true}
-              header="UPGRADE MEMBERSHIP"
-            />
-          )}
-        </Container>
-      </Fragment>
+      article.dataReceived && (
+        <ArticleDetail
+          image={image}
+          article={article.data}
+          owner={article.owner}
+          user={user.data}
+          handleDelete={this.handleDelete}
+          handleLikeClick={this.handleLikeClick}
+          handleUpdateImage={this.handleUpdateImage}
+          history={history}
+          allAccess={allAccess}
+          showConfirmModal={showConfirmModal}
+          handleCancel={this.handleCancel}
+          handleConfirm={this.handleConfirm}
+        />
+      )
     );
   }
 }
@@ -149,12 +113,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    requestArticleDetail,
-    deleteArticle,
-    updateArticleLikes,
-    uploadArticleImage
-  }
-)(withRouter(ArticleDetailContainer));
+export default connect(mapStateToProps, {
+  requestArticleDetail,
+  deleteArticle,
+  updateArticleLikes,
+  uploadArticleImage
+})(withRouter(ArticleDetailContainer));

@@ -1,23 +1,12 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import {
-  Button,
-  Comment,
-  Form,
-  Segment,
-  Message,
-  Header
-} from "semantic-ui-react";
+import { Button, Comment, Form, Segment, Header } from "semantic-ui-react";
 
 import { COMMENT_TYPE, APP_TYPE } from "../constants/constants";
 import { createComment, createReply } from "../actions/TicketActions";
-import {
-  getUserProfile,
-  getComments,
-  getUser
-} from "../selectors/appSelectors";
+import { getUserProfile, getComments } from "../selectors/appSelectors";
 import CommentsBody from "../components/tickets/CommentsBody";
 
 export class CommentsContainer extends Component {

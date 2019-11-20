@@ -8,12 +8,13 @@ function EditButtons({
   handleTicketDelete,
   handleDelete,
   id,
-  isOwner
+  isOwner,
+  dataTestId
 }) {
   return (
     isOwner && (
       <div style={{ paddingTop: 10 }}>
-        <Button.Group floated="right" size="tiny">
+        <Button.Group floated="right" size="tiny" data-test-id={dataTestId}>
           <Button
             size="tiny"
             as={NavLink}
