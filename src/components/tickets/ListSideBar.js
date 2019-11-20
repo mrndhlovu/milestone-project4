@@ -31,7 +31,7 @@ const ListSideBar = ({ data }) => {
   };
 
   return (
-    <Sidebar.Pushable as={Segment}>
+    <Sidebar.Pushable as={Segment} data-test-id="side-bar-container">
       <Segment basic>
         <Header as="h2">Overall ticket stats</Header>
         <Divider />

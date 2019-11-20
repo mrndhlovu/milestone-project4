@@ -38,6 +38,9 @@ export class TicketsListContainer extends Component {
   render() {
     const { ticketsList, user } = this.props;
     const { buttonText } = this.state;
+    const allAccess =
+      user.dataReceived &&
+      user.data.current_membership.membership.is_pro_member;
 
     return (
       ticketsList.dataReceived && (
@@ -45,7 +48,7 @@ export class TicketsListContainer extends Component {
           tickets={ticketsList.data}
           isLoading={ticketsList.isLoading}
           buttonText={buttonText}
-          user={user}
+          allAccess={allAccess}
           handleAddToCart={this.handleAddToCart}
         />
       )

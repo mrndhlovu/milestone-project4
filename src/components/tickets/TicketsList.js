@@ -18,7 +18,7 @@ const SytledContainer = styled(Container)`
 const TicketsList = ({
   tickets,
   isLoading,
-  user,
+  allAccess,
   buttonText,
   handleAddToCart
 }) => {
@@ -26,10 +26,14 @@ const TicketsList = ({
 
   return (
     <Fragment>
-      <PageHeader pageId={getPageId()} dataTestId="tickets-page-header" />
+      <PageHeader
+        pageId={getPageId()}
+        dataTestId="tickets-page-header"
+        buttonId="from-list-open-ticket"
+      />
 
-      <SytledContainer fluid>
-        <Grid stackable columns={2}>
+      <SytledContainer fluid data-test-id="ticket-list-container">
+        <Grid stackable columns={2} data-test-id="ticket-grid-container">
           <Grid.Column width={4}>
             <ListSideBar data={tickets} />
           </Grid.Column>
@@ -43,7 +47,7 @@ const TicketsList = ({
                     <Tickets
                       handleAddToCart={handleAddToCart}
                       ticketsList={tickets}
-                      user={user}
+                      allAccess={allAccess}
                       buttonText={buttonText}
                     />
                   ) : (

@@ -5,10 +5,7 @@ import { Label, List, Icon, Table, Header, Button } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
 
-export const Tickets = ({ ticketsList, handleAddToCart, user }) => {
-  const allAccess =
-    user.dataReceived && user.data.current_membership.membership.is_pro_member;
-
+export const Tickets = ({ ticketsList, handleAddToCart, allAccess }) => {
   const renderTicketCards = () => {
     return Object.keys(ticketsList).map(key => {
       const {
@@ -31,7 +28,11 @@ export const Tickets = ({ ticketsList, handleAddToCart, user }) => {
           <Table.Cell>
             <List.Item>
               <NavLink to={`ticket/${id}`}>
-                <Header as="h5" content={title.toUpperCase()} />
+                <Header
+                  as="h5"
+                  content={title.toUpperCase()}
+                  data-test-id={`ticket-header-${id}`}
+                />
               </NavLink>
               <span style={{ paddingRight: 10 }}>
                 <Header
@@ -59,6 +60,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, user }) => {
           <Table.Cell textAlign="right">
             {is_feature && (
               <Button
+                data-test-id={`add-ticket-to-cart-${id}`}
                 disabled={!allAccess}
                 color="orange"
                 size="tiny"
@@ -75,7 +77,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, user }) => {
   };
 
   return (
-    <Table>
+    <Table data-test-id="ticket-list-table">
       <Table.Body>{renderTicketCards()}</Table.Body>
     </Table>
   );
