@@ -1,13 +1,13 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import { Icon, Button } from "semantic-ui-react";
 
 const UploadImageButton = ({ handleUploadImage, color }) => {
   return (
-    <Button floated="right" color={color || ""}>
-      <Icon name="upload" />
+    <Fragment>
+      <Icon name="image" /> Upload image
       <input type="file" onChange={event => handleUploadImage(event)} />
-    </Button>
+    </Fragment>
   );
 };
 

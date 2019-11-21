@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-import { List, Icon, Card, Segment, Header } from "semantic-ui-react";
+import { List, Icon, Segment, Header } from "semantic-ui-react";
 
 const UserPurchases = ({ purchases, accountType, allAccess }) => {
   const { tickets, donations } = purchases;
@@ -41,38 +41,31 @@ const UserPurchases = ({ purchases, accountType, allAccess }) => {
   };
 
   return (
-    <Card fluid>
-      <Card.Content>
-        <Card.Header as="h2" attached="top">
-          Purchases
-        </Card.Header>
-      </Card.Content>
-      <Card.Content>
-        {allAccess && (
-          <Segment>
-            <Header content="Membership Upgrade" />
+    <Fragment>
+      {allAccess && (
+        <Segment>
+          <Header content="Membership Upgrade" />
 
-            <List.Content>
-              <List.Header>
-                <Icon name="check circle" color="olive" /> {accountType}
-              </List.Header>
-            </List.Content>
-          </Segment>
-        )}
-        <Segment>
-          <Header content="Tickets" />
-          <List divided verticalAlign="middle">
-            {renderPurchases()}
-          </List>
+          <List.Content>
+            <List.Header>
+              <Icon name="check circle" color="olive" /> {accountType}
+            </List.Header>
+          </List.Content>
         </Segment>
-        <Segment>
-          <Header content="Contributions" />
-          <List divided verticalAlign="middle">
-            {renderDonations()}
-          </List>
-        </Segment>
-      </Card.Content>
-    </Card>
+      )}
+      <Segment>
+        <Header content="Tickets" />
+        <List divided verticalAlign="middle">
+          {renderPurchases()}
+        </List>
+      </Segment>
+      <Segment>
+        <Header content="Contributions" />
+        <List divided verticalAlign="middle">
+          {renderDonations()}
+        </List>
+      </Segment>
+    </Fragment>
   );
 };
 

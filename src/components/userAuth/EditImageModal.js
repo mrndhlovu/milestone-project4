@@ -15,25 +15,19 @@ const EditImageModal = ({
       <Modal.Content image>
         <Image wrapped size="medium" src={image} />
         <Modal.Description>
-          <p>
-            <Button floated="right">
-              <Icon name="upload" />
-              <input type="file" onChange={event => handleUploadImage(event)} />
-            </Button>
-          </p>
+          <Icon name="image" /> Update image
+          <input type="file" onChange={event => handleUploadImage(event)} />
         </Modal.Description>
-        <p>
-          <Button
-            floated="right"
-            color="blue"
-            onClick={() => handleDeleteImage(image)}
-          >
-            <Icon name="delete" />
-            Delete profile image
-          </Button>
-        </p>
       </Modal.Content>
       <Modal.Actions>
+        <Button
+          floated="left"
+          color="blue"
+          onClick={() => handleDeleteImage(image)}
+        >
+          <Icon name="delete" />
+          Remove image
+        </Button>
         <Button onClick={() => handleEditImage()} negative>
           Cancel
         </Button>

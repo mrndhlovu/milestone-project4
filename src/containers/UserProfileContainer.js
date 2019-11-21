@@ -16,7 +16,7 @@ import {
 } from "../actions/AuthActions";
 import { changeAccount } from "../actions/MembershipActions";
 import { ACCOUNT_CHANGE_OPTION } from "../constants/constants";
-import { UserProfilePanes } from "../components/userAuth/UserProfilePanes";
+import UserProfile from "../components/userAuth/UserProfile";
 import { refresh } from "../utils/appUtils";
 
 export class UserProfileContainer extends Component {
@@ -28,7 +28,8 @@ export class UserProfileContainer extends Component {
       showDeleteAccount: false,
       option: "",
       editFields: "",
-      showEditImageModal: false
+      showEditImageModal: false,
+      activeIndex: 2
     };
 
     this.handleConfirm = this.handleConfirm.bind(this);
@@ -39,6 +40,7 @@ export class UserProfileContainer extends Component {
     this.handleEditImage = this.handleEditImage.bind(this);
     this.handleDeleteImage = this.handleDeleteImage.bind(this);
     this.handleShowConfirmModal = this.handleShowConfirmModal.bind(this);
+    this.handleAccordionClick = this.handleAccordionClick.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -64,6 +66,14 @@ export class UserProfileContainer extends Component {
         refresh();
       }
     }
+  }
+
+  handleAccordionClick(index) {
+    const { activeIndex } = this.state;
+    if (index === activeIndex) {
+      return this.setState({ activeIndex: 0 });
+    }
+    this.setState({ activeIndex: index });
   }
 
   handleEditImage() {
@@ -126,7 +136,12 @@ export class UserProfileContainer extends Component {
 
   render() {
     const { user } = this.props;
-    const { showConfirmModal, option, showEditImageModal } = this.state;
+    const {
+      showConfirmModal,
+      option,
+      showEditImageModal,
+      activeIndex
+    } = this.state;
     const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
@@ -135,7 +150,7 @@ export class UserProfileContainer extends Component {
 
     return (
       user.dataReceived && (
-        <UserProfilePanes
+        <UserProfile
           user={user}
           handleConfirm={this.handleConfirm}
           handleCancelButtonClick={this.handleCancelButtonClick}
@@ -150,6 +165,8 @@ export class UserProfileContainer extends Component {
           handleDeleteImage={this.handleDeleteImage}
           showConfirmModal={showConfirmModal}
           option={option}
+          activeIndex={activeIndex}
+          handleAccordionClick={this.handleAccordionClick}
         />
       )
     );
