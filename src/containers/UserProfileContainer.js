@@ -1,10 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-
-import { Confirm, Container, Tab } from "semantic-ui-react";
-
-import { changeAccount } from "../actions/MembershipActions";
 
 import {
   getUserProfile,
@@ -12,19 +8,16 @@ import {
   getProfileUpdate,
   getAccountUpdate
 } from "../selectors/appSelectors";
-import UserProfileCard from "../components/userAuth/UserProfileCard";
 import {
   fetchUser,
   uploadProfileImage,
   updateUserProfile,
   deleteProfileImage
 } from "../actions/AuthActions";
-import PageHeader from "../components/sharedComponents/PageHeader";
-import { getFormatedDate, getFileName, refresh } from "../utils/appUtils";
+import { changeAccount } from "../actions/MembershipActions";
 import { ACCOUNT_CHANGE_OPTION } from "../constants/constants";
-import EditProfile from "../components/userAuth/EditProfile";
-import UserPurchases from "../components/userAuth/UserPurchases";
-import EditImageModal from "../components/userAuth/EditImageModal";
+import { UserProfilePanes } from "../components/userAuth/UserProfilePanes";
+import { refresh } from "../utils/appUtils";
 
 export class UserProfileContainer extends Component {
   constructor(props) {
@@ -41,11 +34,11 @@ export class UserProfileContainer extends Component {
     this.handleConfirm = this.handleConfirm.bind(this);
     this.handleCancelButtonClick = this.handleCancelButtonClick.bind(this);
     this.handleUploadImage = this.handleUploadImage.bind(this);
-    this.panes = this.panes.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
     this.handleEditImage = this.handleEditImage.bind(this);
     this.handleDeleteImage = this.handleDeleteImage.bind(this);
+    this.handleShowConfirmModal = this.handleShowConfirmModal.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -85,70 +78,6 @@ export class UserProfileContainer extends Component {
     this.props.deleteProfileImage(`${imageName}`);
   }
 
-  panes() {
-    const { user } = this.props;
-
-    const allAccess =
-      user.dataReceived &&
-      user.data.current_membership.membership.is_pro_member;
-    const PURCHASES =
-      user.dataReceived && user.data.current_membership.purchases;
-    const accountType = `Unicorn ${allAccess ? "PRO" : "FREE"} membership`;
-
-    return [
-      {
-        menuItem: { key: "user", icon: "user", content: "User profile" },
-        render: () => (
-          <Tab.Pane attached={true}>
-            {user.dataReceived && user.data.username && (
-              <UserProfileCard
-                image={user.data.current_membership.image}
-                user={user.data}
-                handleCancelButtonClick={this.handleCancelButtonClick}
-                handleUploadImage={this.handleUploadImage}
-                handleEditImage={this.handleEditImage}
-              />
-            )}
-          </Tab.Pane>
-        )
-      },
-      {
-        menuItem: { key: "edit", icon: "edit", content: "Edit profile" },
-        render: () => (
-          <Tab.Pane attached={false}>
-            {user.dataReceived && (
-              <EditProfile
-                allAccess={allAccess}
-                handleCancelButtonClick={this.handleCancelButtonClick}
-                userData={user.data}
-                handleChange={this.handleChange}
-                handleUpdateProfile={this.handleUpdateProfile}
-              />
-            )}
-          </Tab.Pane>
-        )
-      },
-      {
-        menuItem: {
-          key: "purchases",
-          icon: "shopping basket",
-          content: "Purchases"
-        },
-        render: () => (
-          <Tab.Pane attached={false}>
-            {PURCHASES && user.dataReceived && (
-              <UserPurchases
-                allAccess={allAccess}
-                purchases={PURCHASES}
-                accountType={accountType}
-              />
-            )}
-          </Tab.Pane>
-        )
-      }
-    ];
-  }
-
   handleUploadImage(event) {
     const file = event.target.files[0];
     this.props.uploadProfileImage(file);
@@ -184,6 +113,10 @@ export class UserProfileContainer extends Component {
     }
   }
 
+  handleShowConfirmModal() {
+    this.setState({ showConfirmModal: false });
+  }
+
   handleCancelButtonClick(option) {
     this.setState({
       showConfirmModal: !this.state.showConfirmModal,
@@ -194,55 +127,31 @@ export class UserProfileContainer extends Component {
   render() {
     const { user } = this.props;
     const { showConfirmModal, option, showEditImageModal } = this.state;
+    const allAccess =
+      user.dataReceived &&
+      user.data.current_membership.membership.is_pro_member;
+    const PURCHASES =
+      user.dataReceived && user.data.current_membership.purchases;
 
-    const headerObject = {
-      headerText: user.dataReceived
-        ? user.data.username.toUpperCase()
-        : "Loading....",
-      subHeading:
-        user.dataReceived &&
-        `Joined: ${getFormatedDate(user.data.date_joined)}`,
-      image: ""
-    };
     return (
-      <Fragment>
-        <PageHeader pageId="user-profile" hideButton={true} />
-        <Container style={{ paddingTop: 20 }}>
-          <Tab
-            menu={{ secondary: true, pointing: false }}
-            panes={this.panes()}
-          />
-
-          {showEditImageModal && (
-            <EditImageModal
-              showEditImageModal={showEditImageModal}
-              user={user.data}
-              handleUploadImage={this.handleUploadImage}
-              handleDeleteImage={this.handleDeleteImage}
-              handleEditImage={this.handleEditImage}
-            />
-          )}
-
-          <Confirm
-            open={showConfirmModal}
-            cancelButton="Never mind"
-            confirmButton={
-              option === ACCOUNT_CHANGE_OPTION.deactivate
-                ? "Yes delete my account"
-                : "Yes, cancel subscription"
-            }
-            content={`Are sure you want to ${
-              option === ACCOUNT_CHANGE_OPTION.deactivate
-                ? `delete your account`
-                : `cancel your subscription`
-            }`}
-            onCancel={() => this.setState({ showConfirmModal: false })}
-            onConfirm={() => this.handleConfirm(option)}
-            size="tiny"
-            color="grey"
-          />
-        </Container>
-      </Fragment>
+      user.dataReceived && (
+        <UserProfilePanes
+          user={user}
+          handleConfirm={this.handleConfirm}
+          handleCancelButtonClick={this.handleCancelButtonClick}
+          handleUploadImage={this.handleUploadImage}
+          handleEditImage={this.handleEditImage}
+          handleChange={this.handleChange}
+          handleUpdateProfile={this.handleUpdateProfile}
+          handleShowConfirmModal={this.handleShowConfirmModal}
+          allAccess={allAccess}
+          PURCHASES={PURCHASES}
+          showEditImageModal={showEditImageModal}
+          handleDeleteImage={this.handleDeleteImage}
+          showConfirmModal={showConfirmModal}
+          option={option}
+        />
+      )
     );
   }
 }
