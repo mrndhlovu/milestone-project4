@@ -69,10 +69,11 @@ describe("Article Detail", () => {
   });
 
   it("should render article image upload button", () => {
-    container = findByDataTestId(wrapper, "article-image-input");
+    const uploadButton = findByDataTestId(wrapper, "article-image-input");
+    uploadButton.props().onChange();
 
-    expect(container.length).toBe(1);
-    expect(container.props().label).toEqual("Update Image");
+    expect(uploadButton.props().label).toEqual("Update Image");
+    expect(DEFAULT_PROPS.props.handleUpdateImage).toHaveBeenCalled();
   });
 
   it("should render article content", () => {
