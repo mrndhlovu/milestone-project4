@@ -9,7 +9,7 @@ const EditProfile = ({ handleUpdateProfile, handleChange, userData }) => {
   } = userData;
 
   return (
-    <Form>
+    <Form data-test-id="edit-profile-form">
       <Form.Group widths="equal">
         <Form.Input
           fluid
@@ -35,9 +35,11 @@ const EditProfile = ({ handleUpdateProfile, handleChange, userData }) => {
         label="About"
         defaultValue={bio}
         onChange={event => handleChange(event, "bio")}
+        data-test-id="edit-profile-form-tex-area"
       />
 
       <Form.Button
+        data-test-id="edit-profile-form-submit-button"
         color="blue"
         size="small"
         onClick={() => handleUpdateProfile()}

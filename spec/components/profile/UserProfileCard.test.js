@@ -48,7 +48,7 @@ describe("Article Detail", () => {
     expect(DEFAULT_PROPS.props.handleUploadImage).toHaveBeenCalled();
   });
 
-  it("should render user profile image container with a updated image", () => {
+  it("should render user profile image container with an updated image", () => {
     updateProps = { ...DEFAULT_PROPS.props, image: DEFAULT_IMAGES.login };
     wrapper = shallow(<UserProfileCard {...updateProps} />);
 
