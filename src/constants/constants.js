@@ -93,7 +93,8 @@ export const EDIT_FIELDS = [
 ];
 
 export const DEFAULT_IMAGES = {
-  user: "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/deafult.png",
+  user:
+    "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/defaults/unicorn-default-user.png",
   signup:
     "https://unicorn-ecommerce.s3-eu-west-1.amazonaws.com/defaults/unicorn-signup-image.jpg",
   login:

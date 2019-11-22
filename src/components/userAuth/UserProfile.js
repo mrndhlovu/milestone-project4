@@ -46,7 +46,7 @@ export const UserProfile = ({
   return (
     <Fragment>
       <UserProfileHeader userData={user.data} accountType={accountType} />
-      <StyledContainer>
+      <StyledContainer data-test-id="user-profile-container">
         <Grid stackable>
           <Grid.Row columns={2}>
             <Grid.Column width={4}>
@@ -69,21 +69,23 @@ export const UserProfile = ({
                   Update account
                 </Accordion.Title>
                 <Accordion.Content active={activeIndex === 1}>
-                  {allAccess ? (
-                    <Fragment>
+                  <Fragment>
+                    <p>
+                      <Button
+                        data-test-id="deactivate-account-button"
+                        icon="delete"
+                        content="Deactivate account"
+                        fluid
+                        color="blue"
+                        as="a"
+                        onClick={() => handleCancelButtonClick("deactivate")}
+                      />
+                    </p>
+                    {allAccess && (
                       <p>
                         <Button
-                          icon="delete"
-                          content="Deactivate account"
                           fluid
-                          color="blue"
-                          as="a"
-                          onClick={() => handleCancelButtonClick("deactivate")}
-                        />
-                      </p>
-                      <p>
-                        <Button
-                          fluid
+                          data-test-id="cancel-subcription-button"
                           icon="globe"
                           content="Cancel Subscription"
                           color="blue"
@@ -91,18 +93,8 @@ export const UserProfile = ({
                           onClick={() => handleCancelButtonClick("downgrade")}
                         />
                       </p>
-                    </Fragment>
-                  ) : (
-                    <Button
-                      icon="globe"
-                      content="Deactivate account"
-                      floated="right"
-                      color="blue"
-                      as="a"
-                      fluid
-                      onClick={() => handleCancelButtonClick("deactivate")}
-                    />
-                  )}
+                    )}
+                  </Fragment>
                 </Accordion.Content>
 
                 <Accordion.Title
@@ -114,13 +106,11 @@ export const UserProfile = ({
                   Purchases
                 </Accordion.Title>
                 <Accordion.Content active={activeIndex === 2}>
-                  {PURCHASES && (
-                    <UserPurchases
-                      allAccess={allAccess}
-                      purchases={PURCHASES}
-                      accountType={accountType}
-                    />
-                  )}
+                  <UserPurchases
+                    allAccess={allAccess}
+                    purchases={PURCHASES}
+                    accountType={accountType}
+                  />
                 </Accordion.Content>
 
                 <Accordion.Title

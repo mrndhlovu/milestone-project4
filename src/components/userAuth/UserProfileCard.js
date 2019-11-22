@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Fragment } from "react";
 
-import { Card, Image } from "semantic-ui-react";
+import { Card, Image, Icon } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
 import { DEFAULT_IMAGES } from "../../constants/constants";
@@ -17,11 +17,15 @@ const UserProfileCard = ({
     date_joined,
     current_membership: { occupation }
   } = user;
-  const defaultImage = DEFAULT_IMAGES.user === image;
+
+  const isUsingDefaultImage = DEFAULT_IMAGES.user.localeCompare(image) === 0;
 
   return (
-    <Card fluid>
+    <Card fluid data-test-id="user-profile-image-container">
       <Image
+        data-test-id={
+          isUsingDefaultImage ? "default-user-image" : "uploaded-user-image"
+        }
         src={image}
         onClick={() => handleEditImage()}
         wrapped
@@ -41,10 +45,15 @@ const UserProfileCard = ({
         {occupation && <Card.Description>{occupation}</Card.Description>}
       </Card.Content>
       <Card.Content extra>
-        {!defaultImage && (
-          <UploadImageButton
-            handleUploadImage={event => handleUploadImage(event)}
-          />
+        {isUsingDefaultImage && (
+          <Fragment>
+            <Icon name="image" /> Upload image
+            <input
+              type="file"
+              onChange={event => handleUploadImage(event)}
+              data-test-id="upload-image-input-button"
+            />
+          </Fragment>
         )}
       </Card.Content>
     </Card>

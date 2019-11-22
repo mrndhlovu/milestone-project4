@@ -23,6 +23,7 @@ const UserProfileHeader = ({ mobile, userData, accountType }) => {
       >
         <Header
           as="h1"
+          data-test-id="profile-heading"
           content={capitalizeFirstLetter(name)}
           inverted
           style={{
@@ -34,6 +35,7 @@ const UserProfileHeader = ({ mobile, userData, accountType }) => {
         />
         <Header
           as="h2"
+          data-test-id="profile-sub-heading"
           content={accountType}
           inverted
           style={{
