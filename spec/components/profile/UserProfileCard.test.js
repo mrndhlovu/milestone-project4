@@ -18,7 +18,7 @@ const DEFAULT_PROPS = {
   }
 };
 
-describe("Article Detail", () => {
+describe("User profile", () => {
   let wrapper;
   let container;
   let defaultImage;
@@ -33,19 +33,12 @@ describe("Article Detail", () => {
     init();
   });
 
-  it("should render user profile image container with a default image and ", () => {
+  it("should render user profile image container with a default image", () => {
     container = findByDataTestId(wrapper, "user-profile-image-container");
     defaultImage = findByDataTestId(container, "default-user-image");
-    uploadImageButton = findByDataTestId(
-      container,
-      "upload-image-input-button"
-    );
-
-    uploadImageButton.props().onChange();
 
     expect(container.length).toBe(1);
     expect(defaultImage.length).toBe(1);
-    expect(DEFAULT_PROPS.props.handleUploadImage).toHaveBeenCalled();
   });
 
   it("should render user profile image container with an updated image", () => {
