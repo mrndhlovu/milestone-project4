@@ -12,12 +12,12 @@ import {
   fetchUser,
   uploadProfileImage,
   updateUserProfile,
-  deleteProfileImage
+  deleteImage
 } from "../actions/AuthActions";
 import { changeAccount } from "../actions/MembershipActions";
 import { ACCOUNT_CHANGE_OPTION } from "../constants/constants";
 import UserProfile from "../components/userAuth/UserProfile";
-import { refresh } from "../utils/appUtils";
+import { refresh, getNewFileName } from "../utils/appUtils";
 
 export class UserProfileContainer extends Component {
   constructor(props) {
@@ -83,14 +83,13 @@ export class UserProfileContainer extends Component {
   }
 
   handleDeleteImage(fileName) {
-    const imageName = fileName.substring(fileName.lastIndexOf("/") + 1);
-
-    this.props.deleteProfileImage(`${imageName}`);
+    this.props.deleteImage();
   }
 
-  handleUploadImage(event) {
-    const file = event.target.files[0];
-    this.props.uploadProfileImage(file);
+  handleUploadImage(file) {
+    const fileName = getNewFileName(file.name);
+
+    this.props.uploadProfileImage(file, fileName);
   }
 
   handleChange(event, fieldName) {
@@ -187,5 +186,5 @@ export default connect(mapStateToProps, {
   fetchUser,
   uploadProfileImage,
   updateUserProfile,
-  deleteProfileImage
+  deleteImage
 })(withRouter(UserProfileContainer));
