@@ -79,7 +79,6 @@ describe("BlogList", () => {
 
   it("renders blog grid container correctly ", () => {
     container = findByDataTestId(wrapper, "blog-list");
-    const grid = findByDataTestId(container, "blog-list-grid");
 
     expect(container.length).toBe(1);
     expect(container.props().children.length).toBe(2);
