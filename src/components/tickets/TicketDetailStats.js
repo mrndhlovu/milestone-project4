@@ -10,7 +10,7 @@ const TicketDetailStats = ({
   id
 }) => {
   return (
-    <Statistic.Group size="mini" color="black">
+    <Statistic.Group size="mini" color="black" data-test-id="detail-stats">
       <Statistic style={{ marginRight: 0 }} as="a">
         <Header as="h5" style={{ marginBottom: 0 }}>
           {votes > 0 ? votes : 0}
@@ -23,6 +23,7 @@ const TicketDetailStats = ({
           as="i"
           fitted
           disabled={!allAccess}
+          data-test-id="detail-like-button"
           onClick={() => handleVoteClick(id)}
         />
       </Statistic>
