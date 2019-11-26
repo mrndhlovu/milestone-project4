@@ -5,7 +5,6 @@ import { findByDataTestId } from "../../testUtils.js/utils";
 import ArticleDetail from "../../../src/components/blog/ArticleDetail";
 import DynamicHeader from "../../../src/components/sharedComponents/DynamicHeader";
 import EditButtons from "../../../src/components/sharedComponents/EditButtons";
-import { CommentsContainer } from "../../../src/containers/CommentsContainer";
 import StyledMessage from "../../../src/components/sharedComponents/StyledMessage";
 
 const DEFAULT_PROPS = {
@@ -19,7 +18,7 @@ const DEFAULT_PROPS = {
       data: {
         content: "test",
         created_at: "2019-11-16T18:23:51.193278Z",
-        id: 2,
+        id: 1,
         image: "image",
         is_approved: true,
         likes: 0,
@@ -42,7 +41,10 @@ const DEFAULT_PROPS = {
     image: "image",
     showConfirmModal: true,
     handleCancel: jasmine.createSpy("handleCancel"),
-    handleConfirm: jasmine.createSpy("handleConfirm")
+    handleConfirm: jasmine.createSpy("handleConfirm"),
+    user: { id: 1 },
+    articleId: 1,
+    isArticle: true
   }
 };
 
@@ -98,14 +100,6 @@ describe("Article Detail", () => {
     container = findByDataTestId(wrapper, "article-detail-container");
 
     expect(container).toContainMatchingElement(StyledMessage);
-  });
-
-  it("should render article detail comments section", () => {
-    const newProps = { ...DEFAULT_PROPS.props, allAccess: true };
-    wrapper = shallow(<ArticleDetail {...newProps} />);
-    container = findByDataTestId(wrapper, "article-detail-container");
-
-    expect(container).toContainMatchingElement(CommentsContainer);
   });
 
   it("should click on confirm modal buttons", () => {
