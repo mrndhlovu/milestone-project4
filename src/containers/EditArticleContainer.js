@@ -25,14 +25,13 @@ class EditArticleContainer extends Component {
 
   componentDidUpdate(prevProps) {
     const { editArticle, article } = this.props;
-    const { id } = this.props.match.params;
 
     if (prevProps.article.data !== article.data) {
       this.setState({ editFields: article.data.data });
     }
     if (prevProps.editArticle.data !== editArticle.data) {
       if (editArticle.dataReceived) {
-        this.props.history.push(`/article/${id}`);
+        refresh();
       }
     }
   }
@@ -100,7 +99,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { requestArticleDetail, updateArticle }
-)(withRouter(EditArticleContainer));
+export default connect(mapStateToProps, {
+  requestArticleDetail,
+  updateArticle
+})(withRouter(EditArticleContainer));
