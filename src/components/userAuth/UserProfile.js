@@ -54,7 +54,6 @@ export const UserProfile = ({
                 image={user.data.current_membership.image}
                 user={user.data}
                 handleCancelButtonClick={handleCancelButtonClick}
-                handleUploadImage={handleUploadImage}
                 handleEditImage={handleEditImage}
               />
             </Grid.Column>
@@ -85,7 +84,7 @@ export const UserProfile = ({
                       <p>
                         <Button
                           fluid
-                          data-test-id="cancel-subcription-button"
+                          data-test-id="cancel-subscription-button"
                           icon="globe"
                           content="Cancel Subscription"
                           color="blue"
