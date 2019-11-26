@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { Form, Grid, Button } from "semantic-ui-react";
+import React from "react";
+import { Form } from "semantic-ui-react";
 
 const EditProfile = ({ handleUpdateProfile, handleChange, userData }) => {
   const {
