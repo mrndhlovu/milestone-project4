@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
 from accounts.models import UserProfile
-import traceback
+import os
 
 
 def get_article_owner(request):
@@ -170,3 +170,32 @@ class ArticleDeleteView(DestroyAPIView):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
     permission_classes = [permissions.AllowAny]
+
+
+class ArticleRemoveImageAPIView(UpdateAPIView):
+    serializer_class = ArticleSerializer
+    queryset = User.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        data = request.data.copy()
+        article_id = data['id']
+        article = get_object_or_404(Article, id=article_id)
+
+        user = request.user
+        default_image_url = os.environ.get('UNICORN_DEFAULT_POST_IMAGE_URL')
+
+        if article is not None:
+
+            article.image = default_image_url
+            article.save()
+
+            context = {
+                'message': 'Image updated',
+            }
+            return Response(context, status=200)
+
+        else:
+            context = {
+                'message': 'Failed to update your image',
+            }
+            return Response(context, status=400)

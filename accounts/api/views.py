@@ -227,3 +227,37 @@ class UserUpdateAPIView(UpdateAPIView):
                 'message': 'Failed to update your profile',
             }
             return Response(context, status=400)
+
+
+class UserRemoveImageAPIView(UpdateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        request_data = request.data.copy()
+
+        user_profile = UserProfile.objects.filter(user=request.user)[0]
+
+        user = request.user
+        default_image_url = os.environ.get('UNICORN_DEFAULT_USER_IMAGE_URL')
+
+        if user_profile is not None:
+
+            user_profile.image = default_image_url
+            user_profile.save()
+
+            user_comments = Comment.objects.filter(user=request.user)
+            for comment in user_comments:
+                comment.image = default_image_url
+                comment.save()
+
+            context = {
+                'message': 'Profile image updated',
+            }
+            return Response(context, status=200)
+
+        else:
+            context = {
+                'message': 'Failed to update your profile',
+            }
+            return Response(context, status=400)
