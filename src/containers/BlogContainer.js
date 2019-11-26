@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import PageHeader from "../components/sharedComponents/PageHeader";
 import BlogList from "../components/blog/BlogList";
-
 import { fetchArticlesList } from "../actions/BlogActions";
-
 import {
   getUser,
   getArticleList,
   getUserProfile
 } from "../selectors/appSelectors";
-import { getPageId } from "../utils/urls";
 
 export class BlogContainer extends Component {
   componentDidMount() {
