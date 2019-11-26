@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Image, Button, Icon } from "semantic-ui-react";
+import { Modal, Image, Button } from "semantic-ui-react";
+import ImageUploader from "../sharedComponents/ImageUploader";
 
 const EditImageModal = ({
   showEditImageModal,
@@ -15,19 +16,13 @@ const EditImageModal = ({
       <Modal.Content image>
         <Image wrapped size="medium" src={image} />
         <Modal.Description>
-          <Icon name="image" /> Update image
-          <input type="file" onChange={event => handleUploadImage(event)} />
+          <ImageUploader
+            handleUploadImage={handleUploadImage}
+            handleDeleteImage={handleDeleteImage}
+          />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button
-          floated="left"
-          color="blue"
-          onClick={() => handleDeleteImage(image)}
-        >
-          <Icon name="delete" />
-          Remove image
-        </Button>
         <Button onClick={() => handleEditImage()} negative>
           Cancel
         </Button>
