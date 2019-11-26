@@ -1,6 +1,6 @@
 import {
+  REQUEST_LOGIN,
   USER_AUTH_FAIL,
-  USER_AUTH_START,
   USER_AUTH_SUCCESS,
   USER_AUTH_LOGOUT,
   REQUEST_LOGOUT,
@@ -36,12 +36,23 @@ const requestSuccess = (state, action) => {
 
 export default function(state = AUTH_INITIAL_STATE, action) {
   switch (action.type) {
-    case USER_AUTH_FAIL || LOGOUT_ERROR || SIGNUP_ERROR:
+    case SIGNUP_ERROR:
       return hasError(state, action);
-    case USER_AUTH_START || REQUEST_LOGOUT || REQUEST_SIGNUP:
+    case LOGOUT_ERROR:
+      return hasError(state, action);
+    case USER_AUTH_FAIL:
+      return hasError(state, action);
+    case REQUEST_LOGIN:
       return makeRequest(state, action);
-    case USER_AUTH_SUCCESS || USER_AUTH_LOGOUT:
+    case REQUEST_LOGOUT:
+      return makeRequest(state, action);
+    case REQUEST_SIGNUP:
+      return makeRequest(state, action);
+    case USER_AUTH_SUCCESS:
       return requestSuccess(state, action.payload);
+    case USER_AUTH_LOGOUT:
+      return requestSuccess(state, action.payload);
+
     default:
       return state;
   }

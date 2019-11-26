@@ -15,6 +15,7 @@ import SubmitButton from "../components/sharedComponents/SubmitButton";
 import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 import { DEFAULT_IMAGES } from "../constants/constants";
 import { validate } from "../utils/appUtils";
+import store from "../store";
 
 const styles = {
   width: "100%",
@@ -26,14 +27,31 @@ const styles = {
 class LoginContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { isLoading: false, showError: false };
+    this.state = {
+      isLoading: false,
+      showError: false,
+      referrerRedirect: false
+    };
 
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.renderField = this.renderField.bind(this);
   }
 
+  componentDidMount() {
+    const {
+      auth,
+      location: { state }
+    } = this.props;
+    if (state !== null) {
+      this.setState({ referrerRedirect: true });
+    }
+  }
+
   componentDidUpdate(prevProps) {
-    const { auth } = this.props;
+    const {
+      auth,
+      location: { state }
+    } = this.props;
 
     if (prevProps.auth.hasError !== auth.hasError) {
       if (auth.hasError) {
@@ -63,11 +81,14 @@ class LoginContainer extends Component {
       pristine,
       handleSubmit
     } = this.props;
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
 
     const { isLoading, showError } = this.state;
 
+    console.log(store.getState());
+
     if (isAuthenticated) {
-      return <Redirect to="/home" />;
+      return <Redirect to={from} />;
     }
 
     return (
@@ -130,8 +151,5 @@ const mapStateToProps = state => {
 };
 
 export default reduxForm({ validate, form: "LoginForm" })(
-  connect(
-    mapStateToProps,
-    { login }
-  )(withRouter(LoginContainer))
+  connect(mapStateToProps, { login })(withRouter(LoginContainer))
 );

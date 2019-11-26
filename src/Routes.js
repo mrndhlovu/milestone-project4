@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import ArticleDetailContainer from "./containers/ArticleDetailContainer";
-import AuthRouteCheck from "./utils/AuthRouteCheck";
+import ProtectedRoute from "./utils/ProtectedRoute";
 import CheckoutContainer from "./containers/CheckoutContainer";
 import CreateTicketContainer from "./containers/CreateTicketContainer";
 import DashboardContainer from "./containers/DashboardContainer";
@@ -18,6 +18,8 @@ import BlogContainer from "./containers/BlogContainer";
 import CreateArticleContainer from "./containers/CreateArticleContainer";
 import EditArticleContainer from "./containers/EditArticleContainer";
 
+import { UserContext } from "./utils/hookUtils/UserContext";
+
 const BaseRouter = () => {
   return (
     <Switch>
@@ -29,15 +31,18 @@ const BaseRouter = () => {
       <Route path="/ticket/:id" component={TicketDetailContainer} />
       <Route path="/pricing" component={PricingContainer} />
       <Route path="/dashboard" component={DashboardContainer} />
-      <Route path="/user-profile" component={UserProfileContainer} />
 
-      <AuthRouteCheck path="/checkout" component={CheckoutContainer} />
-      <Route path="/blog" component={BlogContainer} />
-      <AuthRouteCheck path="/article/:id" component={ArticleDetailContainer} />
-      <AuthRouteCheck path="/create-ticket" component={CreateTicketContainer} />
-      <AuthRouteCheck path="/new-article" component={CreateArticleContainer} />
-      <AuthRouteCheck path="/edit-ticket/:id" component={EditTicketContainer} />
-      <AuthRouteCheck
+      <UserContext.Provider value="hello world">
+        <ProtectedRoute path="/user-profile" component={UserProfileContainer} />
+      </UserContext.Provider>
+
+      <ProtectedRoute path="/checkout" component={CheckoutContainer} />
+      <ProtectedRoute path="/blog" component={BlogContainer} />
+      <ProtectedRoute path="/article/:id" component={ArticleDetailContainer} />
+      <ProtectedRoute path="/create-ticket" component={CreateTicketContainer} />
+      <ProtectedRoute path="/new-article" component={CreateArticleContainer} />
+      <ProtectedRoute path="/edit-ticket/:id" component={EditTicketContainer} />
+      <ProtectedRoute
         path="/edit-article/:id"
         component={EditArticleContainer}
       />

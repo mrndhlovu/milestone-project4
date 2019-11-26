@@ -6,7 +6,7 @@ export const SESSION_TOKEN = localStorage.getItem("sessionToken");
 
 export const SESSION_LIFE = localStorage.getItem("sessionLife");
 
-export const SUBCRIPTION_ID = localStorage.getItem("subscriptionId");
+export const SUBSCRIPTION_ID = localStorage.getItem("subscriptionId");
 
 export const MEMBERSHIP_SELECTED = localStorage.getItem("selectedMembership");
 

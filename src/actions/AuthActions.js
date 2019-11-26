@@ -42,13 +42,9 @@ import {
 
 function authStart() {
   if (SESSION_LIFE) {
-    return {
-      type: USER_AUTH_START
-    };
+    return makeRequest(USER_AUTH_START);
   } else {
-    return {
-      type: USER_AUTH_FAIL
-    };
+    return dataRequestFail(USER_AUTH_FAIL);
   }
 }
 
@@ -63,7 +59,7 @@ function checkSessionTime(sessionLife) {
   );
 }
 
-// create session if auth response is successfull
+// create session if auth response is successful
 function createSession(sessionToken, sessionLife) {
   localStorage.setItem("sessionToken", sessionToken);
   localStorage.setItem("sessionLife", sessionLife);
@@ -72,14 +68,6 @@ function createSession(sessionToken, sessionLife) {
     dispatch(checkSessionTime(1800));
   };
 }
-
-// Start user auth create a seesion and fetch user
-export const startAuth = () => {
-  return dispatch => {
-    dispatch(authStart());
-    dispatch(fetchUser());
-  };
-};
 
 // Check auth state, if there is no token, log user out else create a 30 min session
 // count down if auth state is not reset in 30min dispatch logout, if reset create a new 30min session
@@ -114,7 +102,6 @@ export const login = body => {
         dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
         dispatch(createMessage({ successMsg: response.data.message }));
-        window.location.reload();
       },
       error => {
         dispatch(dataRequestFail(USER_AUTH_FAIL, error.response.data));
