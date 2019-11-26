@@ -6,6 +6,7 @@ import ArticleDetail from "../../../src/components/blog/ArticleDetail";
 import DynamicHeader from "../../../src/components/sharedComponents/DynamicHeader";
 import EditButtons from "../../../src/components/sharedComponents/EditButtons";
 import StyledMessage from "../../../src/components/sharedComponents/StyledMessage";
+import ImageUploader from "../../../src/components/sharedComponents/ImageUploader";
 
 const DEFAULT_PROPS = {
   headerProps: {
@@ -30,7 +31,6 @@ const DEFAULT_PROPS = {
         username: "mndhlovu",
         views: 211
       },
-      isOwner: true,
       likes: 2,
       comments: {}
     },
@@ -56,6 +56,8 @@ describe("Article Detail", () => {
   function init() {
     wrapper = shallow(<ArticleDetail {...DEFAULT_PROPS.props} />);
     header = shallow(<DynamicHeader {...DEFAULT_PROPS.headerProps} />);
+
+    container = findByDataTestId(wrapper, "article-detail-container");
   }
 
   beforeEach(() => {
@@ -70,16 +72,26 @@ describe("Article Detail", () => {
     expect(title.props().content).toEqual(DEFAULT_PROPS.props.article.title);
   });
 
-  it("should render article image upload button", () => {
-    const uploadButton = findByDataTestId(wrapper, "article-image-input");
-    uploadButton.props().onChange();
+  it("should fail to render article image uploader component", () => {
+    const imageUploader = findByDataTestId(
+      container,
+      "article-detail-image-uploader"
+    );
 
-    expect(uploadButton.props().label).toEqual("Update Image");
-    expect(DEFAULT_PROPS.props.handleUpdateImage).toHaveBeenCalled();
+    expect(imageUploader.length).toBe(0);
+  });
+
+  it("should render article image uploader component", () => {
+    const newProps = { ...DEFAULT_PROPS.props, showImageUploader: true };
+    const updatedProps = { ...DEFAULT_PROPS, ...newProps };
+
+    wrapper = shallow(<ArticleDetail {...updatedProps} />);
+    container = findByDataTestId(wrapper, "article-detail-image-uploader");
+
+    expect(container.find(ImageUploader).length).toBe(1);
   });
 
   it("should render article content", () => {
-    container = findByDataTestId(wrapper, "article-detail-container");
     const content = findByDataTestId(container, "article-content");
 
     expect(container.length).toBe(1);
@@ -89,8 +101,6 @@ describe("Article Detail", () => {
   });
 
   it("should render article detail edit buttons", () => {
-    container = findByDataTestId(wrapper, "article-detail-container");
-
     expect(container).toContainMatchingElement(EditButtons);
   });
 

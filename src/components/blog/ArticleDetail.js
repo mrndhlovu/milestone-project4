@@ -53,7 +53,7 @@ const ArticleDetail = ({
       >
         <Card fluid>
           {showImageUploader && (
-            <Segment>
+            <Segment data-test-id="article-detail-image-uploader">
               <ImageUploader
                 handleUploadImage={handleUpdateImage}
                 handleDeleteImage={handleDeleteImage}
