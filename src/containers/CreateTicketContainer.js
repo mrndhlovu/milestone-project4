@@ -14,7 +14,6 @@ import {
 } from "../selectors/appSelectors";
 import { slugify, validate } from "../utils/appUtils";
 import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
-import CreateTicketDropdown from "../components/tickets/CreateTicketDropdown";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import CreateTicketRadioButtons from "../components/tickets/CreateTicketRadioButtons";
 import MessageModal from "../components/sharedComponents/MessageModal";
@@ -66,7 +65,6 @@ export class CreateTicketContainer extends Component {
   render() {
     const {
       handleSubmit,
-      field,
       errorAlert,
       valid,
       pristine,
@@ -116,7 +114,6 @@ export class CreateTicketContainer extends Component {
               label="Description"
               component={this.renderField}
             />
-            <CreateTicketDropdown field={field} />
             <div style={{ paddingTop: 10 }}>
               <SubmitButton
                 allAccess={allAccess}
