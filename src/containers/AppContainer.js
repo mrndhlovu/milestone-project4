@@ -45,7 +45,4 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-export default connect(
-  null,
-  { authState }
-)(AppContainer);
+export default connect(null, { authState })(AppContainer);
