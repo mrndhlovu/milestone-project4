@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import { getFormatedDate } from "../../utils/appUtils";
 
@@ -11,18 +11,16 @@ export const CommentReply = ({ comments, parentId }) => {
     return (
       parent &&
       parentId === parent && (
-        <Fragment key={index}>
-          <Comment.Group>
-            <Comment.Avatar src={image} style={{ paddingRight: 10 }} />
-            <Comment.Author as="a">{username.toUpperCase()}</Comment.Author>
-            <Comment.Metadata>
-              <Header as="h5" color="grey">
-                {getFormatedDate(timestamp)}
-              </Header>
-            </Comment.Metadata>
-            <Comment.Text>{comment}</Comment.Text>
-          </Comment.Group>
-        </Fragment>
+        <Comment.Group key={index}>
+          <Comment.Avatar src={image} />
+          <Comment.Author as="a">{username.toLowerCase()}</Comment.Author>
+          <Comment.Metadata>
+            <Header as="h5" color="grey">
+              {getFormatedDate(timestamp)}
+            </Header>
+          </Comment.Metadata>
+          <Comment.Text>{comment}</Comment.Text>
+        </Comment.Group>
       )
     );
   });
