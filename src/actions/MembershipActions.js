@@ -9,7 +9,7 @@ import {
 
 import {
   requestMembershipsList,
-  requestCancelSubsricption
+  requestCancelSubscription
 } from "../apis/apiRequests";
 
 import {
@@ -18,7 +18,6 @@ import {
   requestSuccess,
   createMessage
 } from "./index";
-import { refresh } from "../utils/appUtils";
 
 export const fetchMembershipsList = () => {
   return dispatch => {
@@ -37,7 +36,7 @@ export const fetchMembershipsList = () => {
 export const changeAccount = option => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_CANCEL_SUBSCRIPTION));
-    requestCancelSubsricption(option).then(
+    requestCancelSubscription(option).then(
       response => {
         dispatch(requestSuccess(RECEIVE_SUBSCRIPTION_CANCELED, response.data));
         dispatch(createMessage({ successMsg: response.data.message }));
