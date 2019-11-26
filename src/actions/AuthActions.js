@@ -22,8 +22,8 @@ import {
   requestLogout,
   requestUser,
   requestAwsFileUpload,
-  requestAwsDeleteFile,
-  requestUpdateUserProfile
+  requestUpdateUserProfile,
+  requestRemoveImageurl
 } from "../apis/apiRequests";
 
 import {
@@ -203,10 +203,10 @@ export const fetchUser = () => {
   };
 };
 
-export const uploadProfileImage = file => {
+export const uploadProfileImage = (file, fileName) => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_UPLOAD));
-    requestAwsFileUpload(file).then(
+    requestAwsFileUpload(file, fileName).then(
       response => {
         dispatch(requestSuccess(RECEIVE_UPLOAD, response.data));
         const userData = { image: response.location, isImageUpload: true };
@@ -236,10 +236,10 @@ export const updateUserProfile = userData => {
   };
 };
 
-export const deleteProfileImage = fileName => {
+export const deleteImage = (app, id) => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_PROFILE_UPDATE));
-    requestAwsDeleteFile(fileName).then(
+    requestRemoveImageurl(app, id).then(
       response => {
         dispatch(requestSuccess(RECEIVE_PROFILE_UPDATE, response.data));
         createMessage({ successMsg: response.data.message });
