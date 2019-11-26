@@ -33,14 +33,14 @@ def get_parent_id(request):
     return None
 
 
-def get_app(request, data):
+def get_app_content_type(request, data):
     if data['content_type'] == 'ticket':
-        app = get_object_or_404(Ticket, id=data['object_id'])
-        return app
+        app_object = get_object_or_404(Ticket, id=data['object_id'])
+        return app_object
 
     if data['content_type'] == 'post':
-        app = get_object_or_404(Article, id=data['object_id'])
-        return app
+        app_object = get_object_or_404(Article, id=data['object_id'])
+        return app_object
 
 
 class CommentsListView(ListAPIView):
@@ -69,22 +69,23 @@ class CreateCommentView(CreateAPIView):
     def post(self, request, **kwargs):
         request_data = request.data.copy()
 
-        app_id = request_data['object_id']
-        app = get_app(request, request_data)
+        object_id = request_data['object_id']
+        app_object = get_app_content_type(request, request_data)
 
-        if app is not None:
-            app_content_type = ContentType.objects.get_for_model(app)
+        if app_object is not None:
+            app_content_type = ContentType.objects.get_for_model(app_object)
+
             user = get_comment_owner(request)
+
             user_profile = get_list_or_404(UserProfile, user=request.user)[0]
 
             if user is not None:
                 comment_reply, created = Comment.objects.get_or_create(
                     user=user,
                     content_type=app_content_type,
-                    object_id=app_id,
+                    object_id=object_id,
                     comment=request_data['comment'],
                     image=user_profile.image)
-
                 context = {
                     'message': 'Comment created'
                 }
@@ -117,11 +118,11 @@ class CreateCommentReplyView(CreateAPIView):
         parent_id = request_data['parent']
         user_profile = get_list_or_404(UserProfile, user=request.user)[0]
 
-        app = get_app(request, request_data)
+        app_object = get_app_content_type(request, request_data)
 
-        if app is not None:
+        if app_object is not None:
 
-            app_content_type = ContentType.objects.get_for_model(app)
+            app_content_type = ContentType.objects.get_for_model(app_object)
 
             user = get_comment_owner(request)
             parent = Comment.objects.get(id=parent_id)
@@ -146,6 +147,6 @@ class CreateCommentReplyView(CreateAPIView):
                 return JsonResponse(context, status=status.HTTP_400_BAD_REQUEST)
         else:
             context = {
-                'message': 'Could not resolve app type'
+                'message': 'Could not resolve app_object type'
             }
             return JsonResponse(context, status=status.HTTP_400_BAD_REQUEST)
