@@ -50,11 +50,15 @@ export class TicketDetailContainer extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
+    const { isAuthenticated } = this.props.auth;
     this.props.requestTicketsDetail(id);
 
-    setTimeout(() => {
-      this.props.fetchTicketSolution(id);
-    }, 100);
+    {
+      isAuthenticated &&
+        setTimeout(() => {
+          this.props.fetchTicketSolution(id);
+        }, 100);
+    }
   }
 
   componentDidUpdate(prevProps) {
