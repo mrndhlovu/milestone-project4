@@ -5,11 +5,13 @@ import {
   requestTicketsDetail,
   updatedTicketVote,
   deleteTicket,
-  fetchTicketSolution
+  fetchTicketSolution,
+  createComment,
+  createReply
 } from "../actions/TicketActions";
 import { addItemToCart } from "../actions/CheckoutActions";
 
-import { Container, Confirm } from "semantic-ui-react";
+import { Confirm } from "semantic-ui-react";
 
 import {
   getVotes,
@@ -17,15 +19,13 @@ import {
   getTicketUpdate,
   getSolution,
   getUserProfile,
-  getUser
+  getUser,
+  getComments
 } from "../selectors/appSelectors";
 
-import StyledMessage from "../components/sharedComponents/StyledMessage";
-import CommentsContainer from "./CommentsContainer";
 import TicketDetail from "../components/tickets/TicketDetail";
-import TicketSolution from "../components/tickets/TicketSolution";
 import { APP_TYPE, DEFAULT_IMAGES } from "../constants/constants";
-import DynamicHeader from "../components/sharedComponents/DynamicHeader";
+import { refresh } from "../utils/appUtils";
 
 const initialState = {
   index: 0,
@@ -57,12 +57,18 @@ export class TicketDetailContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { ticket, user } = this.props;
+    const { ticket, ticketComments } = this.props;
 
     if (prevProps.ticket !== ticket) {
       if (ticket.dataReceived) {
         const { title } = ticket.data.data;
         this.setState({ title: title, image: DEFAULT_IMAGES.feature });
+      }
+    }
+
+    if (prevProps.ticketComments !== ticketComments) {
+      if (ticketComments.dataReceived) {
+        refresh();
       }
     }
   }
@@ -106,23 +112,12 @@ export class TicketDetailContainer extends Component {
 
   render() {
     const {
-      ticket: {
-        isLoading,
-        dataReceived,
-        data: { data, comments, isOwner, votes }
-      },
+      ticket: { isLoading, dataReceived, data },
       solution,
       user,
       auth
     } = this.props;
-    const {
-      activeIndex,
-      index,
-      buttonText,
-      showConfirmModal,
-      title,
-      image
-    } = this.state;
+    const { activeIndex, index, buttonText, showConfirmModal } = this.state;
     const allAccess =
       user.dataReceived &&
       user.data.current_membership.membership.is_pro_member;
@@ -130,57 +125,31 @@ export class TicketDetailContainer extends Component {
     return (
       dataReceived && (
         <Fragment>
-          <DynamicHeader title={title} image={image} />
-          <Container style={{ paddingTop: 50 }}>
-            <Confirm
-              open={showConfirmModal}
-              cancelButton="Cancel"
-              confirmButton="Yes delete"
-              onCancel={() => this.handleCancel()}
-              onConfirm={() => this.handleConfirm()}
-            />
+          <Confirm
+            open={showConfirmModal}
+            cancelButton="Cancel"
+            confirmButton="Yes delete"
+            onCancel={() => this.handleCancel()}
+            onConfirm={() => this.handleConfirm()}
+          />
 
-            <TicketDetail
-              allAccess={allAccess}
-              data={data}
-              isLoading={isLoading}
-              buttonText={buttonText}
-              handleTicketDelete={this.handleTicketDelete}
-              dataReceived={dataReceived}
-              handleVoteClick={this.handleVoteClick}
-              user={user.data}
-              isOwner={isOwner}
-              votes={votes}
-            />
-
-            {!data.is_bug && (
-              <TicketSolution
-                handleAccordionClick={this.handleAccordionClick}
-                activeIndex={activeIndex}
-                index={index}
-                solution={solution.data}
-                isAuthenticated={auth.isAuthenticated}
-                addToCart={this.handleAddToCart}
-                id={data.id}
-                buttonText={buttonText}
-                handleAddToCart={this.handleAddToCart}
-              />
-            )}
-
-            {dataReceived && allAccess ? (
-              <CommentsContainer
-                comments={comments}
-                ticketId={data.id}
-                isTicket={true}
-              />
-            ) : (
-              <StyledMessage
-                message="To view and make comments you need a "
-                linkText="Unicorn Pro Account."
-                redirect="/pricing"
-              />
-            )}
-          </Container>
+          <TicketDetail
+            allAccess={allAccess}
+            data={data}
+            isLoading={isLoading}
+            buttonText={buttonText}
+            handleTicketDelete={this.handleTicketDelete}
+            handleVoteClick={this.handleVoteClick}
+            user={user.data}
+            activeIndex={activeIndex}
+            solution={solution.data}
+            index={index}
+            isAuthenticated={auth.isAuthenticated}
+            handleAccordionClick={this.handleAccordionClick}
+            addToCart={this.handleAddToCart}
+            createComment={this.props.createComment}
+            createReply={this.props.createReply}
+          />
         </Fragment>
       )
     );
@@ -194,17 +163,17 @@ const mapStateToProps = state => {
     ticketDelete: getTicketUpdate(state),
     user: getUserProfile(state),
     vote: getVotes(state),
-    auth: getUser(state)
+    auth: getUser(state),
+    ticketComments: getComments(state)
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    requestTicketsDetail,
-    updatedTicketVote,
-    deleteTicket,
-    fetchTicketSolution,
-    addItemToCart
-  }
-)(TicketDetailContainer);
+export default connect(mapStateToProps, {
+  requestTicketsDetail,
+  updatedTicketVote,
+  deleteTicket,
+  fetchTicketSolution,
+  addItemToCart,
+  createComment,
+  createReply
+})(TicketDetailContainer);
