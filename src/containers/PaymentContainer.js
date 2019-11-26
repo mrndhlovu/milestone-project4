@@ -2,12 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { CardElement } from "react-stripe-elements";
-
-import { Form, Card, Segment, Button } from "semantic-ui-react";
-
 import { makePayment } from "../actions/CheckoutActions";
 import { getCheckout } from "../selectors/appSelectors";
+import CardPaymentForm from "../components/ecommerce/CardPaymentForm";
 
 export class PaymentContainer extends Component {
   constructor(props) {
@@ -17,11 +14,16 @@ export class PaymentContainer extends Component {
       isLoading: false,
       isDisabled: true
     };
-
+    this.handleOnFocus = this.handleOnFocus.bind(this);
     this.handleTextInput = this.handleTextInput.bind(this);
+    this.handlePayNow = this.handlePayNow.bind(this);
   }
 
   handleTextInput() {
+    this.setState({ isDisabled: false });
+  }
+
+  handleOnFocus() {
     this.setState({ isDisabled: false });
   }
 
@@ -39,7 +41,7 @@ export class PaymentContainer extends Component {
   }
 
   handlePayNow() {
-    this.setState({ isLoading: true, donateIsDisable: true });
+    this.setState({ isLoading: true });
 
     const { clickedSubmit, makePayment } = this.props;
 
@@ -53,29 +55,12 @@ export class PaymentContainer extends Component {
   render() {
     const { isLoading, isDisabled } = this.state;
     return (
-      <Card fluid>
-        <Card.Content header="Payment" />
-        <Card.Content>
-          <Form.Group widths="equal">
-            <Segment>
-              <CardElement
-                onFocus={() => this.setState({ isDisabled: false })}
-              />
-            </Segment>
-          </Form.Group>
-        </Card.Content>
-        <Card.Content extra>
-          <Button
-            color="orange"
-            fluid
-            onClick={() => this.handlePayNow()}
-            loading={isLoading}
-            disabled={isDisabled}
-          >
-            PAY NOW
-          </Button>
-        </Card.Content>
-      </Card>
+      <CardPaymentForm
+        handleOnFocus={this.handleOnFocus}
+        handlePayNow={this.handlePayNow}
+        isDisabled={isDisabled}
+        isLoading={isLoading}
+      />
     );
   }
 }
@@ -86,7 +71,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { makePayment }
-)(withRouter(PaymentContainer));
+export default connect(mapStateToProps, { makePayment })(
+  withRouter(PaymentContainer)
+);
