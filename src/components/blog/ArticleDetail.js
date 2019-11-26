@@ -2,20 +2,21 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
 import EditButtons from "../sharedComponents/EditButtons";
-import { getFormatedDate } from "../../utils/appUtils";
+import { getFormatedDate, emptyFunction } from "../../utils/appUtils";
 
 import {
   Icon,
-  Input,
   Card,
   Image,
   Container,
-  Confirm
+  Confirm,
+  Segment
 } from "semantic-ui-react";
 import DynamicHeader from "../sharedComponents/DynamicHeader";
 import { CommentsContainer } from "../../containers/CommentsContainer";
 import StyledMessage from "../sharedComponents/StyledMessage";
 import MessageModal from "../sharedComponents/MessageModal";
+import ImageUploader from "../sharedComponents/ImageUploader";
 
 const ArticleDetail = ({
   allAccess,
@@ -23,12 +24,17 @@ const ArticleDetail = ({
   handleDelete,
   handleLikeClick,
   handleUpdateImage,
+  handleImageClick,
+  showImageUploader,
   history,
   image,
-  isLoading,
   showConfirmModal,
   handleCancel,
-  handleConfirm
+  handleConfirm,
+  user,
+  createComment,
+  createReply,
+  handleDeleteImage
 }) => {
   const { title, views, created_at, id, content } = article.data;
   const { isOwner, likes, comments } = article;
@@ -40,23 +46,35 @@ const ArticleDetail = ({
         title={title}
         dataTestId="article-detail-header"
       />
+
       <Container
         style={{ paddingTop: 20 }}
         data-test-id="article-detail-container"
       >
-        {isOwner && (
-          <Input
-            size="mini"
-            icon="image"
-            label="Update Image"
-            loading={isLoading}
-            type="file"
-            onChange={event => handleUpdateImage(event)}
-            data-test-id="article-image-input"
-          />
-        )}
         <Card fluid>
-          <Image src={image} wrapped ui={false} />
+          {showImageUploader && (
+            <Segment>
+              <ImageUploader
+                handleUploadImage={handleUpdateImage}
+                handleDeleteImage={handleDeleteImage}
+                image={image}
+              />
+            </Segment>
+          )}
+          <Image
+            src={image}
+            wrapped
+            ui={false}
+            label={
+              isOwner && {
+                as: "a",
+                color: "red",
+                corner: "right",
+                icon: "save"
+              }
+            }
+            onClick={isOwner ? () => handleImageClick() : emptyFunction}
+          />
           <Card.Content>
             <Card.Header as={Link} to={`/article/${id}`}>
               {title.toUpperCase()}
@@ -95,9 +113,12 @@ const ArticleDetail = ({
 
         {allAccess ? (
           <CommentsContainer
+            createComment={createComment}
+            createReply={createReply}
             comments={comments}
             articleId={id}
             isArticle={true}
+            userId={user.id}
           />
         ) : (
           <StyledMessage
