@@ -6,7 +6,8 @@ import {
   getUser,
   getUserProfile,
   getArticleDetail,
-  getArticleUpdate
+  getArticleUpdate,
+  getComments
 } from "../selectors/appSelectors";
 import {
   requestArticleDetail,
@@ -16,17 +17,24 @@ import {
 } from "../actions/BlogActions";
 import ArticleDetail from "../components/blog/ArticleDetail";
 import { APP_TYPE } from "../constants/constants";
-import { refresh } from "../utils/appUtils";
+import { refresh, getNewFileName } from "../utils/appUtils";
+import { createComment, createReply } from "../actions/TicketActions";
+import { deleteImage } from "../actions/AuthActions";
 
 class ArticleDetailContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { showConfirmModal: false, title: "" };
+    this.state = {
+      showConfirmModal: false,
+      title: "",
+      showImageUploader: false
+    };
 
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleLikeClick = this.handleLikeClick.bind(this);
     this.handleUpdateImage = this.handleUpdateImage.bind(this);
+    this.handleDeleteImage = this.handleDeleteImage.bind(this);
   }
 
   componentDidMount() {
@@ -55,10 +63,15 @@ class ArticleDetailContainer extends Component {
     this.setState({ showConfirmModal: true });
   }
 
-  handleUpdateImage(event) {
-    const file = event.target.files[0];
+  handleUpdateImage(file) {
+    const fileName = getNewFileName(file.name);
     const { id } = this.props.match.params;
-    this.props.uploadArticleImage(file, APP_TYPE.post, id);
+    this.props.uploadArticleImage(file, fileName, APP_TYPE.post, id);
+  }
+
+  handleDeleteImage() {
+    const { id } = this.props.match.params;
+    this.props.deleteImage(APP_TYPE.post, id);
   }
 
   handleConfirm() {
@@ -77,7 +90,7 @@ class ArticleDetailContainer extends Component {
 
   render() {
     const { article, user, history } = this.props;
-    const { showConfirmModal } = this.state;
+    const { showConfirmModal, showImageUploader } = this.state;
     const image = article.dataReceived && article.data.data.image;
     const allAccess =
       user.dataReceived &&
@@ -98,6 +111,13 @@ class ArticleDetailContainer extends Component {
           showConfirmModal={showConfirmModal}
           handleCancel={this.handleCancel}
           handleConfirm={this.handleConfirm}
+          createComment={this.props.createComment}
+          createReply={this.props.createReply}
+          handleDeleteImage={this.handleDeleteImage}
+          showImageUploader={showImageUploader}
+          handleImageClick={() =>
+            this.setState({ showImageUploader: !showImageUploader })
+          }
         />
       )
     );
@@ -109,13 +129,16 @@ const mapStateToProps = state => {
     article: getArticleDetail(state),
     user: getUserProfile(state),
     auth: getUser(state),
-    updateArticle: getArticleUpdate(state)
+    updateArticle: getArticleUpdate(state),
+    articleComments: getComments(state)
   };
 };
-
 export default connect(mapStateToProps, {
   requestArticleDetail,
   deleteArticle,
   updateArticleLikes,
-  uploadArticleImage
+  createComment,
+  createReply,
+  uploadArticleImage,
+  deleteImage
 })(withRouter(ArticleDetailContainer));
