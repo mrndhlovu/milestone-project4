@@ -1,6 +1,3 @@
-import { getPageId } from "../utils/urls";
-import { APP_TYPE } from "./constants";
-
 export const HEADER_TEXT = {
   home: {
     headerText: "Unicorn Attractor",
