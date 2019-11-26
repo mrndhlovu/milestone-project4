@@ -22,7 +22,11 @@ const BlogList = ({ articles }) => {
         image
       } = articles[key];
       return (
-        <Grid.Row style={{ padding: "3em 0em" }} key={key}>
+        <Grid.Row
+          style={{ padding: "3em 0em" }}
+          key={key}
+          data-test-id="article-list-container"
+        >
           <Grid container stackable verticalAlign="middle">
             <Grid.Row>
               <Grid.Column floated="left" width={6}>
@@ -34,6 +38,7 @@ const BlogList = ({ articles }) => {
                   as={NavLink}
                   to={`/article/${id}`}
                   alt={`image-${id}`}
+                  data-test-id={`article-${id}-image`}
                 />
               </Grid.Column>
               <Grid.Column width={8} floated="right">
