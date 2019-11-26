@@ -166,12 +166,14 @@ export const getAwsConfig = app => {
 };
 
 // from Ben Award Youtube
-export const getFileName = filename => {
+export const getNewFileName = filename => {
   const date = moment().format("MM-DD-YYYY");
   const randomString = Math.random()
     .toString(36)
     .substring(2, 7);
-  const cleanFileName = filename.toLowerCase().replace(/[^a-z0-9]/g, ".");
+  const cleanFileName = filename.toLowerCase().replace(/[^a-z0-9]/g, "-");
   const newFilename = `${randomString}-${date}-${cleanFileName}`;
   return newFilename.substring(0, 60);
 };
+
+export const emptyFunction = () => {};
