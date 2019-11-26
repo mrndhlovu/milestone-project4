@@ -10,15 +10,15 @@ const TicketSolution = ({
   solution,
   id,
   buttonText,
-  isAuthenticated,
-  handleAddToCart
+  isAuthenticated
 }) => {
   return (
-    <Accordion styled fluid>
+    <Accordion styled fluid data-test-id="ticket-solution-container">
       <Accordion.Title
         active={activeIndex === 0}
         index={index}
         onClick={() => handleAccordionClick()}
+        data-test-id="ticket-solution-accordion"
       >
         <Icon name="dropdown" />
         {solution.show ? "Paid Ticket Solution" : "Solution"}
@@ -31,10 +31,11 @@ const TicketSolution = ({
           <Segment clearing>
             <Header as="h5">Ticket solution requires payment</Header>
             <Button
+              data-test-id="ticket-solution-add-to-cart"
               size="tiny"
               color="orange"
               onClick={
-                isAuthenticated ? () => addToCart(id) : () => handleAddToCart()
+                isAuthenticated ? () => addToCart(id) : () => addToCart()
               }
               floated="right"
             >
