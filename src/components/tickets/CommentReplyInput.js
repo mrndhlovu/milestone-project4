@@ -17,7 +17,7 @@ const CommentReplyInput = ({
       <Form reply>
         <Form.TextArea
           onChange={event => handleCreateComment(event, COMMENT_TYPE.reply)}
-          onClick={() => handleOnBlur()}
+          onClick={handleOnBlur}
         />
         <Button
           content="Reply"
