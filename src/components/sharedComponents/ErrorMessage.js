@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Message, Icon, Label, Header } from "semantic-ui-react";
+import { Message, Label, Header } from "semantic-ui-react";
 
 const ErrorMessage = ({ errors, handleDismiss }) => {
   const renderErrors = () => {
