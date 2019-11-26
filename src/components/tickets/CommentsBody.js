@@ -1,13 +1,6 @@
 import React, { Fragment } from "react";
 
-import {
-  Divider,
-  Icon,
-  Comment,
-  Message,
-  Header,
-  Segment
-} from "semantic-ui-react";
+import { Divider, Comment, Message, Header, Segment } from "semantic-ui-react";
 
 import CommentReply from "../tickets/CommentReply";
 import CommentReplyInput from "../tickets/CommentReplyInput";
@@ -60,8 +53,8 @@ const CommentsBody = ({
                         </Header>
                       </Comment.Text>
                     </Comment.Actions>
+                    <CommentReply comments={comments} parentId={id} />
                   </Comment.Content>
-                  <CommentReply comments={comments} parentId={id} />
                 </Comment>
                 <CommentReplyInput
                   handleCreateComment={handleCreateComment}
