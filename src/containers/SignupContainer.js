@@ -5,7 +5,7 @@ import { reduxForm, Field } from "redux-form";
 
 import { signup } from "../actions/AuthActions";
 
-import { Form, Grid, Container, Image, Segment, Icon } from "semantic-ui-react";
+import { Form, Grid, Container, Image, Segment } from "semantic-ui-react";
 import FormHeader from "../components/sharedComponents/FormHeader";
 import FormFooter from "../components/sharedComponents/StyledMessage";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
@@ -154,8 +154,5 @@ const mapStateToProps = state => {
 };
 
 export default reduxForm({ validate, form: "LoginForm" })(
-  connect(
-    mapStateToProps,
-    { signup }
-  )(SignupContainer)
+  connect(mapStateToProps, { signup })(SignupContainer)
 );
