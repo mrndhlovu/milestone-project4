@@ -1,4 +1,4 @@
-import S3FileUpload from "react-s3";
+import S3 from "aws-s3";
 
 import axios from "axios";
 
@@ -14,7 +14,8 @@ import {
   getCheckoutBody
 } from "../utils/urls";
 import { SESSION_TOKEN } from "../constants/localStorageConstants";
-import { getFileName, getAwsConfig } from "../utils/appUtils";
+import { getAwsConfig } from "../utils/appUtils";
+import { APP_TYPE } from "../constants/constants";
 
 export async function requestTicketsList() {
   return axios.get(`${TICKETS_EP}`);
@@ -63,7 +64,7 @@ export async function requestMembershipsList() {
   return axios.get(`${MEMBERSHIP_EP}`);
 }
 
-export async function requestCancelSubsricption(option) {
+export async function requestCancelSubscription(option) {
   return axios.post(
     `${MEMBERSHIP_EP}cancel-subscription/`,
     { option },
@@ -174,10 +175,25 @@ export async function requestTransactionUpdate() {
   );
 }
 
-export function requestAwsFileUpload(file, app) {
-  return S3FileUpload.uploadFile(file, getAwsConfig(app));
+export function requestAwsFileUpload(file, fileName, app) {
+  const S3Client = new S3(getAwsConfig(app));
+  return S3Client.uploadFile(file, fileName);
 }
 
-export function requestAwsDeleteFile(file) {
-  return S3FileUpload.deleteFile(file, getAwsConfig());
+export function requestAwsDeleteFile(fileName, app) {
+  const S3Client = new S3(getAwsConfig(app));
+  console.log(S3Client);
+  return S3Client.deleteFile(fileName);
+}
+
+export function requestRemoveImageurl(app, id) {
+  const isArticleUpdate = app === APP_TYPE.post;
+  const body = { id: id };
+  return axios.post(
+    isArticleUpdate
+      ? `${BLOG_EP}remove-img-url/${id}/`
+      : `${AUTH_EP}remove-img-url`,
+    isArticleUpdate ? body : null,
+    authQueryParams
+  );
 }
