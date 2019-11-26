@@ -17,10 +17,6 @@ const StyledContainer = styled(Segment)`
 `;
 
 export class DashboardContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.fetchTicketsList();
   }
