@@ -9,7 +9,7 @@ export const UserImage = ({ image }) => {
       <Feed>
         <Feed.Event>
           <Feed.Label as={NavLink} to="/user-profile">
-            <img src={image} />
+            <img src={image} alt={image} />
           </Feed.Label>
 
           <Feed.Content></Feed.Content>
