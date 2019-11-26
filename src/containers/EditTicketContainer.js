@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { requestTicketsDetail, updateTicket } from "../actions/TicketActions";
 import EditTicketFields from "../components/sharedComponents/EditFields";
@@ -97,7 +98,13 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { requestTicketsDetail, updateTicket }
-)(withRouter(EditTicketContainer));
+EditTicketContainer.propTypes = {
+  ticket: PropTypes.object.isRequired,
+  editTicket: PropTypes.object.isRequired,
+  requestTicketsDetail: PropTypes.func.isRequired,
+  updateTicket: PropTypes.func.isRequired
+};
+
+export default connect(mapStateToProps, { requestTicketsDetail, updateTicket })(
+  withRouter(EditTicketContainer)
+);

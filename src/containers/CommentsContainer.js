@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { Comment, Segment, Header } from "semantic-ui-react";
 
@@ -96,6 +97,11 @@ export const CommentsContainer = ({
       </Comment.Group>
     </Segment>
   );
+};
+
+CommentsContainer.propTypes = {
+  comments: PropTypes.object.isRequired,
+  userId: PropTypes.number.isRequired
 };
 
 export default withRouter(CommentsContainer);

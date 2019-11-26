@@ -102,6 +102,7 @@ export const login = body => {
         dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
         dispatch(createMessage({ successMsg: response.data.message }));
+        window.location.reload();
       },
       error => {
         dispatch(dataRequestFail(USER_AUTH_FAIL, error.response.data));
@@ -115,7 +116,7 @@ export const login = body => {
   };
 };
 
-// Check if there a session token to use for logout, if there is proceed if logout is successful on the server the delete localstorage
+// Check if there a session token to use for logout, if there is proceed if logout is successful on the server the delete local storage
 export const logOut = () => {
   return SESSION_TOKEN
     ? dispatch => {

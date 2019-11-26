@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { makePayment } from "../actions/CheckoutActions";
 import { getCheckout } from "../selectors/appSelectors";
@@ -69,6 +70,11 @@ const mapStateToProps = state => {
   return {
     checkout: getCheckout(state)
   };
+};
+
+PaymentContainer.propTypes = {
+  checkout: PropTypes.object.isRequired,
+  makePayment: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, { makePayment })(

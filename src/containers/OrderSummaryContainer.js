@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import OrderSummary from "../components/ecommerce/OrderSummary";
 import {
@@ -93,6 +94,13 @@ const mapStateToProps = state => {
   return {
     pendingOrders: getCartPendingOrder(state)
   };
+};
+
+OrderSummaryContainer.propTypes = {
+  fetchPendingOrder: PropTypes.func.isRequired,
+  removeItemFromCart: PropTypes.func.isRequired,
+  addItemToCart: PropTypes.func.isRequired,
+  count: PropTypes.number.isRequired
 };
 
 export default connect(mapStateToProps, {

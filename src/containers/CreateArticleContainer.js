@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { createArticle } from "../actions/BlogActions";
 import CreateArticleFormField from "../components/blog/CreateArticleFormField";
@@ -121,6 +122,16 @@ const mapStateToProps = state => {
     article: getArticle(state),
     user: getUserProfile(state)
   };
+};
+
+CreateArticleContainer.propTypes = {
+  errorAlert: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  article: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  userId: PropTypes.number.isRequired,
+  history: PropTypes.object.isRequired,
+  createArticle: PropTypes.func.isRequired
 };
 
 export default reduxForm({ validate, form: "CreateArticleForm" })(

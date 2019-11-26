@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import {
   requestTicketsDetail,
@@ -166,6 +167,23 @@ const mapStateToProps = state => {
     auth: getUser(state),
     ticketComments: getComments(state)
   };
+};
+
+TicketDetailContainer.propTypes = {
+  solution: PropTypes.object.isRequired,
+  ticket: PropTypes.object.isRequired,
+  ticketDelete: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  vote: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  ticketComments: PropTypes.object.isRequired,
+  requestTicketsDetail: PropTypes.func.isRequired,
+  updatedTicketVote: PropTypes.func.isRequired,
+  deleteTicket: PropTypes.func.isRequired,
+  fetchTicketSolution: PropTypes.func.isRequired,
+  addItemToCart: PropTypes.func.isRequired,
+  createComment: PropTypes.func.isRequired,
+  createReply: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, {

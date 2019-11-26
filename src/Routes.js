@@ -32,10 +32,7 @@ const BaseRouter = () => {
       <Route path="/pricing" component={PricingContainer} />
       <Route path="/dashboard" component={DashboardContainer} />
 
-      <UserContext.Provider value="hello world">
-        <ProtectedRoute path="/user-profile" component={UserProfileContainer} />
-      </UserContext.Provider>
-
+      <ProtectedRoute path="/user-profile" component={UserProfileContainer} />
       <ProtectedRoute path="/checkout" component={CheckoutContainer} />
       <ProtectedRoute path="/blog" component={BlogContainer} />
       <ProtectedRoute path="/article/:id" component={ArticleDetailContainer} />

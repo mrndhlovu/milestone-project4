@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -133,6 +134,25 @@ const mapStateToProps = state => {
     articleComments: getComments(state)
   };
 };
+
+ArticleDetailContainer.propTypes = {
+  history: PropTypes.func.isRequired,
+  article: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  updateArticle: PropTypes.object.isRequired,
+  articleComments: PropTypes.object.isRequired,
+  allAccess: PropTypes.bool.isRequired,
+  image: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  requestArticleDetail: PropTypes.func.isRequired,
+  deleteArticle: PropTypes.func.isRequired,
+  updateArticleLikes: PropTypes.func.isRequired,
+  createComment: PropTypes.func.isRequired,
+  createReply: PropTypes.func.isRequired,
+  uploadArticleImage: PropTypes.func.isRequired,
+  deleteImage: PropTypes.func.isRequired
+};
+
 export default connect(mapStateToProps, {
   requestArticleDetail,
   deleteArticle,

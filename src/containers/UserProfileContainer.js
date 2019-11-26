@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import {
   getUserProfile,
@@ -179,6 +180,17 @@ const mapStateToProps = state => {
     updateProfile: getProfileUpdate(state),
     account: getAccountUpdate(state)
   };
+};
+
+UserProfileContainer.propTypes = {
+  updateProfile: PropTypes.object.isRequired,
+  account: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  changeAccount: PropTypes.func.isRequired,
+  fetchUser: PropTypes.func.isRequired,
+  uploadProfileImage: PropTypes.func.isRequired,
+  updateUserProfile: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, {

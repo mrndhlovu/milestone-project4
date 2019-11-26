@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { Container, Menu } from "semantic-ui-react";
 
@@ -128,7 +128,12 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { logOut, fetchPendingOrder }
-)(withRouter(DesktopNavContainer));
+DesktopNavContainer.propTypes = {
+  user: PropTypes.object.isRequired,
+  userProfile: PropTypes.object.isRequired,
+  pendingOrder: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps, { logOut, fetchPendingOrder })(
+  DesktopNavContainer
+);

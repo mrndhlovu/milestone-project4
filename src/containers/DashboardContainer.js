@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
@@ -49,6 +50,11 @@ const mapStateToProps = state => {
   return {
     tickets: getTicketList(state)
   };
+};
+
+DashboardContainer.propTypes = {
+  tickets: PropTypes.object.isRequired,
+  fetchTicketsList: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, { fetchTicketsList })(

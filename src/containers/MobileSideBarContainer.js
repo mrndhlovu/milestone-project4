@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
@@ -125,7 +125,14 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { logOut, fetchPendingOrder }
-)(withRouter(MobileSideBarContainer));
+MobileSideBarContainer.propTypes = {
+  user: PropTypes.object.isRequired,
+  userProfile: PropTypes.object.isRequired,
+  pendingOrder: PropTypes.object.isRequired,
+  fetchPendingOrder: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired
+};
+
+export default connect(mapStateToProps, { logOut, fetchPendingOrder })(
+  MobileSideBarContainer
+);

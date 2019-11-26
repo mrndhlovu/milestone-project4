@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-import { withRouter } from "react-router-dom";
 import { Redirect } from "react-router";
+import PropTypes from "prop-types";
 
 import { Form, Grid, Segment, Container, Image } from "semantic-ui-react";
 
@@ -15,7 +15,6 @@ import SubmitButton from "../components/sharedComponents/SubmitButton";
 import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 import { DEFAULT_IMAGES } from "../constants/constants";
 import { validate } from "../utils/appUtils";
-import store from "../store";
 
 const styles = {
   width: "100%",
@@ -85,8 +84,6 @@ class LoginContainer extends Component {
 
     const { isLoading, showError } = this.state;
 
-    console.log(store.getState());
-
     if (isAuthenticated) {
       return <Redirect to={from} />;
     }
@@ -150,6 +147,11 @@ const mapStateToProps = state => {
   };
 };
 
+LoginContainer.propTypes = {
+  auth: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired
+};
+
 export default reduxForm({ validate, form: "LoginForm" })(
-  connect(mapStateToProps, { login })(withRouter(LoginContainer))
+  connect(mapStateToProps, { login })(LoginContainer)
 );

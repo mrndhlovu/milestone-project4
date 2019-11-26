@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { Form, Message, Container } from "semantic-ui-react";
 
@@ -148,6 +149,15 @@ const mapStateToProps = state => {
     ticket: getTicket(state),
     user: getUserProfile(state)
   };
+};
+
+CreateTicketContainer.propTypes = {
+  errorAlert: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  ticket: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  createTicket: PropTypes.func.isRequired
 };
 
 export default reduxForm({ validate, form: "CreateTicketForm" })(

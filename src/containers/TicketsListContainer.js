@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { fetchTicketsList } from "../actions/TicketActions";
 import { addItemToCart, fetchPendingOrder } from "../actions/CheckoutActions";
@@ -63,6 +64,16 @@ const mapStateToProps = state => {
     user: getUserProfile(state),
     auth: getUser(state)
   };
+};
+
+TicketsListContainer.propTypes = {
+  ticketsList: PropTypes.object.isRequired,
+  ticketsCart: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  fetchTicketsList: PropTypes.func.isRequired,
+  addItemToCart: PropTypes.func.isRequired,
+  fetchPendingOrder: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, {

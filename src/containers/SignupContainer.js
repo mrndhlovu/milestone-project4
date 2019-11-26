@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { reduxForm, Field } from "redux-form";
+import PropTypes from "prop-types";
 
 import { signup } from "../actions/AuthActions";
 
@@ -151,6 +152,12 @@ const mapStateToProps = state => {
     auth: getUser(state),
     error: getErrors(state).alertMsg
   };
+};
+
+SignupContainer.propTypes = {
+  auth: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired,
+  signup: PropTypes.func.isRequired
 };
 
 export default reduxForm({ validate, form: "LoginForm" })(

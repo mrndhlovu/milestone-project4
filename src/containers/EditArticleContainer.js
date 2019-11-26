@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { updateArticle, requestArticleDetail } from "../actions/BlogActions";
 import EditFields from "../components/sharedComponents/EditFields";
@@ -99,7 +99,14 @@ const mapStateToProps = state => {
   };
 };
 
+EditArticleContainer.propTypes = {
+  article: PropTypes.object.isRequired,
+  editArticle: PropTypes.object.isRequired,
+  requestArticleDetail: PropTypes.func.isRequired,
+  updateArticle: PropTypes.func.isRequired
+};
+
 export default connect(mapStateToProps, {
   requestArticleDetail,
   updateArticle
-})(withRouter(EditArticleContainer));
+})(EditArticleContainer);
