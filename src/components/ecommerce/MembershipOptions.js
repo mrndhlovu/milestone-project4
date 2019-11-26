@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Card, Segment } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 
 import PageHeader from "../sharedComponents/PageHeader";
 import { getPageId } from "../../utils/urls";
