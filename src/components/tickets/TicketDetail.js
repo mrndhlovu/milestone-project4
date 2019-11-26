@@ -1,59 +1,108 @@
-import React from "react";
+import React, { Fragment } from "react";
 
-import { Card, Segment, Header } from "semantic-ui-react";
+import { Card, Segment, Header, Container } from "semantic-ui-react";
 
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import EditButtons from "../sharedComponents/EditButtons";
 import TicketDetailStats from "./TicketDetailStats";
+import DynamicHeader from "../sharedComponents/DynamicHeader";
+import TicketSolution from "./TicketSolution";
+import CommentsContainer from "../../containers/CommentsContainer";
+import StyledMessage from "../sharedComponents/StyledMessage";
 
 const TicketDetail = ({
-  isLoading,
+  handleAccordionClick,
+  addToCart,
   data,
   handleTicketDelete,
   allAccess,
-  dataReceived,
   handleVoteClick,
-  isOwner,
-  votes
+  activeIndex,
+  index,
+  solution,
+  buttonText,
+  isAuthenticated,
+  createComment,
+  createReply,
+  user
 }) => {
-  const { title, description, views, id } = data;
+  const {
+    data: { title, description, views, id, image, votes },
+    isOwner,
+    comments
+  } = data;
 
-  return isLoading ? (
-    <UILoadingSpinner />
-  ) : (
-    dataReceived && (
-      <Segment.Group style={{ paddingLeft: 10 }}>
-        <Segment.Group horizontal>
+  return (
+    <Fragment>
+      <DynamicHeader
+        title={title}
+        image={image}
+        dataTestId="ticket-detail-header"
+      />
+      <Container
+        style={{ paddingTop: 50 }}
+        data-test-id="ticket-detail-container"
+      >
+        <Segment.Group style={{ paddingLeft: 10 }}>
+          <Segment.Group horizontal>
+            <Segment>
+              <Header content={title.toUpperCase()} color="blue" />
+            </Segment>
+
+            <Segment>
+              {allAccess && (
+                <EditButtons
+                  handleTicketDelete={handleTicketDelete}
+                  id={id}
+                  isOwner={isOwner}
+                  isTicket={true}
+                />
+              )}
+            </Segment>
+          </Segment.Group>
           <Segment>
-            <Header content={title.toUpperCase()} color="blue" />
+            <Card.Content description={description} />
           </Segment>
 
           <Segment>
-            {allAccess && (
-              <EditButtons
-                handleTicketDelete={() => handleTicketDelete()}
-                id={id}
-                isOwner={isOwner}
-                isTicket={true}
-              />
-            )}
+            <TicketDetailStats
+              handleVoteClick={handleVoteClick}
+              allAccess={allAccess}
+              votes={votes}
+              views={views}
+              id={id}
+            />
           </Segment>
         </Segment.Group>
-        <Segment>
-          <Card.Content description={description} />
-        </Segment>
 
-        <Segment>
-          <TicketDetailStats
-            handleVoteClick={() => handleVoteClick(id)}
-            allAccess={allAccess}
-            votes={votes}
-            views={views}
-            id={id}
+        <TicketSolution
+          handleAccordionClick={handleAccordionClick}
+          activeIndex={activeIndex}
+          index={index}
+          solution={solution}
+          isAuthenticated={isAuthenticated}
+          addToCart={addToCart}
+          id={id}
+          buttonText={buttonText}
+        />
+
+        {allAccess ? (
+          <CommentsContainer
+            comments={comments}
+            ticketId={id}
+            isTicket={true}
+            userId={user.id}
+            createComment={createComment}
+            createReply={createReply}
           />
-        </Segment>
-      </Segment.Group>
-    )
+        ) : (
+          <StyledMessage
+            message="To view and make comments you need a "
+            linkText="Unicorn Pro Account."
+            redirect="/pricing"
+          />
+        )}
+      </Container>
+    </Fragment>
   );
 };
 
