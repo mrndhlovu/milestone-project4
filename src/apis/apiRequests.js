@@ -182,7 +182,6 @@ export function requestAwsFileUpload(file, fileName, app) {
 
 export function requestAwsDeleteFile(fileName, app) {
   const S3Client = new S3(getAwsConfig(app));
-  console.log(S3Client);
   return S3Client.deleteFile(fileName);
 }
 

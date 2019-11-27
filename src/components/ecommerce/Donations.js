@@ -1,7 +1,15 @@
 import React from "react";
+import styled from "styled-components";
+
 import { Card, Grid, Button, Input, Header, Segment } from "semantic-ui-react";
 
 import { DONATION_AMOUNTS } from "../../constants/constants";
+
+const StyledDiv = styled.div`
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+`;
 
 const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
   const otherAmount = () => {
@@ -39,14 +47,16 @@ const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
   };
 
   return (
-    <Segment>
-      <Header content="Donate" />
+    <StyledDiv>
+      <Segment>
+        <Header content="Donate" />
 
-      <Grid columns={3}>
-        <Grid.Row>{renderDonationCards()}</Grid.Row>
-      </Grid>
-      {otherAmount()}
-    </Segment>
+        <Grid columns={3}>
+          <Grid.Row>{renderDonationCards()}</Grid.Row>
+        </Grid>
+        {otherAmount()}
+      </Segment>
+    </StyledDiv>
   );
 };
 

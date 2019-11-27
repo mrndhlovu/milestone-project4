@@ -7,10 +7,16 @@ import CartFooter from "./CartFooter";
 
 import CartBody from "./CartBody";
 
-const OrderSummary = ({ pendingOrders, handleRemoveClick, history, total }) => {
+const OrderSummary = ({
+  pendingOrders,
+  handleRemoveClick,
+  history,
+  total,
+  cartIsEmpty
+}) => {
   const orderItems = pendingOrders.orders ? pendingOrders.orders : {};
 
-  return pendingOrders !== {} ? (
+  return !cartIsEmpty ? (
     <Container>
       <CartBody
         orderItems={orderItems}

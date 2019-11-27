@@ -11,7 +11,7 @@ const CardPaymentForm = ({
   isLoading
 }) => {
   return (
-    <Card fluid>
+    <Card fluid style={{ borderRadius: 0 }}>
       <Card.Content header="Payment" />
       <Card.Content>
         <Form.Group widths="equal">

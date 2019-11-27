@@ -17,6 +17,7 @@ import { Segment, Header } from "semantic-ui-react";
 
 const StyledSegment = styled(Segment)`
   padding: 1rem 0 !important;
+  border-radius: 0 !important;
 `;
 
 export class OrderSummaryContainer extends Component {
@@ -60,21 +61,23 @@ export class OrderSummaryContainer extends Component {
     const { donateIsDisable, buttonText } = this.state;
     const { pendingOrders, history } = this.props;
     const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
+    const cartIsEmpty = count === 0;
 
     return (
       <StyledSegment data-test-id="order-summary-page">
-        {count > 0 && (
-          <Header style={{ paddingLeft: 15 }}>
+        {!cartIsEmpty && (
+          <Header style={{ paddingLeft: 25 }}>
             Your have {count} {count > 1 ? "items" : "item"} in your cart.
           </Header>
         )}
 
-        {count > 0 && (
+        {!cartIsEmpty && (
           <OrderSummary
             pendingOrders={pendingOrders.data}
             handleRemoveClick={this.handleRemoveClick}
             history={history}
             count={count}
+            cartIsEmpty={cartIsEmpty}
           />
         )}
 

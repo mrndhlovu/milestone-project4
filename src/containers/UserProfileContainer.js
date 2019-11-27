@@ -44,6 +44,10 @@ export class UserProfileContainer extends Component {
     this.handleAccordionClick = this.handleAccordionClick.bind(this);
   }
 
+  componentDidMount() {
+    this.props.fetchUser();
+  }
+
   componentDidUpdate(prevProps) {
     const { user, updateProfile, account } = this.props;
 
