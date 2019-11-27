@@ -38,7 +38,7 @@
     "build": "react-scripts build",
     "test": "cross-env NODE_ENV=test jasmine",
     "eject": "react-scripts eject",
-    "postinstall": "yarn run build"
+    "postinstall": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
