@@ -50,9 +50,11 @@ const ImageUploader = ({ handleUploadImage, handleDeleteImage }) => {
     <Fragment>
       <Container className="container" style={{ paddingBottom: 20 }}>
         {!hasSelectedImage && (
-          <StyledContainer {...getRootProps({ className: "dropzone" })}>
-            <input {...getInputProps()} />
-            <p>Drag 'n' drop some image here, or click to select files</p>
+          <StyledContainer>
+            <div {...getRootProps({ className: "dropzone" })}>
+              <input {...getInputProps()} />
+              <p>Drag 'n' drop some image here, or click to select files</p>
+            </div>
           </StyledContainer>
         )}
         {hasSelectedImage && (

@@ -99,8 +99,7 @@ const mapStateToProps = state => {
 OrderSummaryContainer.propTypes = {
   fetchPendingOrder: PropTypes.func.isRequired,
   removeItemFromCart: PropTypes.func.isRequired,
-  addItemToCart: PropTypes.func.isRequired,
-  count: PropTypes.number.isRequired
+  addItemToCart: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, {

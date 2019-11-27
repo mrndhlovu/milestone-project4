@@ -36,6 +36,7 @@ class ArticleDetailContainer extends Component {
     this.handleLikeClick = this.handleLikeClick.bind(this);
     this.handleUpdateImage = this.handleUpdateImage.bind(this);
     this.handleDeleteImage = this.handleDeleteImage.bind(this);
+    this.handleConfirm = this.handleConfirm.bind(this);
   }
 
   componentDidMount() {
@@ -77,6 +78,7 @@ class ArticleDetailContainer extends Component {
 
   handleConfirm() {
     const { id } = this.props.match.params;
+
     this.props.deleteArticle(id);
     setTimeout(this.props.history.push(`/blog`), 1000);
   }
@@ -136,14 +138,10 @@ const mapStateToProps = state => {
 };
 
 ArticleDetailContainer.propTypes = {
-  history: PropTypes.func.isRequired,
   article: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   updateArticle: PropTypes.object.isRequired,
   articleComments: PropTypes.object.isRequired,
-  allAccess: PropTypes.bool.isRequired,
-  image: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
   requestArticleDetail: PropTypes.func.isRequired,
   deleteArticle: PropTypes.func.isRequired,
   updateArticleLikes: PropTypes.func.isRequired,

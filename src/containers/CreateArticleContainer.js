@@ -129,8 +129,6 @@ CreateArticleContainer.propTypes = {
   auth: PropTypes.object.isRequired,
   article: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  userId: PropTypes.number.isRequired,
-  history: PropTypes.object.isRequired,
   createArticle: PropTypes.func.isRequired
 };
 
