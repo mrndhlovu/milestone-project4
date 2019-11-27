@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 import { fetchTicketsList } from "../actions/TicketActions";
 import { addItemToCart, fetchPendingOrder } from "../actions/CheckoutActions";
-
 import {
   getTicketList,
   getCartAddOrRemove,
@@ -37,7 +36,7 @@ export class TicketsListContainer extends Component {
   }
 
   render() {
-    const { ticketsList, user } = this.props;
+    const { ticketsList, user, auth } = this.props;
     const { buttonText } = this.state;
     const allAccess =
       user.dataReceived &&
@@ -51,6 +50,7 @@ export class TicketsListContainer extends Component {
           buttonText={buttonText}
           allAccess={allAccess}
           handleAddToCart={this.handleAddToCart}
+          isAuthenticated={auth.isAuthenticated}
         />
       )
     );

@@ -20,7 +20,8 @@ const TicketsList = ({
   isLoading,
   allAccess,
   buttonText,
-  handleAddToCart
+  handleAddToCart,
+  isAuthenticated
 }) => {
   const ticketCount = getObjectLength(tickets);
 
@@ -49,6 +50,7 @@ const TicketsList = ({
                       ticketsList={tickets}
                       allAccess={allAccess}
                       buttonText={buttonText}
+                      isAuthenticated={isAuthenticated}
                     />
                   ) : (
                     <StyledMessage

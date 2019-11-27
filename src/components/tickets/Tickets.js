@@ -5,7 +5,7 @@ import { Label, List, Icon, Table, Header, Button } from "semantic-ui-react";
 
 import { getFormatedDate } from "../../utils/appUtils";
 
-export const Tickets = ({ ticketsList, handleAddToCart, allAccess }) => {
+export const Tickets = ({ ticketsList, handleAddToCart, isAuthenticated }) => {
   const renderTicketCards = () => {
     return Object.keys(ticketsList).map(key => {
       const {
@@ -58,10 +58,9 @@ export const Tickets = ({ ticketsList, handleAddToCart, allAccess }) => {
             </List.Item>
           </Table.Cell>
           <Table.Cell textAlign="right">
-            {is_feature && (
+            {is_feature && isAuthenticated && (
               <Button
                 data-test-id={`add-ticket-to-cart-${id}`}
-                disabled={!allAccess}
                 color="orange"
                 size="tiny"
                 onClick={() => handleAddToCart(id)}
