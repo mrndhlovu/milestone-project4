@@ -58,25 +58,25 @@ def get_user(request):
 
 def get_selected_membership(request):
 
-    choosen_membership = UserMembership.objects.filter(
+    chosen_membership = UserMembership.objects.filter(
         user=request.user)
 
-    if choosen_membership.exists():
-        return choosen_membership[0]
+    if chosen_membership.exists():
+        return chosen_membership[0]
     return None
 
 
 def update_selected_membership(request, membership_type):
 
-    choosen_membership = UserMembership.objects.filter(
+    chosen_membership = UserMembership.objects.filter(
         user=request.user)
 
-    if choosen_membership.exists():
-        selected_membership = choosen_membership[0]
+    if chosen_membership.exists():
+        selected_membership = chosen_membership[0]
         selected_membership.membership = membership_type
         selected_membership.save()
 
-        return choosen_membership
+        return chosen_membership
     return None
 
 
@@ -99,7 +99,7 @@ def updated_user_membership(request, subscription_id):
         return context
     except Exception:
         context = {
-            'message': 'Failed to get subcription id'
+            'message': 'Failed to get subscription id'
         }
 
 
@@ -121,14 +121,14 @@ def get_subscription_id(request, membership_id, customer):
 
     user = get_user(request)
 
-    choosen_membership = get_object_or_404(
+    chosen_membership = get_object_or_404(
         Membership, id=membership_id)
     try:
         subscription = stripe.Subscription.create(
             customer=user.stripe_customer_id,
             items=[
                 {
-                    "plan": choosen_membership.stripe_plan_id
+                    "plan": chosen_membership.stripe_plan_id
                 }
             ]
         )
