@@ -18,8 +18,6 @@ import BlogContainer from "./containers/BlogContainer";
 import CreateArticleContainer from "./containers/CreateArticleContainer";
 import EditArticleContainer from "./containers/EditArticleContainer";
 
-import { UserContext } from "./utils/hookUtils/UserContext";
-
 const BaseRouter = () => {
   return (
     <Switch>
