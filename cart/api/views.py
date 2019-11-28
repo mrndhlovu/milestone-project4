@@ -164,6 +164,15 @@ def get_cart_items(request, product_content_type):
         return None
 
 
+def get_donation(request):
+    donations = Donation.objects.filter(user=request.user)
+
+    if donations.exists():
+        return donations
+    else:
+        return None
+
+
 class AddToCartAPIView(ListAPIView):
     serializer_class = CartSerializer
     queryset = Cart.objects.all()
@@ -189,10 +198,15 @@ class AddToCartAPIView(ListAPIView):
 
         else:
             donation_amount = request_data['donation']
+            donation = get_donation(request)
 
-            product = Donation.objects.create(
-                user=request.user, price=donation_amount)
-            product.save()
+            if donation is not None:
+                product = donation.first()
+                product.price = donation_amount
+                product.save()
+            else:
+                product, created = Donation.objects.get_or_create(
+                    user=request.user, id=product_id, price=donation_amount)
 
         if cart is not None and cart.is_paid is False:
             product_content_type = ContentType.objects.get_for_model(
@@ -212,7 +226,7 @@ class AddToCartAPIView(ListAPIView):
                         }
                         return JsonResponse(context, status=status.HTTP_200_OK)
 
-                    elif item.product_object_id == product_id:
+                    if item.product_object_id == product_id:
 
                         context = {
                             'message': 'Item already in your cart.',
@@ -316,7 +330,7 @@ class CartRemoveItemAPIView(RetrieveAPIView):
             if pending_order.exists():
                 cartItem = pending_order.first()
                 if product_content_type == app_type['donation']:
-                    product.delete()
+                    cartItem.delete()
 
                 else:
                     cartItem.delete()
@@ -427,7 +441,7 @@ class PaymentAPIView(APIView):
                     return Response(context, status=status.HTTP_200_OK)
                 else:
                     context = {
-                        'message': "Error saving your subscription successful!"
+                        'message': "Error updating purchase!"
                     }
                     return Response(context, status=status.HTTP_400_BAD_REQUEST)
 
@@ -470,5 +484,5 @@ class PaymentAPIView(APIView):
                 }
                 return Response(context, status=status.HTTP_400_BAD_REQUEST)
         else:
-            context = {'message': "Customer has no stripe profile"}
+            context = {'message': "Stripe profile not found"}
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
