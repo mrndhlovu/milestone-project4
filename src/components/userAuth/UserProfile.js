@@ -39,6 +39,7 @@ export const UserProfile = ({
   showConfirmModal,
   option,
   activeIndex,
+  handleChange,
   handleAccordionClick
 }) => {
   const accountType = `Unicorn ${allAccess ? "PRO" : "FREE"} Account`;
@@ -126,6 +127,7 @@ export const UserProfile = ({
                     handleCancelButtonClick={handleCancelButtonClick}
                     userData={user.data}
                     handleUpdateProfile={handleUpdateProfile}
+                    handleChange={handleChange}
                   />
                 </Accordion.Content>
               </Accordion>
