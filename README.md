@@ -73,6 +73,7 @@ Users will have access to this page if authenticated. If a purchase is completed
 15. [Jasmine](https://jasmine.github.io/): unit testing on the frontend
 16. [Stripe]() for payment processing.
 17. [Github Desktop](https://desktop.github.com/) for version tracking of the app off the terminal
+18.
 
 ### Setup
 
@@ -81,9 +82,27 @@ Cloning this repo to run locally will require the following steps
 1. Click the `Clone or download` button select `Clone with HTTPs` by copying the the URL that begins with `https://github/......`
 2. Open you preferred terminal and type `git clone` the paste the URL u just copied and press enter.
 3. Repo should be copied to you local directory.
-4. Make sure you have
+4. Make sure you have these installed:
    - [NodeJS](https://nodejs.org/)
    - [npm](https://www.npmjs.com/)
    - [Django](https://www.djangoproject.com/)
    - [Pipenv](https://github.com/pypa/pipenv)
-5.
+5. cd into the project folder by typing `cd milestone-project4`
+6. If you have installed npm, run `npm install` to install all dependencies in the the `package.json` file.
+7. Now we create the project virtual environment to run Django, run `pipenv shell`.
+8. Type `pipenv install` to install all django dependencies in the `Pipfile`
+9. The project depends on `os environment` variables, create a `.env` file in the root of the project with a `SECRET_KEY` variable e.g SECRET_KEY="PROJECT_SECRET_KEY"
+
+## Testing
+
+Frontend tests
+Testing of the app is done using [Jasmine](https://jasmine.github.io/), tests files are in the `spec` file. Because each component is broken into small components, the test will check the functionality of each component. To run the tests type `npm test` in the terminal.
+
+Backend tests
+Django automated tests is used to check the correct functionality of each app models and expected url endpoints. To run the tests type `python3 manage.py` in the terminal.
+
+Cross-Browser and responsive manual test was done using the following
+
+- Firefox
+- Microsoft Edge
+- Chrome development tools
