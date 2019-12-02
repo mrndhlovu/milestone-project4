@@ -73,12 +73,11 @@ Users will have access to this page if authenticated. If a purchase is completed
 15. [Jasmine](https://jasmine.github.io/): unit testing on the frontend
 16. [Stripe]() for payment processing.
 17. [Github Desktop](https://desktop.github.com/) for version tracking of the app off the terminal
-18. [axios]()  a Javascript library used to make http requests from node.js or XMLHttpRequests
-    
+
 Note: the `package.json` file for the frontend and `Pipfile` for backend located in the root folder, lists all libraries used in the project.
 
 ### Saving images to AWS
-* First setup and configured an AWS bucket, 
+* First setup an AWS bucket, 
 * Then setup `react-s3` and `aws-s3` configuration on the frontend like this
 
 ```
@@ -107,7 +106,7 @@ AWS Bucket folder structure
 
 ```
 root folder 
-    defaults (stores all default images used through out the project)
+    defaults: (stores all default images used through out the project)
     mediafiles: 
         posts: (stores article images )
         users: (stores user images )
@@ -121,10 +120,10 @@ root folder
 * Then it is presented on the frontend `Image` component like so. `<Image src={IMAGE_URL} />`
 
 
-Cloning this repo to run locally will require the following steps
+#### Cloning this repo to run locally will require the following steps
 
 1. Click the `Clone or download` button, then copy the `Clone with HTTPs`  URL which starts with `https://github/......`
-2. Open your preferred terminal and type `git clone` the paste the URL you just copied and press enter.
+2. Open your preferred terminal and type `git clone` and paste the URL you just copied and press enter.
 3. The repo should be copied to you local directory.
 4. Make sure you have these installed:
    - [NodeJS](https://nodejs.org/)
@@ -143,11 +142,11 @@ Cloning this repo to run locally will require the following steps
 
 ## Testing
 
-Frontend tests
-Testing of the app is done using [Jasmine](https://jasmine.github.io/), tests files are in the `spec` file. Because each component is broken into small components, the test will check the functionality of each component. To run the tests type `npm test` in the terminal.
+* Frontend: 
+[Jasmine](https://jasmine.github.io/)is used for frontend tests, The `spec` folder in root of the project holds all test files. Because react allows us to break components into small unit, the test will check the functionality of each component providing the default `props` which allow a component to be created for a successful test. To run the tests type `npm test` in the terminal.
 
-Backend tests
-Django automated tests is used to check the correct functionality of each app models and expected url endpoints. To run the tests type `python3 manage.py` in the terminal.
+* Backend tests
+Django automated tests is used to check the correct functionality of each app's models and expected url endpoints. To run the tests type `python3 manage.py` in the terminal.
 
 Cross-Browser and responsive testing was done on the following browser development tools
 
@@ -158,9 +157,22 @@ Cross-Browser and responsive testing was done on the following browser developme
 
 ## Deployment
 
+Heroku is host of this project. Requirements for a successful project deployment require the following steps:
+* Create a new heroku app
+* Instead of a `requirements.txt` file, this project expects a `Pipfile` to be in the root folder
+* Also make sure the `Procfile` is in the root folder, as lets django know how to run the project.
+* Link the Github repo of the project to heroku, so you only have to push the finally project to Github and the heroku will be automatically updated.
+* Create all required environmental variables expects for both frontend and backend in heroku's `Config vars` section.
+* Set DEBUG mode to false
+* Then push the final project Github, heroku should inform you if the is an issue with the project build in the `Activity` section. 
+* If build is successful, click the `Open app`. 
+* Project should run.
 
 
+# Acknowledgements and Credits
 
-
-
-
+* Membership app of the project was inspired by  [Traversy Media](https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA):  YouTube channel.
+* In the Cart app and the idea of using `django polymorphism models` was thanks to [CodingEntrepreneurs](https://www.youtube.com/channel/UCWEHue8kksIaktO8KTTN_zg): YouTube channel.
+* Implementing React for my frontend was inspired by Stephen Grinder's [Modern React with Redux course!](https://www.udemy.com/course/react-redux/).
+* Default images are from [Pixabay](https://pixabay.com/)
+* Image compression is thanks to [https://tinypng.com/](https://tinypng.com/)
