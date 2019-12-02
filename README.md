@@ -172,9 +172,11 @@ Requirements for a successful project deployment requires the following:
 
 
 # Acknowledgements and Credits
+An amazing experience and learning material, thanks to [Code Institute](https://codeinstitute.net/)
 
-* Membership app of the project was inspired by  [Traversy Media](https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA):  YouTube channel.
-* In the Cart app and the idea of using `django polymorphism models` was thanks to [CodingEntrepreneurs](https://www.youtube.com/channel/UCWEHue8kksIaktO8KTTN_zg): YouTube channel.
+* The `Membership` app of the project was inspired by  [Traversy Media](https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA):  YouTube channel.
+* In the `Cart` app and the idea of using `django polymorphism models` was thanks to [CodingEntrepreneurs](https://www.youtube.com/channel/UCWEHue8kksIaktO8KTTN_zg): YouTube channel.
 * Implementing React for my frontend was inspired by Stephen Grinder's [Modern React with Redux course!](https://www.udemy.com/course/react-redux/).
 * Default images are from [Pixabay](https://pixabay.com/)
 * Image compression is thanks to [tinypng.com](https://tinypng.com/)
+
