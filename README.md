@@ -73,28 +73,73 @@ Users will have access to this page if authenticated. If a purchase is completed
 15. [Jasmine](https://jasmine.github.io/): unit testing on the frontend
 16. [Stripe]() for payment processing.
 17. [Github Desktop](https://desktop.github.com/) for version tracking of the app off the terminal
-18.
+18. [axios]()  a Javascript library used to make http requests from node.js or XMLHttpRequests
+    
+Note: the `package.json` file for the frontend and `Pipfile` for backend located in the root folder, lists all libraries used in the project.
 
-### Setup
+### Saving images to AWS
+* First setup and configured an AWS bucket, 
+* Then setup `react-s3` and `aws-s3` configuration on the frontend like this
+
+```
+import S3 from "aws-s3";
+import axios from "axios";
+
+    // AWS bucket configurations
+
+    const config = {
+        bucketName: `${process.env.REACT_APP_AWS_BUCKET_NAME}`,
+        dirName: `${process.env.REACT_APP_AWS_MEDIA_POST}`,
+        region: `${process.env.REACT_APP_AWS_REGION}`,
+        accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
+        secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_ACCESS_KEY}`
+    };
+
+    // request
+    function requestAwsFileUpload(file, fileName) {
+    const S3Client = new S3(config());
+    return S3Client.uploadFile(file, fileName);
+    }
+
+```
+
+AWS Bucket folder structure
+
+```
+root folder 
+    defaults (stores all default images used through out the project)
+    mediafiles: 
+        posts: (stores article images )
+        users: (stores user images )
+ ```
+
+#### How an image is uploded:
+
+* A request is sent to the aws server to store an image, 
+* If the image is stored successfully, a response with a url of the image is returned.
+* The response url received is then sent to the django server which will update the image field for an article or user profile with the url. 
+* Then it is presented on the frontend `Image` component like so. `<Image src={IMAGE_URL} />`
+
 
 Cloning this repo to run locally will require the following steps
 
-1. Click the `Clone or download` button select `Clone with HTTPs` by copying the the URL that begins with `https://github/......`
-2. Open you preferred terminal and type `git clone` the paste the URL u just copied and press enter.
-3. Repo should be copied to you local directory.
+1. Click the `Clone or download` button, then copy the `Clone with HTTPs`  URL which starts with `https://github/......`
+2. Open your preferred terminal and type `git clone` the paste the URL you just copied and press enter.
+3. The repo should be copied to you local directory.
 4. Make sure you have these installed:
    - [NodeJS](https://nodejs.org/)
    - [npm](https://www.npmjs.com/)
    - [Django](https://www.djangoproject.com/)
    - [Pipenv](https://github.com/pypa/pipenv)
 5. cd into the project folder by typing `cd milestone-project4`
-6. If you have installed npm, run `npm install` to install all dependencies in the the `package.json` file.
+6. If npm is installed, you should be able to run `npm install` to install all dependencies in the the `package.json` file.
 7. Now we create the project virtual environment to run Django, run `pipenv shell`.
 8. Type `pipenv install` to install all django dependencies in the `Pipfile`
-9. The project depends on `os environment` variables, create a `.env` file in the root of the project with a `SECRET_KEY` variable e.g SECRET_KEY="PROJECT_SECRET_KEY"
-10. Frontend side of the app depends on environmental variables for , in the `.env` file you just created, also setup the following
+9. The project depends on environmental variables, create a `.env` file in the root of the project with a `SECRET_KEY` variable e.g SECRET_KEY="PROJECT_SECRET_KEY"
+10. The frontend side of the app also has environmental variables to be set, in the `.env` file, add these variables
     - REACT_APP_STRIPE_PUBLISHABLE='SOME_STRIPE_TOKEN'
     - REACT_APP_DEV_API_URL=http://localhost:8000
+
 
 ## Testing
 
@@ -104,8 +149,18 @@ Testing of the app is done using [Jasmine](https://jasmine.github.io/), tests fi
 Backend tests
 Django automated tests is used to check the correct functionality of each app models and expected url endpoints. To run the tests type `python3 manage.py` in the terminal.
 
-Cross-Browser and responsive manual test was done using the following
+Cross-Browser and responsive testing was done on the following browser development tools
 
 - Firefox
 - Microsoft Edge
-- Chrome development tools
+- Chrome 
+
+
+## Deployment
+
+
+
+
+
+
+
