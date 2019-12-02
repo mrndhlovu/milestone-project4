@@ -157,15 +157,17 @@ Cross-Browser and responsive testing was done on the following browser developme
 
 ## Deployment
 
-Heroku is the host of this project. Requirements for a successful project deployment require the following steps:
-* Create a new heroku app
-* Instead of a `requirements.txt` file, this project expects a `Pipfile` to be in the root folder
+Heroku is the host of this project. 
+Requirements for a successful project deployment requires the following:
+
+* Create a new heroku app.
+* Instead of a `requirements.txt` file, this project expects a `Pipfile` to be in the root folder.
 * Also make sure the `Procfile` is in the root folder, as it lets django know how to run the project.
 * Link the Github repo of the project to heroku, so you only have to push the final project to Github and heroku will be automatically updated.
-* Create all required environmental variables expects for both frontend and backend in heroku's `Config vars` section.
-* Set DEBUG mode to false
+* Create all required environmental variables expected for both frontend and backend in heroku's `Config vars` section.
+* Set DEBUG mode to false.
 * Then push the final project to Github, heroku should inform you if there is an issue with the project build in the `Activity` section. 
-* If build is successful, click the `Open app` button. 
+* If the build is successful, click the `Open app` button. 
 * The project should run successfully.
 
 
