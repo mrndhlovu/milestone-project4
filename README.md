@@ -177,4 +177,4 @@ Requirements for a successful project deployment requires the following:
 * In the Cart app and the idea of using `django polymorphism models` was thanks to [CodingEntrepreneurs](https://www.youtube.com/channel/UCWEHue8kksIaktO8KTTN_zg): YouTube channel.
 * Implementing React for my frontend was inspired by Stephen Grinder's [Modern React with Redux course!](https://www.udemy.com/course/react-redux/).
 * Default images are from [Pixabay](https://pixabay.com/)
-* Image compression is thanks to [https://tinypng.com/](https://tinypng.com/)
+* Image compression is thanks to [tinypng.com](https://tinypng.com/)
