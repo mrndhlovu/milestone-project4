@@ -92,6 +92,9 @@ Cloning this repo to run locally will require the following steps
 7. Now we create the project virtual environment to run Django, run `pipenv shell`.
 8. Type `pipenv install` to install all django dependencies in the `Pipfile`
 9. The project depends on `os environment` variables, create a `.env` file in the root of the project with a `SECRET_KEY` variable e.g SECRET_KEY="PROJECT_SECRET_KEY"
+10. Frontend side of the app depends on environmental variables for , in the `.env` file you just created, also setup the following
+    - REACT_APP_STRIPE_PUBLISHABLE='SOME_STRIPE_TOKEN'
+    - REACT_APP_DEV_API_URL=http://localhost:8000
 
 ## Testing
 
