@@ -58,14 +58,14 @@ Users will have access to this page if authenticated. If a purchase is completed
 
 1.  [Django](https://www.djangoproject.com/) the core backend of the app which the frontend depends on.
 2.  [React JS](https://reactjs.org/): a javascript library developed by Facebook to build UIs.
-3.  [NodeJS](https://nodejs.org/) is a javaScript runtime built engine.
+3.  [NodeJS](https://nodejs.org/) a JavaScript runtime built engine.
 4.  [Npm](https://www.npmjs.com/) frontend package manager
 5.  [Semantic UI React](https://react.semantic-ui.com/): a frontend framework like bootstrap but with more advanced build tools mostly used on the site for handling the majority of the layout and some css styling.
 6.  [Amazon AWS](https://aws.amazon.com/): for storing images.
 7.  [Pipenv](https://github.com/pypa/pipenv): packet manager for Python
-8.  CSS: for styling parts of the website.
+8.  CSS: for styling parts of the website
 9.  [JSX](https://reactjs.org/docs/introducing-jsx.html): syntax extension for javascript.
-10. [VSCode](https://code.visualstudio.com/): Integrated Development Environment
+10. [VS Code](https://code.visualstudio.com/): Integrated Development Environment
 11. [Heroku](https://www.heroku.com/): App deployment.
 12. [Git](https://git-scm.com/): for version tracking of the app.
 13. Google chrome development tools.
@@ -114,7 +114,7 @@ root folder
 
 #### How an image is uploded:
 
-* A request is sent to the aws server to store an image, 
+* A request is sent to the aws server to store an image.
 * If the image is stored successfully, a response with a url of the image is returned.
 * The response url received is then sent to the django server which will update the image field for an article or user profile with the url. 
 * Then it is presented on the frontend `Image` component like so. `<Image src={IMAGE_URL} />`
@@ -124,14 +124,14 @@ root folder
 
 1. Click the `Clone or download` button, then copy the `Clone with HTTPs`  URL which starts with `https://github/......`
 2. Open your preferred terminal and type `git clone` and paste the URL you just copied and press enter.
-3. The repo should be copied to you local directory.
+3. The repo should be copied to your local directory.
 4. Make sure you have these installed:
    - [NodeJS](https://nodejs.org/)
    - [npm](https://www.npmjs.com/)
    - [Django](https://www.djangoproject.com/)
    - [Pipenv](https://github.com/pypa/pipenv)
 5. cd into the project folder by typing `cd milestone-project4`
-6. If npm is installed, you should be able to run `npm install` to install all dependencies in the the `package.json` file.
+6. If npm is installed, you should be able to run `npm install` to install all dependencies in the `package.json` file.
 7. Now we create the project virtual environment to run Django, run `pipenv shell`.
 8. Type `pipenv install` to install all django dependencies in the `Pipfile`
 9. The project depends on environmental variables, create a `.env` file in the root of the project with a `SECRET_KEY` variable e.g SECRET_KEY="PROJECT_SECRET_KEY"
@@ -143,10 +143,10 @@ root folder
 ## Testing
 
 * Frontend: 
-[Jasmine](https://jasmine.github.io/)is used for frontend tests, The `spec` folder in root of the project holds all test files. Because react allows us to break components into small unit, the test will check the functionality of each component providing the default `props` which allow a component to be created for a successful test. To run the tests type `npm test` in the terminal.
+[Jasmine](https://jasmine.github.io/)is used for frontend tests, The `spec` folder in the root of the project holds all test files. Because react allows us to break components into small unit, the test will check the functionality of each component providing the default `props` which allow a component to be created for a successful test. To run the tests type `npm test` in the terminal.
 
 * Backend tests
-Django automated tests is used to check the correct functionality of each app's models and expected url endpoints. To run the tests type `python3 manage.py` in the terminal.
+Django automated tests is used to check the correct functionality of each app's models and expected url endpoints. To run the tests type `python3 manage.py test` in the terminal.
 
 Cross-Browser and responsive testing was done on the following browser development tools
 
