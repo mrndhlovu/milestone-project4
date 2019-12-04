@@ -10,7 +10,7 @@ import PageHeader from "../sharedComponents/PageHeader";
 import StyledMessage from "../sharedComponents/StyledMessage";
 import Tickets from "./Tickets";
 
-const SytledContainer = styled(Container)`
+const StyledContainer = styled(Container)`
   padding: 20px 5px;
   background-color: #eee;
 `;
@@ -24,6 +24,7 @@ const TicketsList = ({
   isAuthenticated
 }) => {
   const ticketCount = getObjectLength(tickets);
+  const emptyTicketList = tickets.length === 0;
 
   return (
     <Fragment>
@@ -33,7 +34,7 @@ const TicketsList = ({
         buttonId="from-list-open-ticket"
       />
 
-      <SytledContainer fluid data-test-id="ticket-list-container">
+      <StyledContainer fluid data-test-id="ticket-list-container">
         <Grid stackable columns={2} data-test-id="ticket-grid-container">
           <Grid.Column width={4}>
             <ListSideBar data={tickets} />
@@ -44,7 +45,7 @@ const TicketsList = ({
               <Card.Content>
                 <Card.Header as="h3" content={`${ticketCount} TICKETS`} />
                 <Segment attached stacked loading={isLoading}>
-                  {tickets.length > 0 ? (
+                  {!emptyTicketList ? (
                     <Tickets
                       handleAddToCart={handleAddToCart}
                       ticketsList={tickets}
@@ -64,7 +65,7 @@ const TicketsList = ({
             </Card>
           </Grid.Column>
         </Grid>
-      </SytledContainer>
+      </StyledContainer>
     </Fragment>
   );
 };
