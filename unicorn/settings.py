@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'accounts',
     'memberships',
     'cart',
-
     'tickets',
     'comments',
     'blog',
@@ -47,7 +46,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'knox',
-    'storages'
 ]
 
 SITE_ID = 1
@@ -87,18 +85,8 @@ WSGI_APPLICATION = 'unicorn.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if development:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ['DATABASE_NAME'],
-            'USER': os.environ['DATABASE_USER'],
-            'PASSWORD': os.environ['DATABASE_PASSWORD'],
-            'HOST': os.environ['DATABASE_HOST'],
-            'PORT': '5432'
-        }
-    }
-elif "DATABASE_URL" in os.environ:
+
+if "DATABASE_URL" in os.environ:
     DATABASES = {'default': dj_database_url.parse(
         os.environ.get('DATABASE_URL'))}
 else:
@@ -158,10 +146,10 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 
 STATICFILES_LOCATION = 'static'
-STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -169,7 +157,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIAFILES_LOCATION = 'mediafiles'
-DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 MEDIA_URL = '/mediafiles/'
