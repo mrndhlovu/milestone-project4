@@ -39,8 +39,8 @@ django-heroku = "*"
 django-rest-knox = "==4.0.1"
 django = "*"
 stripe = "*"
-pillow = "*"
-django-storages = "*"
+nose = "*"
+
 
 [requires]
 python_version = "3.6"
