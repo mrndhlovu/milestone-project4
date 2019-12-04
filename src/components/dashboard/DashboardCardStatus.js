@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Card, Header, Progress, Image } from "semantic-ui-react";
+import { Card, Header, Progress, Image, Label } from "semantic-ui-react";
 
 import { TICKET_STATUS } from "../../constants/constants";
 
-const getPercentage = (total, value) => {
+const getProgressionPercentage = (total, value) => {
   return (value / total) * 100;
 };
 
@@ -18,23 +18,28 @@ export const DashboardCardStatus = ({ ticketList, cardType, dataTestId }) => {
       status,
       votes,
       id,
-      image
+      image,
+      is_bug
     } = ticketList[index];
 
     const cardMatch = cardType === status;
-    const showTicketVoteProgress = status === TICKET_STATUS.todo;
+    const showTicketVoteProgression = status === TICKET_STATUS.todo;
+    const ticketLabel = is_bug ? "Bug" : "Feature";
+    const labelColor = is_bug ? "green" : "purple";
+    const hasVotes = votes !== 0;
 
     return (
       cardMatch && (
         <Card key={index} fluid data-test-id={`${dataTestId}-${index}`}>
-          {showTicketVoteProgress && (
+          {showTicketVoteProgression && hasVotes && (
             <Progress
-              percent={getPercentage(2, votes)}
-              attached="top"
-              warning
-            />
+              percent={getProgressionPercentage(5, votes)}
+              progress
+              color="green"
+            >
+              Vote priority measure
+            </Progress>
           )}
-
           <Card.Content>
             <Image floated="right" size="mini" src={image} />
             <Card.Header as={Link} to={`/ticket/${id}`}>
@@ -47,6 +52,8 @@ export const DashboardCardStatus = ({ ticketList, cardType, dataTestId }) => {
             <Header as="h5" textAlign="left">
               Votes: {votes}
             </Header>
+
+            <Label color={labelColor}>{ticketLabel}</Label>
           </Card.Content>
         </Card>
       )

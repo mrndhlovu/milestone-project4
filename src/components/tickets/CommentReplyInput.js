@@ -25,7 +25,7 @@ const CommentReplyInput = ({
           onClick={() => handleSubmit(id)}
           labelPosition="left"
           icon="edit"
-          color="teal"
+          color="blue"
           size="tiny"
         />
       </Form>

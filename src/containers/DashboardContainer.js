@@ -25,12 +25,14 @@ export class DashboardContainer extends Component {
   render() {
     const { tickets } = this.props;
 
+    const hasTickets = tickets.data.length > 0;
+
     return (
       tickets.data && (
         <Fragment>
           <PageHeader pageId={getPageId()} />
           <StyledContainer>
-            {tickets.data.length > 0 ? (
+            {hasTickets ? (
               <DashboardCards ticketList={tickets.data} />
             ) : (
               <StyledMessage

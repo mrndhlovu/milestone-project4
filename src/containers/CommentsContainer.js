@@ -1,107 +1,146 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
 
-import { Comment, Segment, Header } from "semantic-ui-react";
+import { Button, Comment, Form, Segment, Header } from "semantic-ui-react";
 
 import { COMMENT_TYPE, APP_TYPE } from "../constants/constants";
+import { getUserProfile, getComments } from "../selectors/appSelectors";
 import CommentsBody from "../components/tickets/CommentsBody";
-import CommentCreator from "../components/tickets/CommentCreator";
 
-export const CommentsContainer = ({
-  comments,
-  ticketId,
-  articleId,
-  userId,
-  isArticle,
-  isTicket,
-  createComment,
-  createReply
-}) => {
-  const [comment, setComment] = useState("");
-  const [reply, setReply] = useState("");
-  const [commentList, setCommentList] = useState({});
-  const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [showReplyInput, setShowReplyInput] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [newComment, setNewComment] = useState(null);
-  const [newReply, setNewReply] = useState(null);
+export class CommentsContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comment: "",
+      reply: "",
+      showReplyInput: false,
+      buttonDisabled: true,
+      activeIndex: 0,
+      userInput: ""
+    };
+    this.handleCreateComment = this.handleCreateComment.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReplyClick = this.handleReplyClick.bind(this);
+    this.handleOnBlur = this.handleOnBlur.bind(this);
+  }
 
-  useEffect(() => {
-    if (newComment) {
-      createComment(newComment);
-    }
-    if (newReply) {
-      createReply(newReply);
-    }
-    setCommentList(comments);
-  }, [newComment, newReply]);
+  componentDidUpdate(prevProps) {
+    const { commentsList } = this.props;
 
-  function handleCreateComment(event, commentOption) {
-    const { value } = event.target;
-    const isCommentReply = commentOption === COMMENT_TYPE.reply;
-
-    if (isCommentReply) {
-      setReply(value);
-    } else {
-      setComment(value);
+    if (prevProps.commentsList !== commentsList) {
+      if (commentsList.dataReceived) {
+        this.setState({ showReplyInput: false, userInput: "" });
+      }
     }
   }
 
-  function handleSubmit(parentId) {
-    const isReply = parentId !== undefined;
+  handleOnBlur() {
+    this.setState({ buttonDisabled: !this.state.buttonDisabled });
+  }
+
+  handleCreateComment(event, commentOption) {
+    const { value } = event.target;
+
+    if (commentOption === COMMENT_TYPE.reply) {
+      this.setState({ reply: value });
+    } else {
+      this.setState({ comment: value });
+    }
+  }
+
+  handleSubmit(parentId) {
+    const { comment, reply } = this.state;
+    const {
+      ticketId,
+      articleId,
+      createComment,
+      createReply,
+      userId,
+      isArticle,
+      isTicket
+    } = this.props;
+
+    const createTicketReply = isTicket && parentId;
+    const createArticleReply = isArticle && parentId;
 
     const commentBody = {
       user: userId,
-      object_id: isArticle ? articleId : ticketId,
-      comment: isReply ? reply : comment,
+      object_id: isTicket ? ticketId : articleId,
       parent: parentId,
-      content_type: isTicket ? APP_TYPE.ticket : APP_TYPE.post
+      comment: createTicketReply || createArticleReply ? reply : comment,
+      content_type:
+        createTicketReply || isTicket ? APP_TYPE.ticket : APP_TYPE.post
     };
 
-    isReply ? setNewReply(commentBody) : setNewComment(commentBody);
+    console.log(commentBody);
+
+    return createTicketReply || createArticleReply
+      ? createReply(commentBody)
+      : createComment(commentBody);
   }
 
-  function handleReplyClick(activeIndex) {
-    setShowReplyInput(!showReplyInput);
-    setActiveIndex(activeIndex);
+  handleReplyClick(activeIndex) {
+    this.setState({ showReplyInput: !this.state.showReplyInput, activeIndex });
   }
 
-  const commentCount = Object.keys(comments).length || 0;
+  render() {
+    const { comments } = this.props;
+    const {
+      showReplyInput,
+      buttonDisabled,
+      activeIndex,
+      userInput
+    } = this.state;
 
-  return (
-    <Segment>
-      <Header
-        content={`${commentCount} Comment${commentCount > 1 ? "s" : ""}`}
-      />
-      <Comment.Group>
-        {commentCount > parseInt(0) && (
-          <CommentsBody
-            comments={commentList}
-            handleReplyClick={handleReplyClick}
-            handleSubmit={handleSubmit}
-            handleCreateComment={handleCreateComment}
-            showReplyInput={showReplyInput}
-            buttonDisabled={buttonDisabled}
-            handleOnBlur={() => setButtonDisabled(false)}
-            activeIndex={activeIndex}
-          />
-        )}
+    const commentCount = Object.keys(comments).length || 0;
 
-        <CommentCreator
-          handleCreateComment={handleCreateComment}
-          handleOnBlur={() => setButtonDisabled(false)}
-          handleSubmit={handleSubmit}
-          buttonDisabled={buttonDisabled}
+    return (
+      <Segment>
+        <Header
+          content={`${commentCount} Comment${commentCount > 1 ? "s" : ""}`}
         />
-      </Comment.Group>
-    </Segment>
-  );
+        <Comment.Group>
+          {commentCount > parseInt(0) && (
+            <CommentsBody
+              comments={comments}
+              handleReplyClick={this.handleReplyClick}
+              handleSubmit={this.handleSubmit}
+              handleCreateComment={this.handleCreateComment}
+              showReplyInput={showReplyInput}
+              buttonDisabled={buttonDisabled}
+              handleOnBlur={this.handleOnBlur}
+              activeIndex={activeIndex}
+            />
+          )}
+
+          <Form reply>
+            <Form.TextArea
+              onClick={() => this.handleOnBlur()}
+              onChange={e => this.handleCreateComment(e)}
+              defaultValue={userInput}
+            />
+            <Button
+              content="Comment"
+              labelPosition="left"
+              disabled={buttonDisabled}
+              icon="edit"
+              size="small"
+              color="orange"
+              onClick={() => this.handleSubmit(null)}
+            />
+          </Form>
+        </Comment.Group>
+      </Segment>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    commentsList: getComments(state),
+    profile: getUserProfile(state)
+  };
 };
 
-CommentsContainer.propTypes = {
-  comments: PropTypes.object.isRequired,
-  userId: PropTypes.number.isRequired
-};
-
-export default withRouter(CommentsContainer);
+export default connect(mapStateToProps)(withRouter(CommentsContainer));

@@ -62,18 +62,11 @@ export class TicketDetailContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { ticket, ticketComments } = this.props;
+    const { ticket } = this.props;
 
     if (prevProps.ticket !== ticket) {
       if (ticket.dataReceived) {
-        const { title } = ticket.data.data;
-        this.setState({ title: title, image: DEFAULT_IMAGES.feature });
-      }
-    }
-
-    if (prevProps.ticketComments !== ticketComments) {
-      if (ticketComments.dataReceived) {
-        refresh();
+        this.setState({ image: DEFAULT_IMAGES.feature });
       }
     }
   }

@@ -23,12 +23,14 @@ const TicketDetail = ({
   isAuthenticated,
   createComment,
   createReply,
-  user
+  user,
+  userInput
 }) => {
   const {
-    data: { title, description, views, id, image, votes },
+    data: { title, description, views, id, image },
     isOwner,
-    comments
+    comments,
+    votes
   } = data;
 
   return (

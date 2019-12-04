@@ -46,6 +46,8 @@ import {
   createMessage,
   requestSuccess
 } from "./index";
+import { APP_TYPE } from "../constants/constants";
+import { requestArticleDetail } from "./BlogActions";
 
 // fetch tickets list
 export const fetchTicketsList = () => {
@@ -126,6 +128,7 @@ export const updatedTicketVote = id => {
     requestTicketVoteUpdate(id).then(
       response => {
         dispatch(requestSuccess(UPDATED_TICKET_VOTE, response.data));
+        dispatch(requestTicketsDetail(id));
       },
       error => {
         dispatch(errorsAlert(TICKET_VOTE_ERROR, error));
@@ -139,7 +142,13 @@ export const createComment = body => {
     dispatch(makeRequest(CREATING_COMMENT));
     requestCreateComment(body).then(
       response => {
+        const { object_id, content_type } = body;
         dispatch(requestSuccess(CREATED_COMMENT, response.data));
+        if (content_type === APP_TYPE.post) {
+          dispatch(requestArticleDetail(object_id));
+        } else {
+          dispatch(requestTicketsDetail(object_id));
+        }
       },
       error => {
         dispatch(errorsAlert(CREATE_COMMENT_ERROR, error));
@@ -153,7 +162,13 @@ export const createReply = body => {
     dispatch(makeRequest(CREATING_REPLY));
     requestCreateReply(body).then(
       response => {
+        const { object_id, content_type } = body;
         dispatch(requestSuccess(RECEIVED_REPLY, response.data));
+        if (content_type === APP_TYPE.post) {
+          dispatch(requestArticleDetail(object_id));
+        } else {
+          dispatch(requestTicketsDetail(object_id));
+        }
       },
       error => {
         dispatch(errorsAlert(REPLY_ERROR, error));
