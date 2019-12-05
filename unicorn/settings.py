@@ -21,7 +21,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = development
 
-if development:
+if os.environ.get('DEVELOPMENT'):
+
     ALLOWED_HOSTS = ['127.0.0.1']
 else:
     ALLOWED_HOSTS = ['the-unicorn-attractor.herokuapp.com']
@@ -39,12 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'accounts',
-    'memberships',
-    'cart',
-    'tickets',
-    'comments',
     'blog',
-
+    'cart',
+    'comments',
+    'memberships',
+    'tickets',
 
     'rest_framework',
     'corsheaders',
@@ -82,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'unicorn.wsgi.application'
+# WSGI_APPLICATION = 'unicorn.wsgi.application'
 
 
 # Database
@@ -136,19 +136,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-AWS_S3_OBJECT_PARAMETERS = {
-    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
-    'CacheControl': 'max-age=94608000'
-}
-
-AWS_STORAGE_BUCKET_NAME = 'unicorn-ecommerce'
-AWS_S3_REGION_NAME = 'eu-west-1'
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_SECRET_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
 
 
 STATICFILES_LOCATION = 'static'
