@@ -22,7 +22,6 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = development
 
 if os.environ.get('DEVELOPMENT'):
-
     ALLOWED_HOSTS = ['127.0.0.1']
 else:
     ALLOWED_HOSTS = ['the-unicorn-attractor.herokuapp.com']
