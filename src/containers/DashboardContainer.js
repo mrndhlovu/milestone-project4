@@ -39,6 +39,7 @@ export class DashboardContainer extends Component {
                 message="No tickets at this time."
                 redirect="/create-ticket"
                 linkText="Create a ticket"
+                iconName="content"
               />
             )}
           </StyledContainer>
