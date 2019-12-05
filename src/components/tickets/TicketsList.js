@@ -44,23 +44,23 @@ const TicketsList = ({
             <Card fluid>
               <Card.Content>
                 <Card.Header as="h3" content={`${ticketCount} TICKETS`} />
-                <Segment attached stacked loading={isLoading}>
-                  {!emptyTicketList ? (
-                    <Tickets
-                      handleAddToCart={handleAddToCart}
-                      ticketsList={tickets}
-                      allAccess={allAccess}
-                      buttonText={buttonText}
-                      isAuthenticated={isAuthenticated}
-                    />
-                  ) : (
-                    <StyledMessage
-                      message="No tickets at this time."
-                      redirect="/create-ticket"
-                      linkText="Create a ticket"
-                    />
-                  )}
-                </Segment>
+
+                {!emptyTicketList ? (
+                  <Tickets
+                    handleAddToCart={handleAddToCart}
+                    ticketsList={tickets}
+                    allAccess={allAccess}
+                    buttonText={buttonText}
+                    isAuthenticated={isAuthenticated}
+                  />
+                ) : (
+                  <StyledMessage
+                    message="No tickets at this time."
+                    redirect="/create-ticket"
+                    linkText="Create a ticket"
+                    iconName="content"
+                  />
+                )}
               </Card.Content>
             </Card>
           </Grid.Column>
