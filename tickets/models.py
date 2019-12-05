@@ -33,7 +33,7 @@ class Ticket(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.SET_DEFAULT, null=True, blank=True, default=1)
     status = models.CharField(
-        max_length=6, choices=STATUS, default='todo')
+        max_length=7, choices=STATUS, default='todo')
     votes = models.ManyToManyField(
         User, blank=True, related_name='ticket_votes')
     is_bug = models.BooleanField(default=False)
