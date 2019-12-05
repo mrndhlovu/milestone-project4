@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -11,14 +11,8 @@ import {
 import { getCartPendingOrder } from "../selectors/appSelectors";
 import Donations from "../components/ecommerce/Donations";
 import { addItemToCart } from "../actions/CheckoutActions";
-import styled from "styled-components";
 
 import { Segment, Header } from "semantic-ui-react";
-
-const StyledSegment = styled(Segment)`
-  padding: 1rem 0 !important;
-  border-radius: 0 !important;
-`;
 
 export class OrderSummaryContainer extends Component {
   constructor(props) {
@@ -64,21 +58,20 @@ export class OrderSummaryContainer extends Component {
     const cartIsEmpty = count === 0;
 
     return (
-      <StyledSegment data-test-id="order-summary-page">
+      <Segment data-test-id="order-summary-page">
         {!cartIsEmpty && (
-          <Header style={{ paddingLeft: 25 }}>
-            Your have {count} {count > 1 ? "items" : "item"} in your cart.
-          </Header>
-        )}
+          <Fragment>
+            <Header style={{ paddingLeft: 23 }}>
+              Your have {count} {count > 1 ? "items" : "item"} in your cart.
+            </Header>
 
-        {!cartIsEmpty && (
-          <OrderSummary
-            pendingOrders={pendingOrders.data}
-            handleRemoveClick={this.handleRemoveClick}
-            history={history}
-            count={count}
-            cartIsEmpty={cartIsEmpty}
-          />
+            <OrderSummary
+              pendingOrders={pendingOrders.data}
+              handleRemoveClick={this.handleRemoveClick}
+              history={history}
+              count={count}
+            />
+          </Fragment>
         )}
 
         <Donations
@@ -88,7 +81,7 @@ export class OrderSummaryContainer extends Component {
           handleAddToCart={this.handleAddToCart}
           buttonText={buttonText}
         />
-      </StyledSegment>
+      </Segment>
     );
   }
 }
