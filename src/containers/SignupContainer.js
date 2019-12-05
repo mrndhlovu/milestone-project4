@@ -8,7 +8,7 @@ import { signup } from "../actions/AuthActions";
 
 import { Form, Grid, Container, Image, Segment } from "semantic-ui-react";
 import FormHeader from "../components/sharedComponents/FormHeader";
-import FormFooter from "../components/sharedComponents/StyledMessage";
+import StyledMessage from "../components/sharedComponents/StyledMessage";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 
@@ -132,10 +132,11 @@ class SignupContainer extends Component {
                     hasError={hasError}
                   />
 
-                  <FormFooter
+                  <StyledMessage
                     message="Already have an account?"
                     redirect="/login"
                     linkText="Login"
+                    iconName="check circle outline"
                   />
                 </Container>
               </Segment>
