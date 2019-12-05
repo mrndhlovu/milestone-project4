@@ -1,7 +1,6 @@
 import {
   USER_AUTH_FAIL,
   USER_AUTH_LOGOUT,
-  USER_AUTH_START,
   USER_AUTH_SUCCESS,
   FETCHING_USER,
   RECEIVED_USER,
@@ -39,14 +38,6 @@ import {
   SESSION_TOKEN,
   SESSION_LIFE
 } from "../constants/localStorageConstants";
-
-function authStart() {
-  if (SESSION_LIFE) {
-    return makeRequest(USER_AUTH_START);
-  } else {
-    return dataRequestFail(USER_AUTH_FAIL);
-  }
-}
 
 function checkSessionTime(sessionLife) {
   return (
