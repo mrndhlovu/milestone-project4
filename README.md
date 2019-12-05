@@ -77,11 +77,11 @@ Users will have access to this page if authenticated. If a purchase is completed
 Note: the `package.json` file for the frontend and `Pipfile` for backend located in the root folder, lists all libraries used in the project.
 
 
-#### Cloning this repo to run locally will require the following steps
+### Cloning this repo to run locally will require the following steps
 
 Note: To have this working properly, you will has to setup a [Stripe]() account, a product with 2 price plans, 'free' and 'pro'. You will also need an AWS S3-bucket setup as shown below
 
-### Saving images to AWS
+#### Saving images to AWS
 * First setup an AWS bucket, 
 * Then setup `react-s3` and `aws-s3` configuration on the frontend like this
 
