@@ -122,6 +122,7 @@ root folder
 
 #### Cloning this repo to run locally will require the following steps
 
+Frontend setup
 1. Click the `Clone or download` button, then copy the `Clone with HTTPs`  URL which starts with `https://github/......`
 2. Open your preferred terminal and type `git clone` and paste the URL you just copied and press enter.
 3. The repo should be copied to your local directory.
@@ -132,30 +133,57 @@ root folder
    - [Pipenv](https://github.com/pypa/pipenv)
 5. cd into the project folder by typing `cd milestone-project4`
 6. If npm is installed, you should be able to run `npm install` to install all dependencies in the `package.json` file.
+7. The frontend side of the app also has environmental variables to be set, in the `.env` file, add these variables
+```
+    - REACT_APP_STRIPE_PUBLISHABLE='SOME_STRIPE_TOKEN'
+    - REACT_APP_DEV_API_URL=http://localhost:8000
+```
 
 Backend setup
 1. First lets create virtual environment to run Django, run `pipenv shell`.
-2. Install Django version 3.6.5 by typing `pipenv install django==3.6.5`.
+2. Install python version 3.6.5 by typing `pipenv install python==3.6.5`.
 3. If you are using VS Code, select a `Python interpreter`, press `command + p`, then type `> interpreter` and select `python interpreter`
 
-```
 ![](/wireframes/interpreter.png)
+
+4. Select the version matching the python you just installed, in this case its python 3.6.5
+5. Type `pipenv install` to install all django dependencies in the `Pipfile`
+6. The project depends on environmental variables, create a `.env` file in the root of the project with a the following variables 
 ```
-4. Select the matching the django version you just installed, in this case its django 3.6.5
+    *  SECRET_KEY="PROJECT_SECRET_KEY"
+    *  DEVELOPMENT=True
+    
+ ```
+ 7. Create a file called `db.sqlite3` in the root folder
+ 8. Because we set `DEVELOPMENT` to True in the `.env` file, sqlite3 will be the default local database
+ 9. Now in the command promote, type `python3 manage.py makemigrations`
+ 10. Then `python3 manage.py migrate`
+ 11. Create a superuser `python3 manage.py createsuperuser`(setup a username, email and password)
+ 12. Run the the app by typing, `python3 manage.py runserver`
+ 13. Login with the credentials you set on setp 11,
+ 14. In the `Django admin`, under `MEMBERSHIPS` select `Memberships`
+ 15. Setup a stripe account and create 2 membership plans, in this case its a free and pro plan.
+ 16. Add 2 membership types 
+ 
+ ```
+ ##### First membership
+ Slug = free
+ Membership type: free
+ Price: 0
+ Stripe plan id: {free plan id you created on step 15} 
+ 
+  ##### Second membership
+ Slug = pro
+ Membership type: pro
+ Price: 10
+ Stripe plan id: {pro plan id you created on step 15} 
+ 
+ ``` 
+ 
+17. 
+ 
+    
 
-
-
-
-2. Type `pipenv install` to install all django dependencies in the `Pipfile`
-3. The project depends on environmental variables, create a `.env` file in the root of the project with a `SECRET_KEY` variable e.g SECRET_KEY="PROJECT_SECRET_KEY"
-
-
-
-
-. The frontend side of the app also has environmental variables to be set, in the `.env` file, add these variables
-    - REACT_APP_STRIPE_PUBLISHABLE='SOME_STRIPE_TOKEN'
-    - REACT_APP_DEV_API_URL=http://localhost:8000
-11.    
 
 
 ## Testing
