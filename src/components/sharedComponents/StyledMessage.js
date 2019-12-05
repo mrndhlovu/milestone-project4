@@ -1,20 +1,20 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import styled from "styled-components";
-
-import { Message } from "semantic-ui-react";
-
-const StyledSpan = styled.span`
-  padding-right: 0.5rem;
-`;
+import { Header, Icon, Segment, Button } from "semantic-ui-react";
 
 const StyledMessage = ({ redirect, linkText, message }) => {
   return (
-    <Message>
-      <StyledSpan>{message}</StyledSpan>
-      <NavLink to={redirect}>{linkText}</NavLink>
-    </Message>
+    <Segment placeholder>
+      <Header icon>
+        <Icon name="list alternate outline" />
+        {message}
+      </Header>
+
+      <Button as={NavLink} to={redirect} primary>
+        {linkText}
+      </Button>
+    </Segment>
   );
 };
 
