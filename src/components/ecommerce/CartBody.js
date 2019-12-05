@@ -27,12 +27,16 @@ const CartBody = ({ orderItems, handleRemoveClick }) => {
       : "donation";
 
     return (
-      <StyledDiv>
-        <Card fluid key={index}>
+      <StyledDiv key={index}>
+        <Card fluid>
           <Card.Content>
-            <NavLink to={`ticket/${id}`}>
+            {ticket ? (
+              <NavLink to={`ticket/${id}`}>
+                <Card.Header>{name.toUpperCase()}</Card.Header>
+              </NavLink>
+            ) : (
               <Card.Header>{name.toUpperCase()}</Card.Header>
-            </NavLink>
+            )}
           </Card.Content>
           <Card.Content extra>
             <Card.Meta>Inc VAT</Card.Meta>
