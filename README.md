@@ -71,10 +71,15 @@ Users will have access to this page if authenticated. If a purchase is completed
 13. Google chrome development tools.
 14. [Draw.io](https://www.draw.io/): for wire-frame development
 15. [Jasmine](https://jasmine.github.io/): unit testing on the frontend
-16. [Stripe]() for payment processing.
+16. [Stripe](https://stripe.com/ie) for payment processing.
 17. [Github Desktop](https://desktop.github.com/) for version tracking of the app off the terminal
 
 Note: the `package.json` file for the frontend and `Pipfile` for backend located in the root folder, lists all libraries used in the project.
+
+
+#### Cloning this repo to run locally will require the following steps
+
+Note: To have this working properly, you will has to setup a [Stripe]() account, a product with 2 price plans, 'free' and 'pro'. You will also need an AWS S3-bucket setup as shown below
 
 ### Saving images to AWS
 * First setup an AWS bucket, 
@@ -111,16 +116,13 @@ root folder
         posts: (stores article images )
         users: (stores user images )
  ```
-
-#### How an image is uploded:
+ 
+ #### How an image is uploded:
 
 * A request is sent to the aws server to store an image.
 * If the image is stored successfully, a response with a url of the image is returned.
 * The response url received is then sent to the django server which will update the image field for an article or user profile with the url. 
 * Then it is presented on the frontend `Image` component like so. `<Image src={IMAGE_URL} />`
-
-
-#### Cloning this repo to run locally will require the following steps
 
 Frontend setup
 1. Click the `Clone or download` button, then copy the `Clone with HTTPs`  URL which starts with `https://github/......`
@@ -134,9 +136,11 @@ Frontend setup
 5. cd into the project folder by typing `cd milestone-project4`
 6. If npm is installed, you should be able to run `npm install` to install all dependencies in the `package.json` file.
 7. The frontend side of the app also has environmental variables to be set, in the `.env` file, add these variables
+
 ```
     - REACT_APP_STRIPE_PUBLISHABLE='SOME_STRIPE_TOKEN'
     - REACT_APP_DEV_API_URL=http://localhost:8000
+    {Also include the aws s3 bucket config variables}
 ```
 
 Backend setup
@@ -180,7 +184,10 @@ Backend setup
  
  ``` 
  
-17. 
+17. When a super user is created, they do not have a membership plan assigned by default so, lets do that. Click on `User memberships` under the memberships app in django admin.
+18. Select the super user name ane assign them a membership and click save.
+19. Now in the Accounts app, click `User profiles`, select the super name then select `free` as the `Active membership` 
+20. With this done the, an new user signing up will be assigned a default membership as free.
  
     
 
