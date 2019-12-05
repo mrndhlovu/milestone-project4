@@ -132,12 +132,26 @@ root folder
    - [Pipenv](https://github.com/pypa/pipenv)
 5. cd into the project folder by typing `cd milestone-project4`
 6. If npm is installed, you should be able to run `npm install` to install all dependencies in the `package.json` file.
-7. Now we create the project virtual environment to run Django, run `pipenv shell`.
-8. Type `pipenv install` to install all django dependencies in the `Pipfile`
-9. The project depends on environmental variables, create a `.env` file in the root of the project with a `SECRET_KEY` variable e.g SECRET_KEY="PROJECT_SECRET_KEY"
-10. The frontend side of the app also has environmental variables to be set, in the `.env` file, add these variables
+
+Backend setup
+1. First lets create virtual environment to run Django, run `pipenv shell`.
+2. Install Django version 3.6.5 by typing `pipenv install django==3.6.5`.
+3. If you are using VS Code, select a `Python interpreter`, press `command + p`, then type `> interpreter` and select `python interpreter`
+![](/wireframes/interpreter.png)
+4. Select the matching the django version you just installed, in this case its django 3.6.5
+
+
+
+2. Type `pipenv install` to install all django dependencies in the `Pipfile`
+3. The project depends on environmental variables, create a `.env` file in the root of the project with a `SECRET_KEY` variable e.g SECRET_KEY="PROJECT_SECRET_KEY"
+
+
+
+
+. The frontend side of the app also has environmental variables to be set, in the `.env` file, add these variables
     - REACT_APP_STRIPE_PUBLISHABLE='SOME_STRIPE_TOKEN'
     - REACT_APP_DEV_API_URL=http://localhost:8000
+11.    
 
 
 ## Testing
