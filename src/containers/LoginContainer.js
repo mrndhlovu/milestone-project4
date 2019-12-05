@@ -38,7 +38,6 @@ class LoginContainer extends Component {
 
   componentDidMount() {
     const {
-      auth,
       location: { state }
     } = this.props;
     if (state !== null) {
@@ -47,10 +46,7 @@ class LoginContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      auth,
-      location: { state }
-    } = this.props;
+    const { auth } = this.props;
 
     if (prevProps.auth.hasError !== auth.hasError) {
       if (auth.hasError) {
