@@ -126,6 +126,7 @@ class LoginContainer extends Component {
                     message="Dont have an account?"
                     redirect="/signup"
                     linkText="Sign up"
+                    iconName="user plus"
                   />
                 </Segment>
               </Form>
