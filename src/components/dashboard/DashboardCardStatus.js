@@ -33,9 +33,9 @@ export const DashboardCardStatus = ({ ticketList, cardType, dataTestId }) => {
         <Card key={index} fluid data-test-id={`${dataTestId}-${index}`}>
           {showTicketVoteProgression && hasVotes && (
             <Progress
-              percent={getProgressionPercentage(5, votes)}
+              percent={getProgressionPercentage(2, votes)}
               progress
-              color="green"
+              color={labelColor}
             >
               Vote priority measure
             </Progress>
