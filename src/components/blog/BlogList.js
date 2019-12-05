@@ -6,8 +6,11 @@ import { Container, Grid, Button, Header, Image } from "semantic-ui-react";
 import PageHeader from "../sharedComponents/PageHeader";
 import { getPageId } from "../../utils/urls";
 import { getFormatedDate } from "../../utils/appUtils";
+import StyledMessage from "../sharedComponents/StyledMessage";
 
 const BlogList = ({ articles }) => {
+  const hasArticles = articles === [];
+
   const renderList = () => {
     return Object.keys(articles).map(key => {
       const {
@@ -82,7 +85,15 @@ const BlogList = ({ articles }) => {
         buttonId="from-blog-create-article"
       />
       <Container data-test-id="blog-list" style={{ paddingTop: 20 }}>
-        {renderList()}
+        {hasArticles ? (
+          renderList()
+        ) : (
+          <StyledMessage
+            redirect="/new-article"
+            message="There no articles at this moment..."
+            linkText="Create article"
+          />
+        )}
       </Container>
     </Fragment>
   );
