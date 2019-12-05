@@ -18,7 +18,7 @@ From this page the user is given an overview of what the product can do with cle
 
 #### Dashboard page
 
-This page shows all bug and feature tickets that have been submitted, indicating the progression or status of a ticket. Each ticket in the `Backlog` or `Up next` column has an orange indicator showing how far the ticket is from moving to `In Progress` status which is determined by the number of votes the ticket has. If each ticket gets a minimum of 5 votes the ticket will automatically move to `In Progress` status and if a ticket has been resolved it moves to the `Closed` column.
+This page shows all bug and feature tickets that have been submitted, indicating the progression or status of a ticket. Each ticket in the `Backlog` or `Up next` column has an orange indicator showing how far the ticket is from moving to `In Progress` status which is determined by the number of votes the ticket has. If each ticket gets a minimum of 2 votes the ticket will automatically move to `In Progress` status and if a ticket has been resolved by admin it moves to the `Closed` column.
 
 #### Pricing page
 
@@ -79,33 +79,13 @@ Note: the `package.json` file for the frontend and `Pipfile` for backend located
 
 ### Cloning this repo to run locally will require the following steps
 
-Note: To have this working properly, you will has to setup a [Stripe]() account, a product with 2 price plans, 'free' and 'pro'. You will also need an AWS S3-bucket setup as shown below
+Note: To have this working properly, you will have to setup a [Stripe]() account, a product with 2 price plans, 'free' and 'pro'. You will also need an AWS S3-bucket setup as shown below
 
 #### Saving images to AWS
 * First setup an AWS bucket, 
 * Then setup `react-s3` and `aws-s3` configuration on the frontend like this
 
-```
-import S3 from "aws-s3";
-import axios from "axios";
-
-    // AWS bucket configurations
-
-    const config = {
-        bucketName: `${process.env.REACT_APP_AWS_BUCKET_NAME}`,
-        dirName: `${process.env.REACT_APP_AWS_MEDIA_POST}`,
-        region: `${process.env.REACT_APP_AWS_REGION}`,
-        accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
-        secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_ACCESS_KEY}`
-    };
-
-    // request
-    function requestAwsFileUpload(file, fileName) {
-    const S3Client = new S3(config());
-    return S3Client.uploadFile(file, fileName);
-    }
-
-```
+Follow theses steps to setup AWS-S3 on the [frontend]()
 
 AWS Bucket folder structure
 
@@ -135,7 +115,7 @@ Frontend setup
    - [Pipenv](https://github.com/pypa/pipenv)
 5. cd into the project folder by typing `cd milestone-project4`
 6. If npm is installed, you should be able to run `npm install` to install all dependencies in the `package.json` file.
-7. The frontend side of the app also has environmental variables to be set, in the `.env` file, add these variables
+7. The frontend side of the app has environmental variables to be set, in a `.env` file, add these variables
 
 ```
     - REACT_APP_STRIPE_PUBLISHABLE='SOME_STRIPE_TOKEN'
@@ -150,7 +130,7 @@ Backend setup
 
 ![](/wireframes/interpreter.png)
 
-4. Select the version matching the python you just installed, in this case its python 3.6.5
+4. Select the version matching python you just installed, in this case its python 3.6.5
 5. Type `pipenv install` to install all django dependencies in the `Pipfile`
 6. The project depends on environmental variables, create a `.env` file in the root of the project with a the following variables 
 ```
@@ -163,7 +143,7 @@ Backend setup
  9. Now in the command promote, type `python3 manage.py makemigrations`
  10. Then `python3 manage.py migrate`
  11. Create a superuser `python3 manage.py createsuperuser`(setup a username, email and password)
- 12. Run the the app by typing, `python3 manage.py runserver`
+ 12. Run the app by typing, `python3 manage.py runserver`
  13. Login with the credentials you set on setp 11,
  14. In the `Django admin`, under `MEMBERSHIPS` select `Memberships`
  15. Setup a stripe account and create 2 membership plans, in this case its a free and pro plan.
@@ -184,19 +164,16 @@ Backend setup
  
  ``` 
  
-17. When a super user is created, they do not have a membership plan assigned by default so, lets do that. Click on `User memberships` under the memberships app in django admin.
-18. Select the super user name ane assign them a membership and click save.
-19. Now in the Accounts app, click `User profiles`, select the super name then select `free` as the `Active membership` 
-20. With this done the, an new user signing up will be assigned a default membership as free.
+17. When a superuser is created, they do not have a membership plan assigned to their account by default, lets do that. Click on `User memberships` under the memberships app in django admin.
+18. Select the superuser name and assign them a `membership` and click save.
+19. Now in the Accounts app, click `User profiles`, click the superuser name then select `free` as the `Active membership` 
+20. With this done the, an new user signing up will be assigned a free membership by default.
  
-    
-
-
 
 ## Testing
 
 * Frontend: 
-[Jasmine](https://jasmine.github.io/)is used for frontend tests, The `spec` folder in the root of the project holds all test files. Because react allows us to break components into small unit, the test will check the functionality of each component providing the default `props` which allow a component to be created for a successful test. To run the tests type `npm test` in the terminal.
+[Jasmine](https://jasmine.github.io/)is used for frontend tests. The `spec` folder in the root of the project holds all test files. Because react allows us to break components into small unit, the test will check the functionality of each component providing the default `props` which allow a component to be created for a successful test. To run the tests type `npm test` in the terminal.
 
 * Backend tests
 Django automated tests is used to check the correct functionality of each app's models and expected url endpoints. To run the tests type `python3 manage.py test` in the terminal.
