@@ -66,7 +66,7 @@ def get_selected_membership(request):
     return None
 
 
-def update_selected_membership(request, membership_type):
+def set_default_membership(request, membership_type):
 
     chosen_membership = UserMembership.objects.filter(
         user=request.user)
@@ -315,7 +315,7 @@ class CartRemoveItemAPIView(RetrieveAPIView):
                 Membership, id=product_id)
             default_membership = get_object_or_404(
                 Membership, id=1)
-            update_selected_membership(request, default_membership)
+            set_default_membership(request, default_membership)
 
         elif product_object == app_type['donation']:
             product = get_object_or_404(
