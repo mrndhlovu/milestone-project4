@@ -13,7 +13,12 @@ const DashboardCard = ({
 }) => (
   <Card fluid>
     <Card.Content>
-      <Card.Header as={headerSize} color={color} subheader={subheader}>
+      <Card.Header
+        as={headerSize}
+        color={color}
+        subheader={subheader}
+        style={{ paddingBottom: 10 }}
+      >
         {header}
       </Card.Header>
       <Segment attached stacked loading={isLoading}>
