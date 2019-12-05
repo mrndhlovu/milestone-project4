@@ -92,6 +92,7 @@ const BlogList = ({ articles }) => {
             redirect="/new-article"
             message="There no articles at this moment..."
             linkText="Create article"
+            iconName="content"
           />
         )}
       </Container>
