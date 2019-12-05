@@ -26,7 +26,6 @@ import {
 
 import TicketDetail from "../components/tickets/TicketDetail";
 import { APP_TYPE, DEFAULT_IMAGES } from "../constants/constants";
-import { refresh } from "../utils/appUtils";
 
 const initialState = {
   index: 0,
@@ -53,12 +52,9 @@ export class TicketDetailContainer extends Component {
     const { isAuthenticated } = this.props.auth;
     this.props.requestTicketsDetail(id);
 
-    {
-      isAuthenticated &&
-        setTimeout(() => {
-          this.props.fetchTicketSolution(id);
-        }, 100);
-    }
+    setTimeout(() => {
+      isAuthenticated && this.props.fetchTicketSolution(id);
+    }, 100);
   }
 
   componentDidUpdate(prevProps) {
