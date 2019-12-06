@@ -18,7 +18,8 @@ From this page the user is given an overview of what the product can do with cle
 
 #### Dashboard page
 
-This page shows all bug and feature tickets that have been submitted, indicating the progression or status of a ticket. Each ticket in the `Backlog` or `Up next` column has an orange indicator showing how far the ticket is from moving to `In Progress` status which is determined by the number of votes the ticket has. If each ticket gets a minimum of 2 votes the ticket will automatically move to `In Progress` status and if a ticket has been resolved by admin it moves to the `Closed` column.
+This page shows all bug and feature tickets that have been submitted, indicating the progression or status of a ticket. Each ticket in the `Backlog` or `Up next` column has an indicator showing how far the ticket is from moving to `In Progress` status which is determined by the number of votes the ticket has. 
+If each ticket gets a minimum of 2 votes the ticket will automatically move to `In Progress` status and if a ticket has been resolved by admin it moves to the `Closed` column.
 
 #### Pricing page
 
@@ -28,13 +29,29 @@ On the pricing page, users are shown the two account types they can sign up for.
 
 The tickets page, lists all filed tickets indicating the owner of a ticket, how long ago it was created, the status and type of ticket filed. If a ticket is a feature, an `Add to Cart` button is shown.
 
+#### Ticket detail page
+
+From the ticket detail page, users see a more detailed look of a ticket filed. From this page a user can add ticket to a shopping cart, see a ticket solution if a payment is made else the will be prompted to pay first. User can also vote for a ticket and views are tracked everytime the ticket is open.
+If a user opens a ticket they filed or own, they are given an option to edit, delete as well as create a new ticket.
+
+The comments section from this page is restricted to users who have upgraded to an `All access account`. 
+
+
+#### Article detail page
+
+Similar to the ticket detail page, users can read more on an article, like or vote for the article and views are tracked also from this page. The owner of an article has an option to update the article image, delete or edit the article.
+
+Again the comments section from this page is restricted to users who have upgraded to an `All access account`.
+
+Should a user try to open this page while on a free account, they will see a restriction notification modal and redirected to the pricing page.
+
 #### Blog page
 
 This page lists all blog articles created. A `Read more` button is used to redirect to the article detail page or by clicking the article title.
 
 #### Login page
 
-Login page for the user. When authenticated, user will be redirected to the user profile page otherwise an error message will be triggered if there is any.
+Login page for the user. When authenticated, users will be redirected to the previous page they where on otherwise an error message will be shown if there is an authentification issue.
 
 #### Sign up page
 
@@ -46,13 +63,17 @@ Note: Form validation is handled by [`React Redux Form`](https://redux-form.com/
 
 Create ticket form has radio buttons which when selected a `bug` or `feature` ticket type is created, and the default being ticket `bug` and the status as `to-do`.
 
+Should a user try to open this page while on a free account, they will see a restriction notification modal and redirected to the pricing page.
+
 #### Create article page
 
-User will create an article from this page.
+Users will create an article from this page. If an article is created successfully, a default image is provided until a user updates it.
+
+Should a user try to open this page while on a free account, they will see a restriction notification modal and redirected to the pricing page.
 
 #### User profile page
 
-Users will have access to this page if authenticated. If a purchase is completed, users should be redirected to this page and their order listed under purchases. The `updated account` option gives the user an choice to downgrade or deactivate their account if signed up for a Unicorn Pro account and the deactivate account is the only option if the user has a Unicorn Free account. The user also has an option to update their personal information on the update profile form.
+Users will have access to this page if authenticated. If a purchase is completed, users should be redirected to this page and their order listed under purchases. The `update account` option gives the user a choice to downgrade or deactivate their account if signed up for a Unicorn Pro account, however the  deactivate account is the only option if the user has only a Unicorn Free account. The user also has an option to update their personal information on the update profile form as well as change their profile image.
 
 # Technologies Used
 
@@ -79,13 +100,13 @@ Note: the `package.json` file for the frontend and `Pipfile` for backend located
 
 ### Cloning this repo to run locally will require the following steps
 
-Note: To have this working properly, you will have to setup a [Stripe]() account, a product with 2 price plans, 'free' and 'pro'. You will also need an AWS S3-bucket setup as shown below
+Note: To have this working properly, you will have to setup a [Stripe](https://stripe.com/ie)  account, a product with 2 price plans, 'free' and 'pro'. You will also need an AWS S3-bucket.
 
 #### Saving images to AWS
 * First setup an AWS bucket, 
-* Then setup `react-s3` and `aws-s3` configuration on the frontend like this
+* Then setup `react-s3` and `aws-s3` configuration on the frontend like this:
 
-Follow theses steps to setup AWS-S3 on the [frontend]()
+Follow [theses steps to setup AWS-S3 on the frontend](https://www.npmjs.com/package/aws-s3)
 
 AWS Bucket folder structure
 
