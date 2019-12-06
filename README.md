@@ -188,7 +188,7 @@ Backend setup
 17. When a superuser is created, they do not have a membership plan assigned to their account by default, lets do that. Click on `User memberships` under the memberships app in django admin.
 18. Select the superuser name and assign them a `membership` and click save.
 19. Now in the Accounts app, click `User profiles`, click the superuser name then select `free` as the `Active membership` 
-20. With this done the, an new user signing up will be assigned a free membership by default.
+20. With this done, any new user signing up will be assigned a free membership by default.
  
 
 ## Testing
