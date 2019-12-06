@@ -161,7 +161,7 @@ Backend setup
  ```
  7. Create a file called `db.sqlite3` in the root folder
  8. Because we set `DEVELOPMENT` to True in the `.env` file, sqlite3 will be the default local database
- 9. Now in the command promote, type `python3 manage.py makemigrations`
+ 9. Now in the console, type `python3 manage.py makemigrations`
  10. Then `python3 manage.py migrate`
  11. Create a superuser `python3 manage.py createsuperuser`(setup a username, email and password)
  12. Run the app by typing, `python3 manage.py runserver`
