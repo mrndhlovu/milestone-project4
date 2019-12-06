@@ -194,7 +194,7 @@ Backend setup
 ## Testing
 
 * Frontend: 
-[Jasmine](https://jasmine.github.io/)is used for frontend tests. The `spec` folder in the root of the project holds all test files. Because react allows us to break components into small unit, the test will check the functionality of each component providing the default `props` which allow a component to be created for a successful test. To run the tests type `npm test` in the terminal.
+[Jasmine](https://jasmine.github.io/) is used for frontend tests. The `spec` folder in the root of the project holds all test files. Because react allows us to break components into small unit, the test will check the functionality of each component providing the default `props` which allow a component to be created for a successful test. To run the tests type `npm test` in the terminal.
 
 * Backend tests
 Django automated tests is used to check the correct functionality of each app's models and expected url endpoints. To run the tests type `python3 manage.py test` in the terminal.
