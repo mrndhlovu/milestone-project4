@@ -145,7 +145,7 @@ Frontend setup
 ```
 
 Backend setup
-1. First lets create virtual environment to run Django, run `pipenv shell`.
+1. First lets create a virtual environment to run Django, run `pipenv shell`.
 2. Install python version 3.6.5 by typing `pipenv install python==3.6.5`.
 3. If you are using VS Code, select a `Python interpreter`, press `command + p`, then type `> interpreter` and select `python interpreter`
 
