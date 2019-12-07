@@ -21,7 +21,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = development
 
-if os.environ.get('DEVELOPMENT'):
+if development:
     ALLOWED_HOSTS = ['127.0.0.1']
 else:
     ALLOWED_HOSTS = ['the-unicorn-attractor.herokuapp.com']
@@ -81,15 +81,14 @@ TEMPLATES = [
     },
 ]
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 
 if "DATABASE_URL" in os.environ:
     DATABASES = {'default': dj_database_url.parse(
         os.environ.get('DATABASE_URL'))}
 else:
+    print('local')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
