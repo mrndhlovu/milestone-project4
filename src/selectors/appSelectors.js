@@ -1,5 +1,3 @@
-import store from "../store";
-
 export const getAccountUpdate = state => state.account;
 export const getArticle = state => state.article;
 export const getArticleDetail = state => state.articleDetail;

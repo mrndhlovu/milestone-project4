@@ -49,7 +49,7 @@ const CommentsBody = ({
                   Reply
                 </Comment.Text>
               </Comment.Actions>
-              <CommentReply comments={comments} parentId={id} />
+              <CommentReply comments={comments} parentId={id} key={index} />
             </Comment.Content>
 
             <CommentReplyInput

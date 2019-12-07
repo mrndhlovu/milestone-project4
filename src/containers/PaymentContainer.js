@@ -13,13 +13,11 @@ export class PaymentContainer extends Component {
     this.state = {
       paymentOption: "",
       isLoading: false,
-      isDisabled: true,
-      activeIndex: 0
+      isDisabled: true
     };
     this.handleOnFocus = this.handleOnFocus.bind(this);
     this.handleTextInput = this.handleTextInput.bind(this);
     this.handlePayNow = this.handlePayNow.bind(this);
-    this.handleAccordionClick = this.handleAccordionClick.bind(this);
   }
 
   handleTextInput() {
@@ -28,14 +26,6 @@ export class PaymentContainer extends Component {
 
   handleOnFocus() {
     this.setState({ isDisabled: false });
-  }
-  handleAccordionClick(index) {
-    const { activeIndex } = this.state;
-    if (index === activeIndex) {
-      this.setState({ activeIndex: 2 });
-    } else {
-      this.setState({ activeIndex: index });
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -64,15 +54,13 @@ export class PaymentContainer extends Component {
   }
 
   render() {
-    const { isLoading, isDisabled, activeIndex } = this.state;
+    const { isLoading, isDisabled } = this.state;
     return (
       <CardPaymentForm
         handleOnFocus={this.handleOnFocus}
         handlePayNow={this.handlePayNow}
         isDisabled={isDisabled}
         isLoading={isLoading}
-        activeIndex={activeIndex}
-        handleAccordionClick={this.handleAccordionClick}
       />
     );
   }

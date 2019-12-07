@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { Form, Segment, Grid, Card } from "semantic-ui-react";
 

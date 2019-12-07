@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Image, Button } from "semantic-ui-react";
+import { Modal, Image } from "semantic-ui-react";
 import ImageUploader from "../sharedComponents/ImageUploader";
 
 const EditImageModal = ({

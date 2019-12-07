@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
-import { Card, Segment, Container, Grid } from "semantic-ui-react";
+import { Card, Container, Grid } from "semantic-ui-react";
 
 import { getObjectLength } from "../../utils/appUtils";
 import { getPageId } from "../../utils/urls";

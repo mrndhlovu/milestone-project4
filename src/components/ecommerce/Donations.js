@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Card, Grid, Button, Input, Header, Segment } from "semantic-ui-react";
+import { Button, Input, Header, Segment } from "semantic-ui-react";
 
 import { DONATION_AMOUNTS } from "../../constants/constants";
 
