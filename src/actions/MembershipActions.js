@@ -18,6 +18,8 @@ import {
   requestSuccess,
   createMessage
 } from "./index";
+import { getPageId } from "../utils/urls";
+import { refresh } from "../utils/appUtils";
 
 export const fetchMembershipsList = () => {
   return dispatch => {
@@ -40,6 +42,10 @@ export const changeAccount = option => {
       response => {
         dispatch(requestSuccess(RECEIVE_SUBSCRIPTION_CANCELED, response.data));
         dispatch(createMessage({ successMsg: response.data.message }));
+        const isPricingPage = getPageId() === "pricing";
+        setTimeout(() => {
+          isPricingPage && refresh();
+        }, 1500);
       },
       error => {
         dispatch(errorsAlert(CANCEL_SUBSCRIPTION_ERROR, error));

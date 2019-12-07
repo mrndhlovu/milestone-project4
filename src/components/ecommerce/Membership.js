@@ -16,14 +16,16 @@ export const Membership = ({
   membership,
   buttonText,
   isAuthenticated,
-  handleAddToCart,
-  history
+  handleSelectMembership,
+  history,
+  membershipType
 }) => {
   const { price, id, slug } = membership;
-  const isFreeMembership = slug === MEMBERSHIP_TYPE.free;
-
+  const isFreeMembership = membershipType === MEMBERSHIP_TYPE.free;
   const buttonColor = isFreeMembership ? "blue" : "black";
   const header = `Unicorn ${slug}`;
+  const membershipSelected =
+    buttonText === "Item in your cart: got to checkout";
 
   return (
     <Grid.Column
@@ -59,13 +61,17 @@ export const Membership = ({
         <Button
           data-test-id={isFreeMembership ? "free-signup-button" : "add-to-cart"}
           attached="bottom"
-          disabled={isFreeMembership && isAuthenticated}
           content={buttonText.toUpperCase()}
           color={buttonColor}
           onClick={
             isFreeMembership
-              ? () => history.push("/signup")
-              : () => handleAddToCart(id)
+              ? () =>
+                  isAuthenticated
+                    ? handleSelectMembership(`${id}`)
+                    : history.push("/signup")
+              : membershipSelected
+              ? () => history.push("/checkout")
+              : () => handleSelectMembership(id)
           }
         />
       </Card>

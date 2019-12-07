@@ -43,7 +43,6 @@ import {
   SESSION_LIFE
 } from "../constants/localStorageConstants";
 import { APP_TYPE } from "../constants/constants";
-import { requestArticleDetail } from "./BlogActions";
 
 function checkSessionTime(sessionLife) {
   return (
@@ -99,7 +98,7 @@ export const login = body => {
         dispatch(requestSuccess(USER_AUTH_SUCCESS, sessionToken));
         dispatch(createSession(sessionToken, sessionLife));
         dispatch(createMessage({ successMsg: response.data.message }));
-        window.location.reload();
+        refresh();
       },
       error => {
         dispatch(dataRequestFail(USER_AUTH_FAIL, error.response.data));
@@ -129,7 +128,7 @@ export const logOut = () => {
             dispatch(
               createMessage({ successMsg: "You have successfully logged out!" })
             );
-            window.location.reload();
+            refresh();
           },
           error => {
             destroyLocalStorage([
@@ -138,7 +137,7 @@ export const logOut = () => {
               "currentMembership"
             ]);
             dispatch(createMessage({ errorMsg: "Error login out" }));
-            window.location.reload();
+            refresh();
           }
         );
       }
@@ -147,7 +146,7 @@ export const logOut = () => {
       };
 };
 
-// Request sign up, if response is successfull create a session
+// Request sign up, if response is successful create a session
 export const signup = data => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_SIGNUP));

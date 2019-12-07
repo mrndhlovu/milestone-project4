@@ -90,7 +90,7 @@ class CancelSubscriptionAPIView(ListAPIView):
                 user_profile.save()
 
                 context = {
-                    'message': 'Deactivated you subscription!'
+                    'message': 'Downgrade subscription successful!'
                 }
 
                 return JsonResponse(context, status=200, safe=False)

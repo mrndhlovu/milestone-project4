@@ -1,19 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { addItemToCart } from "../actions/CheckoutActions";
-import { fetchMembershipsList } from "../actions/MembershipActions";
+import {
+  fetchMembershipsList,
+  changeAccount
+} from "../actions/MembershipActions";
 import {
   getMemberships,
   getUser,
   getCartPendingOrder,
-  getUserProfile
+  getUserProfile,
+  getUserMembership
 } from "../selectors/appSelectors";
 
 import MembershipOptions from "../components/ecommerce/MembershipOptions";
-import { APP_TYPE, MEMBERSHIP_TYPE } from "../constants/constants";
+import {
+  APP_TYPE,
+  MEMBERSHIP_TYPE,
+  ACCOUNT_CHANGE_OPTION
+} from "../constants/constants";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
+import { emptyFunction } from "../utils/appUtils";
 
 export class PricingContainer extends Component {
   constructor(props) {
@@ -25,7 +35,7 @@ export class PricingContainer extends Component {
       redirectParam: "",
       allAccess: ""
     };
-    this.handleAddToCart = this.handleAddToCart.bind(this);
+    this.handleSelectMembership = this.handleSelectMembership.bind(this);
   }
 
   componentDidMount() {
@@ -33,7 +43,13 @@ export class PricingContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { cart, user } = this.props;
+    const {
+      cart,
+      user,
+      userMembership,
+
+      auth: { isAuthenticated }
+    } = this.props;
 
     if (prevProps.cart.data !== cart.data) {
       if (cart.data && Object.keys(cart.data.orders).length > 0) {
@@ -41,7 +57,9 @@ export class PricingContainer extends Component {
         Object.keys(orders).forEach(order => {
           const cartItems = orders[order];
           if (cartItems.membership === MEMBERSHIP_TYPE.pro) {
-            return this.setState({ buttonTextPro: "Item in your cart" });
+            return this.setState({
+              buttonTextPro: "Item in your cart: got to checkout"
+            });
           }
         });
       }
@@ -49,37 +67,60 @@ export class PricingContainer extends Component {
 
     if (prevProps.user !== user) {
       if (user.data && user.data.username) {
-        const allAccess = user.data.current_membership.membership.is_pro_member;
+        const allAccess = userMembership.is_pro_member;
 
-        this.setState({ allAccess });
-        if (!allAccess) {
-          this.setState({ buttonTextFree: "Your current membership" });
+        if (!allAccess && isAuthenticated) {
+          this.setState({
+            buttonTextFree: "Your current membership",
+            buttonTextPro: `Upgrade to an allAccess Account`
+          });
+        } else {
+          this.setState({
+            buttonTextFree: "Downgrade to a limited account",
+            buttonTextPro: "Your current membership"
+          });
         }
       }
     }
   }
 
-  handleAddToCart(id) {
-    const { isAuthenticated } = this.props.auth;
+  handleSelectMembership(id) {
+    const {
+      auth: { isAuthenticated },
+      userMembership
+    } = this.props;
 
     if (isAuthenticated) {
-      return this.props.addItemToCart(id, APP_TYPE.membership);
+      if (typeof id === "string") {
+        return !userMembership.is_pro_member
+          ? emptyFunction
+          : this.props.changeAccount(ACCOUNT_CHANGE_OPTION.downgrade);
+      } else {
+        if (userMembership.is_pro_member) {
+          return this.setState({
+            buttonTextPro: "You already on this subscription"
+          });
+        } else {
+          return this.props.addItemToCart(id, APP_TYPE.membership);
+        }
+      }
+    } else {
+      this.setState({ buttonTextPro: "Lets signup first" });
     }
-    this.setState({ buttonTextPro: "Lets signup first" });
   }
 
   render() {
     const {
       memberships,
       auth: { isAuthenticated },
-      history
+      history,
+      userMembership
     } = this.props;
     const {
       buttonTextFree,
       buttonTextPro,
       buttonDisabled,
-      redirectParam,
-      allAccess
+      redirectParam
     } = this.state;
 
     return memberships.dataReceived ? (
@@ -87,13 +128,13 @@ export class PricingContainer extends Component {
         isAuthenticated={isAuthenticated}
         memberships={memberships.data}
         getMembershipChoice={this.renderServicesList}
-        handleAddToCart={this.handleAddToCart}
+        handleSelectMembership={this.handleSelectMembership}
         buttonTextFree={buttonTextFree}
         buttonTextPro={buttonTextPro}
         buttonDisabled={buttonDisabled}
         redirectParam={redirectParam}
         history={history}
-        allAccess={allAccess}
+        allAccess={userMembership.is_pro_member}
       />
     ) : (
       <UILoadingSpinner />
@@ -106,7 +147,8 @@ const mapStateToProps = state => {
     auth: getUser(state),
     memberships: getMemberships(state),
     cart: getCartPendingOrder(state),
-    user: getUserProfile(state)
+    user: getUserProfile(state),
+    userMembership: getUserMembership(state)
   };
 };
 
@@ -116,10 +158,12 @@ PricingContainer.propTypes = {
   user: PropTypes.object.isRequired,
   cart: PropTypes.object.isRequired,
   fetchMembershipsList: PropTypes.func.isRequired,
+  changeAccount: PropTypes.func.isRequired,
   addItemToCart: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, {
   fetchMembershipsList,
-  addItemToCart
-})(PricingContainer);
+  addItemToCart,
+  changeAccount
+})(withRouter(PricingContainer));

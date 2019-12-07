@@ -1,3 +1,5 @@
+import store from "../store";
+
 export const getAccountUpdate = state => state.account;
 export const getArticle = state => state.article;
 export const getArticleDetail = state => state.articleDetail;
@@ -23,3 +25,11 @@ export const getUpload = state => state.upload;
 export const getUser = state => state.auth;
 export const getUserProfile = state => state.user;
 export const getVotes = state => state.vote;
+
+export const getUserMembership = state => {
+  const userMembership = getUserProfile(state);
+  if (userMembership.dataReceived) {
+    return userMembership.data.current_membership.membership;
+  }
+  return userMembership.data;
+};

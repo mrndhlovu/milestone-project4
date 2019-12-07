@@ -5,14 +5,16 @@ import { Grid } from "semantic-ui-react";
 import PageHeader from "../sharedComponents/PageHeader";
 import { getPageId } from "../../utils/urls";
 import { Membership } from "./Membership";
+import { MEMBERSHIP_TYPE } from "../../constants/constants";
 
 const MembershipOptions = ({
   memberships,
-  handleAddToCart,
+  handleSelectMembership,
   buttonTextPro,
   buttonTextFree,
   history,
-  isAuthenticated
+  isAuthenticated,
+  allAccess
 }) => {
   const freeMembership = memberships[0];
   const proMembership = memberships[1];
@@ -31,16 +33,20 @@ const MembershipOptions = ({
             membership={freeMembership}
             buttonText={buttonTextFree}
             isAuthenticated={isAuthenticated}
-            handleAddToCart={handleAddToCart}
+            handleSelectMembership={handleSelectMembership}
             history={history}
+            allAccess={allAccess}
+            membershipType={MEMBERSHIP_TYPE.free}
           />
 
           <Membership
             membership={proMembership}
             buttonText={buttonTextPro}
             isAuthenticated={isAuthenticated}
-            handleAddToCart={handleAddToCart}
+            handleSelectMembership={handleSelectMembership}
             history={history}
+            allAccess={allAccess}
+            membershipType={MEMBERSHIP_TYPE.pro}
           />
         </Grid.Row>
       </Grid>
