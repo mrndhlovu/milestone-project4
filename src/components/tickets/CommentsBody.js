@@ -16,63 +16,56 @@ const CommentsBody = ({
   handleOnBlur,
   activeIndex
 }) => {
-  if (comments !== undefined) {
-    return (
-      <Fragment>
-        <Header as="h4" content="Comments" />
-        <Divider />
+  return (
+    <Fragment>
+      {Object.keys(comments).map(index => {
+        const { username, timestamp, comment, parent, id, image } = comments[
+          index
+        ];
 
-        {Object.keys(comments).map(index => {
-          const { username, timestamp, comment, parent, id, image } = comments[
-            index
-          ];
+        return (
+          !parent && (
+            <Segment key={index}>
+              <Comment>
+                <Comment.Avatar src={image} />
 
-          return (
-            !parent && (
-              <Segment key={index}>
-                <Comment>
-                  <Comment.Avatar src={image} />
-
-                  <Comment.Content>
-                    <Comment.Author as="a">
-                      <Header as="h5" color="orange">
-                        {username.toUpperCase()}
+                <Comment.Content>
+                  <Comment.Author as="a">
+                    <Header as="h5" color="orange">
+                      {username.toUpperCase()}
+                    </Header>
+                  </Comment.Author>
+                  <Comment.Metadata>
+                    <Header as="h5">{getFormatedDate(timestamp)}</Header>
+                  </Comment.Metadata>
+                  <Comment.Text as="h4">{comment}</Comment.Text>
+                  <Comment.Actions>
+                    <Comment.Text
+                      as="a"
+                      onClick={() => handleReplyClick(index)}
+                    >
+                      <Header as="h5" color="teal">
+                        Reply
                       </Header>
-                    </Comment.Author>
-                    <Comment.Metadata>
-                      <Header as="h5">{getFormatedDate(timestamp)}</Header>
-                    </Comment.Metadata>
-                    <Comment.Text as="h4">{comment}</Comment.Text>
-                    <Comment.Actions>
-                      <Comment.Text
-                        as="a"
-                        onClick={() => handleReplyClick(index)}
-                      >
-                        <Header as="h5" color="teal">
-                          Reply
-                        </Header>
-                      </Comment.Text>
-                    </Comment.Actions>
-                    <CommentReply comments={comments} parentId={id} />
-                  </Comment.Content>
-                </Comment>
-                <CommentReplyInput
-                  handleCreateComment={handleCreateComment}
-                  handleSubmit={handleSubmit}
-                  id={id}
-                  showReplyInput={activeIndex === index && showReplyInput}
-                  handleOnBlur={handleOnBlur}
-                  buttonDisabled={buttonDisabled}
-                />
-              </Segment>
-            )
-          );
-        })}
-      </Fragment>
-    );
-  } else {
-    return <Message>No commets yet.</Message>;
-  }
+                    </Comment.Text>
+                  </Comment.Actions>
+                  <CommentReply comments={comments} parentId={id} />
+                </Comment.Content>
+              </Comment>
+              <CommentReplyInput
+                handleCreateComment={handleCreateComment}
+                handleSubmit={handleSubmit}
+                id={id}
+                showReplyInput={activeIndex === index && showReplyInput}
+                handleOnBlur={handleOnBlur}
+                buttonDisabled={buttonDisabled}
+              />
+            </Segment>
+          )
+        );
+      })}
+    </Fragment>
+  );
 };
 
 export default CommentsBody;

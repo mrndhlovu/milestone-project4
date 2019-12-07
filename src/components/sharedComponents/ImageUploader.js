@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { useDropzone } from "react-dropzone";
 
 import { Container, Icon, Button, Segment, Header } from "semantic-ui-react";
-import { refresh } from "../../utils/appUtils";
 import { getPageId } from "../../utils/urls";
 
 const getColor = props => {

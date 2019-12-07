@@ -11,7 +11,7 @@ const TicketDetailStats = ({
 }) => {
   return (
     <Statistic.Group size="mini" color="black" data-test-id="detail-stats">
-      <Statistic style={{ marginRight: 0 }} as="a">
+      <Statistic as="a">
         <Header as="h5" style={{ marginBottom: 0 }}>
           {votes > 0 ? votes : 0}
         </Header>

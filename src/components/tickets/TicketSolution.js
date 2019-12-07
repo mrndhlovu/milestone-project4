@@ -1,7 +1,19 @@
 import React from "react";
+import styled from "styled-components";
 
 import { Accordion, Icon } from "semantic-ui-react";
 import Notification from "../sharedComponents/Notification";
+
+const StyledSpan = styled.span`
+  font-size: 20px;
+  color: black;
+`;
+
+const StyledContent = styled.p`
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  white-space: pre-wrap !important;
+`;
 
 const TicketSolution = ({
   activeIndex,
@@ -21,13 +33,15 @@ const TicketSolution = ({
         onClick={() => handleAccordionClick()}
         data-test-id="ticket-solution-accordion"
       >
-        <Icon name="dropdown" />
-        {solution.show ? "Paid Ticket Solution" : "Solution"}
+        <StyledSpan>
+          <Icon name="dropdown" />
+          {solution.show ? "Paid Ticket Solution" : "Solution"}
+        </StyledSpan>
       </Accordion.Title>
 
       <Accordion.Content active={activeIndex === 0}>
         {solution.show ? (
-          <p style={{ paddingLeft: 10 }}>{solution.solution}</p>
+          <StyledContent>{solution.solution}</StyledContent>
         ) : (
           <Notification
             linkText={buttonText}
