@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 import EditButtons from "../sharedComponents/EditButtons";
 import { getFormatedDate, emptyFunction } from "../../utils/appUtils";
@@ -17,6 +18,11 @@ import { CommentsContainer } from "../../containers/CommentsContainer";
 import Notification from "../sharedComponents/Notification";
 import NotificationModal from "../sharedComponents/NotificationModal";
 import ImageUploader from "../sharedComponents/ImageUploader";
+
+const StyledSpan = styled.span`
+  padding-left: 10px;
+  padding-right: 10px;
+`;
 
 const ArticleDetail = ({
   allAccess,
@@ -41,12 +47,6 @@ const ArticleDetail = ({
 
   return (
     <Fragment>
-      <DynamicHeader
-        option="post"
-        title={title}
-        dataTestId="article-detail-header"
-      />
-
       <Container
         style={{ paddingTop: 20 }}
         data-test-id="article-detail-container"
@@ -77,17 +77,18 @@ const ArticleDetail = ({
           />
           <Card.Content>
             <Card.Header as={Link} to={`/article/${id}`}>
-              {title.toUpperCase()}
+              <StyledSpan>{title.toUpperCase()}</StyledSpan>
             </Card.Header>
             <Card.Meta>
-              {article.owner} | {getFormatedDate(created_at)}
+              <StyledSpan>{article.owner}</StyledSpan> |
+              <StyledSpan>{getFormatedDate(created_at)}</StyledSpan>
             </Card.Meta>
             <Card.Description data-test-id="article-content">
               {content}
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <span style={{ paddingRight: 20 }}>
+            <StyledSpan>
               <Icon
                 link
                 name="thumbs up"
@@ -97,9 +98,11 @@ const ArticleDetail = ({
                 onClick={() => handleLikeClick(id)}
                 data-test-id="article-like-buttons"
               />
-              {likes}
-            </span>
-            <Icon name="eye" />
+              <StyledSpan>{likes}</StyledSpan>
+            </StyledSpan>
+            <StyledSpan>
+              <Icon name="eye" />
+            </StyledSpan>
             {views}
             <EditButtons
               isOwner={isOwner}
