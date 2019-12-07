@@ -19,14 +19,10 @@ const EditImageModal = ({
           <ImageUploader
             handleUploadImage={handleUploadImage}
             handleDeleteImage={handleDeleteImage}
+            onClose={handleEditImage}
           />
         </Modal.Description>
       </Modal.Content>
-      <Modal.Actions>
-        <Button onClick={() => handleEditImage()} negative>
-          Cancel
-        </Button>
-      </Modal.Actions>
     </Modal>
   );
 };

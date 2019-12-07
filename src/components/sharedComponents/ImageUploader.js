@@ -6,6 +6,7 @@ import { useDropzone } from "react-dropzone";
 
 import { Container, Icon, Button, Segment, Header } from "semantic-ui-react";
 import { refresh } from "../../utils/appUtils";
+import { getPageId } from "../../utils/urls";
 
 const getColor = props => {
   if (props.isDragAccept) {
@@ -55,7 +56,7 @@ const ImageUploader = ({ handleUploadImage, handleDeleteImage, onClose }) => {
       {file.path} - {file.size} bytes
     </li>
   ));
-
+  const onProfilePage = getPageId() === "user-profile";
   const hasSelectedImage = files.length !== 0;
 
   return (
@@ -63,7 +64,7 @@ const ImageUploader = ({ handleUploadImage, handleDeleteImage, onClose }) => {
       <Segment placeholder>
         <Header icon>
           <Icon name="image" />
-          Update article image
+          {onProfilePage ? "Update profile Image" : "Update article image"}
         </Header>
         <StyledContainer className="container">
           {!hasSelectedImage ? (
@@ -96,7 +97,7 @@ const ImageUploader = ({ handleUploadImage, handleDeleteImage, onClose }) => {
             Cancel
           </Button>
           <Button color="blue" onClick={() => handleDeleteImage("image")}>
-            Remove Image
+            {onProfilePage ? "Remove profile image" : "Remove article Image"}
           </Button>
         </Segment.Inline>
       </Segment>
