@@ -9,7 +9,7 @@ import { getFormatedDate } from "../../utils/appUtils";
 import StyledMessage from "../sharedComponents/StyledMessage";
 
 const BlogList = ({ articles }) => {
-  const hasArticles = articles === [];
+  const emptyArticleList = articles === [];
 
   const renderList = () => {
     return Object.keys(articles).map(key => {
@@ -85,7 +85,7 @@ const BlogList = ({ articles }) => {
         buttonId="from-blog-create-article"
       />
       <Container data-test-id="blog-list" style={{ paddingTop: 20 }}>
-        {hasArticles ? (
+        {!emptyArticleList ? (
           renderList()
         ) : (
           <StyledMessage
