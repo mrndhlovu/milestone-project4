@@ -126,7 +126,7 @@ export class CommentsContainer extends Component {
               disabled={buttonDisabled}
               icon="edit"
               size="small"
-              color="orange"
+              color="blue"
               onClick={() => this.handleSubmit(null)}
             />
           </Form>

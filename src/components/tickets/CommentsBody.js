@@ -1,10 +1,15 @@
-import React, { Fragment } from "react";
+import React from "react";
+import styled from "styled-components";
 
-import { Divider, Comment, Message, Header, Segment } from "semantic-ui-react";
+import { Comment } from "semantic-ui-react";
 
 import CommentReply from "../tickets/CommentReply";
 import CommentReplyInput from "../tickets/CommentReplyInput";
-import { getFormatedDate } from "../../utils/appUtils";
+import { getFormatedDate, capitalizeFirstLetter } from "../../utils/appUtils";
+
+const StyledContent = styled.p`
+  white-space: pre-wrap !important;
+`;
 
 const CommentsBody = ({
   comments,
@@ -16,56 +21,50 @@ const CommentsBody = ({
   handleOnBlur,
   activeIndex
 }) => {
-  return (
-    <Fragment>
-      {Object.keys(comments).map(index => {
-        const { username, timestamp, comment, parent, id, image } = comments[
-          index
-        ];
+  return Object.keys(comments).map(index => {
+    const { username, timestamp, comment, parent, id, image } = comments[index];
 
-        return (
-          !parent && (
-            <Segment key={index}>
-              <Comment>
-                <Comment.Avatar src={image} />
+    return (
+      !parent && (
+        <Comment.Group key={index}>
+          <Comment>
+            <Comment.Avatar src={image} />
 
-                <Comment.Content>
-                  <Comment.Author as="a">
-                    <Header as="h5" color="orange">
-                      {username.toUpperCase()}
-                    </Header>
-                  </Comment.Author>
-                  <Comment.Metadata>
-                    <Header as="h5">{getFormatedDate(timestamp)}</Header>
-                  </Comment.Metadata>
-                  <Comment.Text as="h4">{comment}</Comment.Text>
-                  <Comment.Actions>
-                    <Comment.Text
-                      as="a"
-                      onClick={() => handleReplyClick(index)}
-                    >
-                      <Header as="h5" color="teal">
-                        Reply
-                      </Header>
-                    </Comment.Text>
-                  </Comment.Actions>
-                  <CommentReply comments={comments} parentId={id} />
-                </Comment.Content>
-              </Comment>
-              <CommentReplyInput
-                handleCreateComment={handleCreateComment}
-                handleSubmit={handleSubmit}
-                id={id}
-                showReplyInput={activeIndex === index && showReplyInput}
-                handleOnBlur={handleOnBlur}
-                buttonDisabled={buttonDisabled}
-              />
-            </Segment>
-          )
-        );
-      })}
-    </Fragment>
-  );
+            <Comment.Content>
+              <Comment.Author as="a">
+                {capitalizeFirstLetter(username)}
+              </Comment.Author>
+              <Comment.Metadata>
+                Created <small>{getFormatedDate(timestamp)}</small>
+              </Comment.Metadata>
+              <Comment.Text as="h4">
+                <StyledContent>{comment}</StyledContent>
+              </Comment.Text>
+              <Comment.Actions>
+                <Comment.Text
+                  as="a"
+                  color="blue"
+                  onClick={() => handleReplyClick(index)}
+                >
+                  Reply
+                </Comment.Text>
+              </Comment.Actions>
+              <CommentReply comments={comments} parentId={id} />
+            </Comment.Content>
+
+            <CommentReplyInput
+              handleCreateComment={handleCreateComment}
+              handleSubmit={handleSubmit}
+              id={id}
+              showReplyInput={activeIndex === index && showReplyInput}
+              handleOnBlur={handleOnBlur}
+              buttonDisabled={buttonDisabled}
+            />
+          </Comment>
+        </Comment.Group>
+      )
+    );
+  });
 };
 
 export default CommentsBody;

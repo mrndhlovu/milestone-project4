@@ -1,8 +1,13 @@
 import React from "react";
+import styled from "styled-components";
 
-import { getFormatedDate } from "../../utils/appUtils";
+import { getFormatedDate, capitalizeFirstLetter } from "../../utils/appUtils";
 
-import { Comment, Header } from "semantic-ui-react";
+import { Comment } from "semantic-ui-react";
+
+const StyledContent = styled.p`
+  white-space: pre-wrap !important;
+`;
 
 export const CommentReply = ({ comments, parentId }) => {
   return Object.keys(comments).map(index => {
@@ -11,15 +16,21 @@ export const CommentReply = ({ comments, parentId }) => {
     return (
       parent &&
       parentId === parent && (
-        <Comment.Group key={index}>
-          <Comment.Avatar src={image} />
-          <Comment.Author as="a">{username.toLowerCase()}</Comment.Author>
-          <Comment.Metadata>
-            <Header as="h5" color="grey">
-              {getFormatedDate(timestamp)}
-            </Header>
-          </Comment.Metadata>
-          <Comment.Text>{comment}</Comment.Text>
+        <Comment.Group>
+          <Comment key={index}>
+            <Comment.Avatar src={image} />
+            <Comment.Content>
+              <Comment.Author as="a">
+                {capitalizeFirstLetter(username)}
+              </Comment.Author>
+              <Comment.Metadata>
+                <small> Created {getFormatedDate(timestamp)}</small>
+              </Comment.Metadata>
+              <Comment.Text>
+                <StyledContent>{comment}</StyledContent>
+              </Comment.Text>
+            </Comment.Content>
+          </Comment>
         </Comment.Group>
       )
     );
