@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Accordion, Icon } from "semantic-ui-react";
-import NotificationModal from "../sharedComponents/NotificationModal";
+import Notification from "../sharedComponents/Notification";
 
 const TicketSolution = ({
   activeIndex,
@@ -29,7 +29,7 @@ const TicketSolution = ({
         {solution.show ? (
           <p style={{ paddingLeft: 10 }}>{solution.solution}</p>
         ) : (
-          <NotificationModal
+          <Notification
             linkText={buttonText}
             message="Ticket solution requires payment"
             redirect={isAuthenticated ? () => addToCart(id) : () => addToCart()}

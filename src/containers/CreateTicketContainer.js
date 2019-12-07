@@ -17,7 +17,7 @@ import { slugify, validate } from "../utils/appUtils";
 import CreateTicketFormField from "../components/tickets/CreateTicketFormField";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import CreateTicketRadioButtons from "../components/tickets/CreateTicketRadioButtons";
-import MessageModal from "../components/sharedComponents/MessageModal";
+import NotificationModal from "../components/sharedComponents/NotificationModal";
 import PageHeader from "../components/sharedComponents/PageHeader";
 
 export class CreateTicketContainer extends Component {
@@ -128,7 +128,7 @@ export class CreateTicketContainer extends Component {
           </Form>
 
           {!allAccess && (
-            <MessageModal
+            <NotificationModal
               feature="file a ticket"
               history={history}
               redirect="pricing"

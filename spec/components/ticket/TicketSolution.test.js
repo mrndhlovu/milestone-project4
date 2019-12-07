@@ -3,6 +3,7 @@ import { shallow } from "enzyme";
 
 import { findByDataTestId } from "../../testUtils.js/utils";
 import TicketSolution from "../../../src/components/tickets/TicketSolution";
+import Notification from "../../../src/components/sharedComponents/Notification";
 
 const DEFAULT_PROPS = {
   activeIndex: 0,
@@ -13,6 +14,14 @@ const DEFAULT_PROPS = {
   id: 1,
   buttonText: "Test button",
   isAuthenticated: false
+};
+
+const notificationProps = {
+  linkText: "Add to Cart",
+  message: "Ticket solution requires payment",
+  redirect: jasmine.createSpy("addToCart"),
+  iconName: "content",
+  dataTestId: "ticket-solution-add-to-cart"
 };
 
 describe("TicketsList", () => {
@@ -30,22 +39,29 @@ describe("TicketsList", () => {
   });
 
   it("should render ticket solution component and click on add to cart", () => {
-    expect(container.length).toBe(1);
+    const wrapper = shallow(<Notification {...notificationProps} />);
+    container = findByDataTestId(wrapper, "notification-modal-container");
 
     button = findByDataTestId(container, "ticket-solution-add-to-cart");
     button.props().onClick();
 
-    expect(DEFAULT_PROPS.addToCart).toHaveBeenCalled();
+    expect(notificationProps.redirect).toHaveBeenCalled();
   });
 
-  it("should click on add to cart button with id argument passed", () => {
-    const newProps = { ...DEFAULT_PROPS, isAuthenticated: true };
-    wrapper = shallow(<TicketSolution {...newProps} />);
-    container = findByDataTestId(wrapper, "ticket-solution-container");
+  it("should click on add to cart button when authenticated", () => {
+    const newProps = {
+      ...notificationProps,
+      redirect:
+        { ...DEFAULT_PROPS.isAuthenticated, isAuthenticated: true } &&
+        jasmine.createSpy("addToCart")
+    };
+
+    wrapper = shallow(<Notification {...newProps} />);
+    container = findByDataTestId(wrapper, "notification-modal-container");
 
     button = findByDataTestId(container, "ticket-solution-add-to-cart");
     button.props().onClick();
 
-    expect(DEFAULT_PROPS.addToCart).toHaveBeenCalledWith(DEFAULT_PROPS.id);
+    expect(newProps.redirect).toHaveBeenCalledWith();
   });
 });

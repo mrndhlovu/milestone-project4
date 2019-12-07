@@ -6,7 +6,7 @@ import { Container, Grid, Button, Header, Image } from "semantic-ui-react";
 import PageHeader from "../sharedComponents/PageHeader";
 import { getPageId } from "../../utils/urls";
 import { getFormatedDate } from "../../utils/appUtils";
-import NotificationModal from "../sharedComponents/NotificationModal";
+import Notification from "../sharedComponents/Notification";
 
 const BlogList = ({ articles }) => {
   const emptyArticleList = articles === [];
@@ -88,7 +88,7 @@ const BlogList = ({ articles }) => {
         {!emptyArticleList ? (
           renderList()
         ) : (
-          <NotificationModal
+          <Notification
             redirect="/new-article"
             message="There no articles at this moment..."
             linkText="Create article"

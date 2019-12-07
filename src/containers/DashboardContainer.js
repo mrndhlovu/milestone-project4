@@ -8,7 +8,7 @@ import PageHeader from "../components/sharedComponents/PageHeader";
 import { getTicketList } from "../selectors/appSelectors";
 import { fetchTicketsList } from "../actions/TicketActions";
 import DashboardCards from "../components/dashboard/DashboardCards";
-import NotificationModal from "../components/sharedComponents/NotificationModal";
+import Notification from "../components/sharedComponents/Notification";
 import { Segment } from "semantic-ui-react";
 import { getPageId } from "../utils/urls";
 
@@ -35,7 +35,7 @@ export class DashboardContainer extends Component {
             {hasTickets ? (
               <DashboardCards ticketList={tickets.data} />
             ) : (
-              <NotificationModal
+              <Notification
                 message="No tickets at this time."
                 redirect="/create-ticket"
                 linkText="Create a ticket"

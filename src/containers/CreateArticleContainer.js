@@ -15,7 +15,7 @@ import {
 } from "../selectors/appSelectors";
 import { Header, Message, Container, Form } from "semantic-ui-react";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
-import MessageModal from "../components/sharedComponents/MessageModal";
+import NotificationModal from "../components/sharedComponents/NotificationModal";
 import PageHeader from "../components/sharedComponents/PageHeader";
 
 class CreateArticleContainer extends Component {
@@ -101,7 +101,7 @@ class CreateArticleContainer extends Component {
           </Form>
 
           {!allAccess && (
-            <MessageModal
+            <NotificationModal
               feature="create an article"
               history={history}
               redirect="pricing"

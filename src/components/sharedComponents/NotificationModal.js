@@ -1,33 +1,26 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 
-import { Header, Icon, Segment, Button } from "semantic-ui-react";
+import { Header, Modal } from "semantic-ui-react";
+import Notification from "./Notification";
 
 const NotificationModal = ({
+  feature,
+  history,
   redirect,
-  linkText,
-  message,
-  iconName,
-  dataTestId
+  showMessageModal,
+  header
 }) => {
   return (
-    <Segment placeholder data-test-id="notification-modal-container">
-      <Header icon>
-        <Icon name={iconName} size="tiny" />
-        {message}
-      </Header>
-
-      {typeof redirect === "string" ? (
-        <Button as={NavLink} to={redirect} primary data-test-id={dataTestId}>
-          {linkText}
-        </Button>
-      ) : (
-        <Button onClick={redirect} data-test-id={dataTestId} color="orange">
-          {linkText}
-          <Icon name="arrow right" />
-        </Button>
-      )}
-    </Segment>
+    <Modal open={showMessageModal} basic size="tiny">
+      <Header icon="browser" content={header} />
+      <Notification
+        dataTestId="restriction-modal"
+        iconName="lock"
+        message={`You need a Unicorn PRO account to ${feature}`}
+        linkText="Got it"
+        redirect={() => history.push(`/${redirect}`)}
+      />
+    </Modal>
   );
 };
 

@@ -7,7 +7,7 @@ import TicketDetailStats from "./TicketDetailStats";
 import DynamicHeader from "../sharedComponents/DynamicHeader";
 import TicketSolution from "./TicketSolution";
 import CommentsContainer from "../../containers/CommentsContainer";
-import NotificationModal from "../sharedComponents/NotificationModal";
+import Notification from "../sharedComponents/Notification";
 import { DEFAULT_IMAGES } from "../../constants/constants";
 
 const TicketDetail = ({
@@ -93,7 +93,7 @@ const TicketDetail = ({
             createReply={createReply}
           />
         ) : (
-          <NotificationModal
+          <Notification
             message="To view and make comments you need to upgrade your account "
             linkText="Unicorn Pro Account."
             redirect="/pricing"
