@@ -32,12 +32,18 @@ import {
   requestSuccess
 } from "./index";
 
-import { destroyLocalStorage, createUserProfile } from "../utils/appUtils";
+import {
+  destroyLocalStorage,
+  createUserProfile,
+  refresh
+} from "../utils/appUtils";
 
 import {
   SESSION_TOKEN,
   SESSION_LIFE
 } from "../constants/localStorageConstants";
+import { APP_TYPE } from "../constants/constants";
+import { requestArticleDetail } from "./BlogActions";
 
 function checkSessionTime(sessionLife) {
   return (
@@ -222,6 +228,9 @@ export const deleteImage = (app, id) => {
       response => {
         dispatch(requestSuccess(RECEIVE_PROFILE_UPDATE, response.data));
         createMessage({ successMsg: response.data.message });
+        if (app === APP_TYPE.post) {
+          refresh();
+        }
       },
       error => {
         dispatch(createMessage({ errorMsg: error }));

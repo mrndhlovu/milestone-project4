@@ -28,7 +28,8 @@ class ArticleDetailContainer extends Component {
     this.state = {
       showConfirmModal: false,
       title: "",
-      showImageUploader: false
+      showImageUploader: false,
+      option: ""
     };
 
     this.handleCancel = this.handleCancel.bind(this);
@@ -61,8 +62,8 @@ class ArticleDetailContainer extends Component {
     }
   }
 
-  handleDelete() {
-    this.setState({ showConfirmModal: true });
+  handleDelete(option) {
+    this.setState({ showConfirmModal: true, option });
   }
 
   handleUpdateImage(file) {
@@ -93,7 +94,7 @@ class ArticleDetailContainer extends Component {
 
   render() {
     const { article, user, history } = this.props;
-    const { showConfirmModal, showImageUploader } = this.state;
+    const { showConfirmModal, showImageUploader, option } = this.state;
     const image = article.dataReceived && article.data.data.image;
     const allAccess =
       user.dataReceived &&
@@ -121,6 +122,7 @@ class ArticleDetailContainer extends Component {
           handleImageClick={() =>
             this.setState({ showImageUploader: !showImageUploader })
           }
+          deleteOption={option}
         />
       )
     );

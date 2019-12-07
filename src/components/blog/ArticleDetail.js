@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import EditButtons from "../sharedComponents/EditButtons";
@@ -11,9 +10,10 @@ import {
   Image,
   Container,
   Confirm,
-  Segment
+  Segment,
+  Header
 } from "semantic-ui-react";
-import DynamicHeader from "../sharedComponents/DynamicHeader";
+
 import { CommentsContainer } from "../../containers/CommentsContainer";
 import Notification from "../sharedComponents/Notification";
 import NotificationModal from "../sharedComponents/NotificationModal";
@@ -22,6 +22,16 @@ import ImageUploader from "../sharedComponents/ImageUploader";
 const StyledSpan = styled.span`
   padding-left: 10px;
   padding-right: 10px;
+`;
+
+const StyledContainer = styled(Container)`
+  padding-top: 20px !important;
+`;
+
+const StyledContentContainer = styled(Container)`
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  white-space: pre-wrap !important;
 `;
 
 const ArticleDetail = ({
@@ -40,117 +50,117 @@ const ArticleDetail = ({
   user,
   createComment,
   createReply,
-  handleDeleteImage
+  handleDeleteImage,
+  deleteOption
 }) => {
   const { title, views, created_at, id, content } = article.data;
   const { isOwner, likes, comments } = article;
+  const deleteImage = deleteOption === "image";
 
   return (
-    <Fragment>
-      <Container
-        style={{ paddingTop: 20 }}
-        data-test-id="article-detail-container"
-      >
-        <Card fluid>
-          {showImageUploader && (
-            <Segment data-test-id="article-detail-image-uploader">
-              <ImageUploader
-                handleUploadImage={handleUpdateImage}
-                handleDeleteImage={handleDeleteImage}
-                image={image}
-              />
-            </Segment>
-          )}
-          <Image
-            as={isOwner && "a"}
-            src={image}
-            wrapped
-            ui={false}
-            label={
-              isOwner && {
-                as: "a",
-                color: "red",
-                corner: "right",
-                icon: "save"
-              }
-            }
-            onClick={isOwner ? () => handleImageClick() : emptyFunction}
-          />
-          <Card.Content>
-            <Card.Header as={Link} to={`/article/${id}`}>
-              <StyledSpan>{title.toUpperCase()}</StyledSpan>
-            </Card.Header>
-            <Card.Meta>
-              <StyledSpan>{article.owner}</StyledSpan> |
-              <StyledSpan>{getFormatedDate(created_at)}</StyledSpan>
-            </Card.Meta>
-            <Card.Description data-test-id="article-content">
-              {content}
-            </Card.Description>
-          </Card.Content>
-          <Card.Content extra>
-            <StyledSpan>
-              <Icon
-                link
-                name="thumbs up"
-                color="grey"
-                as="i"
-                fitted
-                onClick={() => handleLikeClick(id)}
-                data-test-id="article-like-buttons"
-              />
-              <StyledSpan>{likes}</StyledSpan>
-            </StyledSpan>
-            <StyledSpan>
-              <Icon name="eye" />
-            </StyledSpan>
-            {views}
-            <EditButtons
-              isOwner={isOwner}
-              handleDelete={handleDelete}
-              id={id}
-              isTicket={false}
-              dataTestId="article-detail-edit-buttons"
+    <StyledContainer data-test-id="article-detail-container">
+      <Card fluid>
+        {showImageUploader && (
+          <Segment data-test-id="article-detail-image-uploader">
+            <ImageUploader
+              handleUploadImage={handleUpdateImage}
+              handleDeleteImage={handleDelete}
+              onClose={handleImageClick}
+              image={image}
             />
-          </Card.Content>
-        </Card>
-
-        {allAccess ? (
-          <CommentsContainer
-            createComment={createComment}
-            createReply={createReply}
-            comments={comments}
-            articleId={id}
-            isArticle={true}
-            userId={user.id}
-          />
-        ) : (
-          <Notification
-            redirect="/pricing"
-            message="Access to comments requires a "
-            linkText="Unicorn PRO Account"
-          />
+          </Segment>
         )}
-
-        <Confirm
-          open={showConfirmModal}
-          cancelButton="Cancel"
-          confirmButton="Yes delete"
-          onCancel={() => handleCancel()}
-          onConfirm={() => handleConfirm()}
-          data-test-id="article-confirm-modal"
+        <Image
+          fluid
+          as={isOwner && "a"}
+          src={image}
+          wrapped
+          ui={false}
+          label={
+            isOwner && {
+              color: "red",
+              corner: "right",
+              icon: "save"
+            }
+          }
+          onClick={isOwner ? () => handleImageClick() : emptyFunction}
         />
-        {!allAccess && (
-          <NotificationModal
-            feature="read the article"
-            history={history}
-            redirect="blog"
-            showMessageModal={true}
-            header="UPGRADE MEMBERSHIP"
+        <StyledContainer text fluid>
+          <Header as="h2" content={title.toUpperCase()} />
+          <small>
+            {article.owner} |
+            <StyledSpan>{getFormatedDate(created_at)}</StyledSpan>
+          </small>
+          <StyledContentContainer data-test-id="article-content">
+            {content}
+          </StyledContentContainer>
+        </StyledContainer>
+        <Card.Content extra>
+          <StyledSpan>
+            <Icon
+              link
+              name="thumbs up"
+              color="grey"
+              as="i"
+              fitted
+              onClick={() => handleLikeClick(id)}
+              data-test-id="article-like-buttons"
+            />
+            <StyledSpan>{likes}</StyledSpan>
+          </StyledSpan>
+          <StyledSpan>
+            <Icon name="eye" />
+          </StyledSpan>
+          {views}
+          <EditButtons
+            isOwner={isOwner}
+            handleDelete={handleDelete}
+            id={id}
+            isTicket={false}
+            dataTestId="article-detail-edit-buttons"
           />
-        )}
-      </Container>
-    </Fragment>
+        </Card.Content>
+      </Card>
+
+      {allAccess ? (
+        <CommentsContainer
+          createComment={createComment}
+          createReply={createReply}
+          comments={comments}
+          articleId={id}
+          isArticle={true}
+          userId={user.id}
+        />
+      ) : (
+        <Notification
+          redirect="/pricing"
+          message="Access to comments requires a "
+          linkText="Unicorn PRO Account"
+        />
+      )}
+
+      <Confirm
+        open={showConfirmModal}
+        cancelButton="Cancel"
+        confirmButton={
+          deleteImage ? "Yes delete current image" : "Yes delete article"
+        }
+        onCancel={() => handleCancel()}
+        onConfirm={
+          deleteImage ? () => handleDeleteImage() : () => handleConfirm()
+        }
+        data-test-id="article-confirm-modal"
+      />
+      {!allAccess && (
+        <NotificationModal
+          feature="read the article"
+          history={history}
+          redirect="blog"
+          showMessageModal={true}
+          header="UPGRADE MEMBERSHIP"
+        />
+      )}
+    </StyledContainer>
   );
 };
 

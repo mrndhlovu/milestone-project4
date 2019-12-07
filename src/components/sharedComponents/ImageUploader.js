@@ -4,7 +4,8 @@ import styled from "styled-components";
 
 import { useDropzone } from "react-dropzone";
 
-import { Container, Icon, Button } from "semantic-ui-react";
+import { Container, Icon, Button, Segment, Header } from "semantic-ui-react";
+import { refresh } from "../../utils/appUtils";
 
 const getColor = props => {
   if (props.isDragAccept) {
@@ -20,6 +21,17 @@ const getColor = props => {
 };
 
 const StyledContainer = styled(Container)`
+  padding-bottom: 20px !important;
+`;
+
+const StyledParagraph = styled.p`
+  font-size: 20px !important;
+  margin: 0 auto;
+  font-style: oblique;
+  text-align: center;
+`;
+
+const StyledContentContainer = styled(Container)`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -35,7 +47,7 @@ const StyledContainer = styled(Container)`
   transition: border 0.24s ease-in-out;
 `;
 
-const ImageUploader = ({ handleUploadImage, handleDeleteImage }) => {
+const ImageUploader = ({ handleUploadImage, handleDeleteImage, onClose }) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
   const files = acceptedFiles.map(file => (
@@ -48,33 +60,46 @@ const ImageUploader = ({ handleUploadImage, handleDeleteImage }) => {
 
   return (
     <Fragment>
-      <Container className="container" style={{ paddingBottom: 20 }}>
-        {!hasSelectedImage && (
-          <StyledContainer>
-            <div {...getRootProps({ className: "dropzone" })}>
-              <input {...getInputProps()} />
-              <p>Drag 'n' drop some image here, or click to select files</p>
-            </div>
-          </StyledContainer>
-        )}
-        {hasSelectedImage && (
-          <aside>
-            <h4>Image selected</h4>
-            {files}
-          </aside>
-        )}
-      </Container>
+      <Segment placeholder>
+        <Header icon>
+          <Icon name="image" />
+          Update article image
+        </Header>
+        <StyledContainer className="container">
+          {!hasSelectedImage ? (
+            <StyledContentContainer>
+              <div {...getRootProps({ className: "dropzone" })}>
+                <input {...getInputProps()} />
+                <StyledParagraph>
+                  Drag 'n' drop an image here, or click to select from your
+                  files
+                </StyledParagraph>
+              </div>
+            </StyledContentContainer>
+          ) : (
+            <aside>
+              <h4>Image selected</h4>
+              {files}
+            </aside>
+          )}
+        </StyledContainer>
 
-      <Button floated="right" color="blue" onClick={() => handleDeleteImage()}>
-        <Icon name="delete" />
-        Remove
-      </Button>
-      <Button
-        floated="right"
-        onClick={() => handleUploadImage(acceptedFiles[0])}
-      >
-        Done
-      </Button>
+        <Segment.Inline>
+          <Button
+            onClick={() => handleUploadImage(acceptedFiles[0])}
+            disabled={!hasSelectedImage}
+          >
+            <Icon name="upload" />
+            Upload
+          </Button>
+          <Button color="red" onClick={() => onClose()}>
+            Cancel
+          </Button>
+          <Button color="blue" onClick={() => handleDeleteImage("image")}>
+            Remove Image
+          </Button>
+        </Segment.Inline>
+      </Segment>
     </Fragment>
   );
 };
