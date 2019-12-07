@@ -421,20 +421,21 @@ class PaymentAPIView(APIView):
 
                             elif item.product_content_type.name == app_type['ticket']:
                                 ticket = get_ticket(item)
+                                ticket.status = 'doing'
+                                ticket.save()
                                 user_profile.paid_tickets.add(ticket)
                                 user_profile.save()
 
                                 ticket_solution, created = TicketSolution.objects.get_or_create(
                                     parent_ticket_id=ticket.id)
+
                                 ticket_solution.paid_client.add(request.user)
                                 ticket_solution.status = 'doing'
                                 ticket_solution.save()
 
                             elif item.product_content_type.name == app_type['donation']:
-                                print('got here')
                                 donation = get_object_or_404(
                                     Donation, is_paid=False, user=request.user)
-                                print(donation)
                                 donation.stripe_charge_id = payment.stripe_charge_id
                                 donation.is_paid = True
                                 donation.save()

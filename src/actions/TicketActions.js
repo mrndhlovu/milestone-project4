@@ -48,6 +48,7 @@ import {
 } from "./index";
 import { APP_TYPE } from "../constants/constants";
 import { requestArticleDetail } from "./BlogActions";
+import store from "../store";
 
 // fetch tickets list
 export const fetchTicketsList = () => {
@@ -83,7 +84,11 @@ export const requestTicketsDetail = id => {
     dispatch(makeRequest(FETCH_TICKET_DETAIL));
     fetchTicketDetail(id).then(
       response => {
+        const { auth } = store.getState();
         dispatch(requestSuccess(RECEIVE_TICKET_DETAIL, response.data));
+        if (auth.isAuthenticated) {
+          dispatch(fetchTicketSolution(id));
+        }
       },
       error => {
         dispatch(errorsAlert(TICKET_DETAIL_ERROR, error));

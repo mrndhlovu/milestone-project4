@@ -3,12 +3,12 @@ import styled from "styled-components";
 
 import { Segment, Container } from "semantic-ui-react";
 
-import EditButtons from "../sharedComponents/EditButtons";
-import TicketDetailStats from "./TicketDetailStats";
-import DynamicHeader from "../sharedComponents/DynamicHeader";
-import TicketSolution from "./TicketSolution";
 import CommentsContainer from "../../containers/CommentsContainer";
+import DynamicHeader from "../sharedComponents/DynamicHeader";
+import EditButtons from "../sharedComponents/EditButtons";
 import Notification from "../sharedComponents/Notification";
+import TicketDetailStats from "./TicketDetailStats";
+import TicketSolution from "./TicketSolution";
 import { capitalizeFirstLetter, getFormatedDate } from "../../utils/appUtils";
 
 const StyledContentSegment = styled(Segment)`
@@ -53,7 +53,7 @@ const TicketDetail = ({
   return (
     <Fragment>
       <DynamicHeader title={title} image="" dataTestId="ticket-detail-header" />
-      <StyledContainer padded data-test-id="ticket-detail-container">
+      <StyledContainer data-test-id="ticket-detail-container">
         <Segment.Group horizontal>
           <Segment textAlign="center">
             <TicketDetailStats

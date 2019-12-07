@@ -39,7 +39,6 @@ export class TicketDetailContainer extends Component {
   constructor(props) {
     super(props);
     this.state = { ...initialState };
-
     this.handleVoteClick = this.handleVoteClick.bind(this);
     this.handleTicketDelete = this.handleTicketDelete.bind(this);
     this.handleAccordionClick = this.handleAccordionClick.bind(this);
@@ -49,12 +48,7 @@ export class TicketDetailContainer extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    const { isAuthenticated } = this.props.auth;
     this.props.requestTicketsDetail(id);
-
-    setTimeout(() => {
-      isAuthenticated && this.props.fetchTicketSolution(id);
-    }, 100);
   }
 
   componentDidUpdate(prevProps) {
@@ -152,13 +146,13 @@ export class TicketDetailContainer extends Component {
 
 const mapStateToProps = state => {
   return {
+    auth: getUser(state),
     solution: getSolution(state),
     ticket: getTicketDetail(state),
+    ticketComments: getComments(state),
     ticketDelete: getTicketUpdate(state),
     user: getUserProfile(state),
-    vote: getVotes(state),
-    auth: getUser(state),
-    ticketComments: getComments(state)
+    vote: getVotes(state)
   };
 };
 
