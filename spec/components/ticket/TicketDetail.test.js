@@ -20,22 +20,24 @@ const DEFAULT_PROPS = {
   props: {
     data: {
       data: {
-        title: "some title",
+        title: "Test header",
         description: " test description",
         views: 0,
         id: 1,
         image: "image",
         votes: 0,
-        activeIndex: 0
+        activeIndex: 0,
+        created_at: "2019-12-05T21:06:33.022Z"
       },
       buttonText: "button text",
       history: { push: jasmine.createSpy("onClick") },
       isAuthenticated: false,
       addToCart: jasmine.createSpy("onClick"),
-      handleAccordionClick: jasmine.createSpy("onClick")
+      handleAccordionClick: jasmine.createSpy("onClick"),
+      owner: "admin",
+      isOwner: false,
+      comments: {}
     },
-    isOwner: false,
-    comments: {},
     user: { id: 1 }
   }
 };
@@ -56,13 +58,13 @@ describe("Ticket Detail", () => {
     init();
   });
 
-  it("should render ticket detail header", () => {
-    header = container
-      .find(Header)
-      .first()
-      .props().content;
+  it("should render ticket detail header in dynamic header", () => {
+    expect(wrapper).toContainMatchingElement(DynamicHeader);
+    container = findByDataTestId(header, "article-title");
 
-    expect(header).toBe(DEFAULT_PROPS.props.data.data.title.toUpperCase());
+    expect(container.props().children.props.children).toBe(
+      DEFAULT_PROPS.props.data.data.title.toUpperCase()
+    );
   });
 
   it("should render ticket detail container correctly with the right content", () => {

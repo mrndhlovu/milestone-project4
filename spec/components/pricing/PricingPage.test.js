@@ -31,7 +31,7 @@ const DEFAULT_PROPS = {
     buttonText: "button text",
     history: { push: jasmine.createSpy("onClick") },
     isAuthenticated: false,
-    handleAddToCart: jasmine.createSpy("onClick")
+    handleSelectMembership: jasmine.createSpy("onClick")
   }
 };
 
@@ -48,8 +48,11 @@ describe("PricingContainer", () => {
 
     membership = shallow(
       <Membership
-        handleAddToCart={DEFAULT_PROPS.membershipProps.handleAddToCart}
+        handleSelectMembership={
+          DEFAULT_PROPS.membershipProps.handleSelectMembership
+        }
         history={DEFAULT_PROPS.membershipProps.history}
+        membershipType={option}
         membership={
           freeMembership
             ? DEFAULT_PROPS.membershipProps.memberships[0]
@@ -108,7 +111,7 @@ describe("PricingContainer", () => {
   });
 
   it("should render pro membership card and description", () => {
-    membership = getMemberShip();
+    membership = getMemberShip("pro");
 
     const container = findByDataTestId(membership, "pro-membership");
     description = findByDataTestId(description, "pro-membership-description");
@@ -138,10 +141,12 @@ describe("PricingContainer", () => {
   });
 
   it("should click pro membership button", () => {
-    membership = getMemberShip();
+    membership = getMemberShip("pro");
     button = findByDataTestId(membership, "add-to-cart");
 
     button.simulate("click");
-    expect(DEFAULT_PROPS.membershipProps.handleAddToCart).toHaveBeenCalled();
+    expect(
+      DEFAULT_PROPS.membershipProps.handleSelectMembership
+    ).toHaveBeenCalledWith(DEFAULT_PROPS.membershipProps.memberships[1].id);
   });
 });

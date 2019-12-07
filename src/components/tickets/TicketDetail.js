@@ -51,9 +51,9 @@ const TicketDetail = ({
   } = data;
 
   return (
-    <Fragment>
+    <div data-test-id="ticket-detail-container">
       <DynamicHeader title={title} image="" dataTestId="ticket-detail-header" />
-      <StyledContainer data-test-id="ticket-detail-container">
+      <StyledContainer>
         <Segment.Group horizontal>
           <Segment textAlign="center">
             <TicketDetailStats
@@ -116,7 +116,7 @@ const TicketDetail = ({
           )}
         </Segment.Group>
       </StyledContainer>
-    </Fragment>
+    </div>
   );
 };
 
