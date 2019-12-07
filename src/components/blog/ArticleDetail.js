@@ -62,6 +62,7 @@ const ArticleDetail = ({
             </Segment>
           )}
           <Image
+            as={isOwner && "a"}
             src={image}
             wrapped
             ui={false}
