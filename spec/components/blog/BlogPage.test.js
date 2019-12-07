@@ -47,7 +47,8 @@ const DEFAULT_PROPS = {
         username: "mndhlovu",
         views: 211
       }
-    ]
+    ],
+    emptyArticleList: false
   }
 };
 
@@ -86,6 +87,7 @@ describe("BlogList", () => {
 
   it("should click on read more button", () => {
     container = findByDataTestId(wrapper, "blog-list");
+
     const button = findByDataTestId(container, "read-more-button-2");
 
     expect(button.props().children).toBe("Read more");

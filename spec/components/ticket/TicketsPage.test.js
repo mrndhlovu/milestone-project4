@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import { TableBody, Header } from "semantic-ui-react";
+import { TableBody, Header, Button } from "semantic-ui-react";
 
 import PageHeader from "../../../src/components/sharedComponents/PageHeader";
 import { HEADER_TEXT } from "../../../src/constants/headerConstants";
@@ -37,8 +37,7 @@ const DEFAULT_PROPS = {
       }
     ],
     buttonText: "Add to cart",
-    allAccess: false,
-    handleAddToCart: jasmine.createSpy("handleAddToCart")
+    emptyTicketList: false
   }
 };
 
@@ -47,8 +46,8 @@ describe("TicketsList", () => {
   let header;
   let container;
   let button;
-  let sidebar;
   let tickets;
+  let sidebar;
 
   function init() {
     wrapper = shallow(<TicketsList {...DEFAULT_PROPS.ticketsProps} />);
@@ -68,7 +67,7 @@ describe("TicketsList", () => {
     init();
   });
 
-  it("should pricing page header", () => {
+  it("should render ticket list page header", () => {
     container = findByDataTestId(header, "tickets-page-header");
 
     expect(container.length).toBe(1);
@@ -80,7 +79,7 @@ describe("TicketsList", () => {
     ).toEqual(HEADER_TEXT.tickets.headerText);
   });
 
-  it("renders ticket grid container correctly ", () => {
+  it("should render ticket grid container correctly ", () => {
     container = findByDataTestId(wrapper, "ticket-list-container");
     const grid = findByDataTestId(container, "ticket-grid-container");
 
@@ -90,16 +89,24 @@ describe("TicketsList", () => {
     expect(container).toContainMatchingElement(Tickets);
   });
 
-  it("renders tickets list table correctly", () => {
-    container = findByDataTestId(tickets, "ticket-list-table");
-    const ticketHeader = findByDataTestId(container, "ticket-header-100");
+  it("should render tickets list table correctly", () => {
+    const newProps = {
+      ticketsList: { ...DEFAULT_PROPS.ticketsProps.tickets },
+      handleAddToCart: jasmine.createSpy("handleAddToCart"),
+      isAuthenticated: true
+    };
+    wrapper = shallow(<Tickets {...newProps} />);
+    container = findByDataTestId(wrapper, "ticket-list-table");
+    const ticketHeader = findByDataTestId(container, "ticket-header-101");
+
     button = findByDataTestId(container, "add-ticket-to-cart-101");
-
     button.simulate("click");
-    expect(DEFAULT_PROPS.ticketsProps.handleAddToCart).toHaveBeenCalled();
 
+    expect(newProps.handleAddToCart).toHaveBeenCalledWith(
+      newProps.ticketsList[1].id
+    );
     expect(container).toBeDefined();
     expect(container).toContainMatchingElement(TableBody);
-    expect(ticketHeader.props().content).toBe("TEST 1");
+    expect(ticketHeader.props().content).toBe("TEST 2");
   });
 });
