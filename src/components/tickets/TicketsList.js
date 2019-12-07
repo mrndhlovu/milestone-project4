@@ -17,7 +17,6 @@ const StyledContainer = styled(Container)`
 
 const TicketsList = ({
   tickets,
-  isLoading,
   allAccess,
   buttonText,
   handleAddToCart,
