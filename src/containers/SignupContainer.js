@@ -8,7 +8,7 @@ import { signup } from "../actions/AuthActions";
 
 import { Form, Grid, Container, Image, Segment } from "semantic-ui-react";
 import FormHeader from "../components/sharedComponents/FormHeader";
-import StyledMessage from "../components/sharedComponents/StyledMessage";
+import NotificationModal from "../components/sharedComponents/NotificationModal";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 
@@ -132,7 +132,7 @@ class SignupContainer extends Component {
                     hasError={hasError}
                   />
 
-                  <StyledMessage
+                  <NotificationModal
                     message="Already have an account?"
                     redirect="/login"
                     linkText="Login"

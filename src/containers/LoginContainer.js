@@ -8,7 +8,7 @@ import { Form, Grid, Segment, Container, Image } from "semantic-ui-react";
 
 import { getUser } from "../selectors/appSelectors";
 import { login } from "../actions/AuthActions";
-import FormFooter from "../components/sharedComponents/StyledMessage";
+import FormFooter from "../components/sharedComponents/NotificationModal";
 import FormInput from "../components/sharedComponents/FormInput";
 import FormHeader from "../components/sharedComponents/FormHeader";
 import SubmitButton from "../components/sharedComponents/SubmitButton";

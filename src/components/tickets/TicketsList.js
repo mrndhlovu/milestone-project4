@@ -7,7 +7,7 @@ import { getObjectLength } from "../../utils/appUtils";
 import { getPageId } from "../../utils/urls";
 import ListSideBar from "./ListSideBar";
 import PageHeader from "../sharedComponents/PageHeader";
-import StyledMessage from "../sharedComponents/StyledMessage";
+import NotificationModal from "../sharedComponents/NotificationModal";
 import Tickets from "./Tickets";
 
 const StyledContainer = styled(Container)`
@@ -53,7 +53,7 @@ const TicketsList = ({
                     isAuthenticated={isAuthenticated}
                   />
                 ) : (
-                  <StyledMessage
+                  <NotificationModal
                     message="No tickets at this time."
                     redirect="/create-ticket"
                     linkText="Create a ticket"

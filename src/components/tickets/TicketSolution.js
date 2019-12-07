@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Accordion, Icon, Segment, Button, Header } from "semantic-ui-react";
+import { Accordion, Icon } from "semantic-ui-react";
+import NotificationModal from "../sharedComponents/NotificationModal";
 
 const TicketSolution = ({
   activeIndex,
@@ -28,20 +29,13 @@ const TicketSolution = ({
         {solution.show ? (
           <p style={{ paddingLeft: 10 }}>{solution.solution}</p>
         ) : (
-          <Segment clearing>
-            <Header as="h5">Ticket solution requires payment</Header>
-            <Button
-              data-test-id="ticket-solution-add-to-cart"
-              size="tiny"
-              color="orange"
-              onClick={
-                isAuthenticated ? () => addToCart(id) : () => addToCart()
-              }
-              floated="right"
-            >
-              {buttonText}
-            </Button>
-          </Segment>
+          <NotificationModal
+            linkText={buttonText}
+            message="Ticket solution requires payment"
+            redirect={isAuthenticated ? () => addToCart(id) : () => addToCart()}
+            iconName="content"
+            dataTestId="ticket-solution-add-to-cart"
+          />
         )}
       </Accordion.Content>
     </Accordion>

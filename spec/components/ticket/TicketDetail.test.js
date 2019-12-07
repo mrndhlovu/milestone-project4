@@ -9,7 +9,7 @@ import DynamicHeader from "../../../src/components/sharedComponents/DynamicHeade
 import TicketDetailStats from "../../../src/components/tickets/TicketDetailStats";
 import TicketSolution from "../../../src/components/tickets/TicketSolution";
 import CommentsContainer from "../../../src/containers/CommentsContainer";
-import StyledMessage from "../../../src/components/sharedComponents/StyledMessage";
+import NotificationModal from "../../../src/components/sharedComponents/NotificationModal";
 import EditButtons from "../../../src/components/sharedComponents/EditButtons";
 
 const DEFAULT_PROPS = {
@@ -69,7 +69,7 @@ describe("Ticket Detail", () => {
     expect(container.length).toBe(1);
     expect(container).toContainMatchingElement(TicketDetailStats);
     expect(container).toContainMatchingElement(TicketSolution);
-    expect(container).toContainMatchingElement(StyledMessage);
+    expect(container).toContainMatchingElement(NotificationModal);
   });
 
   it("should render protected components", () => {

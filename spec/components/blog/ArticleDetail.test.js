@@ -5,7 +5,7 @@ import { findByDataTestId } from "../../testUtils.js/utils";
 import ArticleDetail from "../../../src/components/blog/ArticleDetail";
 import DynamicHeader from "../../../src/components/sharedComponents/DynamicHeader";
 import EditButtons from "../../../src/components/sharedComponents/EditButtons";
-import StyledMessage from "../../../src/components/sharedComponents/StyledMessage";
+import NotificationModal from "../../../src/components/sharedComponents/NotificationModal";
 import ImageUploader from "../../../src/components/sharedComponents/ImageUploader";
 
 const DEFAULT_PROPS = {
@@ -109,7 +109,7 @@ describe("Article Detail", () => {
     wrapper = shallow(<ArticleDetail {...newProps} />);
     container = findByDataTestId(wrapper, "article-detail-container");
 
-    expect(container).toContainMatchingElement(StyledMessage);
+    expect(container).toContainMatchingElement(NotificationModal);
   });
 
   it("should click on confirm modal buttons", () => {

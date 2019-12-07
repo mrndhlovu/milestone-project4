@@ -14,7 +14,7 @@ import {
 } from "semantic-ui-react";
 import DynamicHeader from "../sharedComponents/DynamicHeader";
 import { CommentsContainer } from "../../containers/CommentsContainer";
-import StyledMessage from "../sharedComponents/StyledMessage";
+import NotificationModal from "../sharedComponents/NotificationModal";
 import MessageModal from "../sharedComponents/MessageModal";
 import ImageUploader from "../sharedComponents/ImageUploader";
 
@@ -121,7 +121,7 @@ const ArticleDetail = ({
             userId={user.id}
           />
         ) : (
-          <StyledMessage
+          <NotificationModal
             redirect="/pricing"
             message="Access to comments requires a "
             linkText="Unicorn PRO Account"

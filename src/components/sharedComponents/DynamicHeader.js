@@ -6,8 +6,12 @@ import { Header, Segment } from "semantic-ui-react";
 const StyledSegment = styled(Segment)`
   background-image: url(${props => props.image}) !important;
   height: 250px;
+  background-size: cover !important;
+  -webkit-background-size: !important;
+  -moz-background-size: !important;
+  -o-background-size: !important;
 
-  opacity: ${props => props.image && 0.9};
+  opacity: ${props => props.image && 0.5};
 `;
 
 const StyledHeader = styled(Header)`

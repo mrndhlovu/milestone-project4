@@ -7,7 +7,8 @@ import TicketDetailStats from "./TicketDetailStats";
 import DynamicHeader from "../sharedComponents/DynamicHeader";
 import TicketSolution from "./TicketSolution";
 import CommentsContainer from "../../containers/CommentsContainer";
-import StyledMessage from "../sharedComponents/StyledMessage";
+import NotificationModal from "../sharedComponents/NotificationModal";
+import { DEFAULT_IMAGES } from "../../constants/constants";
 
 const TicketDetail = ({
   handleAccordionClick,
@@ -23,11 +24,10 @@ const TicketDetail = ({
   isAuthenticated,
   createComment,
   createReply,
-  user,
-  userInput
+  user
 }) => {
   const {
-    data: { title, description, views, id, image },
+    data: { title, description, views, id },
     isOwner,
     comments,
     votes
@@ -35,11 +35,7 @@ const TicketDetail = ({
 
   return (
     <Fragment>
-      <DynamicHeader
-        title={title}
-        image={image}
-        dataTestId="ticket-detail-header"
-      />
+      <DynamicHeader title={title} image="" dataTestId="ticket-detail-header" />
       <Container
         style={{ paddingTop: 50 }}
         data-test-id="ticket-detail-container"
@@ -97,10 +93,12 @@ const TicketDetail = ({
             createReply={createReply}
           />
         ) : (
-          <StyledMessage
-            message="To view and make comments you need a "
+          <NotificationModal
+            message="To view and make comments you need to upgrade your account "
             linkText="Unicorn Pro Account."
             redirect="/pricing"
+            iconName="list"
+            dataTestId="ticket-comments-message"
           />
         )}
       </Container>
