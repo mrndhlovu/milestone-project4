@@ -165,7 +165,7 @@ def get_cart_items(request, product_content_type):
 
 
 def get_donation(request):
-    donations = Donation.objects.filter(user=request.user)
+    donations = Donation.objects.filter(user=request.user, is_paid=False)
 
     if donations.exists():
         return donations
@@ -206,7 +206,8 @@ class AddToCartAPIView(ListAPIView):
                 product.save()
             else:
                 product, created = Donation.objects.get_or_create(
-                    user=request.user, id=product_id, price=donation_amount)
+                    user=request.user, id=product_id, price=donation_amount, is_paid=False)
+                product.save()
 
         if cart is not None and cart.is_paid is False:
             product_content_type = ContentType.objects.get_for_model(
@@ -357,6 +358,7 @@ class PaymentAPIView(APIView):
         token = request_data['stripeToken']
 
         pending_order = get_object_or_404(Cart, user=self.request.user)
+
         items = pending_order.items.all()
         total = sum(item.product.price for item in items) * 100
 
@@ -364,6 +366,7 @@ class PaymentAPIView(APIView):
         customer = get_stripe_customer(request, token)
 
         if customer is not None:
+
             try:
                 if customer:
                     charge = stripe.Charge.create(
@@ -380,7 +383,7 @@ class PaymentAPIView(APIView):
                 payment = CartPayment()
                 payment.stripe_charge_id = charge['id']
                 payment.user = self.request.user
-                payment.amount = total
+                payment.amount = total/100
                 pending_order.is_paid = True
 
                 if pending_order.is_paid:
@@ -428,9 +431,10 @@ class PaymentAPIView(APIView):
                                 ticket_solution.save()
 
                             elif item.product_content_type.name == app_type['donation']:
-
+                                print('got here')
                                 donation = get_object_or_404(
                                     Donation, is_paid=False, user=request.user)
+                                print(donation)
                                 donation.stripe_charge_id = payment.stripe_charge_id
                                 donation.is_paid = True
                                 donation.save()
