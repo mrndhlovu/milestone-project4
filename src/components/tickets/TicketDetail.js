@@ -9,6 +9,7 @@ import DynamicHeader from "../sharedComponents/DynamicHeader";
 import TicketSolution from "./TicketSolution";
 import CommentsContainer from "../../containers/CommentsContainer";
 import Notification from "../sharedComponents/Notification";
+import { capitalizeFirstLetter, getFormatedDate } from "../../utils/appUtils";
 
 const StyledContentSegment = styled(Segment)`
   padding-top: 20px !important;
@@ -19,6 +20,10 @@ const StyledContentSegment = styled(Segment)`
 const StyledContainer = styled(Container)`
   margin: 0 auto !important;
   padding-left: 10px !important;
+`;
+
+const StyledParagraph = styled.p`
+  padding-bottom: 10px !important;
 `;
 
 const TicketDetail = ({
@@ -38,8 +43,9 @@ const TicketDetail = ({
   user
 }) => {
   const {
-    data: { title, description, views, id },
+    data: { title, description, views, id, created_at },
     isOwner,
+    owner,
     comments,
     votes
   } = data;
@@ -70,7 +76,15 @@ const TicketDetail = ({
           )}
         </Segment.Group>
         <Segment.Group>
-          <StyledContentSegment padded>{description}</StyledContentSegment>
+          <StyledContentSegment padded>
+            <StyledParagraph>
+              <small>
+                By {capitalizeFirstLetter(owner)} | Created:
+                {getFormatedDate(created_at)}
+              </small>
+            </StyledParagraph>
+            {description}
+          </StyledContentSegment>
           <TicketSolution
             handleAccordionClick={handleAccordionClick}
             activeIndex={activeIndex}
