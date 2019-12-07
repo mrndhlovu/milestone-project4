@@ -28,6 +28,10 @@ const StyledContainer = styled(Container)`
   padding-top: 20px !important;
 `;
 
+const StyledHeader = styled(Header)`
+  font-size: 48px !important;
+`;
+
 const StyledContentContainer = styled(Container)`
   padding-top: 20px !important;
   padding-bottom: 20px !important;
@@ -86,7 +90,7 @@ const ArticleDetail = ({
           onClick={isOwner ? () => handleImageClick() : emptyFunction}
         />
         <StyledContainer text fluid>
-          <Header as="h2" content={title.toUpperCase()} />
+          <StyledHeader content={title.toUpperCase()} />
           <small>
             {article.owner} |
             <StyledSpan>{getFormatedDate(created_at)}</StyledSpan>
