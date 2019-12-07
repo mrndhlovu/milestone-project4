@@ -30,50 +30,26 @@ const CardPaymentForm = ({
   return (
     <Container style={{ borderRadius: 0 }}>
       <Segment>
-        <Accordion>
-          <Accordion.Title
-            active={activeIndex === 0}
-            index={0}
-            onClick={() => handleAccordionClick(0)}
-          >
-            <StyledSpan>
-              <Icon name="dropdown" />
-              Personal Details
-            </StyledSpan>
-          </Accordion.Title>
-          <Accordion.Content active={activeIndex === 0}>
-            <BillingDetails handleChange={handleChange} />
-          </Accordion.Content>
-          <Accordion.Title
-            active={activeIndex === 1}
-            index={1}
-            onClick={() => handleAccordionClick(1)}
-          >
-            <StyledSpan>Payment</StyledSpan>
-          </Accordion.Title>
-          <Accordion.Content active={activeIndex === 1 || 2}>
-            <Card fluid>
-              <Card.Content>
-                <Form.Group widths="equal">
-                  <Segment>
-                    <CardElement onFocus={() => handleOnFocus()} />
-                  </Segment>
-                </Form.Group>
-              </Card.Content>
-              <Card.Content extra>
-                <Button
-                  color="orange"
-                  fluid
-                  onClick={() => handlePayNow()}
-                  loading={isLoading}
-                  disabled={isDisabled}
-                >
-                  PAY NOW
-                </Button>
-              </Card.Content>
-            </Card>
-          </Accordion.Content>
-        </Accordion>
+        <Card fluid>
+          <Card.Content>
+            <Form.Group widths="equal">
+              <Segment>
+                <CardElement onFocus={() => handleOnFocus()} />
+              </Segment>
+            </Form.Group>
+          </Card.Content>
+          <Card.Content extra>
+            <Button
+              color="orange"
+              fluid
+              onClick={() => handlePayNow()}
+              loading={isLoading}
+              disabled={isDisabled}
+            >
+              PAY NOW
+            </Button>
+          </Card.Content>
+        </Card>
       </Segment>
     </Container>
   );

@@ -27,7 +27,7 @@ const CartBody = ({ orderItems, handleRemoveClick }) => {
       : "donation";
 
     return (
-      <StyledDiv key={index}>
+      <StyledDiv key={index} data-test-id={`order-item-${id}`}>
         <Card fluid>
           <Card.Content>
             {ticket ? (
@@ -51,6 +51,7 @@ const CartBody = ({ orderItems, handleRemoveClick }) => {
               color="orange"
               floated="right"
               size="tiny"
+              data-test-id={`order-item-${id}-button`}
               onClick={() => handleRemoveClick(id, productType)}
             >
               <Icon disabled name="delete" size="small" />

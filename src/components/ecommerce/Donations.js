@@ -14,7 +14,7 @@ const StyledDiv = styled.div`
 const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
   const otherAmount = () => {
     return (
-      <Card.Content style={{ paddingBottom: 10 }}>
+      <Segment vertical data-test-id="donation-other-amount">
         <Input
           onChange={event => handleDonationInput(event)}
           onBlur={() => handleAddToCart(DONATION_AMOUNTS.other)}
@@ -27,33 +27,33 @@ const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
           }}
           placeholder="other amount"
         />
-      </Card.Content>
+      </Segment>
     );
   };
-  const renderDonationCards = () => {
+  const renderDonationButtons = () => {
     return Object.keys(DONATION_AMOUNTS).map(key => {
       return (
-        <Grid.Column key={key} style={{ paddingBottom: 10 }}>
+        <Segment vertical key={key}>
           <Button
+            data-test-id={`donation-amount-${DONATION_AMOUNTS[key]}`}
             color="blue"
             fluid
             onClick={() => handleAddToCart("button", DONATION_AMOUNTS[key])}
           >
             € {DONATION_AMOUNTS[key]}
           </Button>
-        </Grid.Column>
+        </Segment>
       );
     });
   };
 
   return (
-    <StyledDiv>
+    <StyledDiv data-test-id="donations-buttons-container">
       <Segment>
-        <Header content="Donate" />
-
-        <Grid columns={3}>
-          <Grid.Row>{renderDonationCards()}</Grid.Row>
-        </Grid>
+        <Header content="Donate" data-test-id="donations-header" />
+        <div data-test-id="donations-buttons-wrapper">
+          {renderDonationButtons()}
+        </div>
         {otherAmount()}
       </Segment>
     </StyledDiv>
