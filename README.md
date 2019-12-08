@@ -77,7 +77,7 @@ Users will have access to this page if authenticated. If a purchase is completed
 
 #### Checkout page
 
-From here a user will see all items in their cart, can remove items from the cart or proceed to pay for whatever is in the cart. If a payment is successful, user is redirected to the user profile page.
+From here a user will see all items in their cart, they can remove items from the cart or make a payment. If a payment is successful, the user is redirected to the user profile page.
 
 # Technologies Used
 
