@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -7,9 +7,16 @@ import PropTypes from "prop-types";
 import { Grid } from "semantic-ui-react";
 
 import { makePayment } from "../actions/CheckoutActions";
-import { getCheckout, getCartPendingOrder } from "../selectors/appSelectors";
+import {
+  getCheckout,
+  getCartPendingOrder,
+  getUserName
+} from "../selectors/appSelectors";
 import CardPaymentForm from "../components/ecommerce/CardPaymentForm";
 import OrderSummaryContainer from "./OrderSummaryContainer";
+import PageHeader from "../components/sharedComponents/PageHeader";
+import { getPageId } from "../utils/urls";
+import store from "../store";
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -75,28 +82,41 @@ export class PaymentContainer extends Component {
 
   render() {
     const { isLoading, isDisabled, error, message } = this.state;
-    const { pendingOrders } = this.props;
+    const { pendingOrders, userName } = this.props;
+    const orderCount = pendingOrders.data.count ? pendingOrders.data.count : 0;
 
     return (
-      <StyledDiv>
-        <Grid stackable>
-          <Grid.Row>
-            <Grid.Column width={9}>
-              <OrderSummaryContainer pendingOrders={pendingOrders} />
-            </Grid.Column>
-            <Grid.Column width={7}>
-              <CardPaymentForm
-                total={pendingOrders.data.total}
-                handleOnFocus={this.handleOnFocus}
-                handlePayNow={this.handlePayNow}
-                isDisabled={isDisabled}
-                isLoading={isLoading}
-                stripeMessage={{ error, message }}
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </StyledDiv>
+      <Fragment>
+        <PageHeader
+          pageId={getPageId()}
+          dataTestId="checkout-page-header"
+          hideButton={true}
+          userName={userName}
+          orderCount={orderCount}
+        />
+        <StyledDiv>
+          <Grid stackable>
+            <Grid.Row>
+              <Grid.Column width={9}>
+                <OrderSummaryContainer
+                  pendingOrders={pendingOrders}
+                  count={orderCount}
+                />
+              </Grid.Column>
+              <Grid.Column width={7}>
+                <CardPaymentForm
+                  handleOnFocus={this.handleOnFocus}
+                  handlePayNow={this.handlePayNow}
+                  isDisabled={isDisabled}
+                  isLoading={isLoading}
+                  stripeMessage={{ error, message }}
+                  total={pendingOrders.data.total}
+                />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </StyledDiv>
+      </Fragment>
     );
   }
 }
@@ -104,7 +124,8 @@ export class PaymentContainer extends Component {
 const mapStateToProps = state => {
   return {
     checkout: getCheckout(state),
-    pendingOrders: getCartPendingOrder(state)
+    pendingOrders: getCartPendingOrder(state),
+    userName: getUserName(state.user)
   };
 };
 

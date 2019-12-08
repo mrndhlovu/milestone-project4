@@ -17,7 +17,7 @@ export const createMessage = message => ({
 });
 
 export const alertSignUp = () => {
-  return createMessage({ errorMsg: " You have to be signed up first" });
+  return createMessage({ errorMsg: " Let's login first!" });
 };
 
 export const hasError = message => ({

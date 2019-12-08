@@ -37,10 +37,10 @@ export const HEADER_TEXT = {
     subHeading: "Share your content and your ideas!"
   },
   checkout: {
-    headerText: "Shopping Cart",
+    headerText: "Cart is empty",
     headerButtonUrl: "/checkout",
-    headerButtonText: "Cart",
-    subHeading: "Your shopping cart"
+    headerButtonText: "",
+    subHeading: ""
   },
   "open-ticket": {
     headerText: "Open a ticket",

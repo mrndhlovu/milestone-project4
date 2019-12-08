@@ -31,3 +31,12 @@ export const getUserMembership = state => {
   }
   return userMembership.data;
 };
+
+export const getUserName = userData => {
+  let userName;
+  if (userData.dataReceived) {
+    userName = userData.data.username;
+  }
+
+  return userName;
+};

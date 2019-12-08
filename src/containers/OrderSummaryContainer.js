@@ -48,18 +48,13 @@ export class OrderSummaryContainer extends Component {
 
   render() {
     const { donateIsDisable, buttonText } = this.state;
-    const { pendingOrders, history } = this.props;
-    const count = pendingOrders.data.count ? pendingOrders.data.count : 0;
+    const { pendingOrders, history, count } = this.props;
     const cartIsEmpty = count === 0;
 
     return (
       <div data-test-id="order-summary-page">
         {!cartIsEmpty && (
           <Fragment>
-            <Header style={{ paddingLeft: 23 }}>
-              Your have {count} {count > 1 ? "items" : "item"} in your cart.
-            </Header>
-
             <OrderSummary
               pendingOrders={pendingOrders.data}
               handleRemoveClick={this.handleRemoveClick}

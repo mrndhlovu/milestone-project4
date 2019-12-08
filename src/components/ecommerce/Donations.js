@@ -8,7 +8,6 @@ import { DONATION_AMOUNTS } from "../../constants/constants";
 const StyledDiv = styled.div`
   margin-left: 20px;
   margin-right: 20px;
-  margin-top: 10px;
 `;
 
 const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {

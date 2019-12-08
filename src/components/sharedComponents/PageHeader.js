@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { NavLink } from "react-router-dom";
-
 import styled from "styled-components";
 
 import { getHeaderObject } from "../../constants/headerConstants";
 
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
+import { capitalizeFirstLetter } from "../../utils/appUtils";
 
 const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
@@ -18,7 +18,9 @@ export const PageHeader = ({
   hideButton,
   dataTestId,
   pageId,
-  buttonId
+  buttonId,
+  userName,
+  orderCount
 }) => {
   const {
     headerText,
@@ -26,6 +28,9 @@ export const PageHeader = ({
     headerButtonUrl,
     subHeading
   } = getHeaderObject(pageId);
+
+  const isOnShoppingCart = pageId === "checkout";
+  const cartIsEmpty = orderCount === 0 || undefined;
 
   return (
     <StyledSegment
@@ -36,7 +41,11 @@ export const PageHeader = ({
     >
       <Header
         as="h1"
-        content={headerText}
+        content={
+          isOnShoppingCart && !cartIsEmpty && userName
+            ? `${userName.toLowerCase()} `
+            : headerText
+        }
         inverted
         style={{
           fontSize: mobile ? "2em" : "3em",
@@ -47,7 +56,13 @@ export const PageHeader = ({
       />
       <Header
         as="h2"
-        content={subHeading}
+        content={
+          isOnShoppingCart && !cartIsEmpty
+            ? `You have ${orderCount} item${
+                orderCount !== 1 ? "s" : ""
+              } in your cart`
+            : subHeading
+        }
         inverted
         style={{
           fontSize: mobile ? "1.5em" : "1.7em",

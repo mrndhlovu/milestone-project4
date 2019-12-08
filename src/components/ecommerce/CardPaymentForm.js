@@ -7,11 +7,11 @@ import {
   Divider,
   Button,
   Container,
-  Message
+  Message,
+  Segment
 } from "semantic-ui-react";
 
-import { CardElement } from "react-stripe-elements";
-import BillingDetails from "./BillingDetails";
+import { injectStripe, CardElement } from "react-stripe-elements";
 
 const StyledContainer = styled(Container)`
   height: 300px important;
@@ -40,23 +40,26 @@ const CardPaymentForm = ({
         <Card.Content>
           <Form.Group widths="equal">
             <StyledContainer>
-              <CardElement onFocus={() => handleOnFocus()} />
+              <Segment>
+                <CardElement onFocus={() => handleOnFocus()} />
+              </Segment>
             </StyledContainer>
           </Form.Group>
         </Card.Content>
-        <Divider horizontal>Payment Details</Divider>
-        <BillingDetails />
-        <Button
-          color="orange"
-          fluid
-          onClick={() => handlePayNow()}
-          loading={isLoading}
-          disabled={isDisabled}
-          content={total ? `PAY  € ${total}` : "Pay Now"}
-        />
+        <Divider horizontal>Payment</Divider>
+        <Segment>
+          <Button
+            onClick={() => handlePayNow()}
+            color="orange"
+            fluid
+            loading={isLoading}
+            disabled={isDisabled && !total}
+            content={total ? `PAY  € ${total}` : "Pay Now"}
+          />
+        </Segment>
       </Card>
     </Fragment>
   );
 };
 
-export default CardPaymentForm;
+export default injectStripe(CardPaymentForm);
