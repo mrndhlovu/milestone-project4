@@ -4,15 +4,11 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import OrderSummary from "../components/ecommerce/OrderSummary";
-import {
-  fetchPendingOrder,
-  removeItemFromCart
-} from "../actions/CheckoutActions";
-import { getCartPendingOrder } from "../selectors/appSelectors";
+import { removeItemFromCart } from "../actions/CheckoutActions";
 import Donations from "../components/ecommerce/Donations";
 import { addItemToCart } from "../actions/CheckoutActions";
 
-import { Segment, Header } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 
 export class OrderSummaryContainer extends Component {
   constructor(props) {
@@ -46,7 +42,6 @@ export class OrderSummaryContainer extends Component {
       this.props.addItemToCart(null, "donation", amount);
     } else {
       const otherAmount = parseInt(donation);
-
       this.props.addItemToCart(null, "donation", otherAmount);
     }
   }
@@ -58,7 +53,7 @@ export class OrderSummaryContainer extends Component {
     const cartIsEmpty = count === 0;
 
     return (
-      <Segment data-test-id="order-summary-page">
+      <div data-test-id="order-summary-page">
         {!cartIsEmpty && (
           <Fragment>
             <Header style={{ paddingLeft: 23 }}>
@@ -81,25 +76,17 @@ export class OrderSummaryContainer extends Component {
           handleAddToCart={this.handleAddToCart}
           buttonText={buttonText}
         />
-      </Segment>
+      </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    pendingOrders: getCartPendingOrder(state)
-  };
-};
-
 OrderSummaryContainer.propTypes = {
-  fetchPendingOrder: PropTypes.func.isRequired,
   removeItemFromCart: PropTypes.func.isRequired,
   addItemToCart: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, {
-  fetchPendingOrder,
+export default connect(null, {
   removeItemFromCart,
   addItemToCart
 })(withRouter(OrderSummaryContainer));
