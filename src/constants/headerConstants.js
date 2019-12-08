@@ -21,7 +21,8 @@ export const HEADER_TEXT = {
     headerText: "Tickets",
     headerButtonUrl: "/pricing",
     headerButtonText: "Create an account",
-    subHeading: "Bug fixes are FREE! Features require payment for development!"
+    subHeading:
+      "BUG fixes are free unless you want it done quick! FEATURES require payment!"
   },
   "user-profile": {
     headerText: "Your profile",
