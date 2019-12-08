@@ -162,9 +162,12 @@ export const requestRemoveItemFromCart = (id, productType) => {
   );
 };
 
-export const requestItemPayment = () => {
-  let body = { stripeToken: localStorage.getItem("stripeToken") };
-  return axios.post(`${CHECKOUT_EP}/checkout/`, body, authQueryParams);
+export const requestItemPayment = stripeToken => {
+  return axios.post(
+    `${CHECKOUT_EP}/checkout/`,
+    { stripeToken },
+    authQueryParams
+  );
 };
 
 export async function requestTransactionUpdate() {

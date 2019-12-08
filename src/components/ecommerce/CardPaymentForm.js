@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Form, Card, Segment, Button, Container } from "semantic-ui-react";
+import {
+  Form,
+  Card,
+  Segment,
+  Button,
+  Container,
+  Message
+} from "semantic-ui-react";
 
 import { CardElement } from "react-stripe-elements";
 
@@ -8,10 +15,18 @@ const CardPaymentForm = ({
   handleOnFocus,
   handlePayNow,
   isDisabled,
-  isLoading
+  isLoading,
+  stripeMessage
 }) => {
+  const { message, error } = stripeMessage;
   return (
     <Container style={{ borderRadius: 0 }}>
+      {error && (
+        <Message negative>
+          <Message.Header>Payment not successful!</Message.Header>
+          <p>{message}</p>
+        </Message>
+      )}
       <Segment>
         <Card fluid>
           <Card.Content>
