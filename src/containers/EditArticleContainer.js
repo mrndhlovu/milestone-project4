@@ -6,7 +6,6 @@ import { updateArticle, requestArticleDetail } from "../actions/BlogActions";
 import EditFields from "../components/sharedComponents/EditFields";
 import { getArticleDetail, getArticleUpdate } from "../selectors/appSelectors";
 import EditFormWrapper from "../components/sharedComponents/EditFormWrapper";
-import { refresh } from "../utils/appUtils";
 
 class EditArticleContainer extends Component {
   constructor(props) {
@@ -24,14 +23,15 @@ class EditArticleContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { editArticle, article } = this.props;
+    const { editArticle, article, history } = this.props;
 
     if (prevProps.article.data !== article.data) {
       this.setState({ editFields: article.data.data });
     }
     if (prevProps.editArticle.data !== editArticle.data) {
       if (editArticle.dataReceived) {
-        refresh();
+        const { id } = article.data.data;
+        history.push(`/article/${id}`);
       }
     }
   }
