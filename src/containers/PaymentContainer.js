@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { Grid } from "semantic-ui-react";
 
 import { makePayment } from "../actions/CheckoutActions";
-import { getCheckout } from "../selectors/appSelectors";
+import { getCheckout, getCartPendingOrder } from "../selectors/appSelectors";
 import CardPaymentForm from "../components/ecommerce/CardPaymentForm";
 import OrderSummaryContainer from "./OrderSummaryContainer";
 
@@ -52,7 +52,7 @@ export class PaymentContainer extends Component {
   }
 
   handleOnFocus() {
-    this.setState({ isDisabled: false });
+    this.setState({ isDisabled: !this.state.isDisabled });
   }
 
   handlePayNow() {
@@ -75,16 +75,18 @@ export class PaymentContainer extends Component {
 
   render() {
     const { isLoading, isDisabled, error, message } = this.state;
+    const { pendingOrders } = this.props;
 
     return (
       <StyledDiv>
         <Grid stackable>
           <Grid.Row>
             <Grid.Column width={9}>
-              <OrderSummaryContainer />
+              <OrderSummaryContainer pendingOrders={pendingOrders} />
             </Grid.Column>
             <Grid.Column width={7}>
               <CardPaymentForm
+                total={pendingOrders.data.total}
                 handleOnFocus={this.handleOnFocus}
                 handlePayNow={this.handlePayNow}
                 isDisabled={isDisabled}
@@ -101,7 +103,8 @@ export class PaymentContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    checkout: getCheckout(state)
+    checkout: getCheckout(state),
+    pendingOrders: getCartPendingOrder(state)
   };
 };
 
