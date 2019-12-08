@@ -47,7 +47,7 @@ export class PricingContainer extends Component {
       cart,
       user,
       userMembership,
-
+      memberships,
       auth: { isAuthenticated }
     } = this.props;
 
@@ -65,11 +65,11 @@ export class PricingContainer extends Component {
       }
     }
 
-    if (prevProps.user !== user) {
-      if (user.data && user.data.username) {
+    if (prevProps.memberships !== memberships) {
+      if (memberships.dataReceived && isAuthenticated) {
         const allAccess = userMembership.is_pro_member;
 
-        if (!allAccess && isAuthenticated) {
+        if (!allAccess) {
           this.setState({
             buttonTextFree: "Your current membership",
             buttonTextPro: `Upgrade to an allAccess Account`
