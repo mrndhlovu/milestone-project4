@@ -1,14 +1,14 @@
 export const HEADER_TEXT = {
   home: {
     headerText: "Unicorn Attractor",
-    headerButtonUrl: "/pricing",
+    headerButtonUrl: "/tickets",
     headerButtonText: "Get Started",
     subHeading: "Head start on coding issues and save hours!"
   },
   dashboard: {
     headerText: "Dashboard",
-    headerButtonUrl: "/pricing",
-    headerButtonText: "See what suits you!",
+    headerButtonUrl: "/blog",
+    headerButtonText: "Checkout the Blog!",
     subHeading: "How it will work for you?!"
   },
   pricing: {
@@ -19,8 +19,8 @@ export const HEADER_TEXT = {
   },
   tickets: {
     headerText: "Tickets",
-    headerButtonUrl: "/create-ticket",
-    headerButtonText: "Open a ticket",
+    headerButtonUrl: "/pricing",
+    headerButtonText: "Create an account",
     subHeading: "Bug fixes are FREE! Features require payment for development!"
   },
   "user-profile": {
@@ -33,7 +33,7 @@ export const HEADER_TEXT = {
   blog: {
     headerText: "Unicorn Blog",
     headerButtonUrl: "/new-article",
-    headerButtonText: "Create an article",
+    headerButtonText: "Post an article",
     subHeading: "Share your content and your ideas!"
   },
   checkout: {
