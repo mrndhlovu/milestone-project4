@@ -58,7 +58,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, isAuthenticated }) => {
             </List.Item>
           </Table.Cell>
           <Table.Cell textAlign="right">
-            {is_feature && isAuthenticated && (
+            {isAuthenticated && (
               <Button
                 data-test-id={`add-ticket-to-cart-${id}`}
                 color="orange"
