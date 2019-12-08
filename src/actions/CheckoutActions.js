@@ -9,14 +9,10 @@ import {
   RECEIVE_PENDING_ORDER,
   REQUEST_ADD_TO_CART,
   REQUEST_CHECKOUT,
-  REQUEST_PENDING_ORDER,
-  TRANSCATION_UPDATE_FAIL,
-  TRANSCATION_UPDATED,
-  UPDATE_TRANSCATION
+  REQUEST_PENDING_ORDER
 } from "./ActionTypes";
 
 import {
-  requestTransactionUpdate,
   requestAddItemToCart,
   requestPendingOrder,
   requestRemoveItemFromCart,
@@ -29,7 +25,6 @@ import {
   dataRequestFail,
   requestSuccess
 } from "./index";
-import { destroyLocalStorage } from "../utils/appUtils";
 
 export const addItemToCart = (id, productType, otherProps) => {
   return dispatch => {
@@ -84,35 +79,18 @@ export const removeItemFromCart = (id, productType) => {
   };
 };
 
-export const makePayment = () => {
+export const makePayment = token => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_CHECKOUT));
-    requestItemPayment().then(
+    requestItemPayment(token).then(
       response => {
         dispatch(requestSuccess(RECEIVE_CHECKOUT, response.data));
         dispatch(fetchPendingOrder());
         dispatch(createMessage({ successMsg: response.data.message }));
-        destroyLocalStorage(["subscriptionId", "stripeToken"]);
       },
       error => {
         dispatch(createMessage({ errorMsg: error.message }));
         dispatch(dataRequestFail(CHECKOUT_ERROR, error));
-      }
-    );
-  };
-};
-
-export const updateTranscation = () => {
-  return dispatch => {
-    dispatch(makeRequest(UPDATE_TRANSCATION));
-    requestTransactionUpdate().then(
-      response => {
-        dispatch(requestSuccess(TRANSCATION_UPDATED, response.data));
-        dispatch(createMessage({ successMsg: response.data.message }));
-      },
-      error => {
-        dispatch(createMessage({ errorMsg: error.message }));
-        dispatch(dataRequestFail(TRANSCATION_UPDATE_FAIL, error));
       }
     );
   };
