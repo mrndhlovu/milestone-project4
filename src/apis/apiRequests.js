@@ -170,14 +170,6 @@ export const requestItemPayment = stripeToken => {
   );
 };
 
-export async function requestTransactionUpdate() {
-  return axios.post(
-    `${CHECKOUT_EP}/update-transaction/`,
-    { stripeToken: localStorage.getItem("stripeToken") },
-    authQueryParams
-  );
-}
-
 export function requestAwsFileUpload(file, fileName, app) {
   const S3Client = new S3(getAwsConfig(app));
   return S3Client.uploadFile(file, fileName);
