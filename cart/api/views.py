@@ -422,6 +422,7 @@ class PaymentAPIView(APIView):
                             elif item.product_content_type.name == app_type['ticket']:
                                 ticket = get_ticket(item)
                                 ticket.status = 'doing'
+                                ticket.has_solution = True
                                 ticket.save()
                                 user_profile.paid_tickets.add(ticket)
                                 user_profile.save()
