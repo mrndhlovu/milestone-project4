@@ -27,7 +27,7 @@ On the pricing page, users are shown the two account types they can sign up for.
 
 #### Tickets page
 
-The tickets page, lists all filed tickets indicating the owner of a ticket, how long ago it was created, the status and type of ticket filed. If a ticket is a feature, an `Add to Cart` button is shown.
+The tickets page, lists all filed tickets indicating the owner of a ticket, how long ago it was created, the status and type of ticket filed. If a ticket has a solution, a `Get solution button` button is shown otherwise the `Fix it now` button is rendered. A user will be alerted if they try to pay for a ticket which is in their purchases list in the user profile page.
 
 #### Ticket detail page
 
@@ -74,6 +74,10 @@ Should a user try to open this page while on a free account, they will see a res
 #### User profile page
 
 Users will have access to this page if authenticated. If a purchase is completed, users should be redirected to this page and their order listed under purchases. The `update account` option gives the user a choice to downgrade or deactivate their account if signed up for a Unicorn Pro account, however the  deactivate account is the only option if the user has only a Unicorn Free account. The user also has an option to update their personal information on the update profile form as well as change their profile image.
+
+#### Checkout page
+
+From here a user will see all items in their cart, can remove items from the cart or proceed to pay for whatever is in the cart. If a payment is successful, user is redirected to the user profile page.
 
 # Technologies Used
 
