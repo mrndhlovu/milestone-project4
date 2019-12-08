@@ -30,9 +30,9 @@ const BaseRouter = () => {
       <Route path="/pricing" component={PricingContainer} />
       <Route path="/dashboard" component={DashboardContainer} />
       <Route path="/blog" component={BlogContainer} />
+      <Route path="/checkout" component={CheckoutContainer} />
 
       <ProtectedRoute path="/user-profile" component={UserProfileContainer} />
-      <ProtectedRoute path="/checkout" component={CheckoutContainer} />
       <ProtectedRoute path="/article/:id" component={ArticleDetailContainer} />
       <ProtectedRoute path="/create-ticket" component={CreateTicketContainer} />
       <ProtectedRoute path="/new-article" component={CreateArticleContainer} />

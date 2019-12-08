@@ -23,28 +23,33 @@ import {
   createMessage,
   makeRequest,
   dataRequestFail,
-  requestSuccess
+  requestSuccess,
+  alertSignUp
 } from "./index";
+import store from "../store";
 
 export const addItemToCart = (id, productType, otherProps) => {
+  const { isAuthenticated } = store.getState().auth;
   return dispatch => {
     dispatch(makeRequest(REQUEST_ADD_TO_CART));
-    requestAddItemToCart(id, productType, otherProps).then(
-      response => {
-        const subscriptionId = response.data.subscription_id || undefined;
-        if (subscriptionId) {
-          localStorage.setItem("subscriptionId", subscriptionId);
-        }
+    isAuthenticated
+      ? requestAddItemToCart(id, productType, otherProps).then(
+          response => {
+            const subscriptionId = response.data.subscription_id || undefined;
+            if (subscriptionId) {
+              localStorage.setItem("subscriptionId", subscriptionId);
+            }
 
-        dispatch(requestSuccess(RECEIVE_ADD_T0_CART, response.data));
-        dispatch(createMessage({ successMsg: response.data.message }));
-        dispatch(fetchPendingOrder());
-      },
-      error => {
-        dispatch(createMessage({ errorMsg: error.message }));
-        dispatch(dataRequestFail(ADD_T0_CART_ERROR, error));
-      }
-    );
+            dispatch(requestSuccess(RECEIVE_ADD_T0_CART, response.data));
+            dispatch(createMessage({ successMsg: response.data.message }));
+            dispatch(fetchPendingOrder());
+          },
+          error => {
+            dispatch(createMessage({ errorMsg: error.message }));
+            dispatch(dataRequestFail(ADD_T0_CART_ERROR, error));
+          }
+        )
+      : dispatch(alertSignUp());
   };
 };
 

@@ -16,6 +16,10 @@ export const createMessage = message => ({
   payload: message
 });
 
+export const alertSignUp = () => {
+  return createMessage({ errorMsg: " You have to be signed up first" });
+};
+
 export const hasError = message => ({
   type: HAS_ERROR,
   payload: message
