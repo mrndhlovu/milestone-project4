@@ -173,6 +173,17 @@ def get_donation(request):
         return None
 
 
+def check_paid_tickets(request, id):
+    solution_qs = TicketSolution.objects.filter(id=id)
+    paid_solution_clients = solution_qs.first().paid_client.all()
+    is_paid_client = False
+    for client in paid_solution_clients:
+        if client == request.user:
+            is_paid_client = True
+
+    return is_paid_client
+
+
 class AddToCartAPIView(ListAPIView):
     serializer_class = CartSerializer
     queryset = Cart.objects.all()
@@ -234,6 +245,15 @@ class AddToCartAPIView(ListAPIView):
                         }
                         return JsonResponse(context, status=status.HTTP_200_OK)
 
+                    if product_object == app_type['ticket'] and product.has_solution:
+                        is_paid_client = check_paid_tickets(
+                            request, product_id)
+                        if is_paid_client:
+                            context = {
+                                'message': 'You have this ticket in your purchase list!',
+                            }
+                            return JsonResponse(context, status=status.HTTP_200_OK)
+
                 cart.add_item(product)
                 context = {
                     'message': 'Item added to cart',
@@ -241,6 +261,15 @@ class AddToCartAPIView(ListAPIView):
                 return JsonResponse(context, status=status.HTTP_200_OK)
 
             else:
+
+                if product_object == app_type['ticket'] and product.has_solution:
+                    is_paid_client = check_paid_tickets(request, product_id)
+                    if is_paid_client:
+                        context = {
+                            'message': 'You have this ticket in your purchase list!',
+                        }
+                        return JsonResponse(context, status=status.HTTP_200_OK)
+
                 cart.add_item(product)
                 context = {
                     'message': 'Item added to cart.',
