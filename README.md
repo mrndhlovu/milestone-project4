@@ -27,7 +27,7 @@ On the pricing page, users are shown the two account types they can sign up for.
 
 #### Tickets page
 
-The tickets page, lists all filed tickets indicating the owner of a ticket, how long ago it was created, the status and type of ticket filed. If a ticket has a solution, a `Get solution button` button is shown otherwise the `Fix it now` button is rendered. A user will be alerted if they try to pay for a ticket which is in their purchases list in the user profile page.
+The tickets page, lists all filed tickets indicating the owner of a ticket, how long ago it was created, the status and type of ticket filed. If a ticket has a solution, a `Get solution` button is shown otherwise the `Fix it now` button is rendered. A user will be alerted if they try to pay for a ticket which is in their purchases list in the user profile page.
 
 #### Ticket detail page
 
