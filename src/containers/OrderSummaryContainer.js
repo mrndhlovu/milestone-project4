@@ -8,8 +8,6 @@ import { removeItemFromCart } from "../actions/CheckoutActions";
 import Donations from "../components/ecommerce/Donations";
 import { addItemToCart } from "../actions/CheckoutActions";
 
-import { Header } from "semantic-ui-react";
-
 export class OrderSummaryContainer extends Component {
   constructor(props) {
     super(props);

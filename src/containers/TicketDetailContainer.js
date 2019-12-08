@@ -56,7 +56,7 @@ export class TicketDetailContainer extends Component {
 
     if (prevProps.ticket !== ticket) {
       if (ticket.dataReceived) {
-        this.setState({ image: DEFAULT_IMAGES.feature });
+        this.setState({ image: "" });
       }
     }
   }

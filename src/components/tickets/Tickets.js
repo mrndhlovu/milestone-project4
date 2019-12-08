@@ -17,7 +17,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, isAuthenticated }) => {
         username,
         status,
         is_bug,
-        is_feature
+        has_solution
       } = ticketsList[key];
 
       return (
@@ -66,7 +66,7 @@ export const Tickets = ({ ticketsList, handleAddToCart, isAuthenticated }) => {
                 onClick={() => handleAddToCart(id)}
               >
                 <Icon name="cart" />
-                Add to cart
+                {has_solution ? "Get Solution" : "Need Fix Now"}
               </Button>
             )}
           </Table.Cell>

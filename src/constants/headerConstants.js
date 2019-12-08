@@ -28,7 +28,8 @@ export const HEADER_TEXT = {
     headerText: "Your profile",
     headerButtonUrl: "/create-ticket",
     headerButtonText: "Open a ticket",
-    subHeading: "Bug fixes are FREE! Features require payment for development!",
+    subHeading:
+      "BUG fixes are free unless you want it done quick! FEATURES require payment!",
     image: ""
   },
   blog: {
@@ -44,10 +45,11 @@ export const HEADER_TEXT = {
     subHeading: ""
   },
   "open-ticket": {
-    headerText: "Open a ticket",
+    headerText: "File a ticket",
     headerButtonUrl: "/tickets",
     headerButtonText: "Tickets List",
-    subHeading: "Bug fixes are FREE! Features require payment for development!"
+    subHeading:
+      "BUG fixes are free unless you want it done quick! FEATURES require payment!"
   },
   "create-article": {
     headerText: "Create your article",

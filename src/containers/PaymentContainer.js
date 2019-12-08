@@ -16,7 +16,6 @@ import CardPaymentForm from "../components/ecommerce/CardPaymentForm";
 import OrderSummaryContainer from "./OrderSummaryContainer";
 import PageHeader from "../components/sharedComponents/PageHeader";
 import { getPageId } from "../utils/urls";
-import store from "../store";
 
 const StyledDiv = styled.div`
   width: 100%;

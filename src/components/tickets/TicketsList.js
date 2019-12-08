@@ -31,6 +31,7 @@ const TicketsList = ({
         pageId={getPageId()}
         dataTestId="tickets-page-header"
         buttonId="from-list-open-ticket"
+        isAuthenticated={isAuthenticated}
       />
 
       <StyledContainer fluid data-test-id="ticket-list-container">

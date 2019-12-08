@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { getHeaderObject } from "../../constants/headerConstants";
 
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
-import { capitalizeFirstLetter } from "../../utils/appUtils";
 
 const StyledSegment = styled(Segment)`
   padding-bottom: 5rem !important;
@@ -20,7 +19,8 @@ export const PageHeader = ({
   pageId,
   buttonId,
   userName,
-  orderCount
+  orderCount,
+  isAuthenticated
 }) => {
   const {
     headerText,
@@ -30,6 +30,7 @@ export const PageHeader = ({
   } = getHeaderObject(pageId);
 
   const isOnShoppingCart = pageId === "checkout";
+  const isOnTicketsPage = pageId === "tickets";
   const cartIsEmpty = orderCount === 0 || undefined;
 
   return (
@@ -77,9 +78,15 @@ export const PageHeader = ({
           color="linkedin"
           size="large"
           as={NavLink}
-          to={headerButtonUrl}
+          to={
+            isOnTicketsPage && isAuthenticated
+              ? "/create-ticket"
+              : headerButtonUrl
+          }
         >
-          {headerButtonText}
+          {isOnTicketsPage && isAuthenticated
+            ? "Create a ticket"
+            : headerButtonText}
           <Icon name="right arrow" />
         </Button>
       )}
