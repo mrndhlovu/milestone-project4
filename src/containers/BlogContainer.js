@@ -17,7 +17,6 @@ export class BlogContainer extends Component {
 
   render() {
     const { articles } = this.props;
-
     return articles.dataReceived && <BlogList articles={articles.data} />;
   }
 }
