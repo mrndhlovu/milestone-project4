@@ -153,7 +153,7 @@ django_heroku.settings(locals())
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-# USER_AUTH_MODEL = 'accounts.CustomUser'
+USER_AUTH_MODEL = 'accounts.CustomUser'
 
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE')
 
