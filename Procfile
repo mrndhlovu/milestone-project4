@@ -1,2 +1,2 @@
-realease: python manager.py migrate
+release: python manager.py migrate
 web: gunicorn unicorn.wsgi --log-file 
