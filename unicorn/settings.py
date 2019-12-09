@@ -140,12 +140,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build/static'),
 ]
 
-MEDIAFILES_LOCATION = 'mediafiles'
-
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
-MEDIA_URL = '/mediafiles/'
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -159,7 +153,7 @@ django_heroku.settings(locals())
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-USER_AUTH_MODEL = 'accounts.CustomUser'
+# USER_AUTH_MODEL = 'accounts.CustomUser'
 
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE')
 
