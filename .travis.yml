@@ -4,3 +4,4 @@ python:
 install: "pipenv install"
 script:
   - SECRET_KEY="bazinga" ./manage.py test
+ 
