@@ -133,6 +133,7 @@ USE_TZ = True
 
 
 STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'custom_storages.StaticStorage'
 
 
 STATIC_URL = '/static/'
