@@ -34,11 +34,11 @@ sqlparse = "==0.3.0"
 urllib3 = "==1.25.3"
 django-heroku = "*"
 django-rest-knox = "==4.0.1"
-django = "*"
 stripe = "*"
 django-cors-headers = "*"
 djangorestframework = "*"
 whitenoise = "*"
+django = "*"
 
 [requires]
 python_version = "3.6"
