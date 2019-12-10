@@ -21,10 +21,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = development
 
-if development:
-    ALLOWED_HOSTS = ['127.0.0.1']
-else:
-    ALLOWED_HOSTS = ['the-unicorn-attractor.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'the-unicorn-attractor.herokuapp.com']
 
 
 # Application definition
@@ -85,9 +82,12 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 if "DATABASE_URL" in os.environ:
+    print('heroku')
     DATABASES = {'default': dj_database_url.parse(
         os.environ.get('DATABASE_URL'))}
 else:
+    print('local')
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -133,8 +133,8 @@ USE_TZ = True
 
 
 STATICFILES_LOCATION = 'static'
-STATICFILES_STORAGE = 'custom_storages.StaticStorage'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
