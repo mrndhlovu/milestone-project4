@@ -110,7 +110,12 @@ export class UserProfileContainer extends Component {
 
   handleUpdateProfile() {
     const { editFields } = this.state;
-    this.props.updateUserProfile(editFields);
+    const filterUpdatedfields = { ...editFields };
+
+    delete filterUpdatedfields.membership;
+    delete filterUpdatedfields.purchases;
+
+    this.props.updateUserProfile(filterUpdatedfields);
   }
 
   handleConfirm(option) {
