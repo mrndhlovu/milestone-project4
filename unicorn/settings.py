@@ -21,10 +21,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = development
 
-if development:
-    ALLOWED_HOSTS = ['127.0.0.1']
-else:
-    ALLOWED_HOSTS = ['the-unicorn-attractor.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'the-unicorn-attractor.herokuapp.com']
 
 
 # Application definition
@@ -39,15 +36,16 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'accounts',
-    'blog',
-    'cart',
-    'comments',
     'memberships',
+    'cart',
     'tickets',
+    'comments',
+    'blog',
 
     'rest_framework',
     'corsheaders',
     'knox',
+    'storages'
 ]
 
 SITE_ID = 1
@@ -82,6 +80,9 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'unicorn.wsgi.application'
+
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -95,6 +96,7 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -134,13 +136,18 @@ USE_TZ = True
 
 
 STATICFILES_LOCATION = 'static'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'custom_storages.StaticStorage'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build/static'),
 ]
+
+MEDIAFILES_LOCATION = 'mediafiles'
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_URL = '/mediafiles/'
 
 
 REST_FRAMEWORK = {
@@ -152,7 +159,10 @@ REST_FRAMEWORK = {
 
 django_heroku.settings(locals())
 
+
 CORS_ORIGIN_ALLOW_ALL = True
+
+USER_AUTH_MODEL = 'accounts.CustomUser'
 
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE')
 
