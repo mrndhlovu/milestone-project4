@@ -39,6 +39,7 @@ django-cors-headers = "*"
 djangorestframework = "*"
 whitenoise = "*"
 django = "*"
+django-storages = "*"
 
 [requires]
 python_version = "3.6"
