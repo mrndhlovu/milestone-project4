@@ -151,7 +151,6 @@ REST_FRAMEWORK = {
 
 django_heroku.settings(locals())
 
-
 CORS_ORIGIN_ALLOW_ALL = True
 
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE')
