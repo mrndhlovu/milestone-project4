@@ -9,7 +9,7 @@ import { getFormatedDate } from "../../utils/appUtils";
 import Notification from "../sharedComponents/Notification";
 
 const BlogList = ({ articles }) => {
-  const emptyArticleList = articles === [];
+  const emptyArticleList = articles.length === 0;
 
   const renderList = () => {
     return Object.keys(articles).map(key => {
@@ -90,7 +90,7 @@ const BlogList = ({ articles }) => {
         ) : (
           <Notification
             redirect="/new-article"
-            message="There no articles at this moment..."
+            message="There are no articles at this moment..."
             linkText="Create article"
             iconName="content"
           />
