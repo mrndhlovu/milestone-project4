@@ -21,7 +21,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = development
 
-ALLOWED_HOSTS = ['127.0.0.1', 'the-unicorn-attractor.herokuapp.com']
+if development:
+    ALLOWED_HOSTS = ['127.0.0.1']
+else:
+    ALLOWED_HOSTS = ['the-unicorn-attractor.herokuapp.com']
 
 
 # Application definition
@@ -82,11 +85,9 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 if "DATABASE_URL" in os.environ:
-
     DATABASES = {'default': dj_database_url.parse(
         os.environ.get('DATABASE_URL'))}
 else:
-
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -152,8 +153,6 @@ django_heroku.settings(locals())
 
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-USER_AUTH_MODEL = 'accounts.CustomUser'
 
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE')
 
