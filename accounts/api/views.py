@@ -45,7 +45,7 @@ def get_user_subscription(request):
     return None
 
 
-def update_profile(request):
+def get_updated_user_profile(request):
     user = UserProfile.objects.filter(user=request)
     free_membership = Membership.objects.get(membership_type='free')
 
@@ -90,9 +90,9 @@ class SignupAPI(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        update_profile = update_profile(user)
+        user_profile = get_updated_user_profile(user)
 
-        if update_profile is True:
+        if user_profile is True:
 
             context = {
                 "user": UserSerializer(user, context=self.get_serializer_context()).data,
