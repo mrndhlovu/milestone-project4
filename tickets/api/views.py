@@ -12,7 +12,6 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
 from accounts.models import UserProfile
-import traceback
 
 
 def get_ticket_owner(request):

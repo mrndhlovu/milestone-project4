@@ -90,9 +90,9 @@ class SignupAPI(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        user_profile = update_profile(user)
+        update_profile = update_profile(user)
 
-        if user_profile is True:
+        if update_profile is True:
 
             context = {
                 "user": UserSerializer(user, context=self.get_serializer_context()).data,

@@ -9,6 +9,7 @@ from memberships.models import Membership, UserMembership
 from tickets.models import Ticket
 from cart.models import Donation
 import stripe
+import os
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -86,7 +87,8 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     active_membership = models.ManyToManyField(Membership, blank=True)
     paid_tickets = models.ManyToManyField(Ticket, blank=True)
-    image = models.CharField(max_length=200, blank=True, null=True)
+    image = models.CharField(max_length=200, blank=True, null=True,
+                             default=os.environ.get('UNICORN_DEFAULT_USER_IMAGE_URL'))
 
     def __str__(self):
         return self.user.username

@@ -79,7 +79,6 @@ class CreateArticleView(CreateAPIView):
         data = request.data.copy()
 
         data['owner'] = current_article_owner.id
-
         data['username'] = current_article_owner.id
 
         serializer = self.get_serializer(data=data)

@@ -7,6 +7,7 @@ from comments.models import Comment
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
+import os
 
 
 def get_comment_owner(request):
@@ -41,7 +42,8 @@ class Ticket(models.Model):
     has_solution = models.BooleanField(default=False)
     price = models.IntegerField(default=5, null=True)
     views = models.IntegerField(default=0)
-    image = models.CharField(null=True, max_length=200)
+    image = models.CharField(null=True, max_length=200, default=os.environ.get(
+        'UNICORN_DEFAULT_USER_IMAGE_URL'))
 
     def __str__(self):
         return self.title
