@@ -7,10 +7,8 @@ if os.environ.get('DEVELOPMENT'):
 else:
     development = False
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -21,8 +19,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = development
 
-ALLOWED_HOSTS = ['127.0.0.1', 'the-unicorn-attractor.herokuapp.com']
-
+if development:
+    ALLOWED_HOSTS = ['127.0.0.1']
+else:
+    ALLOWED_HOSTS = ['the-unicorn-attractor.herokuapp.com']
 
 # Application definition
 
@@ -36,16 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'accounts',
-    'memberships',
-    'cart',
-    'tickets',
-    'comments',
     'blog',
+    'cart',
+    'comments',
+    'memberships',
+    'tickets',
 
     'rest_framework',
     'corsheaders',
-    'knox',
-    'storages'
+    'knox'
 ]
 
 SITE_ID = 1
@@ -54,7 +53,6 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,6 +84,7 @@ WSGI_APPLICATION = 'unicorn.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+
 
 if "DATABASE_URL" in os.environ:
     DATABASES = {'default': dj_database_url.parse(
@@ -135,30 +134,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-
-STATICFILES_LOCATION = 'static'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static'),
-]
-
-MEDIAFILES_LOCATION = 'mediafiles'
-DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
-
+MEDIA_URL = '/media/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static'), ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
-MEDIA_URL = '/mediafiles/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
 }
 
-django_heroku.settings(locals())
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -167,3 +159,5 @@ USER_AUTH_MODEL = 'accounts.CustomUser'
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE')
 
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET')
+
+django_heroku.settings(locals())
