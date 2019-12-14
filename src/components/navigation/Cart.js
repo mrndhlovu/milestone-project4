@@ -1,47 +1,27 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 
-import { Menu, Icon, Header, Dropdown } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 
-export const Cart = ({ pendingOrders }) => {
-  const { orders, count } = pendingOrders;
+const StyledDiv = styled.span`
+  padding-left: 10px;
+  padding-right: 10px;
+`;
 
-  const renderOrderItems = orderItems => {
-    return Object.keys(orderItems).map((key, index) => {
-      const { ticket, membership } = orderItems[key];
-      const name = orderItems[key].ticket
-        ? ticket
-        : membership
-        ? `Unicorn ${membership}`
-        : "Kind donation";
-
-      return <Dropdown.Item key={index}>{name.toUpperCase()}</Dropdown.Item>;
-    });
-  };
-
+export const Cart = ({ pendingOrders, history }) => {
   return (
-    <Menu.Menu position="right">
-      <Menu.Item>
-        <Dropdown multiple>
-          <Dropdown.Menu>
-            {renderOrderItems(orders)}
-            <Dropdown.Divider />
-            <Dropdown.Header>
-              <Header
-                content="Checkout"
-                icon="shopping basket"
-                size="tiny"
-                as={NavLink}
-                to="/checkout"
-              />
-            </Dropdown.Header>
-          </Dropdown.Menu>
-        </Dropdown>
-        <NavLink to="/checkout">
-          <Icon name="cart" color="orange" /> {count}
-        </NavLink>
-      </Menu.Item>
-    </Menu.Menu>
+    <StyledDiv>
+      <Label
+        size="large"
+        color="purple"
+        circular
+        as="a"
+        onClick={() => history.push("/checkout")}
+      >
+        <Icon name="cart" corner />
+        {pendingOrders}
+      </Label>
+    </StyledDiv>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 import { Container, Menu } from "semantic-ui-react";
 
@@ -10,12 +11,12 @@ import { fetchPendingOrder } from "../actions/CheckoutActions";
 import {
   getUser,
   getUserProfile,
-  getCartPendingOrder
+  getCartPendingOrder,
+  getUserMembership
 } from "../selectors/appSelectors";
 import NavigationButtons from "../components/navigation/NavigationButtons";
 import NavigationLinks from "../components/navigation/NavigationLinks";
-import UserImage from "../components/navigation/UserImage";
-import Cart from "../components/navigation/Cart";
+import NavigationCTAs from "../components/navigation/NavigationCTAs";
 
 export class DesktopNavContainer extends Component {
   constructor(props) {
@@ -83,7 +84,9 @@ export class DesktopNavContainer extends Component {
       user: { isAuthenticated },
       userProfile: { data },
       pendingOrder,
-      userProfile
+      userProfile,
+      allAccess,
+      history
     } = this.props;
 
     return (
@@ -101,11 +104,14 @@ export class DesktopNavContainer extends Component {
               showActiveLink={this.showActiveLink}
             />
             <Menu.Item position="right" style={{ paddingBottom: 0 }}>
-              {pendingOrder.data.count > 0 && (
-                <Cart pendingOrders={pendingOrder.data} />
-              )}
               {userProfile.dataReceived && (
-                <UserImage image={data.current_membership.image} />
+                <NavigationCTAs
+                  image={data.current_membership.image}
+                  allAccess={allAccess}
+                  username={data.username}
+                  history={history}
+                  pendingOrders={pendingOrder.data.count}
+                />
               )}
               <NavigationButtons
                 isAuthenticated={isAuthenticated}
@@ -124,7 +130,8 @@ const mapStateToProps = state => {
   return {
     user: getUser(state),
     userProfile: getUserProfile(state),
-    pendingOrder: getCartPendingOrder(state)
+    pendingOrder: getCartPendingOrder(state),
+    allAccess: getUserMembership(state).is_pro_member
   };
 };
 
@@ -135,5 +142,5 @@ DesktopNavContainer.propTypes = {
 };
 
 export default connect(mapStateToProps, { logOut, fetchPendingOrder })(
-  DesktopNavContainer
+  withRouter(DesktopNavContainer)
 );

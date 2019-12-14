@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
@@ -8,15 +9,13 @@ import { logOut } from "../actions/AuthActions";
 import {
   getUser,
   getUserProfile,
-  getCartPendingOrder
+  getCartPendingOrder,
+  getUserMembership
 } from "../selectors/appSelectors";
 import { fetchPendingOrder } from "../actions/CheckoutActions";
 import MobileNavigationLinks from "../components/navigation/MobileNavigationLinks";
 import MobileSideBarButtons from "../components/navigation/MobileSideBarButtons";
-import UserImage from "../components/navigation/UserImage";
-import Cart from "../components/navigation/Cart";
-
-const styles = { paddingLeft: "31%", fontSize: "0.8rem" };
+import NavigationCTAs from "../components/navigation/NavigationCTAs";
 
 export class MobileSideBarContainer extends Component {
   constructor(props) {
@@ -64,7 +63,9 @@ export class MobileSideBarContainer extends Component {
     const {
       user: { isAuthenticated },
       userProfile,
-      pendingOrder
+      pendingOrder,
+      allAccess,
+      history
     } = this.props;
 
     return (
@@ -91,19 +92,16 @@ export class MobileSideBarContainer extends Component {
                 <Menu.Item onClick={this.handleToggle}>
                   <Icon name="sidebar" />
                 </Menu.Item>
-                <Menu.Item style={{ postion: "fixed" }}>
+                <Menu.Item>
                   {isAuthenticated && userProfile.dataReceived && (
-                    <UserImage
+                    <NavigationCTAs
                       username={userProfile.data.username}
-                      currentMembership={userProfile.data.current_membership}
+                      allAccess={allAccess}
                       image={image}
+                      mobile={true}
+                      history={history}
+                      pendingOrders={pendingOrder.data.count}
                     />
-                  )}
-                </Menu.Item>
-
-                <Menu.Item style={styles}>
-                  {pendingOrder.data.count > 0 && (
-                    <Cart pendingOrders={pendingOrder.data} />
                   )}
                 </Menu.Item>
               </Menu>
@@ -121,7 +119,8 @@ const mapStateToProps = state => {
   return {
     user: getUser(state),
     userProfile: getUserProfile(state),
-    pendingOrder: getCartPendingOrder(state)
+    pendingOrder: getCartPendingOrder(state),
+    allAccess: getUserMembership(state).is_pro_member
   };
 };
 
@@ -134,5 +133,5 @@ MobileSideBarContainer.propTypes = {
 };
 
 export default connect(mapStateToProps, { logOut, fetchPendingOrder })(
-  MobileSideBarContainer
+  withRouter(MobileSideBarContainer)
 );
