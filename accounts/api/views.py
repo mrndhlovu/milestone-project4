@@ -110,13 +110,10 @@ class SignupAPI(GenericAPIView):
 
         if self.request.method == 'GET':
             current_membership = get_user_membership(self.request)
-            membership = {
-                'membership': current_membership,
-            }
+            membership = {'membership': current_membership, }
             context['current_membership'] = membership
         else:
             context['current_membership'] = None
-
         return context
 
 

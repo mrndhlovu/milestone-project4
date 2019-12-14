@@ -25,7 +25,7 @@ import {
 } from "../selectors/appSelectors";
 
 import TicketDetail from "../components/tickets/TicketDetail";
-import { APP_TYPE, DEFAULT_IMAGES } from "../constants/constants";
+import { APP_TYPE } from "../constants/constants";
 
 const initialState = {
   index: 0,

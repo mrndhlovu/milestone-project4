@@ -45,7 +45,6 @@ export class PricingContainer extends Component {
   componentDidUpdate(prevProps) {
     const {
       cart,
-      user,
       userMembership,
       memberships,
       auth: { isAuthenticated }
