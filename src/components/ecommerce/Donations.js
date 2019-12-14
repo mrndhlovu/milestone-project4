@@ -1,14 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 
 import { Button, Input, Header, Segment } from "semantic-ui-react";
 
 import { DONATION_AMOUNTS } from "../../constants/constants";
-
-const StyledDiv = styled.div`
-  margin-left: 20px;
-  margin-right: 20px;
-`;
 
 const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
   const otherAmount = () => {
@@ -47,7 +41,7 @@ const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
   };
 
   return (
-    <StyledDiv data-test-id="donations-buttons-container">
+    <div data-test-id="donations-buttons-container">
       <Segment>
         <Header content="Donate" data-test-id="donations-header" />
         <div data-test-id="donations-buttons-wrapper">
@@ -55,7 +49,7 @@ const Donations = ({ handleAddToCart, handleDonationInput, buttonText }) => {
         </div>
         {otherAmount()}
       </Segment>
-    </StyledDiv>
+    </div>
   );
 };
 

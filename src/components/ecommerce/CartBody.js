@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { Header, Icon, Card, Button } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
-  margin-left: 20px;
-  margin-right: 20px;
+  ${"" /* margin-left: 10px;
+  margin-right: 10px; */}
 `;
 
 const CartBody = ({ orderItems, handleRemoveClick }) => {

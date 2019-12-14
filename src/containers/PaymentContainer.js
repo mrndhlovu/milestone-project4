@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { Grid } from "semantic-ui-react";
+import { Grid, Container } from "semantic-ui-react";
 
 import { makePayment } from "../actions/CheckoutActions";
 import {
@@ -17,9 +17,9 @@ import OrderSummaryContainer from "./OrderSummaryContainer";
 import PageHeader from "../components/sharedComponents/PageHeader";
 import { getPageId } from "../utils/urls";
 
-const StyledDiv = styled.div`
+const StyledContainer = styled(Container)`
+  padding-top: 20px;
   width: 100%;
-  padding: 20px 15px;
 `;
 
 export class PaymentContainer extends Component {
@@ -93,7 +93,7 @@ export class PaymentContainer extends Component {
           userName={userName}
           orderCount={orderCount}
         />
-        <StyledDiv>
+        <StyledContainer>
           <Grid stackable>
             <Grid.Row>
               <Grid.Column width={9}>
@@ -114,7 +114,7 @@ export class PaymentContainer extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-        </StyledDiv>
+        </StyledContainer>
       </Fragment>
     );
   }

@@ -1,6 +1,4 @@
-import React from "react";
-
-import { Container } from "semantic-ui-react";
+import React, { Fragment } from "react";
 
 import CartFooter from "./CartFooter";
 import CartBody from "./CartBody";
@@ -9,7 +7,7 @@ const OrderSummary = ({ pendingOrders, handleRemoveClick, history, total }) => {
   const orderItems = pendingOrders.orders ? pendingOrders.orders : {};
 
   return (
-    <Container>
+    <Fragment>
       <CartBody
         orderItems={orderItems}
         total={total}
@@ -18,7 +16,7 @@ const OrderSummary = ({ pendingOrders, handleRemoveClick, history, total }) => {
       />
 
       <CartFooter total={pendingOrders.total} />
-    </Container>
+    </Fragment>
   );
 };
 

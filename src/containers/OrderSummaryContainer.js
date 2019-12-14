@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -52,14 +52,12 @@ export class OrderSummaryContainer extends Component {
     return (
       <div data-test-id="order-summary-page">
         {!cartIsEmpty && (
-          <Fragment>
-            <OrderSummary
-              pendingOrders={pendingOrders.data}
-              handleRemoveClick={this.handleRemoveClick}
-              history={history}
-              count={count}
-            />
-          </Fragment>
+          <OrderSummary
+            pendingOrders={pendingOrders.data}
+            handleRemoveClick={this.handleRemoveClick}
+            history={history}
+            count={count}
+          />
         )}
 
         <Donations

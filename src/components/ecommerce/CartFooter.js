@@ -5,6 +5,7 @@ import { Label } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
   margin-left: 20px;
+  padding-bottom: 10px;
 `;
 
 export const CartFooter = ({ total }) => {
