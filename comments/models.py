@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+import os
 
 User = settings.AUTH_USER_MODEL
 
@@ -22,7 +23,8 @@ class CommentManager(models.Manager):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_DEFAULT, default=os.environ.get('DELETED_USER'))
     comment = models.TextField()
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
