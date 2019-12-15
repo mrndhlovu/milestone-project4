@@ -228,6 +228,24 @@ Requirements for a successful project deployment requires the following:
 - If the build is successful, click the `Open app` button.
 - The project should run successfully.
 
+## Bug & Upgrade issues
+
+There are bugs and upgrades that need to be made on the project, these include:
+
+```
+Bug issues:
+
+* Django tests are passing when run locally but Fails on Travis CI.
+* Figure out why alerts show up when using the url via parament. eg when you a user opens the profile page. If the page is refreshed, an alert will pop-up which is only supposed to show when coming from a particular url.
+* These is no file type filter when a user is uploading and  image.
+
+Upgrade Issue:
+
+* Add soft delete functionality, allowing a user to reactivate a deleted account.
+* Allow admin to drag and drop ticket cards in the dashboard, into different columns.
+* Allow users to view and rate each other's profiles.
+```
+
 # Acknowledgements and Credits
 
 An amazing experience and learning material, thanks to [Code Institute](https://codeinstitute.net/)
