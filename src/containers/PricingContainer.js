@@ -33,9 +33,12 @@ export class PricingContainer extends Component {
       buttonTextPro: "Add to cart",
       buttonDisabled: true,
       redirectParam: "",
-      allAccess: ""
+      allAccess: "",
+      showConfirmModal: false
     };
     this.handleSelectMembership = this.handleSelectMembership.bind(this);
+    this.handleConfirmDownGrade = this.handleConfirmDownGrade.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   componentDidMount() {
@@ -83,6 +86,15 @@ export class PricingContainer extends Component {
     }
   }
 
+  handleConfirmDownGrade() {
+    this.props.changeAccount(ACCOUNT_CHANGE_OPTION.downgrade);
+    this.setState({ showConfirmModal: false });
+  }
+
+  handleCancel() {
+    this.setState({ showConfirmModal: false });
+  }
+
   handleSelectMembership(id) {
     const {
       auth: { isAuthenticated },
@@ -93,7 +105,7 @@ export class PricingContainer extends Component {
       if (typeof id === "string") {
         return !userMembership.is_pro_member
           ? emptyFunction
-          : this.props.changeAccount(ACCOUNT_CHANGE_OPTION.downgrade);
+          : this.setState({ showConfirmModal: true });
       } else {
         if (userMembership.is_pro_member) {
           return this.setState({
@@ -119,7 +131,8 @@ export class PricingContainer extends Component {
       buttonTextFree,
       buttonTextPro,
       buttonDisabled,
-      redirectParam
+      redirectParam,
+      showConfirmModal
     } = this.state;
 
     return memberships.dataReceived ? (
@@ -134,6 +147,9 @@ export class PricingContainer extends Component {
         redirectParam={redirectParam}
         history={history}
         allAccess={userMembership.is_pro_member}
+        showConfirmModal={showConfirmModal}
+        handleConfirmDownGrade={this.handleConfirmDownGrade}
+        handleCancel={this.handleCancel}
       />
     ) : (
       <UILoadingSpinner />

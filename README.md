@@ -238,6 +238,6 @@ An amazing experience and learning material, thanks to [Code Institute](https://
 - Default images are from [Pixabay](https://pixabay.com/)
 - Image compression is thanks to [tinypng.com](https://tinypng.com/)
 
-#### Screenshots
+# Screenshots
 
 ![](/project-media/home.png)![](/project-media/blog.png)![](/project-media/tickets.png)![](/project-media/dashboard.png)

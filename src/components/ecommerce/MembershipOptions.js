@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid } from "semantic-ui-react";
+import { Grid, Confirm } from "semantic-ui-react";
 
 import PageHeader from "../sharedComponents/PageHeader";
 import { getPageId } from "../../utils/urls";
@@ -14,7 +14,10 @@ const MembershipOptions = ({
   buttonTextFree,
   history,
   isAuthenticated,
-  allAccess
+  allAccess,
+  showConfirmModal,
+  handleConfirmDownGrade,
+  handleCancel
 }) => {
   const freeMembership = memberships[0];
   const proMembership = memberships[1];
@@ -29,6 +32,15 @@ const MembershipOptions = ({
 
       <Grid stackable columns="equal" style={{ paddingTop: 50 }}>
         <Grid.Row data-test-id="membership-grid-container">
+          {showConfirmModal && (
+            <Confirm
+              content="Are you sure you what to downgrade?"
+              open={showConfirmModal}
+              onCancel={() => handleCancel()}
+              onConfirm={() => handleConfirmDownGrade(proMembership.id)}
+            />
+          )}
+
           <Membership
             membership={freeMembership}
             buttonText={buttonTextFree}
