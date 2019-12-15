@@ -10,7 +10,8 @@ import Cart from "./Cart";
 const StyledDiv = styled.div`
   position: ${props => props.mobile && "absolute"};
   right: 0;
-  margin-top: ${props => (props.mobile ? "21px" : "-6px")};
+  top: ${props => props.mobile && "21px"};
+  margin-top: ${props => !props.mobile && "-6px"};
   margin-right: 15px;
 `;
 
