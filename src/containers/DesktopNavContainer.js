@@ -103,22 +103,23 @@ export class DesktopNavContainer extends Component {
               isActive={isActive}
               showActiveLink={this.showActiveLink}
             />
-            <Menu.Item position="right" style={{ paddingBottom: 0 }}>
-              {userProfile.dataReceived && (
-                <NavigationCTAs
-                  image={data.current_membership.image}
-                  allAccess={allAccess}
-                  username={data.username}
-                  history={history}
-                  pendingOrders={pendingOrder.data.count}
-                />
-              )}
+            <Menu.Item position="right">
               <NavigationButtons
                 isAuthenticated={isAuthenticated}
                 handleLogout={this.handleLogoutClick}
                 fixed={fixed}
+                allAccess={allAccess}
               />
             </Menu.Item>
+            {userProfile.dataReceived && (
+              <NavigationCTAs
+                image={data.current_membership.image}
+                allAccess={allAccess}
+                username={data.username}
+                history={history}
+                pendingOrders={pendingOrder.data.count}
+              />
+            )}
           </Container>
         </Menu>
       </div>

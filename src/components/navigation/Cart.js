@@ -6,14 +6,15 @@ import { Icon, Label } from "semantic-ui-react";
 const StyledDiv = styled.span`
   padding-left: 10px;
   padding-right: 10px;
+  padding-right: ${props => props.mobile && "3px"};
 `;
 
-export const Cart = ({ pendingOrders, history }) => {
+export const Cart = ({ pendingOrders, history, mobile }) => {
   return (
-    <StyledDiv>
+    <StyledDiv mobile={mobile}>
       <Label
         size="large"
-        color="purple"
+        color="pink"
         circular
         as="a"
         onClick={() => history.push("/checkout")}

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { Container, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
+import { Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 
 import { logOut } from "../actions/AuthActions";
 import {
@@ -87,25 +87,22 @@ export class MobileSideBarContainer extends Component {
 
         <Sidebar.Pusher dimmed={sidebarOpened}>
           <Segment inverted vertical>
-            <Container>
-              <Menu inverted pointing secondary size="large">
-                <Menu.Item onClick={this.handleToggle}>
-                  <Icon name="sidebar" />
-                </Menu.Item>
-                <Menu.Item>
-                  {isAuthenticated && userProfile.dataReceived && (
-                    <NavigationCTAs
-                      username={userProfile.data.username}
-                      allAccess={allAccess}
-                      image={image}
-                      mobile={true}
-                      history={history}
-                      pendingOrders={pendingOrder.data.count}
-                    />
-                  )}
-                </Menu.Item>
-              </Menu>
-            </Container>
+            <Menu inverted pointing secondary size="large">
+              <Menu.Item onClick={this.handleToggle}>
+                <Icon size="large" name="sidebar" />
+              </Menu.Item>
+            </Menu>
+
+            {isAuthenticated && userProfile.dataReceived && (
+              <NavigationCTAs
+                username={userProfile.data.username}
+                allAccess={allAccess}
+                image={image}
+                mobile={true}
+                history={history}
+                pendingOrders={pendingOrder.data.count}
+              />
+            )}
           </Segment>
 
           {this.props.children}

@@ -7,11 +7,12 @@ import { Button } from "semantic-ui-react";
 const StyledSpan = styled.span`
   padding-left: 10px;
   padding-right: 10px;
+  padding-right: ${props => props.mobile && "8px"};
 `;
-const UpgradeCtaButton = () => {
+const UpgradeCtaButton = ({ mobile }) => {
   return (
-    <StyledSpan>
-      <Button as={Link} to="/pricing" basic inverted>
+    <StyledSpan mobile={mobile}>
+      <Button size="small" as={Link} to="/pricing" basic inverted>
         Upgrade
       </Button>
     </StyledSpan>
