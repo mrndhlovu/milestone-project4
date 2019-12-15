@@ -95,7 +95,7 @@ describe("PricingContainer", () => {
     ).props().children;
 
     expect(container.length).toBe(1);
-    expect(memberships.length).toBe(2);
+    expect(memberships.length).toBe(3);
     expect(container).toContainMatchingElement(Membership);
   });
 
