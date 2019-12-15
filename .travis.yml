@@ -1,6 +1,3 @@
-language: python
-python:
-  - "3.6"
-install: "pipenv install"
-script:
-  - SECRET_KEY="bazinga"
+language: node_js
+node_js:
+  - "6.12.1"
