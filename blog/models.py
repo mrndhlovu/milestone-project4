@@ -17,7 +17,7 @@ class Article(models.Model):
     subject = models.CharField(max_length=120)
     content = models.TextField()
     owner = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True, default=1)
+        User, on_delete=models.SET_DEFAULT, null=True, blank=True, default=os.environ.get('DELETED_USER'))
     views = models.IntegerField(default=0)
     is_approved = models.BooleanField(default=False)
     likes = models.ManyToManyField(
