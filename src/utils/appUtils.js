@@ -179,11 +179,11 @@ export const getNewFileName = filename => {
 export const emptyFunction = () => {};
 
 const VIA_MESSAGES = {
-  tickets: "Signup with a PRO account to file a ticket ",
-  blog: "You need a PRO account to create post an article ",
-  "new-article": "Login or signup first to post an article ",
-  article: "Login or signup first to post an article ",
-  "ticket-detail": "Read comments and comment with a PRO Account "
+  tickets: "Signup with a PRO account to file a ticket",
+  blog: "You need a PRO account to create post an article",
+  "new-article": "Login or signup first to post an article",
+  article: "Login or signup first to post an article",
+  "ticket-detail": "Read comments and comment with a PRO Account"
 };
 
 export const getViaMessage = via => {
