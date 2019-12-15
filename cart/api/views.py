@@ -169,7 +169,7 @@ def get_donation(request):
 
 
 def check_paid_tickets(request, id):
-    solution_qs = TicketSolution.objects.filter(id=id)
+    solution_qs = TicketSolution.objects.filter(parent_ticket=id)
     paid_solution_clients = solution_qs.first().paid_client.all()
     is_paid_client = False
     for client in paid_solution_clients:
