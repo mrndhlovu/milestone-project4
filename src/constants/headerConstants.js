@@ -19,7 +19,7 @@ export const HEADER_TEXT = {
   },
   tickets: {
     headerText: "Tickets",
-    headerButtonUrl: "/pricing",
+    headerButtonUrl: "/pricing?via=tickets",
     headerButtonText: "Create an account",
     subHeading:
       "BUG fixes are free unless you want it done quick! FEATURES require payment!"

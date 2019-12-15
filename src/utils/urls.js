@@ -42,3 +42,8 @@ export const getPageId = () => {
   const pageId = window.location.pathname.slice(1);
   return pageId === "" ? "home" : pageId;
 };
+
+export const getViaParam = () => {
+  const query = window.location.search.substr(1);
+  return query.split("=")[1];
+};

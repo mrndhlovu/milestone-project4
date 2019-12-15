@@ -15,7 +15,9 @@ import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 import SignupFormFields from "../components/userAuth/signup/SignUpFormFields";
 import { getUser, getErrors } from "../selectors/appSelectors";
 import { DEFAULT_IMAGES } from "../constants/constants";
-import { validate } from "../utils/appUtils";
+import { validate, getViaMessage } from "../utils/appUtils";
+import { getViaParam } from "../utils/urls";
+import { alertUser } from "../actions";
 
 const styles = {
   width: "100%",
@@ -38,6 +40,14 @@ class SignupContainer extends Component {
     this.handleSignupClick = this.handleSignupClick.bind(this);
     this.renderField = this.renderField.bind(this);
     this.handleDismiss = this.handleDismiss.bind(this);
+  }
+
+  componentDidMount() {
+    const via = getViaParam();
+    if (via) {
+      const message = getViaMessage(via);
+      this.props.alertUser(message);
+    }
   }
 
   handleSignupClick(values) {
@@ -162,5 +172,5 @@ SignupContainer.propTypes = {
 };
 
 export default reduxForm({ validate, form: "LoginForm" })(
-  connect(mapStateToProps, { signup })(SignupContainer)
+  connect(mapStateToProps, { signup, alertUser })(SignupContainer)
 );

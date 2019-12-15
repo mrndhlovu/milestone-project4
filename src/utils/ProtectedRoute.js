@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { getUser } from "../selectors/appSelectors";
 
 const ProtectedRoute = ({ component: Component, auth, ...rest }) => {
+  const via = rest.location.pathname.slice(1).split("/")[0];
+
   return (
     <Route
       {...rest}
@@ -14,7 +16,10 @@ const ProtectedRoute = ({ component: Component, auth, ...rest }) => {
         if (!isAuthenticated && !isLoading) {
           return (
             <Redirect
-              to={{ pathname: "/login", state: { from: props.location } }}
+              to={{
+                pathname: `/login`,
+                state: { from: props.location, via: via }
+              }}
             />
           );
         } else {

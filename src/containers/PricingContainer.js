@@ -23,7 +23,9 @@ import {
   ACCOUNT_CHANGE_OPTION
 } from "../constants/constants";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
-import { emptyFunction } from "../utils/appUtils";
+import { emptyFunction, getViaMessage } from "../utils/appUtils";
+import { alertUser } from "../actions";
+import { getViaParam } from "../utils/urls";
 
 export class PricingContainer extends Component {
   constructor(props) {
@@ -43,6 +45,11 @@ export class PricingContainer extends Component {
 
   componentDidMount() {
     this.props.fetchMembershipsList();
+    const via = getViaParam();
+    if (via) {
+      const message = getViaMessage(via);
+      this.props.alertUser(message);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -117,6 +124,7 @@ export class PricingContainer extends Component {
       }
     } else {
       this.setState({ buttonTextPro: "Lets signup first" });
+      this.props.alertUser("Lets signup first");
     }
   }
 
@@ -180,5 +188,6 @@ PricingContainer.propTypes = {
 export default connect(mapStateToProps, {
   fetchMembershipsList,
   addItemToCart,
-  changeAccount
+  changeAccount,
+  alertUser
 })(withRouter(PricingContainer));

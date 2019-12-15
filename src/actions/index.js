@@ -20,6 +20,10 @@ export const alertSignUp = () => {
   return createMessage({ errorMsg: " Let's login first!" });
 };
 
+export const alertUser = message => {
+  return createMessage({ errorMsg: `${message}!` });
+};
+
 export const hasError = message => ({
   type: HAS_ERROR,
   payload: message

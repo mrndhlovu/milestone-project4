@@ -14,7 +14,8 @@ import FormHeader from "../components/sharedComponents/FormHeader";
 import SubmitButton from "../components/sharedComponents/SubmitButton";
 import ErrorMessage from "../components/sharedComponents/ErrorMessage";
 import { DEFAULT_IMAGES } from "../constants/constants";
-import { validate } from "../utils/appUtils";
+import { validate, getViaMessage } from "../utils/appUtils";
+import { alertUser } from "../actions";
 
 const styles = {
   width: "100%",
@@ -37,11 +38,20 @@ class LoginContainer extends Component {
   }
 
   componentDidMount() {
+    const { via } = this.props.location.state || {
+      from: { pathname: "/" }
+    };
+
     const {
       location: { state }
     } = this.props;
     if (state !== null) {
       this.setState({ referrerRedirect: true });
+    }
+
+    if (via) {
+      const message = getViaMessage(via);
+      this.props.alertUser(message);
     }
   }
 
@@ -76,7 +86,9 @@ class LoginContainer extends Component {
       pristine,
       handleSubmit
     } = this.props;
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
+    const { from } = this.props.location.state || {
+      from: { pathname: "/" }
+    };
 
     const { isLoading, showError } = this.state;
 
@@ -150,5 +162,5 @@ LoginContainer.propTypes = {
 };
 
 export default reduxForm({ validate, form: "LoginForm" })(
-  connect(mapStateToProps, { login })(LoginContainer)
+  connect(mapStateToProps, { login, alertUser })(LoginContainer)
 );

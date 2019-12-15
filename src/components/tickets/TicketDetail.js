@@ -109,7 +109,7 @@ const TicketDetail = ({
             <Notification
               message="To view and make comments you need to upgrade your account "
               linkText="Unicorn Pro Account."
-              redirect="/pricing"
+              redirect="/pricing?via=ticket-detail"
               iconName="list"
               dataTestId="ticket-comments-message"
             />
