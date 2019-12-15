@@ -3,5 +3,5 @@ python:
   - "3.6"
 install: "pipenv install"
 script:
-  - SECRET_KEY="bazinga"
-  - STRIPE_SECRET_KEY="<API-KEY>" ./manage.py test
+  - STRIPE_SECRET_KEY="<API-KEY>"
+  - SECRET_KEY="bazinga" ./manage.py test
