@@ -4,25 +4,19 @@ from accounts.models import UserProfile
 from tickets.models import Ticket, TicketSolution
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework import permissions, authentication, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from comments.models import Comment
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from accounts.models import UserProfile
 from django.conf import settings
 import stripe
-import random
-import string
 import json
-from django.utils import timezone
 from cart.models import Cart, CartItem, CartPayment, Donation
 from django.contrib.contenttypes.models import ContentType
 import stripe
-import traceback
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 

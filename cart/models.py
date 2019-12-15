@@ -2,13 +2,10 @@ from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from django.conf import settings
-from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
-import uuid
 from django.contrib.auth import get_user_model
 
 

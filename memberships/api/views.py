@@ -7,8 +7,6 @@ from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from accounts.models import UserProfile, CustomUser
-from django.forms.models import model_to_dict
-from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import UserProfile
 import json

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth.base_user import (AbstractBaseUser, BaseUserManager)
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import post_save
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.dispatch import receiver
 from memberships.models import Membership, UserMembership
