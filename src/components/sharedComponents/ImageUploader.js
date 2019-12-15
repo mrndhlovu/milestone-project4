@@ -24,6 +24,10 @@ const StyledContainer = styled(Container)`
   padding-bottom: 20px !important;
 `;
 
+const StyledDiv = styled.div`
+  padding-top: 10px !important;
+`;
+
 const StyledParagraph = styled.p`
   font-size: 20px !important;
   margin: 0 auto;
@@ -95,10 +99,12 @@ const ImageUploader = ({ handleUploadImage, handleDeleteImage, onClose }) => {
           <Button color="red" onClick={() => onClose()}>
             Cancel
           </Button>
-          <Button color="blue" onClick={() => handleDeleteImage("image")}>
-            {onProfilePage ? "Remove profile image" : "Remove article Image"}
-          </Button>
         </Segment.Inline>
+        <StyledDiv>
+          <Button color="blue" onClick={() => handleDeleteImage("image")}>
+            {onProfilePage ? "Remove Profile Image" : "Remove Article Image"}
+          </Button>
+        </StyledDiv>
       </Segment>
     </Fragment>
   );
