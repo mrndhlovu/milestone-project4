@@ -183,7 +183,9 @@ const VIA_MESSAGES = {
   blog: "You need a PRO account to create post an article",
   "new-article": "Login or signup first to post an article",
   article: "Login or signup first to read an article",
-  "ticket-detail": "Read comments and comment with a PRO Account"
+  "ticket-detail": "Read comments and comment with a PRO Account",
+  "user-profile": "Your profile page",
+  "create-ticket": "File a ticket"
 };
 
 export const getViaMessage = via => {
